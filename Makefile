@@ -24,6 +24,7 @@ download-all:
 	@make download-profile
 
 downgrade-all:
+	@rm $(OAPIDIR)/*
 	@make downgrade-k8s
 	@make downgrade-container-registry
 	@make downgrade-network
@@ -49,9 +50,9 @@ merge-all:
 	@make merge-events-consult
 
 
-refresh-specs: downgrade-all customize-all merge-all
+refresh-specs: downgrade-all customize-all merge-all oapi-index-gen
 
-refresh-all: download-all downgrade-all customize-all merge-all
+refresh-all: download-all downgrade-all customize-all merge-all oapi-index-gen
 
 pre-commit-install:
 	@go run github.com/evilmartians/lefthook install

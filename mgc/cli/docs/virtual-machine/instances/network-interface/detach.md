@@ -14,7 +14,6 @@ mgc virtual-machine instances network-interface detach --instance.id="9ec75090-2
 
 ## Flags:
 ```
-    --force-authentication          Force authentication by sending the header even if this API doesn't require it
 -h, --help                          help for detach
     --instance object               Instance (at least one of: single property: id or single property: name)
                                     Use --instance=help for more details (required)

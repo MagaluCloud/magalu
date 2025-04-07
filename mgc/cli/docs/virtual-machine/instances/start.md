@@ -12,10 +12,9 @@ mgc virtual-machine instances start [id] [flags]
 
 ## Flags:
 ```
-    --force-authentication   Force authentication by sending the header even if this API doesn't require it
--h, --help                   help for start
-    --id uuid                Instance id - for help use ./mgc virtual-machines instances list . (required)
--v, --version                version for start
+-h, --help      help for start
+    --id uuid   Instance id - for help use ./mgc virtual-machines instances list . (required)
+-v, --version   version for start
 ```
 
 ## Global Flags:

@@ -15,7 +15,6 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
 ## Flags:
 ```
     --availability-zone string                  Availability Zone (at least one of: between 1 and 255 characters) (default "br-ne1-a")
-    --force-authentication                      Force authentication by sending the header even if this API doesn't require it
 -h, --help                                      help for restore
     --id string                                 Id (required)
     --machine-type object                       Machine Type (at least one of: single property: id or single property: name)

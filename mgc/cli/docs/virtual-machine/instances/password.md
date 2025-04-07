@@ -11,10 +11,9 @@ mgc virtual-machine instances password [id] [flags]
 
 ## Flags:
 ```
-    --force-authentication   Force authentication by sending the header even if this API doesn't require it
--h, --help                   help for password
-    --id uuid                Id (required)
--v, --version                version for password
+-h, --help      help for password
+    --id uuid   Id (required)
+-v, --version   version for password
 ```
 
 ## Global Flags:

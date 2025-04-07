@@ -15,7 +15,6 @@ mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d9
 ## Flags:
 ```
     --availability-zone string                  Availability Zone (at least one of: string)
-    --force-authentication                      Force authentication by sending the header even if this API doesn't require it
 -h, --help                                      help for create
     --image object                              Image (at least one of: single property: id or single property: name)
                                                 Use --image=help for more details (required)

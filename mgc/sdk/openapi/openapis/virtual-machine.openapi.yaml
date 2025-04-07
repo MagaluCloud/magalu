@@ -2239,7 +2239,14 @@
           "images"
         ],
         "x-mgc-output-flag": "table=ID:$.images[*].id,NAME:$.images[*].name,VERSION:$.images[*].version,PLATFORM:$.images[*].platform,END_STANDARD_SUPPORT_AT:$.images[*].end_standard_support_at,STATUS:$.images[*].status,AVAILABILITY_ZONES:$.images[*].availability_zones",
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.read"
+            ]
+          }
+        ]
       }
     },
     "/v1/instance-types": {
@@ -2333,7 +2340,14 @@
           "instance-types"
         ],
         "x-mgc-output-flag": "table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu",
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.read"
+            ]
+          }
+        ]
       }
     },
     "/v1/instances": {
@@ -2472,6 +2486,13 @@
         "summary": "List all instances.",
         "tags": [
           "instances"
+        ],
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.read"
+            ]
+          }
         ]
       },
       "post": {
@@ -2554,7 +2575,14 @@
           "instances"
         ],
         "x-mgc-output-flag": "table=ID:$.id",
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.write"
+            ]
+          }
+        ]
       }
     },
     "/v1/instances/{id}": {
@@ -2646,7 +2674,14 @@
         "tags": [
           "instances"
         ],
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.write"
+            ]
+          }
+        ]
       },
       "get": {
         "description": "Get an instance details for the current tenant which is logged in.\n\n#### Notes\n- You can use the virtual-machine list command to retrieve all instances,\nso you can get the id of the instance that you want to get details.\n\n- You can use the **expand** argument to get more details from the inner objects\nlike image or type.",
@@ -2754,6 +2789,13 @@
         "summary": "Retrieve the details of a specific instance.",
         "tags": [
           "instances"
+        ],
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.read"
+            ]
+          }
         ]
       }
     },
@@ -2795,7 +2837,14 @@
           "instances"
         ],
         "x-mgc-name": "reboot",
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.write"
+            ]
+          }
+        ]
       }
     },
     "/v1/instances/{id}/rename": {
@@ -2884,7 +2933,14 @@
         "tags": [
           "instances"
         ],
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.write"
+            ]
+          }
+        ]
       }
     },
     "/v1/instances/{id}/retype": {
@@ -2975,7 +3031,14 @@
           "instances"
         ],
         "x-mgc-name": "retype",
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.write"
+            ]
+          }
+        ]
       }
     },
     "/v1/instances/{id}/start": {
@@ -3016,7 +3079,14 @@
           "instances"
         ],
         "x-mgc-name": "start",
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.write"
+            ]
+          }
+        ]
       }
     },
     "/v1/instances/{id}/stop": {
@@ -3057,7 +3127,14 @@
           "instances"
         ],
         "x-mgc-name": "stop",
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.write"
+            ]
+          }
+        ]
       }
     },
     "/v1/instances/{id}/suspend": {
@@ -3098,7 +3175,14 @@
           "instances"
         ],
         "x-mgc-name": "suspend",
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.write"
+            ]
+          }
+        ]
       }
     },
     "/v1/instances/config/{id}/first-windows-password": {
@@ -3142,6 +3226,13 @@
         "summary": "Retrieve the first windows admin password",
         "tags": [
           "instances"
+        ],
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.read"
+            ]
+          }
         ]
       }
     },
@@ -3218,7 +3309,14 @@
         "tags": [
           "instances"
         ],
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.write"
+            ]
+          }
+        ]
       }
     },
     "/v1/instances/network-interface/detach": {
@@ -3294,7 +3392,14 @@
         "tags": [
           "instances"
         ],
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.write"
+            ]
+          }
+        ]
       }
     },
     "/v1/machine-types": {
@@ -3388,7 +3493,14 @@
           "machine-types"
         ],
         "x-mgc-output-flag": "table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu",
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.read"
+            ]
+          }
+        ]
       }
     },
     "/v1/snapshots": {
@@ -3519,7 +3631,14 @@
           "snapshots"
         ],
         "x-mgc-output-flag": "table=ID:$.snapshots[*].id,NAME:$.snapshots[*].name,STATE:$.snapshots[*].state,STATUS:$.snapshots[*].status,SIZE:$.snapshots[*].size,INSTANCE:$.snapshots[*].instance, CREATED_AT:$.snapshots[*].created_at",
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.read"
+            ]
+          }
+        ]
       },
       "post": {
         "description": "Create a snapshot of a Virtual Machine in the current tenant which is logged in. \u003c/br\u003e\nA Snapshot is ready for restore when it's in available state.\n\n#### Notes\n- You can verify the state of snapshot using the snapshot get command,\n- To create a snapshot it's mandatory inform a valid and unique name.\n\n#### Rules\n- It's only possible to create a snapshot of a valid virtual machine.\n- It's not possible to create 2 snapshots with the same name.\n- You can inform ID or Name from a Virtual Machine if both informed the priority will be ID.",
@@ -3601,7 +3720,14 @@
           "snapshots"
         ],
         "x-mgc-output-flag": "table=ID:$.id",
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.write"
+            ]
+          }
+        ]
       }
     },
     "/v1/snapshots/{id}": {
@@ -3679,7 +3805,14 @@
         "tags": [
           "snapshots"
         ],
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.write"
+            ]
+          }
+        ]
       },
       "get": {
         "description": "Get an snapshot details for the current tenant which is logged in.\n\n#### Notes\n- You can use the snapshots list command to retrieve all snapshots,\nso you can get the id of the snapshot that you want to get details.\n\n- You can use the **expand** argument to get more details from the inner objects\nlike image or type.",
@@ -3777,7 +3910,14 @@
           "snapshots"
         ],
         "x-mgc-output-flag": "table=ID:$.id,NAME:$.name,STATE:$.state,STATUS:$.status,SIZE:$.size,INSTANCE:$.instance, CREATED_AT:$.created_at",
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.read"
+            ]
+          }
+        ]
       },
       "post": {
         "description": "Restore a snapshot of an instance with the current tenant which is logged in. \u003c/br\u003e\n\n#### Notes\n- You can check the snapshot state using snapshot list command.\n- Use \"machine-types list\" to see all machine types available.\n\n#### Rules\n- A Snapshot is ready to restore when it's in available state.\n- To restore a snapshot you have to inform the new instance settings.\n- You must choose a machine-type that has a disk equal or larger\nthan the original instance.",
@@ -3871,7 +4011,14 @@
         ],
         "x-mgc-name": "restore",
         "x-mgc-output-flag": "table=ID:$.id",
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.write"
+            ]
+          }
+        ]
       }
     },
     "/v1/snapshots/{id}/copy": {
@@ -3959,7 +4106,14 @@
         "tags": [
           "snapshots"
         ],
-        "x-viveiro": false
+        "x-viveiro": false,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.write"
+            ]
+          }
+        ]
       }
     },
     "/v1/snapshots/{id}/rename": {
@@ -4046,7 +4200,14 @@
         "tags": [
           "snapshots"
         ],
-        "x-viveiro": true
+        "x-viveiro": true,
+        "security": [
+          {
+            "OAuth2": [
+              "virtual-machine.write"
+            ]
+          }
+        ]
       }
     }
   },

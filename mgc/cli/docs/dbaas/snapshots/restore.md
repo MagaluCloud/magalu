@@ -1,32 +1,32 @@
-# Create
+# Restore
 
 Create a new instance from snapshot.
 
 ## Usage:
 ```
-mgc dbaas snapshots create [snapshot-id] [flags]
+mgc dbaas snapshots restore [snapshot-id] [flags]
 ```
 
 ## Examples:
 ```
-mgc dbaas snapshots create --volume.size=30
+mgc dbaas snapshots restore --volume.size=30
 ```
 
 ## Flags:
 ```
     --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion. (default 7)
     --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process. (default "04:00:00")
--h, --help                            help for create
+-h, --help                            help for restore
     --instance-type-id uuid           Instance Type Id (required)
     --name string                     Name (max character count: 100) (required)
     --snapshot-id uuid                Value referring to snapshot Id. (required)
--v, --version                         version for create
+-v, --version                         version for restore
     --volume object                   Instance Volume Request (properties: size and type)
                                       Use --volume=help for more details
     --volume.size integer             Instance Volume Request: The size of the volume (in GiB). (range: 10 - 50000)
                                       This is the same as '--volume=size:integer'.
-    --volume.type enum                Instance Volume Request: The type of the volume. (one of "CLOUD_HDD", "CLOUD_NVME" or "CLOUD_NVME_15K")
-                                      This is the same as '--volume=type:enum'. (default "CLOUD_NVME_15K")
+    --volume.type enum                Instance Volume Request: The type of the volume. (one of "CLOUD_HDD", "CLOUD_NVME", "CLOUD_NVME15K", "CLOUD_NVME20K" or "CLOUD_NVME_15K")
+                                      This is the same as '--volume=type:enum'. (default "CLOUD_NVME15K")
 ```
 
 ## Global Flags:

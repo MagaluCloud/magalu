@@ -14,7 +14,7 @@ mgc dbaas instances resize --volume.size=30
 
 ## Flags:
 ```
-    --flavor-id uuid          Flavor Id (Deprecated): **Deprecated**: This property is being deprecated in favor of 'instance_type_id'. Please update your requests to use 'instance_type_id' for improved functionality and future compatibility.		
+    --flavor-id uuid          Flavor Id (Deprecated): **Deprecated**: This property is being deprecated in favor of 'instance_type_id'. Please update your requests to use 'instance_type_id' for improved functionality and future compatibility.
                               
 -h, --help                    help for resize
     --instance-id uuid        Value referring to instance Id. (required)
@@ -24,8 +24,8 @@ mgc dbaas instances resize --volume.size=30
                               Use --volume=help for more details
     --volume.size integer     Instance Volume Request: The size of the volume (in GiB). (range: 10 - 50000)
                               This is the same as '--volume=size:integer'.
-    --volume.type enum        Instance Volume Request: The type of the volume. (one of "CLOUD_HDD", "CLOUD_NVME" or "CLOUD_NVME_15K")
-                              This is the same as '--volume=type:enum'. (default "CLOUD_NVME_15K")
+    --volume.type enum        Instance Volume Request: The type of the volume. (one of "CLOUD_HDD", "CLOUD_NVME", "CLOUD_NVME15K", "CLOUD_NVME20K" or "CLOUD_NVME_15K")
+                              This is the same as '--volume=type:enum'. (default "CLOUD_NVME15K")
 ```
 
 ## Global Flags:

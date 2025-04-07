@@ -15,7 +15,6 @@ mgc virtual-machine instances retype --machine-type.id="9ec75090-2872-4f51-8111-
 
 ## Flags:
 ```
-    --force-authentication       Force authentication by sending the header even if this API doesn't require it
 -h, --help                       help for retype
     --id uuid                    Instance id - for help use ./mgc virtual-machines instances list . (required)
     --machine-type object        Machine Type (at least one of: single property: id or single property: name)

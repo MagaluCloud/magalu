@@ -58,6 +58,7 @@ customize-compute:
 	 -o $(COMPUTE_SPEC_MGC_FILE) \
 	 -p virtual-machine \
 	 -r \
+	 --configure-security \
 	 --remove-params "x-tenant-id"
 	@echo "Customizing compute spec: done"
 

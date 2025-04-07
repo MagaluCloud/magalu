@@ -10,11 +10,10 @@ mgc virtual-machine instances delete [id] [flags]
 
 ## Flags:
 ```
-    --delete-public-ip       Delete Public Ip: Flag default value false.
-    --force-authentication   Force authentication by sending the header even if this API doesn't require it
--h, --help                   help for delete
-    --id uuid                Instance id - for help use ./mgc virtual-machines instances list . (required)
--v, --version                version for delete
+    --delete-public-ip   Delete Public Ip: Flag default value false.
+-h, --help               help for delete
+    --id uuid            Instance id - for help use ./mgc virtual-machines instances list . (required)
+-v, --version            version for delete
 ```
 
 ## Global Flags:

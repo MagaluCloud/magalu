@@ -29,7 +29,7 @@ BLOCK_STORAGE_SPEC_MGC_FILE = mgc/sdk/openapi/openapis/block-storage.openapi.yam
 
 DATABASE_ORIGIN_URL = https://dbaas.br-ne-1.jaxyendy.com/v1/cli/openapi.yaml
 DATABASE_SPEC_FILE = specs/dbaas.jaxyendy.openapi.yaml
-DATABASE_SPEC_MGC_FILE = mgc/sdk/openapi/openapis/database.openapi.yaml
+DATABASE_SPEC_MGC_FILE = mgc/sdk/openapi/openapis/dbaas.openapi.yaml
 
 
 COMPUTE_ORIGIN_URL = https://virtual-machine.br-ne-1.jaxyendy.com/v1/openapi.json

@@ -9,10 +9,9 @@ mgc virtual-machine instances suspend [id] [flags]
 
 ## Flags:
 ```
-    --force-authentication   Force authentication by sending the header even if this API doesn't require it
--h, --help                   help for suspend
-    --id uuid                Instance id - for help use ./mgc virtual-machines instances list . (required)
--v, --version                version for suspend
+-h, --help      help for suspend
+    --id uuid   Instance id - for help use ./mgc virtual-machines instances list . (required)
+-v, --version   version for suspend
 ```
 
 ## Global Flags:

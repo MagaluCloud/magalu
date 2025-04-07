@@ -12,6 +12,7 @@ import (
 	"os"
 	"os/signal"
 	"slices"
+	"strings"
 	"syscall"
 	"time"
 
@@ -109,7 +110,9 @@ func login(ctx context.Context, parameters loginParameters, _ struct{}) (*loginR
 	}
 
 	for _, scope := range allScopes {
-		scopes.Add(scope)
+		if strings.Trim(string(scope), "") != "" {
+			scopes.Add(scope)
+		}
 	}
 
 	scopes.Add("evt:event-tr")

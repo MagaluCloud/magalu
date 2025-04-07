@@ -10,7 +10,7 @@ mgc dbaas replicas create [flags]
 ## Flags:
 ```
     --flavor-id uuid          Flavor Id (Deprecated).
-                              **Deprecated**: This property is being deprecated in favor of 'instance_type_id'. Please update your requests to use 'instance_type_id' for improved functionality and future compatibility.          
+                              **Deprecated**: This property is being deprecated in favor of 'instance_type_id'. Please update your requests to use 'instance_type_id' for improved functionality and future compatibility.
                               
 -h, --help                    help for create
     --instance-type-id uuid   Instance Type Id

@@ -10,7 +10,6 @@ mgc virtual-machine snapshots copy [id] [flags]
 ## Flags:
 ```
     --destination-region enum   Regions (one of "br-mgl1", "br-ne1" or "br-se1") (required)
-    --force-authentication      Force authentication by sending the header even if this API doesn't require it
 -h, --help                      help for copy
     --id uuid                   Id (required)
 -v, --version                   version for copy
