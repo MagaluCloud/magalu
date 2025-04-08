@@ -64,7 +64,7 @@ snapcrafts:
         aliases:
           - mgc
         plugs:
-          # - home ## ??
+          - home ## ??
           - desktop ## aprove automatically
           - browser-support ## aprove automatically
           - network ## aprove automatically
