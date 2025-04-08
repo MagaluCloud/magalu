@@ -65,7 +65,7 @@ snapcrafts:
           - mgc
         plugs:
           - home ## https://forum.snapcraft.io/t/classic-confinement-for-mgccli/45931/6
-          - desktop ## aprove automatically
+          # - desktop ## aprove automatically
           - browser-support ## aprove automatically
           - network ## aprove automatically
           - network-bind ## aprove automatically
