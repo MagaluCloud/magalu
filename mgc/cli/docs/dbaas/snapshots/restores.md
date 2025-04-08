@@ -1,17 +1,22 @@
-# Set
+# Restores
 
-Set a specific Config value in the configuration file
+Snapshots management.
 
 ## Usage:
 ```
-mgc config set [key] [value] [flags]
+mgc dbaas snapshots [flags]
+mgc dbaas snapshots [command]
+```
+
+## Commands:
+```
+create      Create a new instance from snapshot asynchronously.
 ```
 
 ## Flags:
 ```
--h, --help           help for set
-    --key string     Name of the desired config (required)
-    --value string   New flag value (required)
+-h, --help      help for snapshots
+-v, --version   version for snapshots
 ```
 
 ## Global Flags:
