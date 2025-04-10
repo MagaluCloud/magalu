@@ -10,9 +10,10 @@ mgc load-balancer [command]
 
 ## Commands:
 ```
+network-acls          Network Load Balancer ACLs
 network-backends      Network Load Balancer Backends (Target Pools)
 network-certificates  Network Load Balancer TLS Certificates
-network-healthchecks  Network Load Balancer HealthCheks
+network-healthchecks  Network Load Balancer Health Checks
 network-listeners     Network Load Balancer Listeners
 network-loadbalancers Network Load Balancer
 ```

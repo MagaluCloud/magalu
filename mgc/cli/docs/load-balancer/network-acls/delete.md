@@ -1,25 +1,18 @@
-# Create
+# Delete
 
-Create Backend
+Delete Load Balancer ACL
 
 ## Usage:
 ```
-mgc load-balancer network-backends create [load-balancer-id] [flags]
+mgc load-balancer network-acls delete [load-balancer-id] [acl-id] [flags]
 ```
 
 ## Flags:
 ```
-    --balance-algorithm string      Balance Algorithm: The load balancing algorithm used by the backend (e.g., round_robin) (required)
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            A brief description of the backend
-    --health-check-id string        Health Check Id (at least one of: uuid)
--h, --help                          help for create
-    --load-balancer-id uuid         load_balancer_id: ID of the attached Load Balancer (required)
-    --name string                   The unique name of the backend (required)
-    --targets array                 Targets: The list of target configurations for the backend (at least one of: array or array)
-                                    Use --targets=help for more details (default [])
-    --targets-type enum             Targets Type: The type of targets used by the backend (e.g., instance, raw) (one of "instance" or "raw") (required)
--v, --version                       version for create
+    --acl-id uuid             acl_id: ID of the ACL you wanna delete (required)
+-h, --help                    help for delete
+    --load-balancer-id uuid   load_balancer_id: ID of the attached Load Balancer (required)
+-v, --version                 version for delete
 ```
 
 ## Global Flags:

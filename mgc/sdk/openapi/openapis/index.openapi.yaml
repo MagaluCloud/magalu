@@ -34,7 +34,7 @@ modules:
     path: load-balancer.openapi.yaml
     summary: 'Lbaas API: create and manage Load Balancers'
     url: https://lbaas.jaxyendy.com/openapi-cli.json
-    version: 1.53.0
+    version: 1.58.3
 -   description: VPC Api Product
     name: network
     path: network.openapi.yaml

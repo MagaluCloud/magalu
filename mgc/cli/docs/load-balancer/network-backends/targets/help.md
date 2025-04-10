@@ -1,27 +1,23 @@
-# Network-Backends
+# Targets
 
-Network Load Balancer Backends (Target Pools)
+Network Load Balancer Backends (Target Pools) | targets
 
 ## Usage:
 ```
-mgc load-balancer network-backends [flags]
-mgc load-balancer network-backends [command]
+mgc load-balancer network-backends targets [flags]
+mgc load-balancer network-backends targets [command]
 ```
 
 ## Commands:
 ```
-create      Create Backend
-delete      Delete Backend by ID
-get         Get Backend by ID
-list        List Backends
-replace     Update Backend by ID
-targets     targets
+create      Create a new target on specific backend
+delete      Delete a target on specific backend
 ```
 
 ## Flags:
 ```
--h, --help      help for network-backends
--v, --version   version for network-backends
+-h, --help      help for targets
+-v, --version   version for targets
 ```
 
 ## Global Flags:

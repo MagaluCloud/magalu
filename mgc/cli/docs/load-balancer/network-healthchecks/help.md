@@ -1,6 +1,6 @@
 # Network-Healthchecks
 
-Network Load Balancer HealthCheks
+Network Load Balancer Health Checks
 
 ## Usage:
 ```

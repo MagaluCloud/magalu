@@ -1,27 +1,23 @@
-# Network-Backends
+# Network-Acls
 
-Network Load Balancer Backends (Target Pools)
+Network Load Balancer ACLs
 
 ## Usage:
 ```
-mgc load-balancer network-backends [flags]
-mgc load-balancer network-backends [command]
+mgc load-balancer network-acls [flags]
+mgc load-balancer network-acls [command]
 ```
 
 ## Commands:
 ```
-create      Create Backend
-delete      Delete Backend by ID
-get         Get Backend by ID
-list        List Backends
-replace     Update Backend by ID
-targets     targets
+create      Create Load Balancer ACL
+delete      Delete Load Balancer ACL
 ```
 
 ## Flags:
 ```
--h, --help      help for network-backends
--v, --version   version for network-backends
+-h, --help      help for network-acls
+-v, --version   version for network-acls
 ```
 
 ## Global Flags:

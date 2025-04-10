@@ -7,15 +7,8 @@ Update Listener by ID
 mgc load-balancer network-listeners replace [load-balancer-id] [listener-id] [flags]
 ```
 
-## Examples:
-```
-mgc load-balancer network-listeners replace --acls='[{"action":"ALLOW","ethertype":"IPv4","name":"acl for load balancer #1","protocol":"tcp","remote_ip_prefix":"192.168.67.10"}]'
-```
-
 ## Flags:
 ```
-    --acls array(object)            Acls: Unique ACL identifiers. Existing rules will be replaced if not empty.
-                                    Use --acls=help for more details (default [])
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                          help for replace
     --id uuid                       Id (required)

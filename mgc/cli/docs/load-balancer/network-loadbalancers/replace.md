@@ -9,22 +9,20 @@ mgc load-balancer network-loadbalancers replace [load-balancer-id] [flags]
 
 ## Examples:
 ```
-mgc load-balancer network-loadbalancers replace --acls='[{"action":"ALLOW","ethertype":"IPv4","id":"00000000-0000-0000-0000-000000000000","name":"acl for load balancer #1","protocol":"tcp","remote_ip_prefix":"192.168.67.10"}]' --backends='[{"health_check_id":"00000000-0000-0000-0000-000000000000","id":"00000000-0000-0000-0000-000000000000","targets":[{"id":"00000000-0000-0000-0000-000000000000","nic_id":"00000000-0000-0000-0000-000000000000","port":8080},{"id":"00000000-0000-0000-0000-000000000001","nic_id":"00000000-0000-0000-0000-000000000000","port":8080}],"targets_type":"instance"}]' --health-checks='[{"healthy_status_code":200,"healthy_threshold_count":8,"id":"00000000-0000-0000-0000-000000000000","initial_delay_seconds":30,"interval_seconds":30,"path":"/health-check","port":5000,"protocol":"tcp","timeout_seconds":10,"unhealthy_threshold_count":3}]' --tls-certificates='[{"certificate":"SGVsbG8sIFdvcmxkIQ==","id":"00000000-0000-0000-0000-000000000000","private_key":"SGVsbG8sIFdvcmxkIQ=="}]'
+mgc load-balancer network-loadbalancers replace --backends='[{"health_check_id":"00000000-0000-0000-0000-000000000000","id":"00000000-0000-0000-0000-000000000000","targets":[{"id":"00000000-0000-0000-0000-000000000000","nic_id":"00000000-0000-0000-0000-000000000000","port":8080},{"id":"00000000-0000-0000-0000-000000000001","nic_id":"00000000-0000-0000-0000-000000000000","port":8080}],"targets_type":"instance"}]' --health-checks='[{"healthy_status_code":200,"healthy_threshold_count":8,"id":"00000000-0000-0000-0000-000000000000","initial_delay_seconds":30,"interval_seconds":30,"path":"/health-check","port":5000,"protocol":"tcp","timeout_seconds":10,"unhealthy_threshold_count":3}]' --tls-certificates='[{"certificate":"SGVsbG8sIFdvcmxkIQ==","id":"00000000-0000-0000-0000-000000000000","private_key":"SGVsbG8sIFdvcmxkIQ=="}]'
 ```
 
 ## Flags:
 ```
-    --acls array(object)               Acls: The list of updated ACL configurations
-                                       Use --acls=help for more details (default [])
     --backends array(object)           Backends: The list of updated backend configurations
                                        Use --backends=help for more details (default [])
     --cli.list-links enum[=table]      List all available links for this command (one of "json", "table" or "yaml")
-    --description string               The updated description of the load balancer
+    --description string               The updated description of the load balancer (at least one of: string)
     --health-checks array(object)      Health Checks: The list of updated health check configurations
                                        Use --health-checks=help for more details (default [])
 -h, --help                             help for replace
     --load-balancer-id uuid            load_balancer_id: ID of the Load Balancer to update (required)
-    --name string                      The updated name of the load balancer
+    --name string                      The updated name of the load balancer (at least one of: string)
     --panic-threshold integer          Panic Threshold: Minimum percentage of failed upstreams that load balancer will consider to give an alert (range: 0 - 100)
     --tls-certificates array(object)   The list of updated TLS certificates
                                        Use --tls-certificates=help for more details (default [])

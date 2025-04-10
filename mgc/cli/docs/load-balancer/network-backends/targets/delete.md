@@ -1,23 +1,19 @@
-# Targets
+# Delete
 
-Create a new target on specific backend
+Delete a target on specific backend
 
 ## Usage:
 ```
-mgc load-balancer network-backends targets [load-balancer-id] [backend-id] [flags]
+mgc load-balancer network-backends targets delete [load-balancer-id] [backend-id] [target-id] [flags]
 ```
 
 ## Flags:
 ```
-    --backend-id uuid               backend_id: ID of the backend you wanna add a target (required)
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --health-check-id uuid          Health Check Id
--h, --help                          help for targets
-    --load-balancer-id uuid         load_balancer_id: ID of the attached Load Balancer (required)
-    --targets array                 The list of targets to be created (at least one of: array or array)
-                                    Use --targets=help for more details (required)
-    --targets-type enum             Targets Type: The type of targets to be created, must be the same as the other targets of the referenced backend (one of "instance" or "raw") (required)
--v, --version                       version for targets
+    --backend-id uuid         backend_id: ID of the backend you wanna remove a target (required)
+-h, --help                    help for delete
+    --load-balancer-id uuid   load_balancer_id: ID of the attached Load Balancer (required)
+    --target-id uuid          backend_id: ID of the target you want to remove (required)
+-v, --version                 version for delete
 ```
 
 ## Global Flags:

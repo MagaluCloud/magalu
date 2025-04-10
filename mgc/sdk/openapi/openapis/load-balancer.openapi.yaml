@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://help.magalu.cloud/
         email: magalu-cloud-iaas@luizalabs.com
-    version: 1.53.0
+    version: 1.58.3
 servers:
 -   url: https://{env}/{region}/load-balancer
     variables:
@@ -66,6 +66,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Create Load Balancer
+            x-permission:
+                permission-name: lb_loadbalancer_create
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -123,6 +126,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: List Load Balancers
+            x-permission:
+                permission-name: lb_loadbalancer_list
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.read
@@ -169,6 +175,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Get Load Balancer by ID
+            x-permission:
+                permission-name: lb_loadbalancer_get
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.read
@@ -220,6 +229,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Update Load Balancer by ID
+            x-permission:
+                permission-name: lb_loadbalancer_update
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -264,6 +276,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Delete Load Balancer by ID
+            x-permission:
+                permission-name: lb_loadbalancer_delete
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -326,6 +341,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Create TLS Certificate
+            x-permission:
+                permission-name: lb_certificate_create
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -393,6 +411,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: List TLS Certificates
+            x-permission:
+                permission-name: lb_certificate_list
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.read
@@ -461,6 +482,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Get TLS Certificate by ID
+            x-permission:
+                permission-name: lb_certificate_get
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.read
@@ -532,6 +556,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Update TLS Certificate by ID
+            x-permission:
+                permission-name: lb_certificate_update
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -576,6 +603,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Delete TLS Certificate by ID
+            x-permission:
+                permission-name: lb_certificate_delete
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -638,6 +668,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Create Health Check
+            x-permission:
+                permission-name: lb_healthcheck_create
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -704,6 +737,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: List Health Checks
+            x-permission:
+                permission-name: lb_healthcheck_list
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.read
@@ -771,6 +807,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Get Health Check by ID
+            x-permission:
+                permission-name: lb_healthcheck_get
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.read
@@ -843,6 +882,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Update Health Check by ID
+            x-permission:
+                permission-name: lb_healthcheck_update
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -882,6 +924,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Delete Health Check by ID
+            x-permission:
+                permission-name: lb_healthcheck_delete
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -937,11 +982,6 @@ paths:
                             description: Delete Backend by ID
                             parameters:
                                 load_balancer_id: $request.path.load_balancer_id
-                        targets:
-                            operationId: create_target_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__targets_post
-                            description: Create a new target on specific backend
-                            parameters:
-                                load_balancer_id: $request.path.load_balancer_id
                 '422':
                     description: Validation Error
                     content:
@@ -949,6 +989,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Create Backend
+            x-permission:
+                permission-name: lb_backend_create
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -1015,6 +1058,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: List Backends
+            x-permission:
+                permission-name: lb_backend_list
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.read
@@ -1071,12 +1117,6 @@ paths:
                             parameters:
                                 load_balancer_id: $request.path.load_balancer_id
                                 backend_id: $request.path.backend_id
-                        targets:
-                            operationId: create_target_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__targets_post
-                            description: Create a new target on specific backend
-                            parameters:
-                                load_balancer_id: $request.path.load_balancer_id
-                                backend_id: $request.path.backend_id
                 '422':
                     description: Validation Error
                     content:
@@ -1084,6 +1124,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Get Backend by ID
+            x-permission:
+                permission-name: lb_backend_get
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.read
@@ -1145,12 +1188,6 @@ paths:
                             parameters:
                                 load_balancer_id: $request.path.load_balancer_id
                                 backend_id: $request.path.backend_id
-                        targets:
-                            operationId: create_target_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__targets_post
-                            description: Create a new target on specific backend
-                            parameters:
-                                load_balancer_id: $request.path.load_balancer_id
-                                backend_id: $request.path.backend_id
                 '422':
                     description: Validation Error
                     content:
@@ -1158,6 +1195,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Update Backend by ID
+            x-permission:
+                permission-name: lb_backend_update
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -1200,6 +1240,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Delete Backend by ID
+            x-permission:
+                permission-name: lb_backend_delete
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -1244,34 +1287,13 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/NetworkGenericCreationResponse'
                     links:
-                        list:
-                            operationId: list_backends_v0beta1_network_load_balancers__load_balancer_id__backends_get
-                            description: List Backends
-                            parameters:
-                                load_balancer_id: $request.path.load_balancer_id
-                        create:
-                            operationId: create_backend_v0beta1_network_load_balancers__load_balancer_id__backends_post
-                            description: Create Backend
-                            parameters:
-                                load_balancer_id: $request.path.load_balancer_id
-                        get:
-                            operationId: get_backend_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__get
-                            description: Get Backend by ID
-                            parameters:
-                                load_balancer_id: $request.path.load_balancer_id
-                                backend_id: $request.path.backend_id
-                        replace:
-                            operationId: update_backend_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__put
-                            description: Update Backend by ID
-                            parameters:
-                                load_balancer_id: $request.path.load_balancer_id
-                                backend_id: $request.path.backend_id
                         delete:
-                            operationId: delete_backend_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__delete
-                            description: Delete Backend by ID
+                            operationId: delete_target_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__targets__target_id__delete
+                            description: Delete a target on specific backend
                             parameters:
                                 load_balancer_id: $request.path.load_balancer_id
                                 backend_id: $request.path.backend_id
+                                target_id: $response.body#/id
                 '201':
                     description: Target successfully created
                 '422':
@@ -1281,6 +1303,66 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Create a new target on specific backend
+            x-permission:
+                permission-name: lb_backend_create
+                product-name: loadbalancer
+            security:
+            -   bearerAuth:
+                - lbaas.write
+            -   OAuth2:
+                - lbaas.write
+    /v0beta1/network-load-balancers/{load_balancer_id}/backends/{backend_id}/targets/{target_id}:
+        delete:
+            tags:
+            - network-backends
+            summary: Delete a target on specific backend
+            operationId: delete_target_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__targets__target_id__delete
+            parameters:
+            -   name: load_balancer_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: load_balancer_id
+                    description: ID of the attached Load Balancer
+                description: ID of the attached Load Balancer
+            -   name: backend_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: backend_id
+                    description: ID of the backend you wanna remove a target
+                description: ID of the backend you wanna remove a target
+            -   name: target_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: backend_id
+                    description: ID of the target you want to remove
+                description: ID of the target you want to remove
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+                '204':
+                    description: No Content
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: Delete a target on specific backend
+            x-permission:
+                permission-name: lb_backend_delete
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -1352,6 +1434,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Create Listener
+            x-permission:
+                permission-name: lb_listener_create
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -1418,6 +1503,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: List Listeners
+            x-permission:
+                permission-name: lb_listener_list
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.read
@@ -1485,6 +1573,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Get Listener by ID
+            x-permission:
+                permission-name: lb_listener_get
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.read
@@ -1557,6 +1648,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Update Listener by ID
+            x-permission:
+                permission-name: lb_listener_update
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -1599,6 +1693,105 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: Delete Listener by ID
+            x-permission:
+                permission-name: lb_listener_delete
+                product-name: loadbalancer
+            security:
+            -   bearerAuth:
+                - lbaas.write
+            -   OAuth2:
+                - lbaas.write
+    /v0beta1/network-load-balancers/{load_balancer_id}/acls:
+        post:
+            tags:
+            - network-acls
+            summary: Create Load Balancer ACL
+            operationId: create_acl_v0beta1_network_load_balancers__load_balancer_id__acls_post
+            parameters:
+            -   name: load_balancer_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: load_balancer_id
+                    description: ID of the attached Load Balancer
+                description: ID of the attached Load Balancer
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/NetworkAclRequest'
+            responses:
+                '200':
+                    description: ACL created successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NetworkGenericCreationResponse'
+                    links:
+                        delete:
+                            operationId: delete_acl_v0beta1_network_load_balancers__load_balancer_id__acls__acl_id__delete
+                            description: Delete Load Balancer ACL
+                            parameters:
+                                load_balancer_id: $request.path.load_balancer_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: Create Load Balancer ACL
+            x-permission:
+                permission-name: lb_acl_create
+                product-name: loadbalancer
+            security:
+            -   bearerAuth:
+                - lbaas.write
+            -   OAuth2:
+                - lbaas.write
+    /v0beta1/network-load-balancers/{load_balancer_id}/acls/{acl_id}:
+        delete:
+            tags:
+            - network-acls
+            summary: Delete Load Balancer ACL
+            operationId: delete_acl_v0beta1_network_load_balancers__load_balancer_id__acls__acl_id__delete
+            parameters:
+            -   name: load_balancer_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: load_balancer_id
+                    description: ID of the attached Load Balancer
+                description: ID of the attached Load Balancer
+            -   name: acl_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: acl_id
+                    description: ID of the ACL you wanna delete
+                description: ID of the ACL you wanna delete
+            responses:
+                '200':
+                    description: ACL deleted successfully
+                    content:
+                        application/json:
+                            schema: {}
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: Delete Load Balancer ACL
+            x-permission:
+                permission-name: lb_delete_create
+                product-name: loadbalancer
             security:
             -   bearerAuth:
                 - lbaas.write
@@ -1661,8 +1854,6 @@ components:
             type: string
             enum:
             - round_robin
-            - least_connections
-            - source_ip_hash
             title: BackendBalanceAlgorithm
         BackendType:
             type: string
@@ -1723,6 +1914,7 @@ components:
                     title: Protocol
                 remote_ip_prefix:
                     type: string
+                    format: ipvanynetwork
                     title: Remote Ip Prefix
                 action:
                     $ref: '#/components/schemas/AclActionType'
@@ -1739,46 +1931,7 @@ components:
                 ethertype: IPv4
                 name: 'acl for load balancer #1'
                 protocol: tcp
-                remote_ip_prefix: 192.168.67.10
-        NetworkAclUpdateRequest:
-            properties:
-                name:
-                    type: string
-                    title: Name
-                    default: ''
-                ethertype:
-                    $ref: '#/components/schemas/AclEtherType'
-                protocol:
-                    type: string
-                    enum:
-                    - tcp
-                    - tls
-                    title: Protocol
-                remote_ip_prefix:
-                    type: string
-                    title: Remote Ip Prefix
-                action:
-                    $ref: '#/components/schemas/AclActionType'
-                id:
-                    type: string
-                    format: uuid
-                    title: Id
-            type: object
-            required:
-            - ethertype
-            - protocol
-            - remote_ip_prefix
-            - action
-            - id
-            title: NetworkAclUpdateRequest
-            description: Used to request the update of an existing Network ACL.
-            example:
-                action: ALLOW
-                ethertype: IPv4
-                id: 00000000-0000-0000-0000-000000000000
-                name: 'acl for load balancer #1'
-                protocol: tcp
-                remote_ip_prefix: 192.168.67.10
+                remote_ip_prefix: 192.168.67.0/24
         NetworkBackendCreateRequest:
             properties:
                 name:
@@ -1792,13 +1945,9 @@ components:
                     default: ''
                 balance_algorithm:
                     type: string
-                    enum:
-                    - round_robin
-                    - least_connections
-                    - source_ip_hash
                     title: Balance Algorithm
                     description: The load balancing algorithm used by the backend
-                        (e.g., round_robin, least_connections)
+                        (e.g., round_robin)
                 targets_type:
                     type: string
                     enum:
@@ -1822,6 +1971,7 @@ components:
                     anyOf:
                     -   type: string
                         format: uuid
+                    - {}
                     title: Health Check Id
             type: object
             required:
@@ -1868,9 +2018,9 @@ components:
                     type: string
                     title: Id
                 ip_address:
-                    anyOf:
-                    -   type: string
+                    type: string
                     title: Ip Address
+                    nullable: true
                 nic_id:
                     type: string
                     title: Nic Id
@@ -1957,6 +2107,7 @@ components:
                 ip_address:
                     type: string
                     title: Ip Address
+                    nullable: true
                 port:
                     type: integer
                     title: Port
@@ -1971,7 +2122,6 @@ components:
             type: object
             required:
             - id
-            - ip_address
             - port
             - created_at
             - updated_at
@@ -2028,13 +2178,9 @@ components:
                     default: ''
                 balance_algorithm:
                     type: string
-                    enum:
-                    - round_robin
-                    - least_connections
-                    - source_ip_hash
                     title: Balance Algorithm
                     description: The load balancing algorithm used by the backend
-                        (e.g., round_robin, least_connections)
+                        (e.g., round_robin)
                 targets_type:
                     type: string
                     enum:
@@ -2080,6 +2226,7 @@ components:
                 health_check_id:
                     anyOf:
                     -   type: string
+                    - {}
                     title: Health Check Id
                 name:
                     type: string
@@ -2141,6 +2288,7 @@ components:
                     anyOf:
                     -   type: string
                         format: uuid
+                    - {}
                     title: Health Check Id
                 targets_type:
                     type: string
@@ -2180,6 +2328,7 @@ components:
                     anyOf:
                     -   type: string
                         format: uuid
+                    - {}
                     title: Health Check Id
                     description: The unique identifier of the associated health check,
                         if applicable
@@ -2636,14 +2785,6 @@ components:
                     format: uuid
                     title: Tls Certificate Id
                     description: The unique identifier of the associated tls certificate
-                acls:
-                    items:
-                        $ref: '#/components/schemas/NetworkAclRequest'
-                    type: array
-                    title: Acls
-                    description: Unique ACL identifiers. Existing rules will be replaced
-                        if not empty.
-                    default: []
             type: object
             required:
             - id
@@ -2793,7 +2934,6 @@ components:
                     tls_certificate_name: nlb-tls-certificate
                 name: nlb-1
                 panic_threshold: 50
-                parent_id: 00000000-0000-0000-0000-000000000000
                 project_type: default
                 public_ip_id: 00000000-0000-0000-0000-000000000000
                 subnet_pool_id: 00000000-0000-0000-0000-000000000000
@@ -2814,10 +2954,6 @@ components:
                 name:
                     type: string
                     title: Name
-                parent_id:
-                    anyOf:
-                    -   type: string
-                    title: Parent Id
                 project_type:
                     type: string
                     title: Project Type
@@ -2825,6 +2961,7 @@ components:
                 description:
                     anyOf:
                     -   type: string
+                    - {}
                     title: Description
                     default: ''
                 type:
@@ -2864,13 +3001,13 @@ components:
                     type: array
                     title: Acls
                 ip_address:
-                    anyOf:
-                    -   type: string
+                    type: string
                     title: Ip Address
-                    default: ''
+                    nullable: true
                 port:
                     anyOf:
                     -   type: string
+                    - {}
                     title: Port
                     default: ''
                 vpc_id:
@@ -2896,7 +3033,6 @@ components:
             required:
             - id
             - name
-            - parent_id
             - type
             - visibility
             - status
@@ -2920,11 +3056,13 @@ components:
                 name:
                     anyOf:
                     -   type: string
+                    - {}
                     title: Name
                     description: The updated name of the load balancer
                 description:
                     anyOf:
                     -   type: string
+                    - {}
                     title: Description
                     description: The updated description of the load balancer
                 backends:
@@ -2947,13 +3085,6 @@ components:
                     type: array
                     title: Tls Certificates
                     description: The list of updated TLS certificates
-                    default: []
-                acls:
-                    items:
-                        $ref: '#/components/schemas/NetworkAclUpdateRequest'
-                    type: array
-                    title: Acls
-                    description: The list of updated ACL configurations
                     default: []
                 panic_threshold:
                     type: integer
@@ -3151,13 +3282,13 @@ components:
                 ip_address:
                     type: string
                     title: Ip Address
+                    nullable: true
                 external_id:
                     type: string
                     title: External Id
             type: object
             required:
             - id
-            - ip_address
             - external_id
             title: NetworkPublicIpResponse
             example:
@@ -3208,6 +3339,7 @@ components:
                     anyOf:
                     -   type: string
                         format: date-time
+                    - {}
                     title: Expiration Date
                 description:
                     type: string
@@ -3267,11 +3399,13 @@ components:
                 next:
                     anyOf:
                     -   type: string
+                    - {}
                     title: Next
                     default: ''
                 previous:
                     anyOf:
                     -   type: string
+                    - {}
                     title: Previous
                     default: ''
                 self:
@@ -3361,9 +3495,11 @@ tags:
 -   name: network-listeners
     description: Network Load Balancer Listeners
 -   name: network-healthchecks
-    description: Network Load Balancer HealthCheks
+    description: Network Load Balancer Health Checks
 -   name: network-certificates
     description: Network Load Balancer TLS Certificates
 -   name: network-backends
     description: Network Load Balancer Backends (Target Pools)
+-   name: network-acls
+    description: Network Load Balancer ACLs
 $id: https://lbaas.jaxyendy.com/openapi-cli.json
