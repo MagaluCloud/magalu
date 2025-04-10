@@ -10,7 +10,7 @@ func delete(cmd *cobra.Command, args []string) {
 	fmt.Println("not implemented - remover diretamente no arquivo de config")
 }
 
-var DeleteSpecsCmd = &cobra.Command{
+var deleteSpecsCmd = &cobra.Command{
 	Use:   "delete",
 	Short: "Delete spec",
 	Args:  cobra.MinimumNArgs(1),

@@ -86,7 +86,6 @@ paths:
             parameters:
             -   name: _limit
                 in: query
-                description: limit the number of the results
                 required: false
                 schema:
                     exclusiveMinimum: false
@@ -94,7 +93,8 @@ paths:
                     title: ' Limit'
                     maximum: 1000
                     description: limit the number of the results
-                    default: 50
+                    default: 200
+                description: limit the number of the results
             -   name: _offset
                 in: query
                 description: pagination for the results limited
@@ -1349,7 +1349,6 @@ paths:
             parameters:
             -   name: _limit
                 in: query
-                description: limit the number of the results
                 required: false
                 schema:
                     exclusiveMinimum: false
@@ -1357,7 +1356,8 @@ paths:
                     title: ' Limit'
                     maximum: 1000
                     description: limit the number of the results
-                    default: 50
+                    default: 200
+                description: limit the number of the results
             -   name: _offset
                 in: query
                 description: pagination for the results limited

@@ -403,7 +403,8 @@ type MergeSpecs struct {
 	productPathURL string
 }
 
-func MergeSpecsCmd() *cobra.Command {
+func mergeSpecsCmd() *cobra.Command {
+
 	options := &MergeSpecs{}
 
 	cmd := &cobra.Command{

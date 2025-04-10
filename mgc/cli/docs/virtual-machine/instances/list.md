@@ -9,7 +9,7 @@ mgc virtual-machine instances list [flags]
 
 ## Flags:
 ```
-    --control.limit integer     Limit: limit the number of the results (max: 1000) (default 50)
+    --control.limit integer     Limit: limit the number of the results (max: 1000) (default 200)
     --control.offset integer    Offset: pagination for the results limited (max: 2147483647)
     --control.sort string       Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created_at:asc")
     --expand array(string)     Expand: You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels']  (default [])

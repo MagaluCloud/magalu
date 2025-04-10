@@ -24,7 +24,7 @@ repos:
       - id: oapi-index-gen
         name: oapi-index-gen
         language: python
-        entry: bash -c './scripts/oapi_index_gen.sh'
+        entry: bash -c 'make oapi-index-gen'
         additional_dependencies: [PyYAML, typing, argparse]
         stages: [pre-commit]
       - id: check-openapi-links

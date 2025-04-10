@@ -119,16 +119,16 @@
           {
             "name": "_limit",
             "in": "query",
-            "description": "limit the number of the results",
             "required": false,
             "schema": {
-              "exclusiveMinimum": 0,
               "type": "integer",
-              "title": " Limit",
               "maximum": 1000,
+              "exclusiveMinimum": 0,
               "description": "limit the number of the results",
-              "default": 50
-            }
+              "default": 200,
+              "title": " Limit"
+            },
+            "description": "limit the number of the results"
           },
           {
             "name": "_offset",
@@ -1224,16 +1224,16 @@
           {
             "name": "_limit",
             "in": "query",
-            "description": "limit the number of the results",
             "required": false,
             "schema": {
-              "exclusiveMinimum": 0,
               "type": "integer",
-              "title": " Limit",
               "maximum": 1000,
+              "exclusiveMinimum": 0,
               "description": "limit the number of the results",
-              "default": 50
-            }
+              "default": 200,
+              "title": " Limit"
+            },
+            "description": "limit the number of the results"
           },
           {
             "name": "_offset",

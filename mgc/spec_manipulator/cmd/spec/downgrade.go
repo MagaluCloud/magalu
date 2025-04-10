@@ -285,109 +285,115 @@ func PrepareSchema(xchema *base.Schema) *base.Schema {
 	return newChema
 
 }
+func downgradeSpec() *cobra.Command {
+	var dir string
+	cmd := &cobra.Command{
+		Use:    "downgrade",
+		Short:  "Downgrade specs from 3.1.x to 3.0.x",
+		Hidden: true,
+		Run: func(cmd *cobra.Command, args []string) {
+			// runPrepare(cmd, args)
+			_ = verificarEAtualizarDiretorio(dir)
 
-var DowngradeSpecCmd = &cobra.Command{
-	Use:    "downgrade",
-	Short:  "Downgrade specs from 3.1.x to 3.0.x",
-	Hidden: true,
-	Run: func(cmd *cobra.Command, args []string) {
-		// runPrepare(cmd, args)
-		_ = verificarEAtualizarDiretorio(CurrentDir())
+			currentConfig, err := loadList()
 
-		currentConfig, err := loadList()
-
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-
-		for _, v := range currentConfig {
-			file := filepath.Join(CurrentDir(), v.File)
-			fileBytes, err := os.ReadFile(file)
 			if err != nil {
 				fmt.Println(err)
 				return
 			}
 
-			document, err := libopenapi.NewDocument(fileBytes)
-			if err != nil {
-				panic(fmt.Sprintf("cannot read document: %e", err))
-			}
-			docModel, errors := document.BuildV3Model()
-			if len(errors) > 0 {
-				for i := range errors {
-					fmt.Printf("error: %e\n", errors[i])
+			for _, v := range currentConfig {
+				file := filepath.Join(dir, v.File)
+				fileBytes, err := os.ReadFile(file)
+				if err != nil {
+					fmt.Println(err)
+					return
 				}
-				panic(fmt.Sprintf("cannot create v3 model from document: %d errors reported", len(errors)))
-			}
 
-			if spl := strings.Split(docModel.Model.Version, "."); spl[0] == "3" && spl[1] == "0" {
-				fmt.Printf("Skipping %s. Already in 3.0.x format\n", v.File)
-				continue
-			}
-
-			// downgrade to 3.0.x
-			docModel.Model.Version = "3.0.3"
-
-			docModel.Model.Security = nil
-
-			_, document, docModel, errors = document.RenderAndReload()
-			if len(errors) > 0 {
-				for i := range errors {
-					fmt.Printf("error: %e\n", errors[i])
+				document, err := libopenapi.NewDocument(fileBytes)
+				if err != nil {
+					panic(fmt.Sprintf("cannot read document: %e", err))
 				}
-				panic(fmt.Sprintf("cannot create v3 model from document: %d errors reported", len(errors)))
-			}
-			fmt.Println("Downgrading " + v.File)
-			// Schemas
-			for pair := docModel.Model.Components.Schemas.Oldest(); pair != nil; pair = pair.Next() {
-				xchema := pair.Value.Schema()
-				*xchema = *PrepareSchema(xchema)
-			}
+				docModel, errors := document.BuildV3Model()
+				if len(errors) > 0 {
+					for i := range errors {
+						fmt.Printf("error: %e\n", errors[i])
+					}
+					panic(fmt.Sprintf("cannot create v3 model from document: %d errors reported", len(errors)))
+				}
 
-			//Paths
-			for path := docModel.Model.Paths.PathItems.Oldest(); path != nil; path = path.Next() {
-				operations := path.Value.GetOperations()
-				if operations == nil {
+				if spl := strings.Split(docModel.Model.Version, "."); spl[0] == "3" && spl[1] == "0" {
+					fmt.Printf("Skipping %s. Already in 3.0.x format\n", v.File)
 					continue
 				}
-				for op := operations.Oldest(); op != nil; op = op.Next() {
-					if op.Value.Parameters != nil {
-						for _, param := range op.Value.Parameters {
-							xchema := param.Schema.Schema()
-							*xchema = *PrepareSchema(xchema)
+
+				// downgrade to 3.0.x
+				docModel.Model.Version = "3.0.3"
+
+				docModel.Model.Security = nil
+
+				_, document, docModel, errors = document.RenderAndReload()
+				if len(errors) > 0 {
+					for i := range errors {
+						fmt.Printf("error: %e\n", errors[i])
+					}
+					panic(fmt.Sprintf("cannot create v3 model from document: %d errors reported", len(errors)))
+				}
+				fmt.Println("Downgrading " + v.File)
+				// Schemas
+				for pair := docModel.Model.Components.Schemas.Oldest(); pair != nil; pair = pair.Next() {
+					xchema := pair.Value.Schema()
+					*xchema = *PrepareSchema(xchema)
+				}
+
+				//Paths
+				for path := docModel.Model.Paths.PathItems.Oldest(); path != nil; path = path.Next() {
+					operations := path.Value.GetOperations()
+					if operations == nil {
+						continue
+					}
+					for op := operations.Oldest(); op != nil; op = op.Next() {
+						if op.Value.Parameters != nil {
+							for _, param := range op.Value.Parameters {
+								xchema := param.Schema.Schema()
+								*xchema = *PrepareSchema(xchema)
+							}
 						}
 					}
 				}
-			}
 
-			docModel.Model.Components.SecuritySchemes = nil
+				docModel.Model.Components.SecuritySchemes = nil
 
-			_, document, _, errs := document.RenderAndReload()
-			if len(errors) > 0 {
-				panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
-			}
-			docValidator, validatorErrs := validator.NewValidator(document)
-			if len(validatorErrs) > 0 {
-				panic(fmt.Sprintf("cannot create validator: %d errors reported", len(validatorErrs)))
-			}
-
-			valid, validationErrs := docValidator.ValidateDocument()
-
-			if !valid {
-				for _, e := range validationErrs {
-					// 5. Handle the error
-					fmt.Printf("Type: %s, Failure: %s\n", e.ValidationType, e.Message)
-					fmt.Printf("Fix: %s\n\n", e.HowToFix)
+				_, document, _, errs := document.RenderAndReload()
+				if len(errors) > 0 {
+					panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
 				}
-			}
+				docValidator, validatorErrs := validator.NewValidator(document)
+				if len(validatorErrs) > 0 {
+					panic(fmt.Sprintf("cannot create validator: %d errors reported", len(validatorErrs)))
+				}
 
-			fileBytes, _, _, errs = document.RenderAndReload()
-			if len(errors) > 0 {
-				panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
-			}
+				valid, validationErrs := docValidator.ValidateDocument()
 
-			_ = os.WriteFile(filepath.Join(CurrentDir(), "conv."+v.File), fileBytes, 0644)
-		}
-	},
+				if !valid {
+					for _, e := range validationErrs {
+						// 5. Handle the error
+						fmt.Printf("Type: %s, Failure: %s\n", e.ValidationType, e.Message)
+						fmt.Printf("Fix: %s\n\n", e.HowToFix)
+					}
+				}
+
+				fileBytes, _, _, errs = document.RenderAndReload()
+				if len(errors) > 0 {
+					panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
+				}
+
+				_ = os.WriteFile(filepath.Join(dir, "conv."+v.File), fileBytes, 0644)
+			}
+		},
+	}
+
+	cmd.Flags().StringVarP(&dir, "dir", "d", "", "Directory to save the converted specs")
+
+	return cmd
 }

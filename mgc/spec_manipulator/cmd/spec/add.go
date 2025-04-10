@@ -70,7 +70,7 @@ type AddMenu struct {
 	menu string
 }
 
-func SpecAddNewCmd() *cobra.Command {
+func specAddNewCmd() *cobra.Command {
 	options := &AddMenu{}
 
 	cmd := &cobra.Command{
