@@ -14,7 +14,7 @@ mgc load-balancer network-listeners create [load-balancer-id] [flags]
     --description string            A brief description of the listener
 -h, --help                          help for create
     --load-balancer-id uuid         load_balancer_id: ID of the attached Load Balancer (required)
-    --name string                   The unique name of the listener (required)
+    --name string                   The unique name of the listener (max character count: 64) (required)
     --port integer                  The port number on which the listener will be active (required)
     --protocol enum                 The protocol used by the listener (e.g., TCP, TLS) (one of "tcp" or "tls") (required)
     --tls-certificate-id string     Tls Certificate Id: The ID of the TLS certificate

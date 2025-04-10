@@ -14,7 +14,7 @@ mgc load-balancer network-certificates create [load-balancer-id] [flags]
     --description string            A brief description of the TLS Certificate
 -h, --help                          help for create
     --load-balancer-id uuid         load_balancer_id: ID of the Load Balancer to create the TLS certificate (required)
-    --name string                   The unique name of the TLS Certificate (required)
+    --name string                   The unique name of the TLS Certificate (max character count: 64) (required)
     --private-key base64            The private key associated with the TLS Certificate (required)
 -v, --version                       version for create
 ```

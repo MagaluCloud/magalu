@@ -17,7 +17,7 @@ mgc load-balancer network-healthchecks create [load-balancer-id] [flags]
     --initial-delay-seconds integer       Initial Delay Seconds: The initial delay in seconds before starting Health Checks (default 30)
     --interval-seconds integer            Interval Seconds: The interval in seconds between Health Checks (default 30)
     --load-balancer-id uuid               load_balancer_id: ID of the attached Load Balancer (required)
-    --name string                         The unique name of the Health Check (required)
+    --name string                         The unique name of the Health Check (max character count: 64) (required)
     --path string                         The path to check for HTTP protocol; ignored for other protocols
     --port integer                        The port number on which the Health Check will be performed (required)
     --protocol enum                       The protocol used for the Health Check (e.g., HTTP, TCP) (one of "http" or "tcp") (required)

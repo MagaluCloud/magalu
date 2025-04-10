@@ -24,7 +24,7 @@ mgc load-balancer network-loadbalancers create --acls='[{"action":"ALLOW","ether
 -h, --help                             help for create
     --listeners array(object)          Listeners: The list of listener configurations for the load balancer
                                        Use --listeners=help for more details (required)
-    --name string                      The unique name of the load balancer (required)
+    --name string                      The unique name of the load balancer (max character count: 64) (required)
     --panic-threshold integer          Panic Threshold: Minimum percentage of failed upstreams that load balancer will consider to give an alert (range: 0 - 100)
     --public-ip-id string              The public IP ID associated with the load balancer
     --subnet-pool-id string            The subnet pool ID associated with the load balancer
