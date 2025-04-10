@@ -95,7 +95,7 @@ func getCommonType(children []*SchemaRef) (t string, err error) {
 			continue
 		}
 
-		if len(schema.Type.Slice()) > 0 && t != schema.Type.Slice()[0] {
+		if len(schema.Type.Slice()) > 0 && !schema.Type.Includes(t) {
 			return "", &utils.ChainedError{
 				Name: fmt.Sprint(i), Err: &utils.ChainedError{
 					Name: "type", Err: &utils.CompareError{A: t, B: schema.Type.Slice()[0]},

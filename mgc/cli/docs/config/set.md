@@ -9,9 +9,10 @@ mgc config set [key] [value] [flags]
 
 ## Flags:
 ```
--h, --help           help for set
-    --key string     Name of the desired config (required)
-    --value string   New flag value (required)
+-h, --help         help for set
+    --key string   Name of the desired config (required)
+    --value        New flag value (exactly one of: string or integer)
+                   Use --value=help for more details (required)
 ```
 
 ## Global Flags:
