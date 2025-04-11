@@ -30,6 +30,12 @@ modules:
       version: 0.1.0
       description: APIs related to the Kubernetes product.
       summary: APIs related to the Kubernetes product.
+    - name: load-balancer
+      url: https://lbaas.jaxyendy.com/openapi-cli.json
+      path: load-balancer.openapi.yaml
+      version: 1.58.4
+      description: 'Lbaas API: create and manage Load Balancers'
+      summary: 'Lbaas API: create and manage Load Balancers'
     - name: network
       url: https://network.jaxyendy.com/openapi.json
       path: network.openapi.yaml

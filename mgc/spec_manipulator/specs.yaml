@@ -34,4 +34,8 @@ jaxyendy:
   - url: https://globaldb-public-api.prod.gcp-sa-east1.br.jaxyendy.com/openapi.json
     file: globaldb.openapi.yaml
     menu: ssh
-    enabled: false
+    enabled: true
+  - url: https://lbaas.dev-qa.se1.br.jaxyendy.com/openapi.json
+    file: lbaas.openapi.yaml
+    menu: lbaas
+    enabled: true
