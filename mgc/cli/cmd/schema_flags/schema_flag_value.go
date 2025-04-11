@@ -2,6 +2,7 @@ package schema_flags
 
 import (
 	"errors"
+	"reflect"
 
 	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/MagaluCloud/magalu/mgc/core/config"
@@ -122,6 +123,20 @@ func GetFlagValue(f *flag.Flag, cfg *config.Config) (value any, err error) {
 			err = ErrNoFlagValue
 		}
 		return
+	}
+
+	// mgc config set [key] [value-integer]
+	if desc.Schema.OneOf != nil {
+		for _, oneOf := range desc.Schema.OneOf {
+			typeOfValue := reflect.TypeOf(value).String()
+			if typeOfValue == "float64" {
+				typeOfValue = "integer"
+			}
+			if typeOfValue == oneOf.Value.Type.Slice()[0] {
+				desc.Schema.Type = oneOf.Value.Type
+				break
+			}
+		}
 	}
 
 	err = desc.Schema.VisitJSON(value, openapi3.MultiErrors())

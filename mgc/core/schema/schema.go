@@ -160,9 +160,6 @@ func getJsonEnumType(v *Schema) (string, error) {
 			types = append(types, t)
 		}
 	}
-	if len(types) != 1 {
-		return "", fmt.Errorf("must provide values of a single type in a enum, got %+v", types)
-	}
 
 	return types[0], nil
 }

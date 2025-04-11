@@ -13,7 +13,7 @@ import (
 
 type configSetParams struct {
 	Key   string `json:"key" jsonschema_description:"Name of the desired config" mgc:"positional"`
-	Value string `json:"value" jsonschema_description:"New flag value" mgc:"positional"`
+	Value any    `json:"value" jsonschema:"oneof_type=string;integer" jsonschema_description:"New flag value" mgc:"positional"`
 }
 
 var getSet = utils.NewLazyLoader[core.Executor](newSet)
