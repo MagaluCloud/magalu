@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"regexp"
 	"runtime"
 	"runtime/debug"
 	"strings"
@@ -17,12 +16,6 @@ var RawVersion string
 var Version string = func() string {
 	if RawVersion == "" {
 		return getVCSInfo("v0.0.0")
-	}
-
-	// Validate version format using regex
-	matched, err := regexp.MatchString(`^v\d+\.\d+\.\d+$`, RawVersion)
-	if err != nil || !matched {
-		return getVCSInfo(RawVersion)
 	}
 
 	return strings.Trim(RawVersion, " \t\n\r")
