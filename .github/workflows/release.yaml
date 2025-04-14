@@ -34,7 +34,6 @@ jobs:
     needs: build
     runs-on: ${{ vars.RUNNER_RUNS_ON }}
     timeout-minutes: 10
-    if: ${{ inputs.runCLI }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.7
@@ -53,7 +52,7 @@ jobs:
           version: '2'
           args: release --clean --config="release.yaml"
         env:
-          VERSION: ${{ github.ref_name }}
+          VERSION: ${{ github.event.inputs.version }}
           GITHUB_TOKEN: ${{ secrets.GH_PAT2 }}
           PRIVATE_KEY_PATH: ${{ secrets.SSH_ID_RSA_MAGALUCLI }}
       - name: Set up Git config
@@ -68,7 +67,7 @@ jobs:
         run: |
           gh pr create \
             --repo MagaluCloud/homebrew-mgccli \
-            --title "🚀 Update mgccli brew formula to version ${{ github.ref_name }}" \
-            --body "This PR updates the mgccli formula to version ${{ github.ref_name }}." \
+            --title "🚀 Update mgccli brew formula to version ${{ github.event.inputs.version }}" \
+            --body "This PR updates the mgccli formula to version ${{ github.event.inputs.version }}." \
             --base main \
-            --head mgccli-${{ github.ref_name }}
+            --head mgccli-${{ github.event.inputs.version }}
