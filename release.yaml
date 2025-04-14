@@ -15,7 +15,7 @@ builds:
       - -s -w -X main.RawVersion={{.Version}}
     flags:
       - -tags=embed release
-    main: mgc/cli/main.go
+    main: ./mgc/cli
   - env: [CGO_ENABLED=0]
     id: "mgcwin"
     goos:
@@ -28,7 +28,7 @@ builds:
       - -s -w -X main.RawVersion={{.Version}}
     flags:
       - -tags=embed release
-    main: mgc/cli/main.go
+    main: ./mgc/cli
 archives:
   - id: mgc
     builds:
