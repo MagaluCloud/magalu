@@ -12,7 +12,7 @@ concurrency:
   group: ci-check-${{ github.ref }}
 
 jobs:
-  build:
+  release:
     runs-on: ${{ vars.RUNNER_RUNS_ON }}
     timeout-minutes: 10
     steps:
@@ -21,31 +21,72 @@ jobs:
         with:
           fetch-depth: 1
           token: ${{ secrets.GH_PAT2 }}
+
       - name: Set up Go
         uses: actions/setup-go@v5.0.2
         with:
           cache-dependency-path: "**/go.sum"
           go-version: ${{ vars.GO_VERSION }} # settings > secrets and variables > variables > GO_VERSION
+
       - name: Check version candidate
         run: ./scripts/check_release_v2.sh ${{ github.event.inputs.version }}
+
       - run: go version
 
-  cli-release:
-    needs: build
-    runs-on: ${{ vars.RUNNER_RUNS_ON }}
-    timeout-minutes: 10
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4.1.7
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GH_PAT2 }}
-      - name: Set up Go
-        uses: actions/setup-go@v5.0.2
-        with:
-          cache-dependency-path: "**/go.sum"
-          go-version: ${{ vars.GO_VERSION }} # settings > secrets and variables > variables > GO_VERSION
+      - name: Import GPG key
+        id: import-gpg-key
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.MAGALUBOT_GPG_PRIVATE_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.MAGALUBOT_GPG_PASSPHRASE }}
+        run: |
+          # Import the private key with passphrase
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --yes --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE" --import
+
+          # Get Key ID and Fingerprint
+          KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | awk '/sec/ {split($2, a, "/"); print a[2]}')
+          FINGERPRINT=$(gpg --fingerprint --with-colons $KEY_ID | awk -F: '$1 == "fpr" {print $10; exit}')
+
+          # Trust the key ultimately
+          echo "${FINGERPRINT}:6:" | gpg --import-ownertrust
+
+          # Create GPG wrapper script
+          mkdir -p ~/bin
+          echo '#!/bin/sh' > ~/bin/git-gpg-wrapper
+          echo 'echo "$GPG_PASSPHRASE" | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 "$@"' >> ~/bin/git-gpg-wrapper
+          chmod +x ~/bin/git-gpg-wrapper
+          echo "$HOME/bin" >> $GITHUB_PATH
+
+          # Set GPG_TTY to avoid warnings
+          echo "GPG_TTY=$(tty)" >> $GITHUB_ENV
+
+      - name: Configure Git
+        id: config-git
+        if: steps.import-gpg-key.outcome == 'success'
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.MAGALUBOT_GPG_PRIVATE_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.MAGALUBOT_GPG_PASSPHRASE }}
+        run: |
+          git config --global user.email "${{vars.MAGALUBOT_EMAIL}}"
+          git config --global user.name "${{vars.MAGALUBOT_USER_NAME}}"
+          git config --global commit.gpgsign true
+          git config --global tag.gpgsign true
+          git config --global gpg.program git-gpg-wrapper
+          # Get and set the signing key
+          SIGNING_KEY=$(gpg --list-secret-keys --keyid-format LONG | awk '/sec/ {split($2, a, "/"); print a[2]}')
+          git config --global user.signingkey $SIGNING_KEY
+
+      - name: Create and push tag
+        id: create-and-push-tag
+        if: steps.config-git.outcome == 'success'
+        env:
+          GPG_PASSPHRASE: ${{ secrets.MAGALUBOT_GPG_PASSPHRASE }}
+        run: |
+          git tag -a ${{ github.event.inputs.version }} -m "Release ${{ github.event.inputs.version }}"
+          git push origin ${{ github.event.inputs.version }}
+
       - name: Run GoReleaser
+        id: run-goreleaser
+        if: steps.create-and-push-tag.outcome == 'success'
         uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
@@ -55,13 +96,15 @@ jobs:
           VERSION: ${{ github.event.inputs.version }}
           GITHUB_TOKEN: ${{ secrets.GH_PAT2 }}
           PRIVATE_KEY_PATH: ${{ secrets.SSH_ID_RSA_MAGALUCLI }}
-      - name: Set up Git config
-        run: |
-          git config --global user.name "Magalu Cloud"
-          git config --global user.email "magalucloud.services@luizalabs.com"
+
       - name: Setup GitHub CLI
+        id: setup-gh-cli
+        if: steps.run-goreleaser.outcome == 'success'
         uses: ksivamuthu/actions-setup-gh-cli@v3
+
       - name: Create Pull Request
+        id: create-brew-pr
+        if: steps.setup-gh-cli.outcome == 'success'
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT2 }}
         run: |
