@@ -946,130 +946,6 @@ paths:
 
                     puts response.read_body'
     /v0/clusters/{cluster_id}/node_pools:
-        get:
-            tags:
-            - nodepool
-            summary: List node pools by cluster_id
-            description: Gets a node pool from a Kubernetes cluster by cluster_uuid.
-            operationId: ListNodePoolsV0
-            parameters:
-            -   name: cluster_id
-                in: path
-                description: Cluster's UUID.
-                required: true
-                schema:
-                    type: string
-                    format: uuid
-            responses:
-                '200':
-                    description: Successful operation
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ListNodePoolsResponseV0'
-                '400':
-                    description: Bad Request
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-                '401':
-                    description: Unauthorized
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-                '403':
-                    description: Forbidden
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-                '404':
-                    description: Not Found
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-                '429':
-                    description: Too Many Requests
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-                '500':
-                    description: Internal Server Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-            security:
-            -   BearerAuth:
-                - mke.read
-            -   OAuth2:
-                - mke.read
-            x-codeSamples:
-            -   lang: Shell + Curl
-                source: "curl --request GET \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\
-                    \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
-                    \ \\\n  --header 'x-tenant-id: SOME_STRING_VALUE'"
-            -   lang: Shell + Httpie
-                source: "http GET https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\
-                    \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  x-tenant-id:SOME_STRING_VALUE"
-            -   lang: Go + Native
-                source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"\
-                    io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\"\
-                    \n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"\
-                    x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\"\
-                    , \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
-                    \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
-                    \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
-            -   lang: Python + Python3
-                source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
-                    api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\nheaders = {\n    'x-tenant-id':\
-                    \ \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\
-                    \n    }\n\nconn.request(\"GET\", \"/v0/clusters/%7Bcluster_id%7D/node_pools\"\
-                    , headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\
-                    \nprint(data.decode(\"utf-8\"))"
-            -   lang: Node + Native
-                source: "const http = require(\"https\");\n\nconst options = {\n \
-                    \ \"method\": \"GET\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
-                    ,\n  \"port\": null,\n  \"path\": \"/v0/clusters/%7Bcluster_id%7D/node_pools\"\
-                    ,\n  \"headers\": {\n    \"x-tenant-id\": \"SOME_STRING_VALUE\"\
-                    ,\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n\
-                    };\n\nconst req = http.request(options, function (res) {\n  const\
-                    \ chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n\
-                    \  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n\
-                    \    console.log(body.toString());\n  });\n});\n\nreq.end();"
-            -   lang: Ruby + Native
-                source: 'require ''uri''
-
-                    require ''net/http''
-
-                    require ''openssl''
-
-
-                    url = URI("https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools")
-
-
-                    http = Net::HTTP.new(url.host, url.port)
-
-                    http.use_ssl = true
-
-                    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-
-                    request = Net::HTTP::Get.new(url)
-
-                    request["x-tenant-id"] = ''SOME_STRING_VALUE''
-
-                    request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
-
-
-                    response = http.request(request)
-
-                    puts response.read_body'
-            x-mgc-hidden: true
         post:
             tags:
             - nodepool
@@ -1097,11 +973,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/NodePoolResponse'
                     links:
-                        list:
-                            operationId: ListNodePoolsV0
-                            description: List node pools by cluster_id
-                            parameters:
-                                cluster_id: $request.path.cluster_id
                         get:
                             operationId: getNodePool
                             description: Get node pool by node_pool_id
@@ -1287,11 +1158,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/NodePoolResponse'
                     links:
-                        list:
-                            operationId: ListNodePoolsV0
-                            description: List node pools by cluster_id
-                            parameters:
-                                cluster_id: $request.path.cluster_id
                         create:
                             operationId: createNodePool
                             description: Create a node pool
@@ -1577,11 +1443,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/NodePoolResponse'
                     links:
-                        list:
-                            operationId: ListNodePoolsV0
-                            description: List node pools by cluster_id
-                            parameters:
-                                cluster_id: $request.path.cluster_id
                         create:
                             operationId: createNodePool
                             description: Create a node pool
@@ -1754,11 +1615,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/NodesResponse'
                     links:
-                        list:
-                            operationId: ListNodePoolsV0
-                            description: List node pools by cluster_id
-                            parameters:
-                                cluster_id: $request.path.cluster_id
                         create:
                             operationId: createNodePool
                             description: Create a node pool

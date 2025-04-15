@@ -33,7 +33,3 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
-paths:
-    /v0/clusters/{cluster_id}/node_pools:
-        get:
-            x-mgc-hidden: true  
