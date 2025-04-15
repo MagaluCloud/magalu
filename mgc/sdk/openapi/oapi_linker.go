@@ -191,6 +191,10 @@ func (l *openapiLinker) IsInternal() bool {
 	return getHiddenExtension(l.owner.extensionPrefix, l.link.Extensions)
 }
 
+func (l *openapiLinker) IsRemoveFromCLI() bool {
+	return getRemoveFromCLIFlag(l.owner.extensionPrefix, l.link.Extensions)
+}
+
 // Add all extra parameters defined via 'extra-paramters' extension in the Link object. The extension must be an array of
 // objects, and each object must match the 'extraParameterExtension' struct. If a parameter has the same name as a
 // standard parameter in the target request, it will NOT be added, since that would overshadow the standard parameter

@@ -106,6 +106,10 @@ func collectResourceChildren(
 			refResolver,
 		)
 
+		if trueOp.IsRemoveFromCLI() {
+			continue
+		}
+
 		var op core.Executor = trueOp
 
 		isDelete := method == "DELETE"
@@ -159,6 +163,12 @@ func collectResourceChildren(
 		if allChildrenInternal {
 			subResource.Spec.IsInternal = utils.BoolPtr(true)
 		}
+		allChildrenRemoveFromCLI, _ := subResource.VisitChildren(func(child core.Descriptor) (run bool, err error) {
+			return child.IsRemoveFromCLI(), nil
+		})
+		if allChildrenRemoveFromCLI {
+			subResource.Spec.IsRemoveFromCLI = utils.BoolPtr(true)
+		}
 		children = append(children, subResource)
 		childrenByName[childTable.name] = subResource
 	}
@@ -178,10 +188,11 @@ func newResource(
 	description := getDescriptionExtension(extensionPrefix, tag.Extensions, tag.Description)
 	return core.NewSimpleGrouper[core.Descriptor](
 		core.DescriptorSpec{
-			Name:        name,
-			Description: description,
-			Version:     doc.Info.Version,
-			IsInternal:  utils.BoolPtr(getHiddenExtension(extensionPrefix, tag.Extensions)),
+			Name:            name,
+			Description:     description,
+			Version:         doc.Info.Version,
+			IsInternal:      utils.BoolPtr(getHiddenExtension(extensionPrefix, tag.Extensions)),
+			IsRemoveFromCLI: utils.BoolPtr(getRemoveFromCLIFlag(extensionPrefix, tag.Extensions)),
 		},
 		func() ([]core.Descriptor, error) {
 			opTable := collectOperations(tag, doc, extensionPrefix, logger)

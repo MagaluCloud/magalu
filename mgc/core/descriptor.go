@@ -6,14 +6,15 @@ import (
 )
 
 type DescriptorSpec struct {
-	Name         string `json:"name"`
-	Version      string `json:"version"`
-	Description  string `json:"description"`
-	Summary      string `json:"summary"`
-	IsInternal   *bool  `json:"isInternal,omitempty"`
-	Scopes       Scopes `json:"scopes"`
-	Observations string `json:"observation,omitempty"`
-	GroupID      string `json:"groupId,omitempty"`
+	Name            string `json:"name"`
+	Version         string `json:"version"`
+	Description     string `json:"description"`
+	Summary         string `json:"summary"`
+	IsInternal      *bool  `json:"isInternal,omitempty"`
+	IsRemoveFromCLI *bool  `json:"isRemoveFromCLI,omitempty"`
+	Scopes          Scopes `json:"scopes"`
+	Observations    string `json:"observation,omitempty"`
+	GroupID         string `json:"groupId,omitempty"`
 }
 
 func (d *DescriptorSpec) Validate() error {
@@ -34,6 +35,7 @@ type Descriptor interface {
 	Description() string
 	Summary() string
 	IsInternal() bool
+	IsRemoveFromCLI() bool
 	Scopes() Scopes
 	DescriptorSpec() DescriptorSpec
 	GroupID() string
@@ -69,6 +71,12 @@ func (d *SimpleDescriptor) IsInternal() bool {
 	return *d.Spec.IsInternal
 }
 
+func (d *SimpleDescriptor) IsRemoveFromCLI() bool {
+	if d.Spec.IsRemoveFromCLI == nil {
+		return false
+	}
+	return *d.Spec.IsRemoveFromCLI
+}
 func (d *SimpleDescriptor) Scopes() Scopes {
 	return d.Spec.Scopes
 }

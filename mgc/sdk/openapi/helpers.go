@@ -50,3 +50,8 @@ func getHiddenExtension(prefix *string, extensions map[string]any) bool {
 	b, _ := getExtensionBool(prefix, "hidden", extensions, false)
 	return b
 }
+
+func getRemoveFromCLIFlag(prefix *string, extensions map[string]any) bool {
+	b, _ := getExtensionBool(prefix, "remove-from-cli", extensions, false)
+	return b
+}

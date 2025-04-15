@@ -66,11 +66,12 @@ func newOperation(
 	logger = logger.Named(name)
 	op := &operation{
 		SimpleDescriptor: core.SimpleDescriptor{Spec: core.DescriptorSpec{
-			Name:        name,
-			Description: getDescriptionExtension(extensionPrefix, desc.op.Extensions, desc.op.Description),
-			Version:     version,
-			Summary:     desc.op.Summary,
-			IsInternal:  utils.BoolPtr(getHiddenExtension(extensionPrefix, desc.op.Extensions)),
+			Name:            name,
+			Description:     getDescriptionExtension(extensionPrefix, desc.op.Extensions, desc.op.Description),
+			Version:         version,
+			Summary:         desc.op.Summary,
+			IsInternal:      utils.BoolPtr(getHiddenExtension(extensionPrefix, desc.op.Extensions)),
+			IsRemoveFromCLI: utils.BoolPtr(getRemoveFromCLIFlag(extensionPrefix, desc.op.Extensions)),
 		}},
 		key:             desc.pathKey,
 		method:          method,
