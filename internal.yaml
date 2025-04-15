@@ -15,7 +15,7 @@ builds:
       - -s -w -X main.RawVersion={{.Version}}
     flags:
       - -tags=embed -buildvcs=true
-    main: mgc/cli/main.go
+    main: ./mgc/cli
 nfpms:
 -
   maintainer: Magalu Cloud <magalucloud.cli@luizalabs.com>
