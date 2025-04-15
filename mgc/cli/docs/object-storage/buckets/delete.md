@@ -3,19 +3,21 @@
 Delete an existing Bucket
 
 ## Usage:
+
 ```
 mgc object-storage buckets delete [bucket] [flags]
 ```
 
 ## Flags:
+
 ```
-    --bucket string     Name of the bucket to be deleted (required)
--h, --help              help for delete
-    --recursive         Delete bucket including objects inside (required)
-    --recursive-async   If set to true the bucket and its contents are deleted asynchronously (required)
+    --bucket string   Name of the bucket to be deleted (required)
+-h, --help            help for delete
+    --recursive       This is a irreversible and destructive action. If set to true the bucket and its contents are deleted (required)
 ```
 
 ## Global Flags:
+
 ```
     --api-key string           Use your API key to authenticate with the API
     --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (default 8)
@@ -32,4 +34,3 @@ mgc object-storage buckets delete [bucket] [flags]
     --server-url uri           Manually specify the server to use
     --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (default 5)
 ```
-

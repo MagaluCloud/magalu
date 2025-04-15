@@ -31,8 +31,8 @@ type DeleteObjectParams struct {
 }
 
 type DeleteBucketParams struct {
-	Destination    mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Path of the bucket to be deleted,example=bucket1" mgc:"positional"`
-	RecursiveAsync bool             `json:"recursive-async" jsonschema:"description=If set to true the bucket and its contents are deleted asynchronously"`
+	Destination mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Path of the bucket to be deleted,example=bucket1" mgc:"positional"`
+	Recursive   bool             `json:"recursive" jsonschema:"description=This is a irreversible and destructive action. If set to true the bucket and its contents are deleted"`
 }
 
 type DeleteObjectsParams struct {
@@ -59,7 +59,7 @@ func newDeleteRequest(ctx context.Context, cfg Config, params DeleteBucketParams
 		return nil, err
 	}
 
-	if params.RecursiveAsync {
+	if params.Recursive {
 		req.Header.Add("X-Force-Container-Delete", "true")
 	}
 	return req, nil
