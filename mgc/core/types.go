@@ -124,7 +124,7 @@ func ExecutorAs[T Executor](exec Executor) (T, bool) {
 }
 
 func VisitAllExecutors(child Descriptor, path []string, includeInternal bool, visitExecutor func(executor Executor, path []string) (bool, error)) (bool, error) {
-	if child.IsInternal() && !includeInternal {
+	if child.IsInternal() && !includeInternal && !child.IsRemoveFromCLI() {
 		return true, nil
 	}
 

@@ -1070,6 +1070,7 @@ paths:
 
                     puts response.read_body'
             x-mgc-hidden: true
+            x-mgc-remove-from-cli: true
         post:
             tags:
             - nodepool

@@ -207,6 +207,7 @@ SUPPORTED_SCHEMA_CUSTOMIZATIONS = {
     "x-mgc-name": check_is_string,
     "x-mgc-description": check_is_string,
     "x-mgc-hidden": check_is_bool,
+    "x-mgc-remove-from-cli": check_is_bool,
     "x-mgc-transforms": check_is_transforms,
     "type": check_is_string,
     "properties": check_is_schema_customization_properties,
@@ -246,6 +247,7 @@ SUPPORTED_TAG_CUSTOMIZATIONS = {
     "x-mgc-name": check_is_string,
     "x-mgc-description": check_is_string,
     "x-mgc-hidden": check_is_bool,
+    "x-mgc-remove-from-cli": check_is_bool,
     "name": check_is_string,
     "description": check_is_string,
 }
@@ -323,6 +325,7 @@ SUPPORTED_PATH_PARAMETER_CUSTOMIZATIONS = {
     "x-mgc-name": check_is_string,
     "x-mgc-description": check_is_string,
     "x-mgc-hidden": check_is_bool,
+    "x-mgc-remove-from-cli": check_is_bool,
     "schema": check_is_schema_customization,
 }
 
@@ -353,6 +356,7 @@ SUPPORTED_LINK_CUSTOMIZATIONS = {
     "x-mgc-wait-termination": check_is_wait_termination,
     "x-mgc-extra-parameters": check_is_extra_parameters,
     "x-mgc-hidden": check_is_bool,
+    "x-mgc-remove-from-cli": check_is_bool,
 }
 
 
@@ -460,6 +464,7 @@ SUPPORTED_PATH_METHOD_CUSTOMIZATIONS = {
     "x-mgc-name": check_is_string,
     "x-mgc-description": check_is_string,
     "x-mgc-hidden": check_is_bool,
+    "x-mgc-remove-from-cli": check_is_bool,
     "x-mgc-output-flag": check_is_string,
     "x-mgc-transforms": check_is_transforms,
     "x-mgc-wait-termination": check_is_wait_termination,

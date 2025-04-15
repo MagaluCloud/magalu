@@ -44,6 +44,7 @@ func collectAllChildren(child core.Descriptor) (map[string]any, error) {
 	node["description"] = child.Description()
 	node["version"] = child.Version()
 	node["isInternal"] = child.IsInternal()
+	node["isRemoveFromCLI"] = child.IsRemoveFromCLI()
 	node["groupId"] = child.GroupID()
 
 	if executor, ok := child.(core.Executor); ok {
