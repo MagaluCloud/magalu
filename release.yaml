@@ -12,7 +12,7 @@ builds:
       - amd64
       - arm64
     ldflags:
-      - -s -w -X main.RawVersion={{.Version}}
+      - -s -w -X main.RawVersion=v{{.Version}}
     flags:
       - -tags=embed release
     main: ./mgc/cli
@@ -25,7 +25,7 @@ builds:
       - amd64
       - arm64
     ldflags:
-      - -s -w -X main.RawVersion={{.Version}}
+      - -s -w -X main.RawVersion=v{{.Version}}
     flags:
       - -tags=embed release
     main: ./mgc/cli
