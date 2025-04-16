@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/url"
 	"os"
 	"runtime"
 	"runtime/debug"
@@ -58,12 +59,38 @@ func main() {
 func panicRecover() {
 	err := recover()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "\n😔 Oops! Something went wrong.\nPlease help us improve by sending the error report to: https://help.github.com/MagaluCloud/magalu/mgc/hc/pt-br/requests/new\n\n  Version: %s\n  SO: %s / %s\n  Args: %s\n  Error: %s\n\nThank you for your cooperation!\n\n",
+
+		Url := "https://github.com/MagaluCloud/mgccli/issues/new"
+		args := strings.Join(os.Args, " ")
+
+		query := url.Values{}
+		query.Add("title", fmt.Sprintf("Error report at '%s'", args))
+		query.Add("body", fmt.Sprintf("Version: %s\nSO: %s / %s\nArgs: %s\nError: %s\n",
 			Version,
 			runtime.GOOS,
 			runtime.GOARCH,
-			strings.Join(os.Args, " "),
-			err)
+			args,
+			err))
+		Url = Url + "?" + query.Encode()
+
+		fmt.Fprintf(os.Stderr, `
+😔 Oops! Something went wrong.
+     Version: %s
+     SO: %s / %s  
+     Args: %s 
+     Error: %s
+
+Please help us improve by sending the error report to our repository:
+	%s
+
+Thank you for your cooperation!
+`,
+			Version,
+			runtime.GOOS,
+			runtime.GOARCH,
+			args,
+			err,
+			Url)
 		os.Exit(1)
 	}
 }

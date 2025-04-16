@@ -32,6 +32,7 @@ type DeleteObjectParams struct {
 
 type DeleteBucketParams struct {
 	Destination mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Path of the bucket to be deleted,example=bucket1" mgc:"positional"`
+	Recursive   bool             `json:"recursive" jsonschema:"description=This is a irreversible and destructive action. If set to true the bucket and its contents are deleted"`
 }
 
 type DeleteObjectsParams struct {
@@ -46,12 +47,22 @@ type DeleteAllObjectsInBucketParams struct {
 	Filters    `json:",squash"` // nolint
 }
 
-func newDeleteRequest(ctx context.Context, cfg Config, dst mgcSchemaPkg.URI) (*http.Request, error) {
-	host, err := BuildBucketHostWithPath(cfg, NewBucketNameFromURI(dst), dst.Path())
+func newDeleteRequest(ctx context.Context, cfg Config, params DeleteBucketParams) (*http.Request, error) {
+	host, err := BuildBucketHostWithPath(cfg, NewBucketNameFromURI(params.Destination), params.Destination.Path())
 	if err != nil {
 		return nil, core.UsageError{Err: err}
 	}
-	return http.NewRequestWithContext(ctx, http.MethodDelete, string(host), nil)
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, string(host), nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if params.Recursive {
+		req.Header.Add("X-Force-Container-Delete", "true")
+	}
+	return req, nil
 }
 
 type objectIdentifier struct {
@@ -223,7 +234,7 @@ func DeleteAllObjectsInBucket(ctx context.Context, params DeleteAllObjectsInBuck
 }
 
 func DeleteBucket(ctx context.Context, params DeleteBucketParams, cfg Config) error {
-	req, err := newDeleteRequest(ctx, cfg, params.Destination)
+	req, err := newDeleteRequest(ctx, cfg, params)
 	if err != nil {
 		return err
 	}
@@ -235,7 +246,7 @@ func DeleteBucket(ctx context.Context, params DeleteBucketParams, cfg Config) er
 
 	// GA - TEMP
 	if resp.StatusCode == 409 {
-		return fmt.Errorf("the bucket may not be empty or may be locked.\nPlease clear up before attempting deletion.\n")
+		return fmt.Errorf("the bucket may not be empty or may be locked.\nPlease clear up before attempting deletion")
 	}
 
 	return ExtractErr(resp, req)

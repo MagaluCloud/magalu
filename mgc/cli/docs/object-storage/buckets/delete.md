@@ -11,7 +11,7 @@ mgc object-storage buckets delete [bucket] [flags]
 ```
     --bucket string   Name of the bucket to be deleted (required)
 -h, --help            help for delete
-    --recursive       Delete bucket including objects inside (required)
+    --recursive       This is a irreversible and destructive action. If set to true the bucket and its contents are deleted (required)
 ```
 
 ## Global Flags:

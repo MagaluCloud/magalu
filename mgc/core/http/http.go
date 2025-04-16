@@ -82,10 +82,19 @@ func DecodeJSON[T core.Value](resp *http.Response, data *T) error {
 }
 
 func convertJSONNumbers(v reflect.Value) error {
+	if !v.IsValid() {
+		return nil
+	}
 	switch v.Kind() {
 	case reflect.Interface:
+		if v.IsNil() {
+			return nil
+		}
 		return convertJSONNumbers(v.Elem())
 	case reflect.Ptr:
+		if v.IsNil() {
+			return nil
+		}
 		return convertJSONNumbers(v.Elem())
 	case reflect.Struct:
 		for i := 0; i < v.NumField(); i++ {
@@ -94,35 +103,80 @@ func convertJSONNumbers(v reflect.Value) error {
 			}
 		}
 	case reflect.Map:
+		if v.IsNil() {
+			return nil
+		}
 		for _, key := range v.MapKeys() {
 			val := v.MapIndex(key)
 			if val.Kind() == reflect.Interface {
-				val = val.Elem()
-			}
-			if val.Kind() == reflect.String {
-				if num, ok := val.Interface().(json.Number); ok {
+				if val.IsNil() {
+					continue
+				}
+				valElem := val.Elem()
+				if valElem.Type() == reflect.TypeOf(json.Number("")) {
+					num := valElem.Interface().(json.Number)
 					if i, err := strconv.ParseInt(string(num), 10, 64); err == nil {
 						v.SetMapIndex(key, reflect.ValueOf(i))
 					} else if f, err := strconv.ParseFloat(string(num), 64); err == nil {
 						v.SetMapIndex(key, reflect.ValueOf(f))
 					}
+				} else {
+					newVal := reflect.New(valElem.Type()).Elem()
+					newVal.Set(valElem)
+					if err := convertJSONNumbers(newVal); err != nil {
+						return err
+					}
+					v.SetMapIndex(key, newVal)
 				}
-			} else if err := convertJSONNumbers(val); err != nil {
-				return err
+			} else {
+				newVal := reflect.New(val.Type()).Elem()
+				newVal.Set(val)
+				if err := convertJSONNumbers(newVal); err != nil {
+					return err
+				}
+				v.SetMapIndex(key, newVal)
 			}
 		}
 	case reflect.Slice:
+		if v.IsNil() {
+			return nil
+		}
 		for i := 0; i < v.Len(); i++ {
-			if err := convertJSONNumbers(v.Index(i)); err != nil {
-				return err
+			item := v.Index(i)
+			if item.Kind() == reflect.Interface {
+				if item.IsNil() {
+					continue
+				}
+				elemValue := item.Elem()
+				if elemValue.Type() == reflect.TypeOf(json.Number("")) {
+					num := elemValue.Interface().(json.Number)
+					if item.CanSet() {
+						if i, err := strconv.ParseInt(string(num), 10, 64); err == nil {
+							item.Set(reflect.ValueOf(i))
+						} else if f, err := strconv.ParseFloat(string(num), 64); err == nil {
+							item.Set(reflect.ValueOf(f))
+						}
+					}
+				} else {
+					if err := convertJSONNumbers(item); err != nil {
+						return err
+					}
+				}
+			} else {
+				if err := convertJSONNumbers(item); err != nil {
+					return err
+				}
 			}
 		}
-	case reflect.String:
-		if num, ok := v.Interface().(json.Number); ok {
-			if i, err := strconv.ParseInt(string(num), 10, 64); err == nil {
-				v.Set(reflect.ValueOf(i))
-			} else if f, err := strconv.ParseFloat(string(num), 64); err == nil {
-				v.Set(reflect.ValueOf(f))
+	default:
+		if v.Type() == reflect.TypeOf(json.Number("")) && v.CanSet() {
+			num := v.Interface().(json.Number)
+			if v.CanSet() {
+				if i, err := strconv.ParseInt(string(num), 10, 64); err == nil {
+					v.Set(reflect.ValueOf(i))
+				} else if f, err := strconv.ParseFloat(string(num), 64); err == nil {
+					v.Set(reflect.ValueOf(f))
+				}
 			}
 		}
 	}
