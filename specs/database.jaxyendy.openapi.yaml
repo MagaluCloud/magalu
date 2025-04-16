@@ -6,7 +6,7 @@ info:
     name: Tribo IAAS Cloud
     url: https://gitlab.luizalabs.com/cloud/dbaas/docs
     email: cloud-iaas-dbaas@luizalabs.com
-  version: 2.1.0
+  version: 2.1.1
 tags:
   - name: engines
     description: Engines available for database instances.
@@ -24,7 +24,7 @@ tags:
     description: Parameter groups management.
 
 paths:
-  /engines:
+  /v2/engines:
     get:
       operationId: engines_v2_get_all
       tags:
@@ -62,7 +62,7 @@ paths:
             - dbaas.read
         - OAuth2Prod:
             - dbaas.read
-  /engines/{engine_id}:
+  /v2/engines/{engine_id}:
     get:
       operationId: engines_v2_get_by_id
       tags:
@@ -100,7 +100,7 @@ paths:
             - dbaas.read
         - OAuth2Prod:
             - dbaas.read
-  /engines/{engine_id}/parameters:
+  /v2/engines/{engine_id}/parameters:
     get:
       description: Returns a list of available engine parameters.
       x-permission:
@@ -137,7 +137,7 @@ paths:
       tags:
         - engines
 
-  /parameter-groups:
+  /v2/parameter-groups:
     get:
       description: List all Parameter Groups for a x-tenant-id
       x-permission:
@@ -205,7 +205,7 @@ paths:
       summary: Creates a new parameter group.
       tags:
         - parameter-groups
-  /parameter-groups/{parameter_group_id}:
+  /v2/parameter-groups/{parameter_group_id}:
     delete:
       description: Deletes a parameter group.
       x-permission:
@@ -298,7 +298,7 @@ paths:
       summary: Parameter group update.
       tags:
         - parameter-groups
-  /parameter-groups/{parameter_group_id}/parameters:
+  /v2/parameter-groups/{parameter_group_id}/parameters:
     get:
       description: Return details of a group's parameters.
       x-permission:
@@ -367,7 +367,7 @@ paths:
       summary: Create a parameter.
       tags:
         - parameter-groups
-  /parameter-groups/{parameter_group_id}/parameters/{parameter_id}:
+  /v2/parameter-groups/{parameter_group_id}/parameters/{parameter_id}:
     patch:
       description: Updates a parameter for a group.
       x-permission:
@@ -430,7 +430,7 @@ paths:
       summary: Parameters delete.
       tags:
         - parameter-groups
-  /instance-types:
+  /v2/instance-types:
     get:
       operationId: instance_types_v2_get_all
       tags:
@@ -476,7 +476,7 @@ paths:
             - dbaas.read
         - OAuth2Prod:
             - dbaas.read
-  /instance-types/{instance_type_id}:
+  /v2/instance-types/{instance_type_id}:
     get:
       operationId: instance_types_v2_get_by_id
       tags:
@@ -521,7 +521,7 @@ paths:
             - dbaas.read
         - OAuth2Prod:
             - dbaas.read
-  /instances:
+  /v2/instances:
     head:
       operationId: instances_v2_head_all
       tags:
@@ -661,7 +661,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /instances/{instance_id}:
+  /v2/instances/{instance_id}:
     get:
       operationId: instances_v2_get_by_id
       tags:
@@ -779,7 +779,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /instances/{instance_id}/resize:
+  /v2/instances/{instance_id}/resize:
     post:
       tags:
         - instances
@@ -823,7 +823,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /instances/{instance_id}/start:
+  /v2/instances/{instance_id}/start:
     post:
       tags:
         - instances
@@ -861,7 +861,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /instances/{instance_id}/stop:
+  /v2/instances/{instance_id}/stop:
     post:
       tags:
         - instances
@@ -899,7 +899,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /clusters:
+  /v2/clusters:
     get:
       summary: List all database clusters.
       tags:
@@ -1049,7 +1049,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /clusters/{cluster_id}:
+  /v2/clusters/{cluster_id}:
     delete:
       operationId: clusters_v2_delete
       tags:
@@ -1166,8 +1166,8 @@ paths:
             - dbaas.read
         - OAuth2Prod:
             - dbaas.read
-      
-  /clusters/{cluster_id}/start:
+
+  /v2/clusters/{cluster_id}/start:
     post:
       tags:
         - clusters
@@ -1205,7 +1205,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /clusters/{cluster_id}/stop:
+  /v2/clusters/{cluster_id}/stop:
     post:
       tags:
         - clusters
@@ -1243,7 +1243,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /replicas:
+  /v2/replicas:
     get:
       tags:
         - replicas
@@ -1324,7 +1324,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /replicas/{replica_id}:
+  /v2/replicas/{replica_id}:
     get:
       tags:
         - replicas
@@ -1402,7 +1402,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /replicas/{replica_id}/resize:
+  /v2/replicas/{replica_id}/resize:
     post:
       tags:
         - replicas
@@ -1446,7 +1446,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /replicas/{replica_id}/start:
+  /v2/replicas/{replica_id}/start:
     post:
       tags:
         - replicas
@@ -1484,7 +1484,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /replicas/{replica_id}/stop:
+  /v2/replicas/{replica_id}/stop:
     post:
       tags:
         - replicas
@@ -1522,7 +1522,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /instances/{instance_id}/snapshots:
+  /v2/instances/{instance_id}/snapshots:
     get:
       tags:
         - snapshots
@@ -1605,7 +1605,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /instances/{instance_id}/snapshots/{snapshot_id}:
+  /v2/instances/{instance_id}/snapshots/{snapshot_id}:
     get:
       tags:
         - snapshots
@@ -1725,7 +1725,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /instances/{instance_id}/snapshots/{snapshot_id}/restore:
+  /v2/instances/{instance_id}/snapshots/{snapshot_id}/restore:
     post:
       tags:
         - snapshots
@@ -1768,7 +1768,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /clusters/{cluster_id}/snapshots:
+  /v2/clusters/{cluster_id}/snapshots:
     get:
       tags:
         - snapshots
@@ -1851,7 +1851,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /clusters/{cluster_id}/snapshots/{snapshot_id}:
+  /v2/clusters/{cluster_id}/snapshots/{snapshot_id}:
     get:
       tags:
         - snapshots
@@ -1971,7 +1971,7 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-  /clusters/{cluster_id}/snapshots/{snapshot_id}/restore:
+  /v2/clusters/{cluster_id}/snapshots/{snapshot_id}/restore:
     post:
       operationId: clusters_v2_snapshots_restore
       parameters:
@@ -3985,15 +3985,15 @@ components:
             slug: "internal_server_error"
             message: "Internal server error"
 servers:
-  - url: https://api-dbaas.dev-qa.br-se-1.jaxyendy.com/v2
-  - url: https://api-dbaas.team-integration.br-se-1.jaxyendy.com/v2
-  - url: https://api-dbaas.pre-prod.br-se-1.jaxyendy.com/v2
-  - url: https://api-dbaas.br-se-1.jaxyendy.com/v2
-  - url: https://api-dbaas.dev-qa.br-ne-1.jaxyendy.com/v2
-  - url: https://api-dbaas.team-integration.br-ne-1.jaxyendy.com/v2
-  - url: https://api-dbaas.pre-prod.br-ne-1.jaxyendy.com/v2
-  - url: https://api.magalu.cloud/br-ne-1/database/v2
-  - url: https://dbaas.dev-qa.se1.br.jaxyendy.com/v2
-  - url: https://dbaas.team-integration.se1.br.jaxyendy.com/v2
-  - url: https://dbaas.pre-prod.se1.br.jaxyendy.com/v2
-  - url: https://api.magalu.cloud/br-se1/database/v2
+  - url: https://api-dbaas.dev-qa.br-se-1.jaxyendy.com
+  - url: https://api-dbaas.team-integration.br-se-1.jaxyendy.com
+  - url: https://api-dbaas.pre-prod.br-se-1.jaxyendy.com
+  - url: https://api-dbaas.br-se-1.jaxyendy.com
+  - url: https://api-dbaas.dev-qa.br-ne-1.jaxyendy.com
+  - url: https://api-dbaas.team-integration.br-ne-1.jaxyendy.com
+  - url: https://api-dbaas.pre-prod.br-ne-1.jaxyendy.com
+  - url: https://api.magalu.cloud/br-ne-1/database
+  - url: https://dbaas.dev-qa.se1.br.jaxyendy.com
+  - url: https://dbaas.team-integration.se1.br.jaxyendy.com
+  - url: https://dbaas.pre-prod.se1.br.jaxyendy.com
+  - url: https://api.magalu.cloud/br-se1/database
