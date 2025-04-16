@@ -1,18 +1,18 @@
-# Delete
+# Start
 
-Deletes a database snapshot.
+Starts a database cluster.
 
 ## Usage:
 ```
-mgc dbaas instances snapshots delete [instance-id] [snapshot-id] [flags]
+mgc dbaas clusters start [cluster-id] [flags]
 ```
 
 ## Flags:
 ```
--h, --help               help for delete
-    --instance-id uuid   Value referring to instance Id. (required)
-    --snapshot-id uuid   Value referring to snapshot Id. (required)
--v, --version            version for delete
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --cluster-id uuid               Value referring to cluster Id. (required)
+-h, --help                          help for start
+-v, --version                       version for start
 ```
 
 ## Global Flags:

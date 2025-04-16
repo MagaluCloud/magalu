@@ -1,18 +1,17 @@
 # Get
 
-Returns a engine detail.
+Returns a parameter group detail.
 
 ## Usage:
 ```
-mgc dbaas engines get [engine-id] [flags]
+mgc dbaas parameter-groups get [parameter-group-id] [flags]
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --engine-id uuid                Value referring to engine Id. (required)
--h, --help                          help for get
--v, --version                       version for get
+-h, --help                      help for get
+    --parameter-group-id uuid   Value referring to parameter group Id. (required)
+-v, --version                   version for get
 ```
 
 ## Global Flags:

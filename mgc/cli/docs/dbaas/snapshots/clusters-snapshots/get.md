@@ -1,26 +1,18 @@
-# Update
+# Get
 
-Updates a snapshot.
+Get a snapshot detail.
 
 ## Usage:
 ```
-mgc dbaas instances snapshots update [instance-id] [snapshot-id] [flags]
-```
-
-## Examples:
-```
-mgc dbaas instances snapshots update --description="my-description-updated" --name="my-snapshot-updated"
+mgc dbaas snapshots clusters-snapshots get [cluster-id] [snapshot-id] [flags]
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            Snapshot description. (max character count: 255)
--h, --help                          help for update
-    --instance-id uuid              Value referring to instance Id. (required)
-    --name string                   Snapshot unique name. (max character count: 100)
-    --snapshot-id uuid              Value referring to snapshot Id. (required)
--v, --version                       version for update
+    --cluster-id uuid    Value referring to cluster Id. (required)
+-h, --help               help for get
+    --snapshot-id uuid   Value referring to snapshot Id. (required)
+-v, --version            version for get
 ```
 
 ## Global Flags:

@@ -1,18 +1,21 @@
-# Get
+# List
 
-Returns a engine detail.
+List all snapshots.
 
 ## Usage:
 ```
-mgc dbaas engines get [engine-id] [flags]
+mgc dbaas snapshots instances-snapshots list [instance-id] [flags]
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --engine-id uuid                Value referring to engine Id. (required)
--h, --help                          help for get
--v, --version                       version for get
+    --control.limit integer    The maximum number of items per page. (range: 1 - 50) (default 10)
+    --control.offset integer   The number of items to skip before starting to collect the result set. (min: 0)
+-h, --help                     help for list
+    --instance-id uuid         Value referring to instance Id. (required)
+    --status enum              Value referring to snapshot status. (one of "AVAILABLE", "CREATING", "DELETED", "DELETING", "ERROR", "PENDING" or "RESTORING")
+    --type enum                Backup Type: Value referring to snapshot type. (one of "AUTOMATED" or "ON_DEMAND")
+-v, --version                  version for list
 ```
 
 ## Global Flags:

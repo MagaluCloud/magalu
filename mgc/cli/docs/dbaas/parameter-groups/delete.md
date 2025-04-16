@@ -1,18 +1,17 @@
-# Get
+# Delete
 
-Returns a engine detail.
+Deletes a parameter group.
 
 ## Usage:
 ```
-mgc dbaas engines get [engine-id] [flags]
+mgc dbaas parameter-groups delete [parameter-group-id] [flags]
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --engine-id uuid                Value referring to engine Id. (required)
--h, --help                          help for get
--v, --version                       version for get
+-h, --help                      help for delete
+    --parameter-group-id uuid   Value referring to parameter group Id. (required)
+-v, --version                   version for delete
 ```
 
 ## Global Flags:
