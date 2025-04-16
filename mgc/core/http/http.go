@@ -168,17 +168,8 @@ func convertJSONNumbers(v reflect.Value) error {
 				}
 			}
 		}
-	case reflect.String:
-		if v.CanSet() {
-			strValue := v.String()
-			if i, err := strconv.ParseInt(strValue, 10, 64); err == nil {
-				v.Set(reflect.ValueOf(i))
-			} else if f, err := strconv.ParseFloat(strValue, 64); err == nil {
-				v.Set(reflect.ValueOf(f))
-			}
-		}
 	default:
-		if v.Type() == reflect.TypeOf(json.Number("")) {
+		if v.Type() == reflect.TypeOf(json.Number("")) && v.CanSet() {
 			num := v.Interface().(json.Number)
 			if v.CanSet() {
 				if i, err := strconv.ParseInt(string(num), 10, 64); err == nil {

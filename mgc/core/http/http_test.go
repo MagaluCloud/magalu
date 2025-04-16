@@ -484,3 +484,173 @@ func TestConvertComplexJSONNumbers(t *testing.T) {
 		t.Error("Expected structure not found in the result")
 	}
 }
+
+func TestConvertSliceJSONNumbers(t *testing.T) {
+	t.Run("array of json.Number", func(t *testing.T) {
+		// Caso 1: Array direto de json.Number
+		input := map[string]interface{}{
+			"example": map[string]interface{}{
+				"allowed_values": []interface{}{
+					json.Number("0"),
+					json.Number("1"),
+				},
+			},
+		}
+
+		expected := map[string]interface{}{
+			"example": map[string]interface{}{
+				"allowed_values": []interface{}{
+					int64(0),
+					int64(1),
+				},
+			},
+		}
+
+		inputValue := reflect.ValueOf(input)
+		err := convertJSONNumbers(inputValue)
+		if err != nil {
+			t.Fatalf("convertJSONNumbers() error = %v", err)
+		}
+
+		if !reflect.DeepEqual(input, expected) {
+			t.Errorf("convertJSONNumbers() = %v, want %v", input, expected)
+		}
+
+		if values, ok := input["example"].(map[string]interface{})["allowed_values"].([]interface{}); ok {
+			if val0, ok := values[0].(int64); !ok || val0 != 0 {
+				t.Errorf("Expected 'allowed_values[0]' to be int64(0), got %v of type %T", values[0], values[0])
+			}
+			if val1, ok := values[1].(int64); !ok || val1 != 1 {
+				t.Errorf("Expected 'allowed_values[1]' to be int64(1), got %v of type %T", values[1], values[1])
+			}
+		} else {
+			t.Error("Expected array structure not found in the result")
+		}
+	})
+
+	t.Run("array with mixed types", func(t *testing.T) {
+		// Caso 2: Array com tipos mistos
+		input := map[string]interface{}{
+			"mixed_array": []interface{}{
+				json.Number("42"),
+				json.Number("3.14"),
+				"string",
+				true,
+				map[string]interface{}{
+					"nested": json.Number("123"),
+				},
+			},
+		}
+
+		expected := map[string]interface{}{
+			"mixed_array": []interface{}{
+				int64(42),
+				float64(3.14),
+				"string",
+				true,
+				map[string]interface{}{
+					"nested": int64(123),
+				},
+			},
+		}
+
+		inputValue := reflect.ValueOf(input)
+		err := convertJSONNumbers(inputValue)
+		if err != nil {
+			t.Fatalf("convertJSONNumbers() error = %v", err)
+		}
+
+		if !reflect.DeepEqual(input, expected) {
+			t.Errorf("convertJSONNumbers() = %v, want %v", input, expected)
+		}
+
+		if arr, ok := input["mixed_array"].([]interface{}); ok {
+			if val0, ok := arr[0].(int64); !ok || val0 != 42 {
+				t.Errorf("Expected arr[0] to be int64(42), got %v of type %T", arr[0], arr[0])
+			}
+			if val1, ok := arr[1].(float64); !ok || val1 != 3.14 {
+				t.Errorf("Expected arr[1] to be float64(3.14), got %v of type %T", arr[1], arr[1])
+			}
+			if val2, ok := arr[2].(string); !ok || val2 != "string" {
+				t.Errorf("Expected arr[2] to be string('string'), got %v of type %T", arr[2], arr[2])
+			}
+			if val3, ok := arr[3].(bool); !ok || val3 != true {
+				t.Errorf("Expected arr[3] to be bool(true), got %v of type %T", arr[3], arr[3])
+			}
+			if nestedMap, ok := arr[4].(map[string]interface{}); ok {
+				if nested, ok := nestedMap["nested"].(int64); !ok || nested != 123 {
+					t.Errorf("Expected arr[4]['nested'] to be int64(123), got %v of type %T", nestedMap["nested"], nestedMap["nested"])
+				}
+			} else {
+				t.Errorf("Expected arr[4] to be a map, got %T", arr[4])
+			}
+		} else {
+			t.Error("Expected array structure not found in the result")
+		}
+	})
+
+	t.Run("array inside array", func(t *testing.T) {
+		// Caso 3: Array dentro de array
+		input := map[string]interface{}{
+			"nested_arrays": []interface{}{
+				[]interface{}{
+					json.Number("1"),
+					json.Number("2"),
+				},
+				[]interface{}{
+					json.Number("3"),
+					json.Number("4"),
+				},
+			},
+		}
+
+		expected := map[string]interface{}{
+			"nested_arrays": []interface{}{
+				[]interface{}{
+					int64(1),
+					int64(2),
+				},
+				[]interface{}{
+					int64(3),
+					int64(4),
+				},
+			},
+		}
+
+		inputValue := reflect.ValueOf(input)
+		err := convertJSONNumbers(inputValue)
+		if err != nil {
+			t.Fatalf("convertJSONNumbers() error = %v", err)
+		}
+
+		if !reflect.DeepEqual(input, expected) {
+			t.Errorf("convertJSONNumbers() = %v, want %v", input, expected)
+		}
+
+		if outerArr, ok := input["nested_arrays"].([]interface{}); ok {
+			if innerArr1, ok := outerArr[0].([]interface{}); ok {
+				if val0, ok := innerArr1[0].(int64); !ok || val0 != 1 {
+					t.Errorf("Expected innerArr1[0] to be int64(1), got %v of type %T", innerArr1[0], innerArr1[0])
+				}
+				if val1, ok := innerArr1[1].(int64); !ok || val1 != 2 {
+					t.Errorf("Expected innerArr1[1] to be int64(2), got %v of type %T", innerArr1[1], innerArr1[1])
+				}
+			} else {
+				t.Errorf("Expected outerArr[0] to be an array, got %T", outerArr[0])
+			}
+
+			if innerArr2, ok := outerArr[1].([]interface{}); ok {
+				if val0, ok := innerArr2[0].(int64); !ok || val0 != 3 {
+					t.Errorf("Expected innerArr2[0] to be int64(3), got %v of type %T", innerArr2[0], innerArr2[0])
+				}
+				if val1, ok := innerArr2[1].(int64); !ok || val1 != 4 {
+					t.Errorf("Expected innerArr2[1] to be int64(4), got %v of type %T", innerArr2[1], innerArr2[1])
+				}
+			} else {
+				t.Errorf("Expected outerArr[1] to be an array, got %T", outerArr[1])
+			}
+		} else {
+			t.Error("Expected nested array structure not found in the result")
+		}
+	})
+}
