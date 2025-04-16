@@ -27,7 +27,7 @@ Usage:
 - Use --volume=help for more details (required)
 - --volume.size integer             Cluster Volume Request: The size of the volume (in GiB). (range: 20 - 50000)
 - This is the same as '--volume=size:integer'.
-- --volume.type enum                Cluster Volume Request: The type of the volume. (one of "CLOUD_NVME15K" or "CLOUD_NVME20K")
+- --volume.type enum                Cluster Volume Request: Volume Type: The type of the volume. (one of "CLOUD_NVME15K" or "CLOUD_NVME20K")
 - This is the same as '--volume=type:enum'. (default "CLOUD_NVME15K")
 
 ## Flags:

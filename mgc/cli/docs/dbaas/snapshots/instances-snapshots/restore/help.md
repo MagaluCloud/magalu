@@ -24,7 +24,7 @@ Usage:
 - Use --volume=help for more details
 - --volume.size integer             Instance Volume Request: The size of the volume (in GiB). (range: 10 - 50000)
 - This is the same as '--volume=size:integer'.
-- --volume.type enum                Instance Volume Request: The type of the volume. (one of "CLOUD_NVME15K" or "CLOUD_NVME20K")
+- --volume.type enum                Instance Volume Request: Volume Type: The type of the volume. (one of "CLOUD_NVME15K" or "CLOUD_NVME20K")
 - This is the same as '--volume=type:enum'. (default "CLOUD_NVME15K")
 
 ## Flags:

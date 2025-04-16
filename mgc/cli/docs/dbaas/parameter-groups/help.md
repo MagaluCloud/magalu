@@ -13,6 +13,7 @@ Usage:
 - delete      Deletes a parameter group.
 - get         Parameter group details.
 - list        List all Parameter Groups
+- parameters  parameters
 - update      Parameter group update.
 
 ## Other commands:

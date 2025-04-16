@@ -18,6 +18,7 @@ Usage:
 - --modifiable               Modifiable: Parameters that influence the machine creation process.
 - These parameters are set during instance provisioning and become immutable after the machine is created.
 - 
+- --name string              Value referring to engine parameter name.
 - -v, --version                  version for parameters
 
 ## Other commands:
