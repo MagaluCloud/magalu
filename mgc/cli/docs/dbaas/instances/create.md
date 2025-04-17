@@ -14,7 +14,8 @@ mgc dbaas instances create --availability-zone="br-ne1-a" --volume.size=30
 
 ## Flags:
 ```
-    --availability-zone enum          Availability Zone (one of "br-ne1-a", "br-ne1-b", "br-se1-a", "br-se1-b" or "br-se1-c")
+    --availability-zone enum          Availability Zone (one of "br-ne1-a", "br-se1-a", "br-se1-b", "br-se1-c" or others...)
+                                      Use --availability-zone=help for more details
     --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion. (default 7)
     --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process. (default "04:00:00")
     --cli.list-links enum[=table]     List all available links for this command (one of "json", "table" or "yaml")

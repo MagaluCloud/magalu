@@ -128,10 +128,14 @@ func addObjectConstraints(s *mgcSdk.Schema, dst *[]string) {
 	*dst = append(*dst, formatAlternatives("single property: %s", "properties: %s and %s", keys))
 }
 
-func getEnumAsString(s *mgcSdk.Schema) (asStrings []string) {
+func getEnumAsString(s *mgcSdk.Schema, limitLen bool) (asStrings []string) {
 	length := len(s.Enum)
 	if length == 0 {
 		return
+	}
+
+	if limitLen && length > 4 {
+		length = 4
 	}
 
 	asStrings = make([]string, 0, length)
@@ -145,6 +149,9 @@ func getEnumAsString(s *mgcSdk.Schema) (asStrings []string) {
 		}
 
 		asStrings = append(asStrings, s)
+		if len(asStrings) >= length {
+			break
+		}
 	}
 
 	slices.Sort(asStrings)
@@ -153,9 +160,12 @@ func getEnumAsString(s *mgcSdk.Schema) (asStrings []string) {
 }
 
 func addEnumConstraint(s *mgcSdk.Schema, dst *[]string) {
-	asStrings := getEnumAsString(s)
+	asStrings := getEnumAsString(s, true)
 	if len(asStrings) == 0 {
 		return
+	}
+	if len(s.Enum) > 4 {
+		asStrings = append(asStrings, "others...")
 	}
 
 	*dst = append(*dst, formatAlternatives("must be %s", "one of %s or %s", asStrings))
@@ -214,9 +224,8 @@ func getMaxNumber(s *mgcSdk.Schema) *float64 {
 }
 
 func shouldRecommendHelpValue(s *mgcSdk.Schema) bool {
-	if s.Type != nil &&
-		s.Type.Includes("integer") || s.Type.Includes("number") || s.Type.Includes("boolean") || s.Type.Includes("string") {
-		return false
+	if s.Type != nil && s.Type.Includes("integer") || s.Type.Includes("number") || s.Type.Includes("boolean") || s.Type.Includes("string") {
+		return len(s.Enum) > 4
 	}
 
 	if s.Type != nil &&
@@ -348,7 +357,7 @@ func newEnumHumanReadableConstraints(schema *mgcSchemaPkg.Schema) *HumanReadable
 	}
 
 	children := make([]*HumanReadableConstraints, len(schema.Enum))
-	for i, s := range getEnumAsString(schema) {
+	for i, s := range getEnumAsString(schema, false) {
 		if s == defVal {
 			s += " (default value)"
 		}

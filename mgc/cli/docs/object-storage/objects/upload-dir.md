@@ -20,7 +20,8 @@ mgc object-storage objects upload-dir --dst="my-bucket/dir/" --src="path/to/fold
 -h, --help                   help for upload-dir
     --shallow                Don't upload subdirectories
     --src directory          Source directory path for upload (required)
-    --storage-class enum     Type of Storage in which to store object (one of "", "cold", "cold_instant", "glacier_ir" or "standard") (default "")
+    --storage-class enum     Type of Storage in which to store object (one of "", "cold", "glacier_ir", "standard" or others...)
+                             Use --storage-class=help for more details (default "")
 ```
 
 ## Global Flags:
