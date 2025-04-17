@@ -56,8 +56,8 @@ func Execute(version string) (err error) {
 Magalu Cloud CLI is a command-line interface for the Magalu Cloud.
 It allows you to interact with the Magalu Cloud to manage your resources.
 `,
-		SilenceErrors: true,
-		SilenceUsage:  true,
+		SilenceErrors: true, // ####    Hack: true to avoid panic on error / false to debug error
+		SilenceUsage:  true, // ####
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return cmd.Help()
 		},
