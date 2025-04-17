@@ -17,7 +17,8 @@ mgc object-storage objects upload --dst="my-bucket/dir/file.txt" --src="./file.t
     --dst uri              Full destination path in the bucket with desired filename (required)
 -h, --help                 help for upload
     --src file             Source file path to be uploaded (required)
-    --storage-class enum   Type of Storage in which to store object (one of "", "cold", "cold_instant", "glacier_ir" or "standard") (default "")
+    --storage-class enum   Type of Storage in which to store object (one of "", "cold", "glacier_ir", "standard" or others...)
+                           Use --storage-class=help for more details (default "")
 ```
 
 ## Global Flags:

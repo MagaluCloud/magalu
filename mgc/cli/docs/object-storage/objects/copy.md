@@ -18,7 +18,8 @@ mgc object-storage objects copy --dst="bucket2/dir/file.txt" --src="bucket1/file
 -h, --help                 help for copy
     --obj-version string   Version of the object to be copied
     --src uri              Path of the object in a bucket to be copied (required)
-    --storage-class enum   Copy objects to other storage classes (one of "", "cold", "cold_instant", "glacier_ir" or "standard") (default "")
+    --storage-class enum   Copy objects to other storage classes (one of "", "cold", "glacier_ir", "standard" or others...)
+                           Use --storage-class=help for more details (default "")
 ```
 
 ## Global Flags:

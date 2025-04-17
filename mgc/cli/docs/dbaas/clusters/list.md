@@ -19,7 +19,8 @@ mgc dbaas clusters list --status="ACTIVE"
     --engine-id uuid            Value referring to engine Id.
 -h, --help                      help for list
     --parameter-group-id uuid   Value referring to parameter group Id.
-    --status enum               Instance Status: Value referring to cluster status. (one of "ACTIVE", "BACKING_UP", "CREATING", "DELETED", "DELETING", "ERROR", "ERROR_DELETING", "PENDING", "STARTING", "STOPPED" or "STOPPING")
+    --status enum               Instance Status: Value referring to cluster status. (one of "ACTIVE", "CREATING", "ERROR", "PENDING" or others...)
+                                Use --status=help for more details
 -v, --version                   version for list
     --volume.size integer       Volume.Size: Value referring to volume size.
     --volume.size-gt integer    Volume.Size Gt: Value referring to volume size greater than.
