@@ -1,18 +1,17 @@
-# Get
+# Delete
 
-Returns a engine detail.
+Removes a database cluster and it"s instances for a tenant.
 
 ## Usage:
 ```
-mgc dbaas engines get [engine-id] [flags]
+mgc dbaas clusters delete [cluster-id] [flags]
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --engine-id uuid                Value referring to engine Id. (required)
--h, --help                          help for get
--v, --version                       version for get
+    --cluster-id uuid   Value referring to cluster Id. (required)
+-h, --help              help for delete
+-v, --version           version for delete
 ```
 
 ## Global Flags:

@@ -1,18 +1,26 @@
-# Get
+# Update
 
-Returns a engine detail.
+Updates a database cluster.
 
 ## Usage:
 ```
-mgc dbaas engines get [engine-id] [flags]
+mgc dbaas clusters update [cluster-id] [flags]
+```
+
+## Examples:
+```
+mgc dbaas clusters update --backup-retention-days=7 --backup-start-at="04:00:00"
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --engine-id uuid                Value referring to engine Id. (required)
--h, --help                          help for get
--v, --version                       version for get
+    --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion.
+    --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process.
+    --cli.list-links enum[=table]     List all available links for this command (one of "json", "table" or "yaml")
+    --cluster-id uuid                 Value referring to cluster Id. (required)
+-h, --help                            help for update
+    --parameter-group-id uuid         Parameter group Id
+-v, --version                         version for update
 ```
 
 ## Global Flags:

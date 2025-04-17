@@ -10,7 +10,7 @@ mgc dbaas replicas resize [replica-id] [flags]
 ## Flags:
 ```
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --flavor-id uuid                Flavor Id
+    --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
 -h, --help                          help for resize
     --instance-type-id uuid         Instance Type Id
     --replica-id uuid               Value referring to replica Id. (required)

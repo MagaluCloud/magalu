@@ -1,25 +1,21 @@
-# Create
+# List
 
-Creates a new snapshot asynchronously.
+List all snapshots.
 
 ## Usage:
 ```
-mgc dbaas instances snapshots create [instance-id] [flags]
-```
-
-## Examples:
-```
-mgc dbaas instances snapshots create --description="my-description" --name="my-snapshot"
+mgc dbaas snapshots clusters-snapshots list [cluster-id] [flags]
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            Snapshot description. (max character count: 255)
--h, --help                          help for create
-    --instance-id uuid              Value referring to instance Id. (required)
-    --name string                   Snapshot unique name. (max character count: 100) (required)
--v, --version                       version for create
+    --cluster-id uuid          Value referring to cluster Id. (required)
+    --control.limit integer    The maximum number of items per page. (range: 1 - 50) (default 10)
+    --control.offset integer   The number of items to skip before starting to collect the result set. (min: 0)
+-h, --help                     help for list
+    --status enum              Value referring to snapshot status. (one of "AVAILABLE", "CREATING", "DELETED", "DELETING", "ERROR", "PENDING" or "RESTORING")
+    --type enum                Backup Type: Value referring to snapshot type. (one of "AUTOMATED" or "ON_DEMAND")
+-v, --version                  version for list
 ```
 
 ## Global Flags:

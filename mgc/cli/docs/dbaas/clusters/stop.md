@@ -1,18 +1,18 @@
-# Get
+# Stop
 
-Returns a engine detail.
+Stops a database cluster.
 
 ## Usage:
 ```
-mgc dbaas engines get [engine-id] [flags]
+mgc dbaas clusters stop [cluster-id] [flags]
 ```
 
 ## Flags:
 ```
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --engine-id uuid                Value referring to engine Id. (required)
--h, --help                          help for get
--v, --version                       version for get
+    --cluster-id uuid               Value referring to cluster Id. (required)
+-h, --help                          help for stop
+-v, --version                       version for stop
 ```
 
 ## Global Flags:

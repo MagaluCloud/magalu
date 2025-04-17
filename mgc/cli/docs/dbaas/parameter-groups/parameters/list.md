@@ -1,18 +1,19 @@
-# Get
+# List
 
-Returns a engine detail.
+Return details of a group's parameters.
 
 ## Usage:
 ```
-mgc dbaas engines get [engine-id] [flags]
+mgc dbaas parameter-groups parameters list [parameter-group-id] [flags]
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --engine-id uuid                Value referring to engine Id. (required)
--h, --help                          help for get
--v, --version                       version for get
+    --control.limit integer     The maximum number of items per page. (min: 1)
+    --control.offset integer    The number of items to skip before starting to collect the result set. (min: 0)
+-h, --help                      help for list
+    --parameter-group-id uuid   Value referring to parameter group Id. (required)
+-v, --version                   version for list
 ```
 
 ## Global Flags:

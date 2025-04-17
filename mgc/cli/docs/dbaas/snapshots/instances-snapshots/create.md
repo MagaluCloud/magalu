@@ -1,18 +1,24 @@
-# Get
+# Create
 
-Returns a engine detail.
+Creates a new snapshot asynchronously.
 
 ## Usage:
 ```
-mgc dbaas engines get [engine-id] [flags]
+mgc dbaas snapshots instances-snapshots create [instance-id] [flags]
+```
+
+## Examples:
+```
+mgc dbaas snapshots instances-snapshots create --description="my-description" --name="my-snapshot"
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --engine-id uuid                Value referring to engine Id. (required)
--h, --help                          help for get
--v, --version                       version for get
+    --description string   Snapshot description. (max character count: 255)
+-h, --help                 help for create
+    --instance-id uuid     Value referring to instance Id. (required)
+    --name string          Snapshot unique name. (max character count: 100) (required)
+-v, --version              version for create
 ```
 
 ## Global Flags:

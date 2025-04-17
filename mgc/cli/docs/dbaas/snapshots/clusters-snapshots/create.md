@@ -1,18 +1,19 @@
-# Get
+# Create
 
-Returns a engine detail.
+Creates a new snapshot asynchronously.
 
 ## Usage:
 ```
-mgc dbaas engines get [engine-id] [flags]
+mgc dbaas snapshots clusters-snapshots create [cluster-id] [flags]
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --engine-id uuid                Value referring to engine Id. (required)
--h, --help                          help for get
--v, --version                       version for get
+    --cluster-id uuid      Value referring to cluster Id. (required)
+    --description string   Description (max character count: 255)
+-h, --help                 help for create
+    --name string          Name (max character count: 100) (required)
+-v, --version              version for create
 ```
 
 ## Global Flags:

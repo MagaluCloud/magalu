@@ -1,18 +1,18 @@
 # Get
 
-Returns a engine detail.
+Get a snapshot detail.
 
 ## Usage:
 ```
-mgc dbaas engines get [engine-id] [flags]
+mgc dbaas snapshots instances-snapshots get [instance-id] [snapshot-id] [flags]
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --engine-id uuid                Value referring to engine Id. (required)
--h, --help                          help for get
--v, --version                       version for get
+-h, --help               help for get
+    --instance-id uuid   Value referring to instance Id. (required)
+    --snapshot-id uuid   Value referring to snapshot Id. (required)
+-v, --version            version for get
 ```
 
 ## Global Flags:

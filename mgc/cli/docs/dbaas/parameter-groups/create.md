@@ -1,18 +1,24 @@
-# Get
+# Create
 
-Returns a engine detail.
+Creates a new parameter group for a tenant.
 
 ## Usage:
 ```
-mgc dbaas engines get [engine-id] [flags]
+mgc dbaas parameter-groups create [flags]
+```
+
+## Examples:
+```
+mgc dbaas parameter-groups create --description="Parameter Group for MySQL 8 engine" --name="my_parameter_group"
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --engine-id uuid                Value referring to engine Id. (required)
--h, --help                          help for get
--v, --version                       version for get
+    --description string   Description (max character count: 255)
+    --engine-id uuid       Engine Id (required)
+-h, --help                 help for create
+    --name string          Name (max character count: 100) (required)
+-v, --version              version for create
 ```
 
 ## Global Flags:

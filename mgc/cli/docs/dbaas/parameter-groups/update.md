@@ -1,18 +1,24 @@
-# Get
+# Update
 
-Returns a engine detail.
+Updates a parameter group.
 
 ## Usage:
 ```
-mgc dbaas engines get [engine-id] [flags]
+mgc dbaas parameter-groups update [parameter-group-id] [flags]
+```
+
+## Examples:
+```
+mgc dbaas parameter-groups update --description="Production parameter group for MySQL 8 engine" --name="production_parameter_group"
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --engine-id uuid                Value referring to engine Id. (required)
--h, --help                          help for get
--v, --version                       version for get
+    --description string        Description (max character count: 255)
+-h, --help                      help for update
+    --name string               Name (max character count: 100)
+    --parameter-group-id uuid   Value referring to parameter group Id. (required)
+-v, --version                   version for update
 ```
 
 ## Global Flags:

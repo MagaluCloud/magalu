@@ -19,6 +19,7 @@ mgc dbaas instances list --status="ACTIVE"
     --control.offset integer    The number of items to skip before starting to collect the result set. (min: 0)
     --engine-id uuid            Value referring to engine Id.
 -h, --help                      help for list
+    --parameter-group-id uuid   Value referring to parameter group Id.
     --status enum               Value referring to instance status. (one of "ACTIVE", "BACKING_UP", "CREATING", "DELETED", "DELETING", "ERROR", "ERROR_DELETING", "MAINTENANCE", "MAINTENANCE_ERROR", "PENDING", "REBOOT", "RESIZING", "RESTORING", "STARTING", "STOPPED" or "STOPPING")
 -v, --version                   version for list
     --volume.size integer       Volume.Size: Value referring to volume size.

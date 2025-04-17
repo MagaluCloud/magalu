@@ -1,11 +1,11 @@
-# Snapshots
+# Clusters-Snapshots
 
-Database instances management. | snapshots
+Snapshots management. | clusters-snapshots
 
 ## Usage:
 ```
-mgc dbaas instances snapshots [flags]
-mgc dbaas instances snapshots [command]
+mgc dbaas snapshots clusters-snapshots [flags]
+mgc dbaas snapshots clusters-snapshots [command]
 ```
 
 ## Commands:
@@ -14,13 +14,14 @@ create      Snapshot Create.
 delete      Delete Snapshot.
 get         Snapshot Detail.
 list        Snapshots List.
+restore     Create a new cluster from snapshot asynchronously.
 update      Snapshot Update.
 ```
 
 ## Flags:
 ```
--h, --help      help for snapshots
--v, --version   version for snapshots
+-h, --help      help for clusters-snapshots
+-v, --version   version for clusters-snapshots
 ```
 
 ## Global Flags:

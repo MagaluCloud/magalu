@@ -1,18 +1,17 @@
 # Get
 
-Get a snapshot detail.
+Returns a database cluster detail.
 
 ## Usage:
 ```
-mgc dbaas instances snapshots get [instance-id] [snapshot-id] [flags]
+mgc dbaas clusters get [cluster-id] [flags]
 ```
 
 ## Flags:
 ```
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --cluster-id uuid               Value referring to cluster Id. (required)
 -h, --help                          help for get
-    --instance-id uuid              Value referring to instance Id. (required)
-    --snapshot-id uuid              Value referring to snapshot Id. (required)
 -v, --version                       version for get
 ```
 

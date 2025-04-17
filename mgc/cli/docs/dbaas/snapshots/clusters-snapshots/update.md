@@ -1,18 +1,25 @@
-# Get
+# Update
 
-Returns a engine detail.
+Updates a snapshot.
 
 ## Usage:
 ```
-mgc dbaas engines get [engine-id] [flags]
+mgc dbaas snapshots clusters-snapshots update [cluster-id] [snapshot-id] [flags]
+```
+
+## Examples:
+```
+mgc dbaas snapshots clusters-snapshots update --description="my-description-updated" --name="my-snapshot-updated"
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --engine-id uuid                Value referring to engine Id. (required)
--h, --help                          help for get
--v, --version                       version for get
+    --cluster-id uuid      Value referring to cluster Id. (required)
+    --description string   Snapshot description. (max character count: 255)
+-h, --help                 help for update
+    --name string          Snapshot unique name. (max character count: 100)
+    --snapshot-id uuid     Value referring to snapshot Id. (required)
+-v, --version              version for update
 ```
 
 ## Global Flags:
