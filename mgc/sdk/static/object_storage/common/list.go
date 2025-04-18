@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"net/url"
 	"path"
+	"sort"
+	"strings"
 	"time"
 
 	"github.com/MagaluCloud/magalu/mgc/core"
@@ -133,48 +135,59 @@ func (b *BucketContent) Type() fs.FileMode {
 var _ fs.DirEntry = (*BucketContent)(nil)
 var _ fs.FileInfo = (*BucketContent)(nil)
 
+// FIXME: The way we handle sigv4 in here (and probably other places) is really brittle.
+//
+//  1. We have to manually create the querystring, escaping spaces with '%20' instead of '+' (as the url.QueryEscape() would do)
+//
+//  2. sigv4 is dependent on the order of the query string params, this forces us to sort the query string params
+//     alphabetically (also manaully)
+//
+//     The module that handles signature should actually take care of all of this under the hood so that this logic is not
+//     repeated every time we need to make a signed API call.
+//
+// More info on https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv-create-signed-request.html
 func newListRequest(ctx context.Context, cfg Config, bucketURI mgcSchemaPkg.URI, page PaginationParams, recursive bool) (*http.Request, error) {
-	url, err := buildListRequestURL(cfg, bucketURI)
+	finalUrl, err := buildListRequestURL(cfg, bucketURI)
 	if err != nil {
 		return nil, core.UsageError{Err: err}
 	}
 
-	listReqQuery := url.Query()
-	listReqQuery.Set("list-type", "2")
-	if page.ContinuationToken != "" {
-		listReqQuery.Set("continuation-token", page.ContinuationToken)
+	var queryStringParts []string
+
+	if prefix := bucketURI.Path(); prefix != "" {
+		lastChar := string(prefix[len(prefix)-1])
+		if lastChar != delimiter {
+			prefix += delimiter
+		}
+		queryStringParts = append(queryStringParts, "prefix="+prefix)
 	}
+
+	queryStringParts = append(queryStringParts, "list-type=2")
+	if page.ContinuationToken != "" {
+		queryStringParts = append(queryStringParts, "continuation-token="+page.ContinuationToken)
+	}
+
 	if page.MaxItems <= 0 {
 		return nil, core.UsageError{Err: fmt.Errorf("invalid item limit MaxItems, must be higher than zero: %d", page.MaxItems)}
 	} else if page.MaxItems > ApiLimitMaxItems {
 		page.MaxItems = ApiLimitMaxItems
 	}
-	listReqQuery.Set("max-keys", fmt.Sprint(page.MaxItems))
+
+	queryStringParts = append(queryStringParts, "max-keys="+fmt.Sprint(page.MaxItems))
 	if !recursive {
-		listReqQuery.Set("delimiter", delimiter)
+		queryStringParts = append(queryStringParts, "delimiter="+delimiter)
 	}
-	url.RawQuery = listReqQuery.Encode()
-	return http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+
+	sort.Strings(queryStringParts)
+	finalUrl.RawQuery = url.PathEscape(strings.Join(queryStringParts, "&"))
+
+	return http.NewRequestWithContext(ctx, http.MethodGet, finalUrl.String(), nil)
 }
 
 func buildListRequestURL(cfg Config, bucketURI mgcSchemaPkg.URI) (*url.URL, error) {
 	u, err := BuildBucketHostURL(cfg, NewBucketNameFromURI(bucketURI))
 	if err != nil {
 		return nil, err
-	}
-	q := u.Query()
-	if path := bucketURI.Path(); path != "" {
-		lastChar := string(path[len(path)-1])
-		if lastChar != delimiter {
-			path += delimiter
-		}
-		encodedPath := url.PathEscape(path)
-
-		if len(q) > 0 {
-			u.RawQuery = u.RawQuery + "&prefix=" + encodedPath
-		} else {
-			u.RawQuery = "prefix=" + encodedPath
-		}
 	}
 
 	return u, nil
