@@ -92,7 +92,7 @@ func (d *SchemaFlagValueDesc) RawDefaultValue() string {
 var flagDescriptionUsageRe = regexp.MustCompile("([^'\"` ]+)=([^'\"` ]+)")
 
 func (d SchemaFlagValueDesc) fixDescriptionFlagUsage(input string) string {
-	enumAsString := getEnumAsString(d.Schema)
+	enumAsString := getEnumAsString(d.Schema, true)
 
 	prefixToMatch := d.PropName + "="
 	replacedPrefix := string("--" + d.FlagName + "=")
