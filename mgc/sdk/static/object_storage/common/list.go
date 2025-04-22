@@ -159,12 +159,30 @@ func newListRequest(ctx context.Context, cfg Config, bucketURI mgcSchemaPkg.URI,
 		if lastChar != delimiter {
 			prefix += delimiter
 		}
-		queryStringParts = append(queryStringParts, "prefix="+prefix)
+
+		queryEscapedValue := url.QueryEscape(prefix)
+
+		// How for the "fun" part: the aws uri encoding scheme is not the same as go's.
+		//
+		// From the docs:
+		// URI encode every byte. UriEncode() must enforce the following rules:
+		//
+		//   - URI encode every byte except the unreserved characters: 'A'-'Z', 'a'-'z', '0'-'9', '-', '.', '_', and '~'.
+		//   - The space character is a reserved character and must be encoded as "%20" (and not as "+").
+		//   - Each URI encoded byte is formed by a '%' and the two-digit hexadecimal value of the byte.
+		//   - Letters in the hexadecimal value must be uppercase, for example "%1A".
+		//   - Encode the forward slash character, '/', everywhere except in the object key name. For example, if the object key name is photos/Jan/sample.jpg, the forward slash in the key name is not encoded.
+		//
+		// Source: https://docs.aws.amazon.com/AmazonS3/latest/API/sig-v4-header-based-auth.html#example-signature-calculations
+		awsEscapedValue := strings.ReplaceAll(queryEscapedValue, "+", "%20")
+		awsEscapedValue = strings.ReplaceAll(awsEscapedValue, "*", "%2A")
+		awsEscapedValue = strings.ReplaceAll(awsEscapedValue, "%7E", "~")
+		queryStringParts = append(queryStringParts, "prefix="+awsEscapedValue)
 	}
 
 	queryStringParts = append(queryStringParts, "list-type=2")
 	if page.ContinuationToken != "" {
-		queryStringParts = append(queryStringParts, "continuation-token="+page.ContinuationToken)
+		queryStringParts = append(queryStringParts, "continuation-token="+url.QueryEscape(page.ContinuationToken))
 	}
 
 	if page.MaxItems <= 0 {
@@ -175,11 +193,11 @@ func newListRequest(ctx context.Context, cfg Config, bucketURI mgcSchemaPkg.URI,
 
 	queryStringParts = append(queryStringParts, "max-keys="+fmt.Sprint(page.MaxItems))
 	if !recursive {
-		queryStringParts = append(queryStringParts, "delimiter="+delimiter)
+		queryStringParts = append(queryStringParts, "delimiter="+url.QueryEscape(delimiter))
 	}
 
 	sort.Strings(queryStringParts)
-	finalUrl.RawQuery = url.PathEscape(strings.Join(queryStringParts, "&"))
+	finalUrl.RawQuery = strings.Join(queryStringParts, "&")
 
 	return http.NewRequestWithContext(ctx, http.MethodGet, finalUrl.String(), nil)
 }
