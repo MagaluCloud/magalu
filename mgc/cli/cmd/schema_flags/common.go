@@ -1,5 +1,7 @@
 package schema_flags
 
+import "slices"
+
 type schemaFlagValueCommon struct {
 	desc     SchemaFlagValueDesc
 	rawValue string
@@ -38,6 +40,11 @@ func (o *schemaFlagValueCommon) Desc() SchemaFlagValueDesc {
 }
 
 func (o *schemaFlagValueCommon) RawDefaultValue() string {
+	result := o.desc.RawDefaultValue()
+	allowedValues := []string{"prod", "br-se1"}
+	if slices.Contains(allowedValues, result) {
+		return result
+	}
 	return ""
 }
 
