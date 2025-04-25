@@ -41,7 +41,7 @@ func (o *schemaFlagValueCommon) Desc() SchemaFlagValueDesc {
 
 func (o *schemaFlagValueCommon) RawDefaultValue() string {
 	result := o.desc.RawDefaultValue()
-	allowedValues := []string{"\"br-se1\"", "\"prod\""}
+	allowedValues := []string{"\"br-se1\"", "\"prod\"", "[\"network\",\"image\",\"machine-type\"]"}
 	if slices.Contains(allowedValues, result) || o.desc.IsRequired {
 		return result
 	}
