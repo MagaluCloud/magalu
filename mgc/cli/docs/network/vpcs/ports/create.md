@@ -16,7 +16,6 @@ mgc network vpcs ports create [vpc-id] [flags]
     --name string                        Name (between 5 and 100 characters) (required)
     --security-groups-id array(string)   Security Groups Id (default [])
     --subnets array(string)              Subnets (default [])
--v, --version                            version for create
     --vpc-id string                      vpc_id: ID of the VPC to create port (required)
 ```
 

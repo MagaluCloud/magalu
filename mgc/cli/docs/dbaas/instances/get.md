@@ -13,7 +13,6 @@ mgc dbaas instances get [instance-id] [flags]
     --control.expand enum           Instance extra attributes or relations to show with the main query. When available, more than one value can be informed using commas. e.g: '--control.expand="replicas"' (must be "replicas")
 -h, --help                          help for get
     --instance-id uuid              Value referring to instance Id. (required)
--v, --version                       version for get
 ```
 
 ## Global Flags:

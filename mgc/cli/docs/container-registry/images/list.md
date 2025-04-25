@@ -16,7 +16,6 @@ mgc container-registry images list [registry-id] [repository-name] [flags]
 -h, --help                     help for list
     --registry-id uuid         Container Registry's UUID. (required)
     --repository-name string   Repository's name. (required)
--v, --version                  version for list
 ```
 
 ## Global Flags:

@@ -20,7 +20,6 @@ mgc dbaas instances update --backup-retention-days=7 --backup-start-at="04:00:00
 -h, --help                            help for update
     --instance-id uuid                Value referring to instance Id. (required)
     --status enum                     Instance Status Update (one of "ACTIVE" or "STOPPED")
--v, --version                         version for update
 ```
 
 ## Global Flags:

@@ -11,7 +11,6 @@ mgc container-registry registries delete [registry-id] [flags]
 ```
 -h, --help               help for delete
     --registry-id uuid   Container Registry's UUID. (required)
--v, --version            version for delete
 ```
 
 ## Global Flags:

@@ -32,7 +32,6 @@ mgc block-storage volumes create --snapshot.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx
                                     This is the same as '--type=id:string'.
     --type.name string              Type: Name (between 1 and 255 characters)
                                     This is the same as '--type=name:string'.
--v, --version                       version for create
 ```
 
 ## Global Flags:

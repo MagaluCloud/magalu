@@ -17,7 +17,6 @@ mgc load-balancer network-acls create [load-balancer-id] [flags]
     --name string                      Name
     --protocol enum                    Protocol (one of "tcp" or "tls") (required)
     --remote-ip-prefix ipvanynetwork   Remote Ip Prefix (required)
--v, --version                          version for create
 ```
 
 ## Global Flags:

@@ -23,7 +23,6 @@ mgc load-balancer network-healthchecks create [load-balancer-id] [flags]
     --protocol enum                       The protocol used for the Health Check (e.g., HTTP, TCP) (one of "http" or "tcp") (required)
     --timeout-seconds integer             Timeout Seconds: The timeout in seconds for each Health Check (default 10)
     --unhealthy-threshold-count integer   Unhealthy Threshold Count: The number of consecutive failed checks before considering the target unhealthy (default 3)
--v, --version                             version for create
 ```
 
 ## Global Flags:

@@ -14,7 +14,6 @@ mgc dbaas instance-types list [flags]
     --engine-id uuid           Engine Id unique identifier
 -h, --help                     help for list
     --status enum              An enumeration. (one of "ACTIVE" or "DEPRECATED") (default "ACTIVE")
--v, --version                  version for list
 ```
 
 ## Global Flags:

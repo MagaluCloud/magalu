@@ -11,7 +11,6 @@ mgc dbaas instances delete [instance-id] [flags]
 ```
 -h, --help               help for delete
     --instance-id uuid   Value referring to instance Id. (required)
--v, --version            version for delete
 ```
 
 ## Global Flags:

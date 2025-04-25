@@ -11,7 +11,6 @@ mgc kubernetes nodepool list [cluster-id] [flags]
 ```
     --cluster-id uuid   Cluster's UUID. (required)
 -h, --help              help for list
--v, --version           version for list
 ```
 
 ## Global Flags:

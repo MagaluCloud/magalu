@@ -11,7 +11,6 @@ mgc dbaas replicas delete [replica-id] [flags]
 ```
 -h, --help              help for delete
     --replica-id uuid   Database Replica Id: Database Replica Unique Id (required)
--v, --version           version for delete
 ```
 
 ## Global Flags:

@@ -15,8 +15,7 @@ list        List all volume types.
 
 ## Flags:
 ```
--h, --help      help for volume-types
--v, --version   version for volume-types
+-h, --help   help for volume-types
 ```
 
 ## Global Flags:

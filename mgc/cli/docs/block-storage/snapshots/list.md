@@ -16,7 +16,6 @@ mgc block-storage snapshots list [flags]
 -h, --help                     help for list
     --name string              Name
     --type enum                Type (one of "instant" or "object")
--v, --version                  version for list
 ```
 
 ## Global Flags:

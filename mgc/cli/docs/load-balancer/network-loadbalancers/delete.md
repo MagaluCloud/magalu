@@ -12,7 +12,6 @@ mgc load-balancer network-loadbalancers delete [load-balancer-id] [flags]
     --delete-public-ip        delete_public_ip: Indicates whether the public IP should be deleted when the load balancer is removed
 -h, --help                    help for delete
     --load-balancer-id uuid   load_balancer_id: ID of the Load Balancer to delete (required)
--v, --version                 version for delete
 ```
 
 ## Global Flags:

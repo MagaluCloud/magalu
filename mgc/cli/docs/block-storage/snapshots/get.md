@@ -13,7 +13,6 @@ mgc block-storage snapshots get [id] [flags]
     --expand array(enum)            Expand (default [])
 -h, --help                          help for get
     --id uuid                       Id (required)
--v, --version                       version for get
 ```
 
 ## Global Flags:

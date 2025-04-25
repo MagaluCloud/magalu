@@ -17,7 +17,6 @@ mgc network vpcs subnets create [vpc-id] [flags]
     --ip-version integer                     Ip Version (required)
     --name string                            Name (required)
     --subnetpool-id string                   Subnetpool Id
--v, --version                                version for create
     --vpc-id string                          Vpc Id: Id of the VPC to create Subnet (required)
 ```
 

@@ -13,7 +13,6 @@ mgc container-registry registries create [flags]
     --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
 -h, --help                          help for create
     --name string                   A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters. (required)
--v, --version                       version for create
 ```
 
 ## Global Flags:

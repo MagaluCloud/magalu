@@ -14,7 +14,6 @@ mgc network subnetpools create-book-cidr [subnetpool-id] [flags]
 -h, --help                          help for create-book-cidr
     --mask integer                  Mask
     --subnetpool-id string          subnetpoolId: Id of the Subnet Pool to get details (required)
--v, --version                       version for create-book-cidr
 ```
 
 ## Global Flags:

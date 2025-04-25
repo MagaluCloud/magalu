@@ -14,7 +14,6 @@ mgc network subnets update [subnet-id] [flags]
     --dns-nameservers array(ipvanyaddress)   Dns Nameservers (default [])
 -h, --help                                   help for update
     --subnet-id string                       Subnet Id: Id of the Subnet to update (required)
--v, --version                                version for update
 ```
 
 ## Global Flags:

@@ -13,7 +13,6 @@ mgc block-storage snapshots copy [id] [flags]
     --destination-region enum       Regions (one of "br-mgl1", "br-ne1" or "br-se1") (required)
 -h, --help                          help for copy
     --id uuid                       Id (required)
--v, --version                       version for copy
 ```
 
 ## Global Flags:

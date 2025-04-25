@@ -11,7 +11,6 @@ mgc network security-groups rules list [security-group-id] [flags]
 ```
 -h, --help                       help for list
     --security-group-id string   Security Group ID: Id of the Security Group (required)
--v, --version                    version for list
 ```
 
 ## Global Flags:

@@ -13,7 +13,6 @@ mgc container-registry images delete [registry-id] [repository-name] [digest-or-
 -h, --help                     help for delete
     --registry-id uuid         Container Registry's UUID. (required)
     --repository-name string   Repository's name. (required)
--v, --version                  version for delete
 ```
 
 ## Global Flags:

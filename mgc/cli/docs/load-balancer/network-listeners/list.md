@@ -14,7 +14,6 @@ mgc load-balancer network-listeners list [load-balancer-id] [flags]
     --control.sort string       Sort: Name of the field which the list must be ordered by ending with :asc or :desc (default "created_at:desc")
 -h, --help                     help for list
     --load-balancer-id uuid    load_balancer_id: ID of the attached Load Balancer (required)
--v, --version                  version for list
 ```
 
 ## Global Flags:

@@ -16,8 +16,7 @@ list        List available engines.
 
 ## Flags:
 ```
--h, --help      help for engines
--v, --version   version for engines
+-h, --help   help for engines
 ```
 
 ## Global Flags:

@@ -15,7 +15,6 @@ mgc virtual-machine instances password [id] [flags]
     --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
 -h, --help                          help for password
     --id uuid                       Id (required)
--v, --version                       version for password
 ```
 
 ## Global Flags:

@@ -19,8 +19,7 @@ replace     Update Load Balancer by ID
 
 ## Flags:
 ```
--h, --help      help for network-loadbalancers
--v, --version   version for network-loadbalancers
+-h, --help   help for network-loadbalancers
 ```
 
 ## Global Flags:

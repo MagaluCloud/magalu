@@ -13,7 +13,6 @@ mgc network nat-gateways create [flags]
     --description string            Description
 -h, --help                          help for create
     --name string                   Name (required)
--v, --version                       version for create
     --vpc-id string                 Vpc Id (required)
     --zone string                   Zone (required)
 ```

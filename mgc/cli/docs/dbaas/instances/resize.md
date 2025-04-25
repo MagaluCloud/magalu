@@ -20,7 +20,6 @@ mgc dbaas instances resize --volume.size=30
 -h, --help                          help for resize
     --instance-id uuid              Value referring to instance Id. (required)
     --instance-type-id uuid         Instance Type Id
--v, --version                       version for resize
     --volume object                 Instance Volume Request (properties: size and type)
                                     Use --volume=help for more details
     --volume.size integer           Instance Volume Request: The size of the volume (in GiB). (range: 10 - 50000)

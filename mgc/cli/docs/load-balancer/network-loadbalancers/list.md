@@ -13,7 +13,6 @@ mgc load-balancer network-loadbalancers list [flags]
     --control.offset integer   Page Number (min: 0)
     --control.sort string       Sort: Name of the field which the list must be ordered by ending with :asc or :desc (default "created_at:desc")
 -h, --help                     help for list
--v, --version                  version for list
 ```
 
 ## Global Flags:

@@ -12,7 +12,6 @@ mgc profile ssh-keys get [key-id] [flags]
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                          help for get
     --key-id uuid                   Key Id (required)
--v, --version                       version for get
 ```
 
 ## Global Flags:

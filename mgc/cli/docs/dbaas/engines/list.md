@@ -13,7 +13,6 @@ mgc dbaas engines list [flags]
     --control.offset integer   The number of items to skip before starting to collect the result set. (min: 0)
 -h, --help                     help for list
     --status enum              EngineStatus: Value referring to engine status. (one of "ACTIVE" or "DEPRECATED")
--v, --version                  version for list
 ```
 
 ## Global Flags:

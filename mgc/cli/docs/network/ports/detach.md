@@ -13,7 +13,6 @@ mgc network ports detach [port-id] [security-group-id] [flags]
 -h, --help                          help for detach
     --port-id string                port_id: ID of the Port to detach security group (required)
     --security-group-id string      security_group_id: ID of the Security Group to detach (required)
--v, --version                       version for detach
 ```
 
 ## Global Flags:

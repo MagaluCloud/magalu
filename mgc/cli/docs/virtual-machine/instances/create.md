@@ -53,7 +53,6 @@ mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d9
                                                 This is the same as '--network.vpc=name:string'.
     --ssh-key-name string                       Ssh key Name
     --user-data string                          Used to perform automated configuration tasks. (between 1 and 65000 characters)
--v, --version                                   version for create
     --volumes array(object)                     Volumes
                                                 Use --volumes=help for more details
 ```

@@ -15,8 +15,7 @@ list        Retrieves all machine-types.
 
 ## Flags:
 ```
--h, --help      help for machine-types
--v, --version   version for machine-types
+-h, --help   help for machine-types
 ```
 
 ## Global Flags:

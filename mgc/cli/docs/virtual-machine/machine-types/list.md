@@ -14,7 +14,6 @@ mgc virtual-machine machine-types list [flags]
     --control.offset integer      Offset: pagination for the results limited (max: 2147483647)
     --control.sort string         Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created_at:asc")
 -h, --help                       help for list
--v, --version                    version for list
 ```
 
 ## Global Flags:

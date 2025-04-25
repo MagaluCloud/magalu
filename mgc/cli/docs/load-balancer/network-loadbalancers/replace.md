@@ -26,7 +26,6 @@ mgc load-balancer network-loadbalancers replace --backends='[{"health_check_id":
     --panic-threshold integer          Panic Threshold: Minimum percentage of failed upstreams that load balancer will consider to give an alert (range: 0 - 100)
     --tls-certificates array(object)   The list of updated TLS certificates
                                        Use --tls-certificates=help for more details (default [])
--v, --version                          version for replace
 ```
 
 ## Global Flags:

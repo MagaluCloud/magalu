@@ -28,7 +28,6 @@ mgc dbaas instances create --volume.size=30
     --parameters array(object)        Use --parameters=help for more details (default [])
     --password string                 Password (max character count: 50) (required)
     --user string                     User (max character count: 25) (required)
--v, --version                         version for create
     --volume object                   Instance Volume Request (properties: size and type)
                                       Use --volume=help for more details (required)
     --volume.size integer             Instance Volume Request: The size of the volume (in GiB). (range: 10 - 50000)

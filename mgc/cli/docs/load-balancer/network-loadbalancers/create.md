@@ -31,7 +31,6 @@ mgc load-balancer network-loadbalancers create --acls='[{"action":"ALLOW","ether
     --tls-certificates array(object)   The list of TLS certificates for the load balancer
                                        Use --tls-certificates=help for more details (default [])
     --type string                      The type of the load balancer (e.g., proxy) (default "proxy")
--v, --version                          version for create
     --visibility enum                  The visibility of the load balancer (e.g., internal, external) (one of "external" or "internal") (required)
     --vpc-id string                    The VPC ID associated with the load balancer (required)
 ```

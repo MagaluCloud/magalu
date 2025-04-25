@@ -14,7 +14,6 @@ mgc network subnetpools create-unbook-cidr [subnetpool-id] [flags]
     --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
 -h, --help                          help for create-unbook-cidr
     --subnetpool-id string          subnetpoolId: Id of the Subnet Pool to get details (required)
--v, --version                       version for create-unbook-cidr
 ```
 
 ## Global Flags:

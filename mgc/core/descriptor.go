@@ -30,7 +30,6 @@ func (d *DescriptorSpec) Validate() error {
 // General interface that describes both Executor and Grouper
 type Descriptor interface {
 	Name() string
-	Version() string
 	Description() string
 	Summary() string
 	IsInternal() bool
@@ -52,10 +51,6 @@ func (d *SimpleDescriptor) GroupID() string {
 
 func (d *SimpleDescriptor) Name() string {
 	return d.Spec.Name
-}
-
-func (d *SimpleDescriptor) Version() string {
-	return d.Spec.Version
 }
 
 func (d *SimpleDescriptor) Description() string {

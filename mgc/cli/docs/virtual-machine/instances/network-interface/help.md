@@ -16,8 +16,7 @@ detach      Detach a non primary network interface from an instance.
 
 ## Flags:
 ```
--h, --help      help for network-interface
--v, --version   version for network-interface
+-h, --help   help for network-interface
 ```
 
 ## Global Flags:

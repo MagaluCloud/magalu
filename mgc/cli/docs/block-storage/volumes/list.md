@@ -15,7 +15,6 @@ mgc block-storage volumes list [flags]
     --expand array(string)     Expand: You can get more detailed info about: ['volume_type', 'attachment'] (default [])
 -h, --help                     help for list
     --name string              Name
--v, --version                  version for list
 ```
 
 ## Global Flags:

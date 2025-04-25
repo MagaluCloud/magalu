@@ -16,7 +16,6 @@ mgc virtual-machine instances stop [id] [flags]
     --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
 -h, --help                          help for stop
     --id uuid                       Instance id - for help use ./mgc virtual-machines instances list . (required)
--v, --version                       version for stop
 ```
 
 ## Global Flags:

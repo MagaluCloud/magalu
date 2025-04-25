@@ -16,8 +16,7 @@ password    Reset password
 
 ## Flags:
 ```
--h, --help      help for credentials
--v, --version   version for credentials
+-h, --help   help for credentials
 ```
 
 ## Global Flags:

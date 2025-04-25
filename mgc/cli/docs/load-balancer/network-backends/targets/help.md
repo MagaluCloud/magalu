@@ -16,8 +16,7 @@ delete      Delete a target on specific backend
 
 ## Flags:
 ```
--h, --help      help for targets
--v, --version   version for targets
+-h, --help   help for targets
 ```
 
 ## Global Flags:

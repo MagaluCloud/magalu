@@ -25,7 +25,6 @@ mgc block-storage volumes retype --new-type.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx
                                     This is the same as '--new-type=id:string'.
     --new-type.name string          New Type: Name (between 1 and 255 characters)
                                     This is the same as '--new-type=name:string'.
--v, --version                       version for retype
 ```
 
 ## Global Flags:

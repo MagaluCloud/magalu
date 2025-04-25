@@ -15,8 +15,7 @@ list        Lists all event types.
 
 ## Flags:
 ```
--h, --help      help for event-types
--v, --version   version for event-types
+-h, --help   help for event-types
 ```
 
 ## Global Flags:

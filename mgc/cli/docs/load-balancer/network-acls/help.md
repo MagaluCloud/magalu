@@ -16,8 +16,7 @@ delete      Delete Load Balancer ACL
 
 ## Flags:
 ```
--h, --help      help for network-acls
--v, --version   version for network-acls
+-h, --help   help for network-acls
 ```
 
 ## Global Flags:

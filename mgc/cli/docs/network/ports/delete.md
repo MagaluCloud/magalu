@@ -11,7 +11,6 @@ mgc network ports delete [port-id] [flags]
 ```
 -h, --help             help for delete
     --port-id string   port_id: ID of the Port to delete (required)
--v, --version          version for delete
 ```
 
 ## Global Flags:

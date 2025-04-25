@@ -15,7 +15,6 @@ mgc network subnetpools create [flags]
 -h, --help                          help for create
     --name string                   The name of the subnet pool. (required)
     --type string                   The type of subnetpool, pip or default. (pattern: ^(pip|default)$) (default "default")
--v, --version                       version for create
 ```
 
 ## Global Flags:

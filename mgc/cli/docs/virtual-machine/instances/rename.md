@@ -14,7 +14,6 @@ mgc virtual-machine instances rename [id] [flags]
 -h, --help                          help for rename
     --id string                     Instance id - for help use ./mgc virtual-machines instances list . (required)
     --name string                   New name (between 1 and 255 characters) (required)
--v, --version                       version for rename
 ```
 
 ## Global Flags:

@@ -25,7 +25,6 @@ mgc audit events list --data='{"data.machine_type.name":"cloud-bs1.xsmall","data
     --source-like string       Source: Context in which the event occurred ('like' operation)
     --time date-time           Timestamp of when the occurrence happened
     --type-like string         Type of event related to the originating occurrence ('like' operation)
--v, --version                  version for list
 ```
 
 ## Global Flags:

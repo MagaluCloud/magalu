@@ -15,7 +15,6 @@ mgc network vpcs ports list [vpc-id] [flags]
 -h, --help                         help for list
     --name string                  Name of the port to list: Filter ports results with name
     --port-id-list array(string)   Port Id List (default [])
--v, --version                      version for list
     --vpc-id string                vpc_id: ID of VPC to list ports (required)
 ```
 

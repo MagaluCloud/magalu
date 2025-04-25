@@ -20,8 +20,7 @@ targets     targets
 
 ## Flags:
 ```
--h, --help      help for network-backends
--v, --version   version for network-backends
+-h, --help   help for network-backends
 ```
 
 ## Global Flags:

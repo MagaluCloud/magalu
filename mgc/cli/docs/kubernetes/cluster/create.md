@@ -9,7 +9,7 @@ mgc kubernetes cluster create [flags]
 
 ## Examples:
 ```
-mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]' --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --param.version="v1.30.2" --zone="br-region-zone"
+mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]' --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --version="v1.30.2" --zone="br-region-zone"
 ```
 
 ## Flags:
@@ -35,10 +35,9 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
     --node-pools array(object)      An array representing a set of nodes within a Kubernetes cluster.
                                     
                                     Use --node-pools=help for more details
-    --param.version string          The native Kubernetes version of the cluster.
+    --version string                The native Kubernetes version of the cluster.
                                     Please specify the Kubernetes version using the standard "vX.Y.Z" format.
                                      (default "v1.30.2")
--v, --version                       version for create
     --zone string                   [Deprecated] This parameter is deprecated and its use won't create a cluster at requested zone.
                                     Identifier of the zone where the Kubernetes cluster will be located.
 ```

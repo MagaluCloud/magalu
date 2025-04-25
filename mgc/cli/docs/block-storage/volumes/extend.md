@@ -15,7 +15,6 @@ mgc block-storage volumes extend [id] [flags]
 -h, --help                          help for extend
     --id uuid                       Id (required)
     --size integer                  New volume size in GB (required)
--v, --version                       version for extend
 ```
 
 ## Global Flags:

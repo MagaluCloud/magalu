@@ -13,7 +13,6 @@ mgc kubernetes nodepool get [cluster-id] [node-pool-id] [flags]
     --cluster-id uuid               Cluster's UUID. (required)
 -h, --help                          help for get
     --node-pool-id uuid             Nodepool's UUID. (required)
--v, --version                       version for get
 ```
 
 ## Global Flags:

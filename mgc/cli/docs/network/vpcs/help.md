@@ -21,8 +21,7 @@ subnets     subnets
 
 ## Flags:
 ```
--h, --help      help for vpcs
--v, --version   version for vpcs
+-h, --help   help for vpcs
 ```
 
 ## Global Flags:
