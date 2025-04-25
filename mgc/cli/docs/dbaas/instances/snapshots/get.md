@@ -13,7 +13,6 @@ mgc dbaas instances snapshots get [instance-id] [snapshot-id] [flags]
 -h, --help                          help for get
     --instance-id uuid              Value referring to instance Id. (required)
     --snapshot-id uuid              Value referring to snapshot Id. (required)
--v, --version                       version for get
 ```
 
 ## Global Flags:

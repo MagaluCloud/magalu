@@ -15,8 +15,7 @@ list        Lists all available versions
 
 ## Flags:
 ```
--h, --help      help for version
--v, --version   version for version
+-h, --help   help for version
 ```
 
 ## Global Flags:

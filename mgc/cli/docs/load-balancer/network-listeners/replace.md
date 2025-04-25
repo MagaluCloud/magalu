@@ -15,7 +15,6 @@ mgc load-balancer network-listeners replace [load-balancer-id] [listener-id] [fl
     --listener-id uuid              listener_id: ID of the listener you wanna update (required)
     --load-balancer-id uuid         load_balancer_id: ID of the attached Load Balancer (required)
     --tls-certificate-id uuid       Tls Certificate Id: The unique identifier of the associated tls certificate
--v, --version                       version for replace
 ```
 
 ## Global Flags:

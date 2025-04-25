@@ -20,8 +20,7 @@ network-loadbalancers Network Load Balancer
 
 ## Flags:
 ```
--h, --help      help for load-balancer
--v, --version   version for load-balancer
+-h, --help   help for load-balancer
 ```
 
 ## Global Flags:

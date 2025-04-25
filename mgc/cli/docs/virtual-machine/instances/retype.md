@@ -25,7 +25,6 @@ mgc virtual-machine instances retype --machine-type.id="9ec75090-2872-4f51-8111-
                                     This is the same as '--machine-type=id:string'.
     --machine-type.name string      Machine Type: Name (between 1 and 255 characters)
                                     This is the same as '--machine-type=name:string'.
--v, --version                       version for retype
 ```
 
 ## Global Flags:

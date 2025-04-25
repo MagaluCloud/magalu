@@ -18,8 +18,7 @@ list        List the NAT Gateways from a VPC
 
 ## Flags:
 ```
--h, --help      help for nat-gateways
--v, --version   version for nat-gateways
+-h, --help   help for nat-gateways
 ```
 
 ## Global Flags:

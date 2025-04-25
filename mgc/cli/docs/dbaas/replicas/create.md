@@ -17,7 +17,6 @@ mgc dbaas replicas create [flags]
     --instance-type-id uuid         Instance Type Id
     --name string                   Name (max character count: 255) (required)
     --source-id uuid                Source Id (required)
--v, --version                       version for create
 ```
 
 ## Global Flags:

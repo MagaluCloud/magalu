@@ -11,7 +11,6 @@ mgc network nat-gateways delete [nat-gateway-id] [flags]
 ```
 -h, --help                    help for delete
     --nat-gateway-id string   Nat Gateway Id (required)
--v, --version                 version for delete
 ```
 
 ## Global Flags:

@@ -13,7 +13,6 @@ mgc block-storage volume-types list [flags]
     --availability-zone string   Availability-Zone
 -h, --help                       help for list
     --name string                Name
--v, --version                    version for list
 ```
 
 ## Global Flags:

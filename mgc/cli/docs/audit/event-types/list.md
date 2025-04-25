@@ -12,7 +12,6 @@ mgc audit event-types list [flags]
     --control.limit integer    Limit: Number of items per page
     --control.offset integer   Offset for pagination
 -h, --help                     help for list
--v, --version                  version for list
 ```
 
 ## Global Flags:

@@ -15,7 +15,6 @@ mgc dbaas instances snapshots list [instance-id] [flags]
     --instance-id uuid         Value referring to instance Id. (required)
     --status enum              Value referring to snapshot status. (one of "AVAILABLE", "CREATING", "DELETED", "DELETING", "ERROR", "PENDING" or "RESTORING")
     --type enum                Backup Type: Value referring to snapshot type. (one of "AUTOMATED" or "ON_DEMAND")
--v, --version                  version for list
 ```
 
 ## Global Flags:

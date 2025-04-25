@@ -13,7 +13,6 @@ mgc block-storage volumes get [id] [flags]
     --expand array(string)          Expand: You can get more detailed info about: ['volume_type', 'attachment']
 -h, --help                          help for get
     --id uuid                       Id (required)
--v, --version                       version for get
 ```
 
 ## Global Flags:

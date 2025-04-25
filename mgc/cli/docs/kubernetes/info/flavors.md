@@ -9,8 +9,7 @@ mgc kubernetes info flavors [flags]
 
 ## Flags:
 ```
--h, --help      help for flavors
--v, --version   version for flavors
+-h, --help   help for flavors
 ```
 
 ## Global Flags:

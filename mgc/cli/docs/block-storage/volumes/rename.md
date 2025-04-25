@@ -14,7 +14,6 @@ mgc block-storage volumes rename [id] [flags]
 -h, --help                          help for rename
     --id uuid                       Id (required)
     --name string                   Name (between 3 and 50 characters) (required)
--v, --version                       version for rename
 ```
 
 ## Global Flags:

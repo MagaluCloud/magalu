@@ -18,8 +18,7 @@ repositories Routes related to listing and deletion of repositories.
 
 ## Flags:
 ```
--h, --help      help for container-registry
--v, --version   version for container-registry
+-h, --help   help for container-registry
 ```
 
 ## Global Flags:

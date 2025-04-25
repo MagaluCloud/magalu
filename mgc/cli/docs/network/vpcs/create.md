@@ -12,7 +12,6 @@ mgc network vpcs create [flags]
     --description string   Description
 -h, --help                 help for create
     --name string          Name (required)
--v, --version              version for create
 ```
 
 ## Global Flags:

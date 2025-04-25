@@ -11,7 +11,6 @@ mgc block-storage volumes delete [id] [flags]
 ```
 -h, --help      help for delete
     --id uuid   Id (required)
--v, --version   version for delete
 ```
 
 ## Global Flags:

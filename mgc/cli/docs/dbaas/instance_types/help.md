@@ -16,8 +16,7 @@ list        List available instance types.
 
 ## Flags:
 ```
--h, --help      help for instance-types
--v, --version   version for instance-types
+-h, --help   help for instance-types
 ```
 
 ## Global Flags:

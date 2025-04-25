@@ -46,7 +46,6 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
                                                 This is the same as '--network.vpc=name:string'.
     --ssh-key-name string                       Ssh Key Name
     --user-data string                          User Data (between 1 and 65000 characters)
--v, --version                                   version for restore
 ```
 
 ## Global Flags:

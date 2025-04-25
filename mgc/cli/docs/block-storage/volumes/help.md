@@ -23,8 +23,7 @@ retype      Change the type of a volume.
 
 ## Flags:
 ```
--h, --help      help for volumes
--v, --version   version for volumes
+-h, --help   help for volumes
 ```
 
 ## Global Flags:

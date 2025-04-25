@@ -19,8 +19,7 @@ rules       rules
 
 ## Flags:
 ```
--h, --help      help for security-groups
--v, --version   version for security-groups
+-h, --help   help for security-groups
 ```
 
 ## Global Flags:

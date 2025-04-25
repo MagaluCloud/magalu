@@ -15,8 +15,7 @@ list        Retrieves all images.
 
 ## Flags:
 ```
--h, --help      help for images
--v, --version   version for images
+-h, --help   help for images
 ```
 
 ## Global Flags:

@@ -9,8 +9,7 @@ mgc container-registry credentials password [flags]
 
 ## Flags:
 ```
--h, --help      help for password
--v, --version   version for password
+-h, --help   help for password
 ```
 
 ## Global Flags:

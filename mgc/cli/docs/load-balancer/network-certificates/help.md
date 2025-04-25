@@ -19,8 +19,7 @@ replace     Update TLS Certificate by ID
 
 ## Flags:
 ```
--h, --help      help for network-certificates
--v, --version   version for network-certificates
+-h, --help   help for network-certificates
 ```
 
 ## Global Flags:

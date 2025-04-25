@@ -16,8 +16,7 @@ list        List Public IPs
 
 ## Flags:
 ```
--h, --help      help for public-ips
--v, --version   version for public-ips
+-h, --help   help for public-ips
 ```
 
 ## Global Flags:

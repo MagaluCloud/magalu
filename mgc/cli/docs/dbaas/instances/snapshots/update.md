@@ -20,7 +20,6 @@ mgc dbaas instances snapshots update --description="my-description-updated" --na
     --instance-id uuid              Value referring to instance Id. (required)
     --name string                   Snapshot unique name. (max character count: 100)
     --snapshot-id uuid              Value referring to snapshot Id. (required)
--v, --version                       version for update
 ```
 
 ## Global Flags:

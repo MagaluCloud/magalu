@@ -11,7 +11,6 @@ mgc profile availability-zones list [flags]
 ```
 -h, --help              help for list
     --show-is-blocked   Show Is Blocked
--v, --version           version for list
 ```
 
 ## Global Flags:

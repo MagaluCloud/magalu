@@ -18,8 +18,7 @@ list        List SSH keys
 
 ## Flags:
 ```
--h, --help      help for ssh-keys
--v, --version   version for ssh-keys
+-h, --help   help for ssh-keys
 ```
 
 ## Global Flags:

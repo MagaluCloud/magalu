@@ -13,7 +13,6 @@ mgc virtual-machine snapshots get [id] [flags]
     --expand array(string)          Expand: You can get more detailed info about: ['image', 'machine-type'] 
 -h, --help                          help for get
     --id string                     Id (required)
--v, --version                       version for get
 ```
 
 ## Global Flags:

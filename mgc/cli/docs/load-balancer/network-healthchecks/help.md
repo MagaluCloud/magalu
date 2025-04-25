@@ -19,8 +19,7 @@ replace     Update Health Check by ID
 
 ## Flags:
 ```
--h, --help      help for network-healthchecks
--v, --version   version for network-healthchecks
+-h, --help   help for network-healthchecks
 ```
 
 ## Global Flags:

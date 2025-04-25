@@ -17,8 +17,7 @@ list        List all container registry repositories
 
 ## Flags:
 ```
--h, --help      help for repositories
--v, --version   version for repositories
+-h, --help   help for repositories
 ```
 
 ## Global Flags:

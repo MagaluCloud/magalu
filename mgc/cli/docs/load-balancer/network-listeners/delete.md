@@ -12,7 +12,6 @@ mgc load-balancer network-listeners delete [load-balancer-id] [listener-id] [fla
 -h, --help                    help for delete
     --listener-id uuid        listener_id: ID of the listener you wanna delete (required)
     --load-balancer-id uuid   load_balancer_id: ID of the attached Load Balancer (required)
--v, --version                 version for delete
 ```
 
 ## Global Flags:

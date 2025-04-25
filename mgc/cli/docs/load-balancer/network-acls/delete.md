@@ -12,7 +12,6 @@ mgc load-balancer network-acls delete [load-balancer-id] [acl-id] [flags]
     --acl-id uuid             acl_id: ID of the ACL you wanna delete (required)
 -h, --help                    help for delete
     --load-balancer-id uuid   load_balancer_id: ID of the attached Load Balancer (required)
--v, --version                 version for delete
 ```
 
 ## Global Flags:

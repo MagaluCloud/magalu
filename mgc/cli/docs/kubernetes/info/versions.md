@@ -9,8 +9,7 @@ mgc kubernetes info versions [flags]
 
 ## Flags:
 ```
--h, --help      help for versions
--v, --version   version for versions
+-h, --help   help for versions
 ```
 
 ## Global Flags:

@@ -17,8 +17,7 @@ update      Update Subnet
 
 ## Flags:
 ```
--h, --help      help for subnets
--v, --version   version for subnets
+-h, --help   help for subnets
 ```
 
 ## Global Flags:

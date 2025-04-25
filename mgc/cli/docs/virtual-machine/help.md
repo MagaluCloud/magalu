@@ -18,8 +18,7 @@ snapshots     Operations with snapshots for instances.
 
 ## Flags:
 ```
--h, --help      help for virtual-machine
--v, --version   version for virtual-machine
+-h, --help   help for virtual-machine
 ```
 
 ## Global Flags:

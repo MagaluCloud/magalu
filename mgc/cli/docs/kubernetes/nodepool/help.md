@@ -20,8 +20,7 @@ update      Patch node pool replicas by node_pool_id
 
 ## Flags:
 ```
--h, --help      help for nodepool
--v, --version   version for nodepool
+-h, --help   help for nodepool
 ```
 
 ## Global Flags:

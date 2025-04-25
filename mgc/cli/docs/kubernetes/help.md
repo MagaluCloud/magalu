@@ -19,8 +19,7 @@ version     Endpoints related to listing available Kubernetes versions for a Kub
 
 ## Flags:
 ```
--h, --help      help for kubernetes
--v, --version   version for kubernetes
+-h, --help   help for kubernetes
 ```
 
 ## Global Flags:

@@ -11,7 +11,6 @@ mgc kubernetes cluster delete [cluster-id] [flags]
 ```
     --cluster-id uuid   Cluster's UUID. (required)
 -h, --help              help for delete
--v, --version           version for delete
 ```
 
 ## Global Flags:

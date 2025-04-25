@@ -20,7 +20,6 @@ mgc dbaas snapshots create --volume.size=30
     --instance-type-id uuid           Instance Type Id (required)
     --name string                     Name (max character count: 100) (required)
     --snapshot-id uuid                Value referring to snapshot Id. (required)
--v, --version                         version for create
     --volume object                   Instance Volume Request (properties: size and type)
                                       Use --volume=help for more details
     --volume.size integer             Instance Volume Request: The size of the volume (in GiB). (range: 10 - 50000)

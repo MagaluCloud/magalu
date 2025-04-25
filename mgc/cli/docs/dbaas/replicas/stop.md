@@ -12,7 +12,6 @@ mgc dbaas replicas stop [replica-id] [flags]
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                          help for stop
     --replica-id uuid               Value referring to replica Id. (required)
--v, --version                       version for stop
 ```
 
 ## Global Flags:

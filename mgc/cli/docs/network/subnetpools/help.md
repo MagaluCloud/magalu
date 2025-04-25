@@ -20,8 +20,7 @@ list               List Subnet Pools by Tenant
 
 ## Flags:
 ```
--h, --help      help for subnetpools
--v, --version   version for subnetpools
+-h, --help   help for subnetpools
 ```
 
 ## Global Flags:

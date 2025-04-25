@@ -13,7 +13,6 @@ mgc dbaas replicas list [flags]
     --control.offset integer   The number of items to skip before starting to collect the result set. (min: 0)
 -h, --help                     help for list
     --source-id uuid           Value referring to source Id.
--v, --version                  version for list
 ```
 
 ## Global Flags:

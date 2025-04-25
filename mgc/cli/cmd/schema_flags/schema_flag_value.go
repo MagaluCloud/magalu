@@ -95,7 +95,10 @@ func getUnchangedFlagValue(fv SchemaFlagValue, cfg *config.Config) (value any, e
 		}
 	}
 
-	value = desc.Schema.Default
+	if desc.IsRequired {
+		value = desc.Schema.Default
+	}
+
 	return
 }
 

@@ -394,7 +394,7 @@ func (cf *cmdFlags) getValues(config *mgcSdk.Config, argValues []string) (core.P
 			desc := f.Value.(schema_flags.SchemaFlagValue).Desc()
 			if desc.IsConfig {
 				configs[desc.PropName] = value
-			} else if desc.IsRequired {
+			} else {
 				parameters[desc.PropName] = value
 			}
 		}

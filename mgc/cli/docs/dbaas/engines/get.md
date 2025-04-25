@@ -11,7 +11,6 @@ mgc dbaas engines get [engine-id] [flags]
 ```
     --engine-id uuid   Datastore Id (Deprecated): Value referring to datastore Id. (required)
 -h, --help             help for get
--v, --version          version for get
 ```
 
 ## Global Flags:

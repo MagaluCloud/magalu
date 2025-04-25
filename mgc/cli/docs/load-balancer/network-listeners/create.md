@@ -18,7 +18,6 @@ mgc load-balancer network-listeners create [load-balancer-id] [flags]
     --port integer                  The port number on which the listener will be active (required)
     --protocol enum                 The protocol used by the listener (e.g., TCP, TLS) (one of "tcp" or "tls") (required)
     --tls-certificate-id string     Tls Certificate Id: The ID of the TLS certificate
--v, --version                       version for create
 ```
 
 ## Global Flags:

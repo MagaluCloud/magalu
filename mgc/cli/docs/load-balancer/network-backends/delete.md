@@ -12,7 +12,6 @@ mgc load-balancer network-backends delete [load-balancer-id] [backend-id] [flags
     --backend-id uuid         backend_id: ID of the backend you wanna delete (required)
 -h, --help                    help for delete
     --load-balancer-id uuid   load_balancer_id: ID of the attached Load Balancer (required)
--v, --version                 version for delete
 ```
 
 ## Global Flags:
