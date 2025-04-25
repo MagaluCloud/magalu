@@ -23,7 +23,7 @@ mgc profile availability-zones list [flags]
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
-    --env enum                 Environment to use (one of "pre-prod" or "prod")
+    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
