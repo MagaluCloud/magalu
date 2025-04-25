@@ -15,12 +15,12 @@ mgc load-balancer network-loadbalancers create --acls='[{"action":"ALLOW","ether
 ## Flags:
 ```
     --acls array(object)               Acls: The list of ACL configurations for the load balancer
-                                       Use --acls=help for more details (default [])
+                                       Use --acls=help for more details
     --backends array(object)           Backends: The list of backend configurations for the load balancer
                                        Use --backends=help for more details (required)
     --description string               A brief description of the load balancer
     --health-checks array(object)      Health Checks: The list of health check configurations for the load balancer
-                                       Use --health-checks=help for more details (default [])
+                                       Use --health-checks=help for more details
 -h, --help                             help for create
     --listeners array(object)          Listeners: The list of listener configurations for the load balancer
                                        Use --listeners=help for more details (required)
@@ -29,8 +29,8 @@ mgc load-balancer network-loadbalancers create --acls='[{"action":"ALLOW","ether
     --public-ip-id string              The public IP ID associated with the load balancer
     --subnet-pool-id string            The subnet pool ID associated with the load balancer
     --tls-certificates array(object)   The list of TLS certificates for the load balancer
-                                       Use --tls-certificates=help for more details (default [])
-    --type string                      The type of the load balancer (e.g., proxy) (default "proxy")
+                                       Use --tls-certificates=help for more details
+    --type string                      The type of the load balancer (e.g., proxy)
 -v, --version                          version for create
     --visibility enum                  The visibility of the load balancer (e.g., internal, external) (one of "external" or "internal") (required)
     --vpc-id string                    The VPC ID associated with the load balancer (required)
@@ -45,11 +45,11 @@ mgc load-balancer network-loadbalancers create --acls='[{"action":"ALLOW","ether
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
-    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
+    --env enum                 Environment to use (one of "pre-prod" or "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1")
     --server-url uri           Manually specify the server to use
 ```
 

@@ -14,7 +14,7 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
 
 ## Flags:
 ```
-    --availability-zone string                  Availability Zone (between 1 and 255 characters) (default "br-ne1-a")
+    --availability-zone string                  Availability Zone (between 1 and 255 characters)
     --cli.list-links enum[=table]               List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                                      help for restore
     --id string                                 Id (required)
@@ -28,7 +28,7 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
     --network object                            (properties: associate_public_ip, interface and vpc)
                                                 Use --network=help for more details
     --network.associate-public-ip boolean       network's associate_public_ip property: Associate Public Ip
-                                                This is the same as '--network=associate_public_ip:boolean'. (default true)
+                                                This is the same as '--network=associate_public_ip:boolean'.
     --network.interface object                  network's interface property: Interface (at least one of: single property: id or single property: security_groups)
                                                 Use --network.interface=help for more details
                                                 This is the same as '--network=interface:object'.
@@ -36,10 +36,10 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
                                                 This is the same as '--network.interface=id:string'.
     --network.interface.security-groups array   Interface: Security Groups
                                                 Use --network.interface.security-groups=help for more details
-                                                This is the same as '--network.interface=security_groups:array'. (default [])
+                                                This is the same as '--network.interface=security_groups:array'.
     --network.vpc object                        network's vpc property: Vpc (at least one of: single property: id or single property: name)
                                                 Use --network.vpc=help for more details
-                                                This is the same as '--network=vpc:object'. (default {"name":"vpc_default"})
+                                                This is the same as '--network=vpc:object'.
     --network.vpc.id string                     Vpc: Id (between 1 and 255 characters)
                                                 This is the same as '--network.vpc=id:string'.
     --network.vpc.name string                   Vpc: Name (between 1 and 255 characters)
@@ -58,11 +58,11 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
-    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
+    --env enum                 Environment to use (one of "pre-prod" or "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1")
     --server-url uri           Manually specify the server to use
 ```
 

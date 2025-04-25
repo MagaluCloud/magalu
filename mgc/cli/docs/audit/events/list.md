@@ -15,10 +15,10 @@ mgc audit events list --data='{"data.machine_type.name":"cloud-bs1.xsmall","data
 ## Flags:
 ```
     --authid string            Auth ID: Identification of the principal that triggered the occurrence
-    --control.limit integer    Limit: Number of items per page (default 50)
+    --control.limit integer    Limit: Number of items per page
     --control.offset integer   Offset for pagination
     --data object              The raw data event
-                               Use --data=help for more details (default {})
+                               Use --data=help for more details
 -h, --help                     help for list
     --id string                Identification of the event
     --product-like string      In which producer product an event occurred ('like' operation)
@@ -37,11 +37,11 @@ mgc audit events list --data='{"data.machine_type.name":"cloud-bs1.xsmall","data
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
-    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
+    --env enum                 Environment to use (one of "pre-prod" or "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1", "br-se1" or "global") (default "br-se1")
+    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1", "br-se1" or "global")
     --server-url uri           Manually specify the server to use
 ```
 

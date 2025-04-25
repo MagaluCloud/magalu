@@ -9,10 +9,10 @@ mgc network subnetpools list [flags]
 
 ## Flags:
 ```
-    --control.az-id string      Az Id (default "a")
-    --control.limit integer    Pagination: Number of items per page (min: 1) (default 20)
+    --control.az-id string      Az Id
+    --control.limit integer    Pagination: Number of items per page (min: 1)
     --control.offset integer   Items Offset: Start item for pagination
-    --control.sort string       Sort: Name of the field wich the list must be ordered by ending with :asc or :desc (default "created_at:desc")
+    --control.sort string       Sort: Name of the field wich the list must be ordered by ending with :asc or :desc
 -h, --help                     help for list
 -v, --version                  version for list
 ```
@@ -26,11 +26,11 @@ mgc network subnetpools list [flags]
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
-    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
+    --env enum                 Environment to use (one of "pre-prod" or "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1")
     --server-url uri           Manually specify the server to use
 ```
 

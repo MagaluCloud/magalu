@@ -10,12 +10,12 @@ mgc network vpcs ports create [vpc-id] [flags]
 ## Flags:
 ```
     --cli.list-links enum[=table]        List all available links for this command (one of "json", "table" or "yaml")
-    --has-pip                            Has Pip (default true)
-    --has-sg                             Has Sg (default true)
+    --has-pip                            Has Pip
+    --has-sg                             Has Sg
 -h, --help                               help for create
     --name string                        Name (between 5 and 100 characters) (required)
-    --security-groups-id array(string)   Security Groups Id (default [])
-    --subnets array(string)              Subnets (default [])
+    --security-groups-id array(string)   Security Groups Id
+    --subnets array(string)              Subnets
 -v, --version                            version for create
     --vpc-id string                      vpc_id: ID of the VPC to create port (required)
 ```
@@ -29,11 +29,11 @@ mgc network vpcs ports create [vpc-id] [flags]
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
-    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
+    --env enum                 Environment to use (one of "pre-prod" or "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1")
     --server-url uri           Manually specify the server to use
     --x-zone string            X-Zone
 ```

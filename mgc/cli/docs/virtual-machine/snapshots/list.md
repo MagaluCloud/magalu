@@ -9,10 +9,10 @@ mgc virtual-machine snapshots list [flags]
 
 ## Flags:
 ```
-    --control.limit integer     Limit: limit the number of the results (max: 1000) (default 50)
+    --control.limit integer     Limit: limit the number of the results (max: 1000)
     --control.offset integer    Offset: pagination for the results limited (max: 2147483647)
-    --control.sort string       Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created_at:asc")
-    --expand array(string)     Expand: You can get more detailed info about: ['image', 'machine-type']  (default [])
+    --control.sort string       Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
+    --expand array(string)     Expand: You can get more detailed info about: ['image', 'machine-type'] 
 -h, --help                     help for list
 -v, --version                  version for list
 ```
@@ -26,11 +26,11 @@ mgc virtual-machine snapshots list [flags]
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
-    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
+    --env enum                 Environment to use (one of "pre-prod" or "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1")
     --server-url uri           Manually specify the server to use
 ```
 

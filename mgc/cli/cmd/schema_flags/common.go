@@ -38,7 +38,7 @@ func (o *schemaFlagValueCommon) Desc() SchemaFlagValueDesc {
 }
 
 func (o *schemaFlagValueCommon) RawDefaultValue() string {
-	return o.desc.RawDefaultValue()
+	return ""
 }
 
 func (o *schemaFlagValueCommon) RawNoOptDefVal() string {
