@@ -54,7 +54,7 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
                                           - Must start with an alphabetic character
                                           - Must end with an alphanumeric character
                                          (required)
-    --replicas integer                  Number of replicas of the nodes in the node pool. (required)
+    --replicas integer                  Number of replicas of the nodes in the node pool. (required) (default 1)
     --tags array(string)                List of tags applied to the node pool.
     --taints array(object)              Property associating a set of nodes.
                                         Use --taints=help for more details

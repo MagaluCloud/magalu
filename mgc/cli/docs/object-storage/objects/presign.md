@@ -17,7 +17,7 @@ mgc object-storage objects presign --dst="bucket1/file.txt" --expires-in="2h"
     --dst uri             Path of the object to generate pre-signed URL for (required)
     --expires-in string   Expiration time for the pre-signed URL. Valid time units are 'ns, 'us' (or 'µs'), 'ms', 's',  'm', and 'h'.default=5m
 -h, --help                help for presign
-    --method enum         (one of "GET" or "PUT") (required)
+    --method enum         (one of "GET" or "PUT") (required) (default "GET")
 ```
 
 ## Global Flags:
