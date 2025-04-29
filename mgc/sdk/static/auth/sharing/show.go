@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"magalu.cloud/core"
-	mgcAuthPkg "magalu.cloud/core/auth"
-	mgcHttpPkg "magalu.cloud/core/http"
-	"magalu.cloud/core/utils"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcAuthPkg "github.com/MagaluCloud/magalu/mgc/core/auth"
+	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
+	"github.com/MagaluCloud/magalu/mgc/core/utils"
 )
 
 type DelegationAccount struct {
@@ -26,7 +26,7 @@ type Delegation struct {
 	DelegatedAt string            `json:"delegated_at"`
 	DelegatedBy DelegationAccount `json:"delegated_by"`
 	DelegatedTo DelegationAccount `json:"delegated_to"`
-	Tentant     DelegationTenant  `json:"tenant"`
+	Tenant      DelegationTenant  `json:"tenant"`
 }
 
 var getList = utils.NewLazyLoader[core.Executor](func() core.Executor {
