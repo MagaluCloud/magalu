@@ -4,6 +4,7 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/buckets/acl"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/buckets/cors"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/buckets/label"
 	object_lock "github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/buckets/object-lock"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/buckets/policy"
@@ -28,6 +29,7 @@ var GetGroup = utils.NewLazyLoader[core.Grouper](func() core.Grouper {
 				policy.GetGroup(),      // object-storage buckets policy
 				label.GetGroup(),       // object-storage buckets label
 				object_lock.GetGroup(), // object-storage buckets object-lock
+				cors.GetGroup(),        // object-storage buckets cors
 			}
 		},
 	)
