@@ -1,38 +1,22 @@
----
-sidebar_position: 0
----
-# Buckets
+# Get
 
-Bucket operations for Object Storage API
+Get the CORS rules for the specified bucket
 
 ## Usage:
 ```
-mgc object-storage buckets [flags]
-mgc object-storage buckets [command]
-```
-
-## Commands:
-```
-acl         ACL-related commands
-cors        CORS-related commands
-create      Create a new Bucket
-delete      Delete an existing Bucket
-label       Label-related commands
-list        List all existing Buckets
-object-lock Object locking commands
-policy      Policy-related commands
-public-url  Get bucket public url
-versioning  Manage bucket versioning
+mgc object-storage buckets cors get [dst] [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for buckets
+    --dst string   Specifies the bucket whose CORS rules is being requested (required)
+-h, --help         help for get
 ```
 
 ## Global Flags:
 ```
     --api-key string           Use your API key to authenticate with the API
+    --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (required) (default 8)
 -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"
@@ -42,5 +26,8 @@ versioning  Manage bucket versioning
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+    --server-url uri           Manually specify the server to use
+    --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (required) (default 5)
 ```
 
