@@ -30,6 +30,7 @@ servers:
     variables:
         region:
             description: Region to reach the service
+            required: true
             default: br-se1
             enum:
             - br-ne1
@@ -43,6 +44,7 @@ servers:
                     to: br-se-1
         env:
             description: Environment to use
+            required: true
             default: api.magalu.cloud
             enum:
             - api.magalu.cloud

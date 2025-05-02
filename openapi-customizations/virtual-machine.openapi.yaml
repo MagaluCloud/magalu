@@ -13,6 +13,7 @@ paths:
               - name: _sort
               - name: expand
               - name: x-api-version
+                required: true
                 in: header
                 schema:
                     type: string
@@ -69,11 +70,13 @@ paths:
                 -   name: id
                 -   name: expand
                     in: query
+                    required: true
                     schema:
                         type: array
                         default: [network, image, machine-type]
                 -   name: x-api-version
                     in: header
+                    required: true
                     schema:
                         type: string
                         default: "1.1"

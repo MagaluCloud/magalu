@@ -217,6 +217,7 @@ SUPPORTED_SCHEMA_CUSTOMIZATIONS = {
     "exclusiveMinimum": check_is_bool,
     "example": check_any,
     "default": check_any,
+    "required": check_is_list,
 }
 
 
@@ -324,6 +325,7 @@ SUPPORTED_PATH_PARAMETER_CUSTOMIZATIONS = {
     "x-mgc-description": check_is_string,
     "x-mgc-hidden": check_is_bool,
     "schema": check_is_schema_customization,
+    "required": check_is_bool,
 }
 
 

@@ -39,10 +39,13 @@ func (o *schemaFlagValueCommon) Desc() SchemaFlagValueDesc {
 	return o.desc
 }
 
+var (
+	namesAllowedToHaveDefault = []string{"env", "region"}
+)
+
 func (o *schemaFlagValueCommon) RawDefaultValue() string {
 	result := o.desc.RawDefaultValue()
-	allowedValues := []string{"\"br-se1\"", "\"prod\"", "[\"network\",\"image\",\"machine-type\"]"}
-	if slices.Contains(allowedValues, result) || o.desc.IsRequired {
+	if o.desc.IsRequired || slices.Contains(namesAllowedToHaveDefault, o.desc.PropName) {
 		return result
 	}
 	return ""
