@@ -18,7 +18,7 @@ import (
 type setObjectLockParams struct {
 	Object          mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Specifies the object whose lock is being requested" mgc:"positional"`
 	RetainUntilDate string           `json:"retain_until_date" jsonschema:"description=Timestamp in ISO 8601 format,example=2025-10-03T00:00:00"`
-	Mode            string           `json:"mode,omitempty" jsonschema:"description=Lock mode,enum=COMPLIANCE,enum=GOVERNANCE,default=COMPLIANCE" mgc:"hidden"`
+	Mode            string           `json:"mode,omitempty" jsonschema:"description=Lock mode,enum=COMPLIANCE,enum=GOVERNANCE,default=COMPLIANCE,required" mgc:"hidden"`
 }
 
 var getSet = utils.NewLazyLoader(func() core.Executor {

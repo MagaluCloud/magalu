@@ -30,7 +30,7 @@ type ListObjectsParams struct {
 }
 
 type PaginationParams struct {
-	MaxItems          int    `json:"max-items,omitempty" jsonschema:"description=Limit of items to be listed,default=1000,minimum=1,example=1000"`
+	MaxItems          int    `json:"max-items,omitempty" jsonschema:"description=Limit of items to be listed,default=1000,minimum=1,example=1000,required"`
 	ContinuationToken string `json:"continuation-token,omitempty" jsonschema:"description=Token of result page to continue from"`
 }
 

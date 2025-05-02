@@ -12,7 +12,7 @@ mgc object-storage buckets create [bucket] [flags]
     --bucket string                 Name of the bucket to be created (required)
     --bucket-is-prefix              Use bucket name as prefix value to generate a unique bucket name (required)
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --enable-versioning             Enable versioning for this bucket
+    --enable-versioning             Enable versioning for this bucket (required) (default true)
     --grant-write array(object)     Allows grantees to create objects in the bucket
                                     Use --grant-write=help for more details
 -h, --help                          help for create

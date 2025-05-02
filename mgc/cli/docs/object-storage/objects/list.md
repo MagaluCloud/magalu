@@ -19,7 +19,7 @@ mgc object-storage objects list --dst="bucket1" --max-items=1000
     --filter array(object)        File name pattern to include or exclude
                                   Use --filter=help for more details
 -h, --help                        help for list
-    --max-items integer           Limit of items to be listed (min: 1)
+    --max-items integer           Limit of items to be listed (min: 1) (required) (default 1000)
     --recursive                   List folders and subfolders
 ```
 

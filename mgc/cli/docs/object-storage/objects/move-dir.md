@@ -15,7 +15,7 @@ mgc object-storage objects move-dir --dst="s3://my-bucket/dir" --src="./dir"
 
 ## Flags:
 ```
-    --batch-size integer   Limit of items per batch to process (range: 1 - 1000)
+    --batch-size integer   Limit of items per batch to process (range: 1 - 1000) (required) (default 1000)
     --dst uri              Destination to put files into (required)
 -h, --help                 help for move-dir
     --src uri              Source path or uri to move files from (required)
