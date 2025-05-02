@@ -611,7 +611,7 @@ func (cf *cmdFlags) addConfigsFlags(
 			propName,
 			normalizeName("config."),
 			normalizeName,
-			false,
+			slices.Contains(configsSchema.Required, propName),
 			true,
 			false,
 		)
