@@ -10,7 +10,6 @@ servers:
         env:
             description: Environment to use
             default: api.magalu.cloud
-            required: true
             enum:
             - api.magalu.cloud
             - api.pre-prod.jaxyendy.com

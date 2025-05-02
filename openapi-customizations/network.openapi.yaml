@@ -9,7 +9,6 @@ servers:
     variables:
         region:
             description: Region to reach the service
-            required: true
             default: br-se1
             enum:
             - br-ne1
@@ -24,7 +23,6 @@ servers:
         env:
             description: Environment to use
             default: api.magalu.cloud
-            required: true
             enum:
             - api.magalu.cloud
             - api.pre-prod.jaxyendy.com
