@@ -6,7 +6,7 @@ info:
     name: Tribo IAAS Cloud
     url: https://gitlab.luizalabs.com/cloud/dbaas/docs
     email: cloud-iaas-dbaas@luizalabs.com
-  version: 2.1.1
+  version: 2.3.3
 tags:
   - name: engines
     description: Engines available for database instances.
@@ -22,7 +22,6 @@ tags:
     description: Snapshots management.
   - name: parameter-groups
     description: Parameter groups management.
-
 paths:
   /v2/engines:
     get:
@@ -136,7 +135,6 @@ paths:
       summary: List available engine parameters.
       tags:
         - engines
-
   /v2/parameter-groups:
     get:
       description: List all Parameter Groups for a x-tenant-id
@@ -405,7 +403,6 @@ paths:
       summary: Update a parameter.
       tags:
         - parameter-groups
-
     delete:
       description: Deletes a parameter for a group.
       operationId: parameters_v2_delete
@@ -1166,7 +1163,6 @@ paths:
             - dbaas.read
         - OAuth2Prod:
             - dbaas.read
-
   /v2/clusters/{cluster_id}/start:
     post:
       tags:
@@ -2014,7 +2010,6 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
-
 components:
   parameters:
     replica_id:
@@ -2255,9 +2250,7 @@ components:
       schema:
         title: Dynamic
         type: boolean
-      description: |
-        Parameters that can be modified while the database is running.  
-        Changes to these parameters take effect immediately without requiring a service restart.
+      description: "Parameters that can be modified while the database is running.  \nChanges to these parameters take effect immediately without requiring a service restart.\n"
     modifiable_query:
       name: modifiable
       in: query
@@ -2265,9 +2258,7 @@ components:
       schema:
         title: Modifiable
         type: boolean
-      description: |
-        Parameters that influence the machine creation process.  
-        These parameters are set during instance provisioning and become immutable after the machine is created.
+      description: "Parameters that influence the machine creation process.  \nThese parameters are set during instance provisioning and become immutable after the machine is created.\n"
     engine_status:
       name: status
       in: query
@@ -2280,7 +2271,6 @@ components:
       schema:
         allOf:
           - $ref: "#/components/schemas/InstanceTypeStatus"
-        default: ACTIVE
       description: An enumeration.
     snapshot_type:
       name: type
@@ -2545,8 +2535,8 @@ components:
     ClusterVolumeResponse:
       properties:
         size:
-          maximum: 50000.0
-          minimum: 20.0
+          maximum: 50000
+          minimum: 20
           title: Size
           type: integer
         type:
@@ -2756,6 +2746,7 @@ components:
       title: Instance Detail Response
       description: >
         This response object provides details about a database instance associated with a snapshot.
+
       required:
         - id
         - name
@@ -2776,6 +2767,7 @@ components:
       title: Cluster Detail Response
       description: >
         This response object provides details about a database cluster associated with a snapshot.
+
       required:
         - id
         - name
@@ -3011,7 +3003,8 @@ components:
         - G10B
         - G1
         - G2
-      example: G2
+        - G3
+      example: G3
     InstanceCreateRequest:
       title: Instance Create Request
       required:
@@ -3330,6 +3323,11 @@ components:
       enum:
         - LOWER_CASE_TABLE_NAMES
         - MAX_CONNECTIONS
+        - ACTIVATE_ALL_ROLES_ON_LOGIN
+        - BLOCK_ENCRYPTION_MODE
+        - CONNECT_TIMEOUT
+        - INNODB_SEGMENT_RESERVE_FACTOR
+        - TRANSACTION_ISOLATION
       title: EngineParametersMysql8
       type: string
       example: LOWER_CASE_TABLE_NAMES
