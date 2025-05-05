@@ -11,19 +11,18 @@ mgc load-balancer network-healthchecks create [load-balancer-id] [flags]
 ```
     --cli.list-links enum[=table]         List all available links for this command (one of "json", "table" or "yaml")
     --description string                  A brief description of the Health Check
-    --healthy-status-code integer         Healthy Status Code: The HTTP status code indicating a healthy response. By default the status is set to 200 (default 200)
-    --healthy-threshold-count integer     Healthy Threshold Count: The number of consecutive successful checks before considering the target healthy (default 8)
+    --healthy-status-code integer         Healthy Status Code: The HTTP status code indicating a healthy response. By default the status is set to 200
+    --healthy-threshold-count integer     Healthy Threshold Count: The number of consecutive successful checks before considering the target healthy
 -h, --help                                help for create
-    --initial-delay-seconds integer       Initial Delay Seconds: The initial delay in seconds before starting Health Checks (default 30)
-    --interval-seconds integer            Interval Seconds: The interval in seconds between Health Checks (default 30)
+    --initial-delay-seconds integer       Initial Delay Seconds: The initial delay in seconds before starting Health Checks
+    --interval-seconds integer            Interval Seconds: The interval in seconds between Health Checks
     --load-balancer-id uuid               load_balancer_id: ID of the attached Load Balancer (required)
     --name string                         The unique name of the Health Check (max character count: 64) (required)
     --path string                         The path to check for HTTP protocol; ignored for other protocols
     --port integer                        The port number on which the Health Check will be performed (required)
     --protocol enum                       The protocol used for the Health Check (e.g., HTTP, TCP) (one of "http" or "tcp") (required)
-    --timeout-seconds integer             Timeout Seconds: The timeout in seconds for each Health Check (default 10)
-    --unhealthy-threshold-count integer   Unhealthy Threshold Count: The number of consecutive failed checks before considering the target unhealthy (default 3)
--v, --version                             version for create
+    --timeout-seconds integer             Timeout Seconds: The timeout in seconds for each Health Check
+    --unhealthy-threshold-count integer   Unhealthy Threshold Count: The number of consecutive failed checks before considering the target unhealthy
 ```
 
 ## Global Flags:

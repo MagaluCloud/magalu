@@ -42,7 +42,6 @@ func collectAllChildren(child core.Descriptor) (map[string]any, error) {
 	node := map[string]any{}
 	node["name"] = child.Name()
 	node["description"] = child.Description()
-	node["version"] = child.Version()
 	node["isInternal"] = child.IsInternal()
 	node["groupId"] = child.GroupID()
 

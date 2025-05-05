@@ -12,7 +12,6 @@ mgc dbaas parameter-groups parameters delete [parameter-group-id] [parameter-id]
 -h, --help                      help for delete
     --parameter-group-id uuid   Value referring to parameter group Id. (required)
     --parameter-id uuid         Parameter Id. (required)
--v, --version                   version for delete
 ```
 
 ## Global Flags:

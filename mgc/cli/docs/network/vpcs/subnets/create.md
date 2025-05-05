@@ -12,12 +12,11 @@ mgc network vpcs subnets create [vpc-id] [flags]
     --cidr-block string                      Cidr Block (required)
     --cli.list-links enum[=table]            List all available links for this command (one of "json", "table" or "yaml")
     --description string                     Description
-    --dns-nameservers array(ipvanyaddress)   Dns Nameservers (default [])
+    --dns-nameservers array(ipvanyaddress)   Dns Nameservers
 -h, --help                                   help for create
     --ip-version integer                     Ip Version (required)
     --name string                            Name (required)
     --subnetpool-id string                   Subnetpool Id
--v, --version                                version for create
     --vpc-id string                          Vpc Id: Id of the VPC to create Subnet (required)
 ```
 

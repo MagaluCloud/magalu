@@ -11,7 +11,6 @@ mgc dbaas instance-types get [instance-type-id] [flags]
 ```
 -h, --help                    help for get
     --instance-type-id uuid   Instance Type Id: Instance Type Unique Id. (required)
--v, --version                 version for get
 ```
 
 ## Global Flags:

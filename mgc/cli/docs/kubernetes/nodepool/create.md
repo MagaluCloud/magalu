@@ -58,7 +58,6 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
     --tags array(string)                List of tags applied to the node pool.
     --taints array(object)              Property associating a set of nodes.
                                         Use --taints=help for more details
--v, --version                           version for create
 ```
 
 ## Global Flags:

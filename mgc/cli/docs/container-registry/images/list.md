@@ -11,12 +11,11 @@ mgc container-registry images list [registry-id] [repository-name] [flags]
 ```
     --control.limit integer    Limit (min: 1)
     --control.offset integer   Offset (min: 0)
-    --control.sort string      Fields to use as reference to sort. (pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "pushed_at:desc")
+    --control.sort string      Fields to use as reference to sort. (pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
     --expand array(string)     You can get more detailed info about: ['tags_details', 'extra_attr', 'manifest_media_type', 'media_type']
 -h, --help                     help for list
     --registry-id uuid         Container Registry's UUID. (required)
     --repository-name string   Repository's name. (required)
--v, --version                  version for list
 ```
 
 ## Global Flags:

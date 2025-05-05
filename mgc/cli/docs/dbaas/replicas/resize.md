@@ -14,7 +14,6 @@ mgc dbaas replicas resize [replica-id] [flags]
 -h, --help                          help for resize
     --instance-type-id uuid         Instance Type Id
     --replica-id uuid               Value referring to replica Id. (required)
--v, --version                       version for resize
 ```
 
 ## Global Flags:

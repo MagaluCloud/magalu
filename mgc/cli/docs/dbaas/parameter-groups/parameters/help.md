@@ -18,8 +18,7 @@ update      Update a parameter.
 
 ## Flags:
 ```
--h, --help      help for parameters
--v, --version   version for parameters
+-h, --help   help for parameters
 ```
 
 ## Global Flags:

@@ -20,7 +20,6 @@ mgc dbaas engines parameters [engine-id] [flags]
                                These parameters are set during instance provisioning and become immutable after the machine is created.
                                
     --name string              Value referring to engine parameter name.
--v, --version                  version for parameters
 ```
 
 ## Global Flags:

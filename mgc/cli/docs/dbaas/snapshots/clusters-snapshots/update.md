@@ -19,7 +19,6 @@ mgc dbaas snapshots clusters-snapshots update --description="my-description-upda
 -h, --help                 help for update
     --name string          Snapshot unique name. (max character count: 100)
     --snapshot-id uuid     Value referring to snapshot Id. (required)
--v, --version              version for update
 ```
 
 ## Global Flags:

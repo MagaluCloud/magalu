@@ -131,7 +131,7 @@ paths:
             -   name: x-api-version
                 in: header
                 description: api version
-                required: false
+                required: true
                 schema:
                     anyOf:
                     -   type: string
@@ -512,7 +512,7 @@ paths:
                 in: query
                 description: 'You can get more detailed info about: [''image'', ''machine-type'',
                     ''machine-types'', ''network'', ''labels''] '
-                required: false
+                required: true
                 schema:
                     type: array
                     items:
@@ -527,7 +527,7 @@ paths:
             -   name: x-api-version
                 in: header
                 description: api version
-                required: false
+                required: true
                 schema:
                     anyOf:
                     -   type: string

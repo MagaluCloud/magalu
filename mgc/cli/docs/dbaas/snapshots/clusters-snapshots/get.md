@@ -12,7 +12,6 @@ mgc dbaas snapshots clusters-snapshots get [cluster-id] [snapshot-id] [flags]
     --cluster-id uuid    Value referring to cluster Id. (required)
 -h, --help               help for get
     --snapshot-id uuid   Value referring to snapshot Id. (required)
--v, --version            version for get
 ```
 
 ## Global Flags:

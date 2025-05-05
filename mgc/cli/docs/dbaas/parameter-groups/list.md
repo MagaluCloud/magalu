@@ -14,12 +14,11 @@ mgc dbaas parameter-groups list --type="USER"
 
 ## Flags:
 ```
-    --control.limit integer    The maximum number of items per page. (range: 1 - 25) (default 10)
+    --control.limit integer    The maximum number of items per page. (range: 1 - 25)
     --control.offset integer   The number of items to skip before starting to collect the result set. (min: 0)
     --engine-id uuid           Value referring to engine Id.
 -h, --help                     help for list
     --type enum                Type (one of "SYSTEM" or "USER")
--v, --version                  version for list
 ```
 
 ## Global Flags:

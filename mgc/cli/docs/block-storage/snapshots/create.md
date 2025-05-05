@@ -25,7 +25,6 @@ mgc block-storage snapshots create --source-snapshot.id="xxxxxxxx-xxxx-xxxx-xxxx
     --source-snapshot.name string   Source Snapshot: Name (between 1 and 255 characters)
                                     This is the same as '--source-snapshot=name:string'.
     --type enum                     SnapshotType (one of "instant" or "object")
--v, --version                       version for create
     --volume object                 Volume (at least one of: single property: id or single property: name)
                                     Use --volume=help for more details
     --volume.id string              Volume: Id (min character count: 1)

@@ -9,8 +9,7 @@ mgc kubernetes flavor list [flags]
 
 ## Flags:
 ```
--h, --help      help for list
--v, --version   version for list
+-h, --help   help for list
 ```
 
 ## Global Flags:

@@ -18,7 +18,6 @@ mgc dbaas snapshots instances-snapshots create --description="my-description" --
 -h, --help                 help for create
     --instance-id uuid     Value referring to instance Id. (required)
     --name string          Snapshot unique name. (max character count: 100) (required)
--v, --version              version for create
 ```
 
 ## Global Flags:

@@ -10,10 +10,9 @@ mgc network nat-gateways list [flags]
 ## Flags:
 ```
 -h, --help                     help for list
-    --items-per-page integer   Items Per Page (range: 1 - 100) (default 10)
-    --page integer             Page (min: 1) (default 1)
-    --sort string              Sort (default "name:asc")
--v, --version                  version for list
+    --items-per-page integer   Items Per Page (range: 1 - 100)
+    --page integer             Page (min: 1)
+    --sort string              Sort
     --vpc-id string            Vpc Id (required)
 ```
 

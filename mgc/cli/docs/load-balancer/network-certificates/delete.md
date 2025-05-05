@@ -12,7 +12,6 @@ mgc load-balancer network-certificates delete [load-balancer-id] [tls-certificat
 -h, --help                      help for delete
     --load-balancer-id uuid     load_balancer_id: ID of the Load Balancer to delete the TLS certificate from (required)
     --tls-certificate-id uuid   tls_certificate_id: ID of the TLS certificate to delete (required)
--v, --version                   version for delete
 ```
 
 ## Global Flags:

@@ -12,7 +12,6 @@ mgc dbaas snapshots instances-snapshots delete [instance-id] [snapshot-id] [flag
 -h, --help               help for delete
     --instance-id uuid   Value referring to instance Id. (required)
     --snapshot-id uuid   Value referring to snapshot Id. (required)
--v, --version            version for delete
 ```
 
 ## Global Flags:

@@ -18,7 +18,6 @@ mgc dbaas parameter-groups update --description="Production parameter group for 
 -h, --help                      help for update
     --name string               Name (max character count: 100)
     --parameter-group-id uuid   Value referring to parameter group Id. (required)
--v, --version                   version for update
 ```
 
 ## Global Flags:

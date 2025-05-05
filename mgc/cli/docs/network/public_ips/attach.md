@@ -13,7 +13,6 @@ mgc network public-ips attach [public-ip-id] [port-id] [flags]
 -h, --help                          help for attach
     --port-id string                Port ID: Id of the Port to attach the Public IP (required)
     --public-ip-id string           Public IP ID: Id of the Public IP to attach port to (required)
--v, --version                       version for attach
 ```
 
 ## Global Flags:

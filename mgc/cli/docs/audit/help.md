@@ -16,8 +16,7 @@ events      Endpoints related to listing events emitted by other products.
 
 ## Flags:
 ```
--h, --help      help for audit
--v, --version   version for audit
+-h, --help   help for audit
 ```
 
 ## Global Flags:

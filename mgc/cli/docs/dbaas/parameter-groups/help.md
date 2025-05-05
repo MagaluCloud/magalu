@@ -20,8 +20,7 @@ update      Parameter group update.
 
 ## Flags:
 ```
--h, --help      help for parameter-groups
--v, --version   version for parameter-groups
+-h, --help   help for parameter-groups
 ```
 
 ## Global Flags:

@@ -15,8 +15,7 @@ list        Lists all available flavors
 
 ## Flags:
 ```
--h, --help      help for flavor
--v, --version   version for flavor
+-h, --help   help for flavor
 ```
 
 ## Global Flags:

@@ -318,8 +318,6 @@ func resolveDescriptor(field string, desc Descriptor) (result any, err error) {
 	switch field {
 	case "name":
 		return desc.Name(), nil
-	case "version":
-		return desc.Version(), nil
 	case "description":
 		return desc.Description(), nil
 	}

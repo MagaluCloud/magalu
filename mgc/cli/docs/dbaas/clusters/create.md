@@ -14,8 +14,8 @@ mgc dbaas clusters create --volume.size=30
 
 ## Flags:
 ```
-    --backup-retention-days integer   Backup Retention Days (default 7)
-    --backup-start-at time            Backup Start At (default "04:00:00")
+    --backup-retention-days integer   Backup Retention Days
+    --backup-start-at time            Backup Start At
     --cli.list-links enum[=table]     List all available links for this command (one of "json", "table" or "yaml")
     --engine-id uuid                  Engine Id (required)
 -h, --help                            help for create
@@ -24,13 +24,12 @@ mgc dbaas clusters create --volume.size=30
     --parameter-group-id uuid         Parameter group Id
     --password string                 Password (max character count: 50) (required)
     --user string                     User (max character count: 25) (required)
--v, --version                         version for create
     --volume object                   Cluster Volume Request (properties: size and type)
                                       Use --volume=help for more details (required)
     --volume.size integer             Cluster Volume Request: The size of the volume (in GiB). (range: 20 - 50000)
                                       This is the same as '--volume=size:integer'.
     --volume.type enum                Cluster Volume Request: Volume Type: The type of the volume. (one of "CLOUD_NVME15K" or "CLOUD_NVME20K")
-                                      This is the same as '--volume=type:enum'. (default "CLOUD_NVME15K")
+                                      This is the same as '--volume=type:enum'.
 ```
 
 ## Global Flags:

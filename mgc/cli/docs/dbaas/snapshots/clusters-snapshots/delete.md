@@ -12,7 +12,6 @@ mgc dbaas snapshots clusters-snapshots delete [cluster-id] [snapshot-id] [flags]
     --cluster-id uuid    Value referring to cluster Id. (required)
 -h, --help               help for delete
     --snapshot-id uuid   Value referring to snapshot Id. (required)
--v, --version            version for delete
 ```
 
 ## Global Flags:

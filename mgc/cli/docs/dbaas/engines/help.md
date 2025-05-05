@@ -17,8 +17,7 @@ parameters  List available engine parameters.
 
 ## Flags:
 ```
--h, --help      help for engines
--v, --version   version for engines
+-h, --help   help for engines
 ```
 
 ## Global Flags:

@@ -22,8 +22,7 @@ vpcs            Operations related to VPCs
 
 ## Flags:
 ```
--h, --help      help for network
--v, --version   version for network
+-h, --help   help for network
 ```
 
 ## Global Flags:

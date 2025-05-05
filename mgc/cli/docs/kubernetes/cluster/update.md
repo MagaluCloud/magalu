@@ -14,7 +14,6 @@ mgc kubernetes cluster update [cluster-id] [flags]
     --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
     --cluster-id uuid               Cluster's UUID (required)
 -h, --help                          help for update
--v, --version                       version for update
 ```
 
 ## Global Flags:

@@ -18,7 +18,6 @@ mgc dbaas parameter-groups create --description="Parameter Group for MySQL 8 eng
     --engine-id uuid       Engine Id (required)
 -h, --help                 help for create
     --name string          Name (max character count: 100) (required)
--v, --version              version for create
 ```
 
 ## Global Flags:

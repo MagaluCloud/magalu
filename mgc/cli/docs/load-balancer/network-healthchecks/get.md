@@ -13,7 +13,6 @@ mgc load-balancer network-healthchecks get [load-balancer-id] [health-check-id] 
     --health-check-id uuid          health_check_id: ID of the health check you wanna fetch (required)
 -h, --help                          help for get
     --load-balancer-id uuid         load_balancer_id: ID of the attached Load Balancer (required)
--v, --version                       version for get
 ```
 
 ## Global Flags:

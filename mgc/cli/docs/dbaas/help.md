@@ -21,8 +21,7 @@ snapshots        Snapshots management.
 
 ## Flags:
 ```
--h, --help      help for dbaas
--v, --version   version for dbaas
+-h, --help   help for dbaas
 ```
 
 ## Global Flags:

@@ -16,8 +16,7 @@ list        List Ports
 
 ## Flags:
 ```
--h, --help      help for ports
--v, --version   version for ports
+-h, --help   help for ports
 ```
 
 ## Global Flags:

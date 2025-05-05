@@ -298,7 +298,6 @@ func addAction(
 		Example:           flags.example(cmdPath),
 		Short:             exec.Summary(),
 		Long:              exec.Description(),
-		Version:           exec.Version(),
 		GroupID:           exec.GroupID(),
 		Annotations:       make(map[string]string),
 
@@ -358,7 +357,6 @@ func addGroup(
 		Aliases: aliases,
 		Short:   group.Summary(),
 		Long:    group.Description(),
-		Version: group.Version(),
 		GroupID: group.GroupID(),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return cmd.Help()

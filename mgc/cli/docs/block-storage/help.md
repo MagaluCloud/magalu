@@ -17,8 +17,7 @@ volumes      Operations with volumes, including create, delete, extend, retype, 
 
 ## Flags:
 ```
--h, --help      help for block-storage
--v, --version   version for block-storage
+-h, --help   help for block-storage
 ```
 
 ## Global Flags:

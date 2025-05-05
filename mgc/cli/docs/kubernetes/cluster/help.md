@@ -20,8 +20,7 @@ update      Patches a cluster
 
 ## Flags:
 ```
--h, --help      help for cluster
--v, --version   version for cluster
+-h, --help   help for cluster
 ```
 
 ## Global Flags:

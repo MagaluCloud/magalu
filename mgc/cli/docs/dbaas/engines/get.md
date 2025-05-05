@@ -12,7 +12,6 @@ mgc dbaas engines get [engine-id] [flags]
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
     --engine-id uuid                Value referring to engine Id. (required)
 -h, --help                          help for get
--v, --version                       version for get
 ```
 
 ## Global Flags:

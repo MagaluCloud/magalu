@@ -19,8 +19,7 @@ replace     Update Listener by ID
 
 ## Flags:
 ```
--h, --help      help for network-listeners
--v, --version   version for network-listeners
+-h, --help   help for network-listeners
 ```
 
 ## Global Flags:

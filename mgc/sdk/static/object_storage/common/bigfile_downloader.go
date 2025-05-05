@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path"
 
 	"github.com/MagaluCloud/magalu/mgc/core/pipeline"
 	"github.com/MagaluCloud/magalu/mgc/core/progress_report"
@@ -63,6 +64,12 @@ func (u *bigFileDownloader) Download(ctx context.Context) error {
 	ctx, cancel := context.WithCancelCause(ctx)
 	defer cancel(nil)
 
+	dir := path.Dir(u.dst.String())
+	if len(dir) != 0 {
+		if err := os.MkdirAll(dir, utils.DIR_PERMISSION); err != nil {
+			return err
+		}
+	}
 	writer, err := os.OpenFile(u.dst.String(), os.O_WRONLY|os.O_CREATE, utils.FILE_PERMISSION)
 	if err != nil {
 		return err

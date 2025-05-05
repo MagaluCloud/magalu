@@ -13,7 +13,6 @@ mgc load-balancer network-certificates get [load-balancer-id] [tls-certificate-i
 -h, --help                          help for get
     --load-balancer-id uuid         load_balancer_id: ID of the Load Balancer to get the TLS certificate from (required)
     --tls-certificate-id uuid       tls_certificate_id: ID of the TLS certificate to fetch (required)
--v, --version                       version for get
 ```
 
 ## Global Flags:

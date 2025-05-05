@@ -15,8 +15,7 @@ list        List all availability zones.
 
 ## Flags:
 ```
--h, --help      help for availability-zones
--v, --version   version for availability-zones
+-h, --help   help for availability-zones
 ```
 
 ## Global Flags:

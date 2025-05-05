@@ -15,17 +15,16 @@ mgc audit events list --data='{"data.machine_type.name":"cloud-bs1.xsmall","data
 ## Flags:
 ```
     --authid string            Auth ID: Identification of the principal that triggered the occurrence
-    --control.limit integer    Limit: Number of items per page (default 50)
+    --control.limit integer    Limit: Number of items per page
     --control.offset integer   Offset for pagination
     --data object              The raw data event
-                               Use --data=help for more details (default {})
+                               Use --data=help for more details
 -h, --help                     help for list
     --id string                Identification of the event
     --product-like string      In which producer product an event occurred ('like' operation)
     --source-like string       Source: Context in which the event occurred ('like' operation)
     --time date-time           Timestamp of when the occurrence happened
     --type-like string         Type of event related to the originating occurrence ('like' operation)
--v, --version                  version for list
 ```
 
 ## Global Flags:

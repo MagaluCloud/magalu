@@ -20,7 +20,6 @@ mgc dbaas parameter-groups parameters create --name="LOWER_CASE_TABLE_NAMES"
     --parameter-group-id uuid       Value referring to parameter group Id. (required)
     --value anyOf                   Value (at least one of: number, integer, boolean or string)
                                     Use --value=help for more details (required)
--v, --version                       version for create
 ```
 
 ## Global Flags:

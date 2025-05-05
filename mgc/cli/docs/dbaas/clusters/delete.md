@@ -11,7 +11,6 @@ mgc dbaas clusters delete [cluster-id] [flags]
 ```
     --cluster-id uuid   Value referring to cluster Id. (required)
 -h, --help              help for delete
--v, --version           version for delete
 ```
 
 ## Global Flags:

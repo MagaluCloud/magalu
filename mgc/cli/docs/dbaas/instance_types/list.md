@@ -9,12 +9,11 @@ mgc dbaas instance-types list [flags]
 
 ## Flags:
 ```
-    --control.limit integer    The maximum number of items per page. (range: 1 - 50) (default 10)
+    --control.limit integer    The maximum number of items per page. (range: 1 - 50)
     --control.offset integer   The number of items to skip before starting to collect the result set. (min: 0)
     --engine-id uuid           Engine Id unique identifier
 -h, --help                     help for list
-    --status enum              An enumeration. (one of "ACTIVE" or "DEPRECATED") (default "ACTIVE")
--v, --version                  version for list
+    --status enum              An enumeration. (one of "ACTIVE" or "DEPRECATED")
 ```
 
 ## Global Flags:

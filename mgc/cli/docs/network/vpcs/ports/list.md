@@ -9,13 +9,12 @@ mgc network vpcs ports list [vpc-id] [flags]
 
 ## Flags:
 ```
-    --control.limit integer        Items Per Page (min: 1) (default 10)
-    --control.offset integer       Page Number (min: 1) (default 1)
-    --detailed                     Detailed (default true)
+    --control.limit integer        Items Per Page (min: 1)
+    --control.offset integer       Page Number (min: 1)
+    --detailed                     Detailed
 -h, --help                         help for list
     --name string                  Name of the port to list: Filter ports results with name
-    --port-id-list array(string)   Port Id List (default [])
--v, --version                      version for list
+    --port-id-list array(string)   Port Id List
     --vpc-id string                vpc_id: ID of VPC to list ports (required)
 ```
 

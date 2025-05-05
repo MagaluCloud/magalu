@@ -17,7 +17,7 @@ import (
 type presignObjectParams struct {
 	Destination mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Path of the object to generate pre-signed URL for,example=bucket1/file.txt" mgc:"positional"`
 	Expiry      string           `json:"expires-in,omitempty" jsonschema_description:"Expiration time for the pre-signed URL. Valid time units are 'ns, 'us' (or 'µs'), 'ms', 's',  'm', and 'h'.default=5m" jsonschema:"example=2h"`
-	Method      string           `json:"method" jsonschema:"enum=GET,enum=PUT,default=GET"`
+	Method      string           `json:"method" jsonschema:"enum=GET,enum=PUT,default=GET,required"`
 }
 
 type presignedUrlResult struct {

@@ -9,11 +9,10 @@ mgc load-balancer network-loadbalancers list [flags]
 
 ## Flags:
 ```
-    --control.limit integer    Items Per Page (min: 1) (default 10)
+    --control.limit integer    Items Per Page (min: 1)
     --control.offset integer   Page Number (min: 0)
-    --control.sort string       Sort: Name of the field which the list must be ordered by ending with :asc or :desc (default "created_at:desc")
+    --control.sort string       Sort: Name of the field which the list must be ordered by ending with :asc or :desc
 -h, --help                     help for list
--v, --version                  version for list
 ```
 
 ## Global Flags:

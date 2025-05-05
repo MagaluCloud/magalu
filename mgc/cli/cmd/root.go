@@ -92,7 +92,6 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	addApiKeyFlag(rootCmd)
 
 	rootCmd.InitDefaultHelpFlag()
-	rootCmd.InitDefaultVersionFlag()
 
 	// Immediately parse flags for root command because we'll access the global flags prior
 	// to calling Execute (which is when Cobra parses the flags)

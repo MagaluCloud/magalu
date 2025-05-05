@@ -16,8 +16,7 @@ list        List Rules
 
 ## Flags:
 ```
--h, --help      help for rules
--v, --version   version for rules
+-h, --help   help for rules
 ```
 
 ## Global Flags:

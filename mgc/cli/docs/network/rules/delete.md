@@ -11,7 +11,6 @@ mgc network rules delete [rule-id] [flags]
 ```
 -h, --help             help for delete
     --rule-id string   Rule ID: Id of the Rule (required)
--v, --version          version for delete
 ```
 
 ## Global Flags:

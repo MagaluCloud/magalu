@@ -11,7 +11,6 @@ mgc dbaas parameter-groups get [parameter-group-id] [flags]
 ```
 -h, --help                      help for get
     --parameter-group-id uuid   Value referring to parameter group Id. (required)
--v, --version                   version for get
 ```
 
 ## Global Flags:

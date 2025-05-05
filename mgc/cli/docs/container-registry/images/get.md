@@ -14,7 +14,6 @@ mgc container-registry images get [registry-id] [repository-name] [digest-or-tag
 -h, --help                          help for get
     --registry-id uuid              Container Registry's UUID. (required)
     --repository-name string        Repository's name. (required)
--v, --version                       version for get
 ```
 
 ## Global Flags:

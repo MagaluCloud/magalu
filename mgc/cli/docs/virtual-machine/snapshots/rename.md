@@ -14,7 +14,6 @@ mgc virtual-machine snapshots rename [id] [flags]
 -h, --help                          help for rename
     --id string                     Id (required)
     --name string                   Name (between 1 and 255 characters) (required)
--v, --version                       version for rename
 ```
 
 ## Global Flags:

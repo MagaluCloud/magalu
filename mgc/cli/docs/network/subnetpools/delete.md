@@ -11,7 +11,6 @@ mgc network subnetpools delete [subnetpool-id] [flags]
 ```
 -h, --help                   help for delete
     --subnetpool-id string   subnetpoolId: Id of the Subnet Pool to delete (required)
--v, --version                version for delete
 ```
 
 ## Global Flags:

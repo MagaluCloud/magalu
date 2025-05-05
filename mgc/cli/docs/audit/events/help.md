@@ -15,8 +15,7 @@ list        Lists all events.
 
 ## Flags:
 ```
--h, --help      help for events
--v, --version   version for events
+-h, --help   help for events
 ```
 
 ## Global Flags:

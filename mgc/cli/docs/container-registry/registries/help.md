@@ -18,8 +18,7 @@ list        List all container registries
 
 ## Flags:
 ```
--h, --help      help for registries
--v, --version   version for registries
+-h, --help   help for registries
 ```
 
 ## Global Flags:

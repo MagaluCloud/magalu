@@ -17,7 +17,7 @@ import (
 type moveDirParams struct {
 	Source      mgcSchemaPkg.URI `json:"src" jsonschema:"description=Source path or uri to move files from,example=./dir" mgc:"positional"`
 	Destination mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Destination to put files into,example=s3://my-bucket/dir" mgc:"positional"`
-	BatchSize   int              `json:"batch_size,omitempty" jsonschema:"description=Limit of items per batch to process,default=1000,minimum=1,maximum=1000" example:"1000"`
+	BatchSize   int              `json:"batch_size,omitempty" jsonschema:"description=Limit of items per batch to process,default=1000,minimum=1,maximum=1000,required" example:"1000"`
 }
 
 var getMoveDir = utils.NewLazyLoader[core.Executor](func() core.Executor {

@@ -20,8 +20,7 @@ update      Snapshot Update.
 
 ## Flags:
 ```
--h, --help      help for clusters-snapshots
--v, --version   version for clusters-snapshots
+-h, --help   help for clusters-snapshots
 ```
 
 ## Global Flags:

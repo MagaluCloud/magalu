@@ -16,7 +16,6 @@ mgc load-balancer network-certificates replace [load-balancer-id] [tls-certifica
     --load-balancer-id uuid         load_balancer_id: ID of the Load Balancer to update the TLS certificate (required)
     --private-key base64            The private key associated with the TLS Certificate (required)
     --tls-certificate-id uuid       tls_certificate_id: ID of the TLS certificate to update (required)
--v, --version                       version for replace
 ```
 
 ## Global Flags:

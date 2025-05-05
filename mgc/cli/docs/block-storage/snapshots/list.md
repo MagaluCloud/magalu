@@ -9,14 +9,13 @@ mgc block-storage snapshots list [flags]
 
 ## Flags:
 ```
-    --control.limit integer     Limit (default 50)
+    --control.limit integer     Limit
     --control.offset integer    Offset
-    --control.sort string       Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created_at:asc")
-    --expand array(enum)       Expand (default [])
+    --control.sort string       Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
+    --expand array(enum)       Expand
 -h, --help                     help for list
     --name string              Name
     --type enum                Type (one of "instant" or "object")
--v, --version                  version for list
 ```
 
 ## Global Flags:

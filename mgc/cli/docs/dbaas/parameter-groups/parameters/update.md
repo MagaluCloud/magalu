@@ -15,7 +15,6 @@ mgc dbaas parameter-groups parameters update [parameter-group-id] [parameter-id]
     --parameter-id uuid             Parameter Id. (required)
     --value anyOf                   Value (at least one of: number, integer, boolean or string)
                                     Use --value=help for more details (required)
--v, --version                       version for update
 ```
 
 ## Global Flags:

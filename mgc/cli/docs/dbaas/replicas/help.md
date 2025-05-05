@@ -21,8 +21,7 @@ stop        Replica Stop.
 
 ## Flags:
 ```
--h, --help      help for replicas
--v, --version   version for replicas
+-h, --help   help for replicas
 ```
 
 ## Global Flags:

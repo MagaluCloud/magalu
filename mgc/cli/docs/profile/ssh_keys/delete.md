@@ -11,7 +11,6 @@ mgc profile ssh-keys delete [key-id] [flags]
 ```
 -h, --help          help for delete
     --key-id uuid   Key Id (required)
--v, --version       version for delete
 ```
 
 ## Global Flags:

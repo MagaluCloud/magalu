@@ -11,7 +11,6 @@ mgc network security-groups delete [security-group-id] [flags]
 ```
 -h, --help                       help for delete
     --security-group-id string   Security Group ID: Id of the security group to delete (required)
--v, --version                    version for delete
 ```
 
 ## Global Flags:

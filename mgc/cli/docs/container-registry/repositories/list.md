@@ -11,10 +11,9 @@ mgc container-registry repositories list [registry-id] [flags]
 ```
     --control.limit integer    Limit (min: 1)
     --control.offset integer   Offset (min: 0)
-    --control.sort string      Fields to use as reference to sort. (pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "created_at:desc")
+    --control.sort string      Fields to use as reference to sort. (pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
 -h, --help                     help for list
     --registry-id uuid         Container Registry's UUID. (required)
--v, --version                  version for list
 ```
 
 ## Global Flags:

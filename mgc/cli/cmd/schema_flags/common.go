@@ -1,5 +1,7 @@
 package schema_flags
 
+import "slices"
+
 type schemaFlagValueCommon struct {
 	desc     SchemaFlagValueDesc
 	rawValue string
@@ -37,8 +39,16 @@ func (o *schemaFlagValueCommon) Desc() SchemaFlagValueDesc {
 	return o.desc
 }
 
+var (
+	namesAllowedToHaveDefault = []string{"env", "region"}
+)
+
 func (o *schemaFlagValueCommon) RawDefaultValue() string {
-	return o.desc.RawDefaultValue()
+	result := o.desc.RawDefaultValue()
+	if o.desc.IsRequired || slices.Contains(namesAllowedToHaveDefault, o.desc.PropName) {
+		return result
+	}
+	return ""
 }
 
 func (o *schemaFlagValueCommon) RawNoOptDefVal() string {

@@ -28,7 +28,6 @@ mgc kubernetes nodepool update --auto-scale.max-replicas=5 --auto-scale.min-repl
 -h, --help                              help for update
     --node-pool-id uuid                 Nodepool's UUID. (required)
     --replicas integer                  Number of replicas of the nodes in the node pool.
--v, --version                           version for update
 ```
 
 ## Global Flags:

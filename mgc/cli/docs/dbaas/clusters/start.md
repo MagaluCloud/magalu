@@ -12,7 +12,6 @@ mgc dbaas clusters start [cluster-id] [flags]
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
     --cluster-id uuid               Value referring to cluster Id. (required)
 -h, --help                          help for start
--v, --version                       version for start
 ```
 
 ## Global Flags:

@@ -13,7 +13,6 @@ mgc load-balancer network-backends targets delete [load-balancer-id] [backend-id
 -h, --help                    help for delete
     --load-balancer-id uuid   load_balancer_id: ID of the attached Load Balancer (required)
     --target-id uuid          backend_id: ID of the target you want to remove (required)
--v, --version                 version for delete
 ```
 
 ## Global Flags:

@@ -21,8 +21,7 @@ update      Database cluster update.
 
 ## Flags:
 ```
--h, --help      help for clusters
--v, --version   version for clusters
+-h, --help   help for clusters
 ```
 
 ## Global Flags:

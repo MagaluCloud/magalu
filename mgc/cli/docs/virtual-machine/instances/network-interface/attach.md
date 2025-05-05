@@ -28,7 +28,6 @@ mgc virtual-machine instances network-interface attach --instance.id="9ec75090-2
                                     This is the same as '--network=interface:object'.
     --network.interface.id string   ID: Id (between 1 and 255 characters)
                                     This is the same as '--network.interface=id:string'.
--v, --version                       version for attach
 ```
 
 ## Global Flags:

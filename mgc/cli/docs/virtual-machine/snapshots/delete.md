@@ -12,7 +12,6 @@ mgc virtual-machine snapshots delete [id] [flags]
 ```
 -h, --help      help for delete
     --id uuid   Id (required)
--v, --version   version for delete
 ```
 
 ## Global Flags:

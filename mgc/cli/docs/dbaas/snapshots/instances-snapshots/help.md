@@ -20,8 +20,7 @@ update      Snapshot Update.
 
 ## Flags:
 ```
--h, --help      help for instances-snapshots
--v, --version   version for instances-snapshots
+-h, --help   help for instances-snapshots
 ```
 
 ## Global Flags:

@@ -3,6 +3,7 @@ package schema_flags
 import (
 	"errors"
 	"reflect"
+	"slices"
 
 	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/MagaluCloud/magalu/mgc/core/config"
@@ -93,9 +94,15 @@ func getUnchangedFlagValue(fv SchemaFlagValue, cfg *config.Config) (value any, e
 		if err = cfg.Get(desc.PropName, &value); err == nil && value != nil {
 			return
 		}
+		if slices.Contains(namesAllowedToHaveDefault, desc.PropName) {
+			value = desc.Schema.Default
+		}
 	}
 
-	value = desc.Schema.Default
+	if desc.IsRequired {
+		value = desc.Schema.Default
+	}
+
 	return
 }
 

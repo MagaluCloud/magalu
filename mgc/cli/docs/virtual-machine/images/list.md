@@ -10,11 +10,10 @@ mgc virtual-machine images list [flags]
 ## Flags:
 ```
     --availability-zone string   Availability-Zone: br-ne1-a
-    --control.limit integer       Limit (max: 2147483647) (default 50)
+    --control.limit integer       Limit (max: 2147483647)
     --control.offset integer      Offset (max: 2147483647)
-    --control.sort string         Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$) (default "platform:asc,end_life_at:desc")
+    --control.sort string         Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
 -h, --help                       help for list
--v, --version                    version for list
 ```
 
 ## Global Flags:

@@ -17,7 +17,7 @@ type setBucketObjectLockParams struct {
 	Bucket common.BucketName `json:"dst" jsonschema:"description=Name of the bucket to set object locking for its objects,example=my-bucket" mgc:"positional"`
 	Days   uint              `json:"days,omitempty" jsonschema:"description=Number of days to lock new objects for. Cannot be used alongside 'years',example=30"`
 	Years  uint              `json:"years,omitempty" jsonschema:"description=Number of years to lock new objects for. Cannot be used alongside 'days',example=5"`
-	Mode   string            `json:"mode,omitempty" jsonschema:"description=Lock mode,enum=COMPLIANCE,enum=GOVERNANCE,default=COMPLIANCE" mgc:"hidden"`
+	Mode   string            `json:"mode,omitempty" jsonschema:"description=Lock mode,enum=COMPLIANCE,enum=GOVERNANCE,default=COMPLIANCE,required" mgc:"hidden"`
 }
 
 var getSet = utils.NewLazyLoader(func() core.Executor {

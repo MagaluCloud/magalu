@@ -35,7 +35,7 @@ mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d9
     --network object                            (properties: associate_public_ip, interface and vpc)
                                                 Use --network=help for more details
     --network.associate-public-ip boolean       network's associate_public_ip property: Associate Public Ip
-                                                This is the same as '--network=associate_public_ip:boolean'. (default true)
+                                                This is the same as '--network=associate_public_ip:boolean'.
     --network.interface object                  network's interface property: Interface (at least one of: single property: id or single property: security_groups)
                                                 Use --network.interface=help for more details
                                                 This is the same as '--network=interface:object'.
@@ -43,17 +43,16 @@ mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d9
                                                 This is the same as '--network.interface=id:string'.
     --network.interface.security-groups array   Interface: Security Groups
                                                 Use --network.interface.security-groups=help for more details
-                                                This is the same as '--network.interface=security_groups:array'. (default [])
+                                                This is the same as '--network.interface=security_groups:array'.
     --network.vpc object                        network's vpc property: Vpc (at least one of: single property: id or single property: name)
                                                 Use --network.vpc=help for more details
-                                                This is the same as '--network=vpc:object'. (default {"name":"vpc_default"})
+                                                This is the same as '--network=vpc:object'.
     --network.vpc.id string                     Vpc: Id (between 1 and 255 characters)
                                                 This is the same as '--network.vpc=id:string'.
     --network.vpc.name string                   Vpc: Name (between 1 and 255 characters)
                                                 This is the same as '--network.vpc=name:string'.
     --ssh-key-name string                       Ssh key Name
     --user-data string                          Used to perform automated configuration tasks. (between 1 and 65000 characters)
--v, --version                                   version for create
     --volumes array(object)                     Volumes
                                                 Use --volumes=help for more details
 ```

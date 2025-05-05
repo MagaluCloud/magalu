@@ -12,7 +12,6 @@ mgc kubernetes nodepool delete [cluster-id] [node-pool-id] [flags]
     --cluster-id uuid     Cluster's UUID. (required)
 -h, --help                help for delete
     --node-pool-id uuid   Nodepool's UUID. (required)
--v, --version             version for delete
 ```
 
 ## Global Flags:

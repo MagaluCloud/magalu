@@ -15,8 +15,8 @@ mgc dbaas instances create --availability-zone="br-ne1-a" --volume.size=30
 ## Flags:
 ```
     --availability-zone enum          Availability Zone (one of "br-ne1-a", "br-ne1-b", "br-se1-a", "br-se1-b" or "br-se1-c")
-    --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion. (default 7)
-    --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process. (default "04:00:00")
+    --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion.
+    --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process.
     --cli.list-links enum[=table]     List all available links for this command (one of "json", "table" or "yaml")
     --engine-id uuid                  Engine Id (required)
 -h, --help                            help for create
@@ -25,13 +25,12 @@ mgc dbaas instances create --availability-zone="br-ne1-a" --volume.size=30
     --parameter-group-id uuid         Parameter group Id
     --password string                 Password (max character count: 50) (required)
     --user string                     User (max character count: 25) (required)
--v, --version                         version for create
     --volume object                   Instance Volume Request (properties: size and type)
                                       Use --volume=help for more details (required)
     --volume.size integer             Instance Volume Request: The size of the volume (in GiB). (range: 10 - 50000)
                                       This is the same as '--volume=size:integer'.
     --volume.type enum                Instance Volume Request: Volume Type: The type of the volume. (one of "CLOUD_NVME15K" or "CLOUD_NVME20K")
-                                      This is the same as '--volume=type:enum'. (default "CLOUD_NVME15K")
+                                      This is the same as '--volume=type:enum'.
 ```
 
 ## Global Flags:

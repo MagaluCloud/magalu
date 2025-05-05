@@ -26,8 +26,7 @@ suspend           Suspends instance.
 
 ## Flags:
 ```
--h, --help      help for instances
--v, --version   version for instances
+-h, --help   help for instances
 ```
 
 ## Global Flags:

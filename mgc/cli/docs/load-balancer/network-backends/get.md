@@ -14,7 +14,6 @@ mgc load-balancer network-backends get [load-balancer-id] [backend-id] [flags]
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                          help for get
     --load-balancer-id uuid         load_balancer_id: ID of the attached Load Balancer (required)
--v, --version                       version for get
 ```
 
 ## Global Flags:

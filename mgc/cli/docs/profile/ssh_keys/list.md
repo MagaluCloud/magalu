@@ -9,11 +9,10 @@ mgc profile ssh-keys list [flags]
 
 ## Flags:
 ```
-    --control.limit integer     Limit (default 50)
+    --control.limit integer     Limit
     --control.offset integer    Offset
-    --control.sort string       Sort (default "name:asc")
+    --control.sort string       Sort
 -h, --help                     help for list
--v, --version                  version for list
 ```
 
 ## Global Flags:

@@ -10,13 +10,12 @@ mgc network vpcs ports create [vpc-id] [flags]
 ## Flags:
 ```
     --cli.list-links enum[=table]        List all available links for this command (one of "json", "table" or "yaml")
-    --has-pip                            Has Pip (default true)
-    --has-sg                             Has Sg (default true)
+    --has-pip                            Has Pip
+    --has-sg                             Has Sg
 -h, --help                               help for create
     --name string                        Name (between 5 and 100 characters) (required)
-    --security-groups-id array(string)   Security Groups Id (default [])
-    --subnets array(string)              Subnets (default [])
--v, --version                            version for create
+    --security-groups-id array(string)   Security Groups Id
+    --subnets array(string)              Subnets
     --vpc-id string                      vpc_id: ID of the VPC to create port (required)
 ```
 

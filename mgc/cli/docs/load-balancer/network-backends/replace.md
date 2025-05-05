@@ -17,9 +17,8 @@ mgc load-balancer network-backends replace [load-balancer-id] [backend-id] [flag
     --id uuid                       Id (required)
     --load-balancer-id uuid         load_balancer_id: ID of the attached Load Balancer (required)
     --targets array                 Targets: The list of updated target configurations for the backend (at least one of: array or array)
-                                    Use --targets=help for more details (default [])
+                                    Use --targets=help for more details
     --targets-type enum             Targets Type: The type of targets used by the backend (e.g., instance, raw) (one of "instance" or "raw") (required)
--v, --version                       version for replace
 ```
 
 ## Global Flags:

@@ -21,8 +21,7 @@ restore     Restore a snapshot to an instance.
 
 ## Flags:
 ```
--h, --help      help for snapshots
--v, --version   version for snapshots
+-h, --help   help for snapshots
 ```
 
 ## Global Flags:

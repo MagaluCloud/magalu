@@ -13,7 +13,6 @@ mgc dbaas snapshots clusters-snapshots create [cluster-id] [flags]
     --description string   Description (max character count: 255)
 -h, --help                 help for create
     --name string          Name (max character count: 100) (required)
--v, --version              version for create
 ```
 
 ## Global Flags:

@@ -16,8 +16,7 @@ instances-snapshots instances-snapshots
 
 ## Flags:
 ```
--h, --help      help for snapshots
--v, --version   version for snapshots
+-h, --help   help for snapshots
 ```
 
 ## Global Flags:
