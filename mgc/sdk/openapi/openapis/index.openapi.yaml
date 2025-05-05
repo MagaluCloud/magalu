@@ -3,7 +3,7 @@ modules:
     - name: audit
       url: https://events-consult.jaxyendy.com/openapi-cli.json
       path: audit.openapi.yaml
-      version: 0.17.0
+      version: 0.27.0
       description: Cloud Events API Product.
       summary: Cloud Events API Product.
     - name: block-storage
@@ -24,6 +24,11 @@ modules:
       version: 2.3.3
       description: DBaaS API Product.
       summary: DBaaS API Product.
+    - name: iam
+      url: https://iam.jaxyendy.com/openapi.json
+      path: iam.openapi.yaml
+      version: 0.1.0
+      description: ""
     - name: kubernetes
       url: https://mke.br-ne-1.com/docs/openapi-with-snippets.json
       path: kubernetes.openapi.yaml
