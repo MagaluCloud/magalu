@@ -16,7 +16,7 @@ mgc dbaas parameter-groups parameters create --name="LOWER_CASE_TABLE_NAMES"
 ```
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                          help for create
-    --name enum                     EngineParametersMysql8 (one of "ACTIVATE_ALL_ROLES_ON_LOGIN", "BLOCK_ENCRYPTION_MODE", "CONNECT_TIMEOUT", "INNODB_SEGMENT_RESERVE_FACTOR", "LOWER_CASE_TABLE_NAMES", "MAX_CONNECTIONS" or "TRANSACTION_ISOLATION") (required)
+    --name string                   Parameter name (required)
     --parameter-group-id uuid       Value referring to parameter group Id. (required)
     --value anyOf                   Value (at least one of: number, integer, boolean or string)
                                     Use --value=help for more details (required)

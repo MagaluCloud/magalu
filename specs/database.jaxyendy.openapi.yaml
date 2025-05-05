@@ -3320,15 +3320,7 @@ components:
         - ACTIVE
         - DEPRECATED
     EngineParametersMysql8:
-      enum:
-        - LOWER_CASE_TABLE_NAMES
-        - MAX_CONNECTIONS
-        - ACTIVATE_ALL_ROLES_ON_LOGIN
-        - BLOCK_ENCRYPTION_MODE
-        - CONNECT_TIMEOUT
-        - INNODB_SEGMENT_RESERVE_FACTOR
-        - TRANSACTION_ISOLATION
-      title: EngineParametersMysql8
+      title: Parameter name
       type: string
       example: LOWER_CASE_TABLE_NAMES
     EngineParameterResponse:
