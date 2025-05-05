@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/fatih/color"
+	"github.com/muesli/termenv"
 	"github.com/spf13/cobra"
 )
 
@@ -19,16 +20,6 @@ type ColorScheme struct {
 	aliases        *color.Color
 	example        *color.Color
 	isRequired     *color.Color
-}
-
-var defaultColorScheme = &ColorScheme{
-	headers:       color.New(color.FgCyan, color.Bold, color.Underline),
-	commands:      color.New(color.FgHiWhite, color.Bold),
-	execName:      color.New(color.FgHiWhite, color.Bold),
-	flags:         color.New(color.FgHiWhite, color.Bold),
-	flagsDataType: color.New(color.FgHiBlack, color.Italic),
-	example:       color.New(color.Italic),
-	isRequired:    color.New(color.FgHiRed),
 }
 
 var (
@@ -201,8 +192,24 @@ func configureOutputColor(rootCmd *cobra.Command, colorScheme *ColorScheme) {
 		return
 	}
 
-	if colorScheme == nil {
-		colorScheme = defaultColorScheme
+	colorScheme = &ColorScheme{
+		headers:       color.New(color.FgHiBlue, color.Bold, color.Underline),
+		commands:      color.New(color.FgHiWhite, color.Bold),
+		execName:      color.New(color.FgHiWhite, color.Bold),
+		flags:         color.New(color.FgHiWhite, color.Bold),
+		flagsDataType: color.New(color.FgHiBlack, color.Italic),
+		example:       color.New(color.Italic),
+		isRequired:    color.New(color.FgHiRed),
+	}
+
+	if !termenv.HasDarkBackground() {
+		colorScheme.headers = color.New(color.FgHiBlue, color.Bold, color.Underline)
+		colorScheme.commands = color.New(color.FgHiBlack, color.Bold)
+		colorScheme.execName = color.New(color.FgHiBlack, color.Bold)
+		colorScheme.flags = color.New(color.FgHiBlack, color.Bold)
+		colorScheme.flagsDataType = color.New(color.FgHiBlack, color.Italic)
+		colorScheme.example = color.New(color.Italic)
+		colorScheme.isRequired = color.New(color.FgHiRed)
 	}
 
 	template := rootCmd.UsageTemplate()
