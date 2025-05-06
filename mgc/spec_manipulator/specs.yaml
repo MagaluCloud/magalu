@@ -39,7 +39,7 @@ jaxyendy:
     file: lbaas.openapi.yaml
     menu: lbaas
     enabled: true
-  - url: http://127.0.0.1:8000/openapi.json
-    file: iam.openapi.yaml
+  - url: http://127.0.0.1:8000/api/openapi.json
+    file: iam.openapi.json
     menu: iam
     enabled: true

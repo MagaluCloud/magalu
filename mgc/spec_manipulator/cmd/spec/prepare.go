@@ -82,6 +82,7 @@ func runPrepare(dir string) {
 				fmt.Println(err)
 				return
 			}
+			fmt.Println("Preparing file", file)
 
 			document, err := libopenapi.NewDocument(fileBytes)
 			if err != nil {

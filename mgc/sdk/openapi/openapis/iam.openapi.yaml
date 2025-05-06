@@ -1,20 +1,22 @@
 openapi: 3.0.3
 info:
-    title: IAM API
+    title: Magalu Cloud IAM - Local
+    description: The Magalu Cloud IAM API.
     version: 0.1.0
 paths:
-    /healthcheck:
+    /api/v1/healthcheck:
         get:
             tags:
             - Healthcheck
             summary: Healthcheck
-            operationId: healthcheck_healthcheck_get
+            operationId: healthcheck_api_v1_healthcheck_get
             responses:
                 '200':
                     description: Successful Response
                     content:
                         application/json:
                             schema: {}
+            x-mgc-hidden: true
             security:
             -   OAuth2:
                 - iam.read
@@ -35,8 +37,7 @@ paths:
                                 type: array
                                 title: Response Get Members Api V1 Members Get
             security:
-            -   OAuth2:
-                - iam.read
+            -   HTTPBearer: []
         post:
             tags:
             - Members
@@ -73,22 +74,23 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-            -   OAuth2:
-                - iam.write
+            -   HTTPBearer: []
     /api/v1/members/{uuid}:
         delete:
             tags:
             - Members
             summary: Remove Member
             operationId: remove_member_api_v1_members__uuid__delete
+            security:
+            -   HTTPBearer: []
             parameters:
             -   name: uuid
                 in: path
                 required: true
                 schema:
                     type: string
-                    title: Uuid
                     format: uuid
+                    title: Uuid
             responses:
                 '204':
                     description: Successful Response
@@ -98,23 +100,22 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            security:
-            -   OAuth2:
-                - iam.write
     /api/v1/members/{uuid}/grants:
         patch:
             tags:
             - Members
             summary: Add Grants
             operationId: add_grants_api_v1_members__uuid__grants_patch
+            security:
+            -   HTTPBearer: []
             parameters:
             -   name: uuid
                 in: path
                 required: true
                 schema:
                     type: string
-                    title: Uuid
                     format: uuid
+                    title: Uuid
             requestBody:
                 required: true
                 content:
@@ -136,9 +137,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            security:
-            -   OAuth2:
-                - iam.write
     /api/v1/roles:
         get:
             tags:
@@ -156,8 +154,7 @@ paths:
                                 type: array
                                 title: Response Get Roles Api V1 Roles Get
             security:
-            -   OAuth2:
-                - iam.read
+            -   HTTPBearer: []
         post:
             tags:
             - Roles
@@ -182,14 +179,15 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-            -   OAuth2:
-                - iam.write
+            -   HTTPBearer: []
     /api/v1/roles/{role_name}:
         delete:
             tags:
             - Roles
             summary: Remove Role
             operationId: remove_role_api_v1_roles__role_name__delete
+            security:
+            -   HTTPBearer: []
             parameters:
             -   name: role_name
                 in: path
@@ -206,15 +204,14 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            security:
-            -   OAuth2:
-                - iam.write
     /api/v1/roles/{role_name}/permissions:
         patch:
             tags:
             - Roles
             summary: Edit Permissions
             operationId: edit_permissions_api_v1_roles__role_name__permissions_patch
+            security:
+            -   HTTPBearer: []
             parameters:
             -   name: role_name
                 in: path
@@ -243,9 +240,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            security:
-            -   OAuth2:
-                - iam.write
     /api/v1/permissions:
         get:
             tags:
@@ -263,8 +257,7 @@ paths:
                                 type: array
                                 title: Response Get Api V1 Permissions Get
             security:
-            -   OAuth2:
-                - iam.read
+            -   HTTPBearer: []
     /api/v1/access-control:
         get:
             tags:
@@ -279,8 +272,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/AccessControl'
             security:
-            -   OAuth2:
-                - iam.read
+            -   HTTPBearer: []
         post:
             tags:
             - Access-Control
@@ -305,8 +297,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-            -   OAuth2:
-                - iam.write
+            -   HTTPBearer: []
         patch:
             tags:
             - Access-Control
@@ -328,12 +319,10 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
-            -   OAuth2:
-                - iam.write
+            -   HTTPBearer: []
 components:
     schemas:
         AccessControl:
-            type: object
             properties:
                 organization:
                     type: string
@@ -345,70 +334,46 @@ components:
                     type: boolean
                     title: Status
                     default: false
+            type: object
             title: AccessControl
         EditPermissions:
-            type: object
             properties:
                 add:
-                    type: array
                     items:
                         type: string
+                    type: array
                     title: Add
                 remove:
-                    type: array
                     items:
                         type: string
+                    type: array
                     title: Remove
-            title: EditPermissions
+            type: object
             required:
             - add
             - remove
+            title: EditPermissions
         EditPrivileges:
-            type: object
             properties:
                 add:
-                    type: object
-                    properties:
-                        roles:
-                            type: array
-                            items:
-                                type: string
-                            title: Roles
-                        permissions:
-                            type: array
-                            items:
-                                type: string
-                            title: Permissions
-                    title: Privileges
+                    $ref: '#/components/schemas/Privileges'
                 remove:
-                    type: object
-                    properties:
-                        roles:
-                            type: array
-                            items:
-                                type: string
-                            title: Roles
-                        permissions:
-                            type: array
-                            items:
-                                type: string
-                            title: Permissions
-                    title: Privileges
-            title: EditPrivileges
+                    $ref: '#/components/schemas/Privileges'
+            type: object
             required:
             - add
             - remove
+            title: EditPrivileges
         Email:
-            type: object
             properties:
                 email:
                     type: string
                     title: Email
-            title: Email
+            type: object
             required:
             - email
+            title: Email
         HTTPValidationError:
-            type: object
             properties:
                 message:
                     title: Message
@@ -416,12 +381,12 @@ components:
                 slug:
                     title: Slug
                     type: string
+            type: object
             title: HTTPValidationError
             example:
                 message: Unauthorized
                 slug: Unauthorized
         Member:
-            type: object
             properties:
                 uuid:
                     type: string
@@ -444,24 +409,12 @@ components:
                     title: Profile
                     default: ''
                 grants:
-                    type: object
-                    properties:
-                        roles:
-                            type: array
-                            items:
-                                type: string
-                            title: Roles
-                        permissions:
-                            type: array
-                            items:
-                                type: string
-                            title: Permissions
-                    title: Privileges
-            title: Member
+                    $ref: '#/components/schemas/Privileges'
+            type: object
             required:
             - grants
+            title: Member
         Permission:
-            type: object
             properties:
                 name:
                     type: string
@@ -469,52 +422,41 @@ components:
                 description:
                     type: string
                     title: Description
-            title: Permission
+            type: object
             required:
             - name
             - description
+            title: Permission
         Privileges:
-            type: object
             properties:
                 roles:
-                    type: array
                     items:
                         type: string
+                    type: array
                     title: Roles
                 permissions:
-                    type: array
                     items:
                         type: string
+                    type: array
                     title: Permissions
+            type: object
             title: Privileges
         Product:
-            type: object
             properties:
                 name:
                     type: string
                     title: Name
                 permissions:
-                    type: array
                     items:
-                        type: object
-                        properties:
-                            name:
-                                type: string
-                                title: Name
-                            description:
-                                type: string
-                                title: Description
-                        title: Permission
-                        required:
-                        - name
-                        - description
+                        $ref: '#/components/schemas/Permission'
+                    type: array
                     title: Permissions
-            title: Product
+            type: object
             required:
             - name
             - permissions
+            title: Product
         Role:
-            type: object
             properties:
                 name:
                     type: string
@@ -526,27 +468,26 @@ components:
                     type: string
                     title: Origin
                 permissions:
-                    type: array
                     items:
                         type: string
+                    type: array
                     title: Permissions
-            title: Role
+            type: object
             required:
             - name
             - description
             - permissions
+            title: Role
         Uuid:
-            type: object
             properties:
                 uuid:
                     type: string
                     title: Uuid
-                    format: uuid
-            title: Uuid
+            type: object
             required:
             - uuid
+            title: Uuid
         ValidationError:
-            type: object
             properties:
                 message:
                     title: Message
@@ -554,14 +495,19 @@ components:
                 slug:
                     title: Slug
                     type: string
-            title: ValidationError
+            type: object
             required:
             - loc
             - msg
             - type
+            title: ValidationError
             example:
                 message: Unauthorized
                 slug: Unauthorized
+    securitySchemes:
+        HTTPBearer:
+            type: http
+            scheme: bearer
 tags:
 -   name: Access-Control
     description: Access-Control

@@ -13,6 +13,7 @@ cli.yaml
 
 # Python
 __pycache__
+.python-version
 
 # Builds
 mgc/cli/cli
