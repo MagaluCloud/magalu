@@ -289,7 +289,8 @@ paths:
                     description: Successful Response
                     content:
                         application/json:
-                            schema: {}
+                            schema:
+                                $ref: '#/components/schemas/AccessControl'
                 '422':
                     description: Validation Error
                     content:
@@ -310,8 +311,12 @@ paths:
                             $ref: '#/components/schemas/AccessControl'
                 required: true
             responses:
-                '204':
+                '200':
                     description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AccessControl'
                 '422':
                     description: Validation Error
                     content:
