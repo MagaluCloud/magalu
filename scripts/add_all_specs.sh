@@ -25,5 +25,6 @@ $BASEDIR/add_specs_without_region.sh profile profile specs/conv.globaldb.openapi
 
 $BASEDIR/add_specs.sh load-balancer load-balancer specs/lbaas.openapi.yaml https://lbaas.jaxyendy.com/openapi-cli.json
 
+make oapi-index-gen
 # EXAMPLE
 # $BASEDIR/SCRIPT.sh NOME_NO_MENU URL_PATH LOCAL_DA_SPEC SPEC_UID

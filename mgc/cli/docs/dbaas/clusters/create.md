@@ -1,25 +1,35 @@
-# Update
+# Create
 
-Updates a database instance.
+Creates a new database high availability cluster asynchronously for a tenant.
 
 ## Usage:
 ```
-mgc dbaas instances update [instance-id] [flags]
+mgc dbaas clusters create [flags]
 ```
 
 ## Examples:
 ```
-mgc dbaas instances update --backup-retention-days=7 --backup-start-at="04:00:00" --parameter-group-id="44ae8773-a21e-4d5e-a38f-b677ccfeb7f8"
+mgc dbaas clusters create --volume.size=30
 ```
 
 ## Flags:
 ```
-    --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion.
-    --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process.
+    --backup-retention-days integer   Backup Retention Days
+    --backup-start-at time            Backup Start At
     --cli.list-links enum[=table]     List all available links for this command (one of "json", "table" or "yaml")
--h, --help                            help for update
-    --instance-id uuid                Value referring to instance Id. (required)
+    --engine-id uuid                  Engine Id (required)
+-h, --help                            help for create
+    --instance-type-id uuid           Machine Type Id (required)
+    --name string                     Name (max character count: 100) (required)
     --parameter-group-id uuid         Parameter group Id
+    --password string                 Password (max character count: 50) (required)
+    --user string                     User (max character count: 25) (required)
+    --volume object                   Cluster Volume Request (properties: size and type)
+                                      Use --volume=help for more details (required)
+    --volume.size integer             Cluster Volume Request: The size of the volume (in GiB). (range: 20 - 50000)
+                                      This is the same as '--volume=size:integer'.
+    --volume.type enum                Cluster Volume Request: Volume Type: The type of the volume. (one of "CLOUD_NVME15K" or "CLOUD_NVME20K")
+                                      This is the same as '--volume=type:enum'.
 ```
 
 ## Global Flags:

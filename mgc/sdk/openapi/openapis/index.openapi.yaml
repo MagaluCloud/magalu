@@ -21,7 +21,7 @@ modules:
     - name: dbaas
       url: https://dbaas.jaxyendy.com/openapi.json
       path: dbaas.openapi.yaml
-      version: 1.42.0
+      version: 2.3.3
       description: DBaaS API Product.
       summary: DBaaS API Product.
     - name: kubernetes

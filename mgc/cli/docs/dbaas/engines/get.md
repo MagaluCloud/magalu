@@ -9,8 +9,9 @@ mgc dbaas engines get [engine-id] [flags]
 
 ## Flags:
 ```
-    --engine-id uuid   Datastore Id (Deprecated): Value referring to datastore Id. (required)
--h, --help             help for get
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --engine-id uuid                Value referring to engine Id. (required)
+-h, --help                          help for get
 ```
 
 ## Global Flags:

@@ -1,25 +1,32 @@
-# Update
+# Restore
 
-Updates a snapshot.
+Create a new cluster from snapshot.
 
 ## Usage:
 ```
-mgc dbaas instances snapshots update [instance-id] [snapshot-id] [flags]
+mgc dbaas snapshots clusters-snapshots restore [cluster-id] [snapshot-id] [flags]
 ```
 
 ## Examples:
 ```
-mgc dbaas instances snapshots update --description="my-description-updated" --name="my-snapshot-updated"
+mgc dbaas snapshots clusters-snapshots restore --volume.size=30
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            Snapshot description. (max character count: 255)
--h, --help                          help for update
-    --instance-id uuid              Value referring to instance Id. (required)
-    --name string                   Snapshot unique name. (max character count: 100)
-    --snapshot-id uuid              Value referring to snapshot Id. (required)
+    --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion.
+    --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process.
+    --cluster-id uuid                 Value referring to cluster Id. (required)
+-h, --help                            help for restore
+    --instance-type-id uuid           Instance Type Id (required)
+    --name string                     Name (max character count: 100) (required)
+    --snapshot-id uuid                Value referring to snapshot Id. (required)
+    --volume object                   Cluster Volume Request (properties: size and type)
+                                      Use --volume=help for more details
+    --volume.size integer             Cluster Volume Request: The size of the volume (in GiB). (range: 20 - 50000)
+                                      This is the same as '--volume=size:integer'.
+    --volume.type enum                Cluster Volume Request: Volume Type: The type of the volume. (one of "CLOUD_NVME15K" or "CLOUD_NVME20K")
+                                      This is the same as '--volume=type:enum'.
 ```
 
 ## Global Flags:

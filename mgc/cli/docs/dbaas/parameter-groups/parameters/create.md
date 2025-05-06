@@ -1,22 +1,25 @@
-# Snapshots
+# Create
 
-Snapshots management.
+Create a parameter for a group.
 
 ## Usage:
 ```
-mgc dbaas snapshots [flags]
-mgc dbaas snapshots [command]
+mgc dbaas parameter-groups parameters create [parameter-group-id] [flags]
 ```
 
-## Commands:
+## Examples:
 ```
-clusters-snapshots  clusters-snapshots
-instances-snapshots instances-snapshots
+mgc dbaas parameter-groups parameters create --name="LOWER_CASE_TABLE_NAMES"
 ```
 
 ## Flags:
 ```
--h, --help   help for snapshots
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+-h, --help                          help for create
+    --name string                   Parameter name (required)
+    --parameter-group-id uuid       Value referring to parameter group Id. (required)
+    --value anyOf                   Value (at least one of: number, integer, boolean or string)
+                                    Use --value=help for more details (required)
 ```
 
 ## Global Flags:
@@ -28,8 +31,11 @@ instances-snapshots instances-snapshots
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
+    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+    --server-url uri           Manually specify the server to use
 ```
 

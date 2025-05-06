@@ -1,15 +1,15 @@
-# Delete
+# Get
 
-Deletes a database snapshot.
+Get a snapshot detail.
 
 ## Usage:
 ```
-mgc dbaas instances snapshots delete [instance-id] [snapshot-id] [flags]
+mgc dbaas snapshots instances-snapshots get [instance-id] [snapshot-id] [flags]
 ```
 
 ## Flags:
 ```
--h, --help               help for delete
+-h, --help               help for get
     --instance-id uuid   Value referring to instance Id. (required)
     --snapshot-id uuid   Value referring to snapshot Id. (required)
 ```

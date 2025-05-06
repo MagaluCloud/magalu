@@ -1,19 +1,25 @@
-# Resize
+# Parameters
 
-Resize an instance replica.
+Returns a list of available engine parameters.
 
 ## Usage:
 ```
-mgc dbaas replicas resize [replica-id] [flags]
+mgc dbaas engines parameters [engine-id] [flags]
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
--h, --help                          help for resize
-    --instance-type-id uuid         Instance Type Id
-    --replica-id uuid               Value referring to replica Id. (required)
+    --control.limit integer    The maximum number of items per page. (min: 1)
+    --control.offset integer   The number of items to skip before starting to collect the result set. (min: 0)
+    --dynamic                  Dynamic: Parameters that can be modified while the database is running.  
+                               Changes to these parameters take effect immediately without requiring a service restart.
+                               
+    --engine-id uuid           Value referring to engine Id. (required)
+-h, --help                     help for parameters
+    --modifiable               Modifiable: Parameters that influence the machine creation process.  
+                               These parameters are set during instance provisioning and become immutable after the machine is created.
+                               
+    --name string              Value referring to engine parameter name.
 ```
 
 ## Global Flags:

@@ -1,25 +1,32 @@
-# Update
+# Restore
 
-Updates a database instance.
+Create a new instance from snapshot.
 
 ## Usage:
 ```
-mgc dbaas instances update [instance-id] [flags]
+mgc dbaas snapshots instances-snapshots restore [instance-id] [snapshot-id] [flags]
 ```
 
 ## Examples:
 ```
-mgc dbaas instances update --backup-retention-days=7 --backup-start-at="04:00:00" --parameter-group-id="44ae8773-a21e-4d5e-a38f-b677ccfeb7f8"
+mgc dbaas snapshots instances-snapshots restore --volume.size=30
 ```
 
 ## Flags:
 ```
     --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion.
     --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process.
-    --cli.list-links enum[=table]     List all available links for this command (one of "json", "table" or "yaml")
--h, --help                            help for update
+-h, --help                            help for restore
     --instance-id uuid                Value referring to instance Id. (required)
-    --parameter-group-id uuid         Parameter group Id
+    --instance-type-id uuid           Instance Type Id (required)
+    --name string                     Name (max character count: 100) (required)
+    --snapshot-id uuid                Value referring to snapshot Id. (required)
+    --volume object                   Instance Volume Request (properties: size and type)
+                                      Use --volume=help for more details
+    --volume.size integer             Instance Volume Request: The size of the volume (in GiB). (range: 10 - 50000)
+                                      This is the same as '--volume=size:integer'.
+    --volume.type enum                Instance Volume Request: Volume Type: The type of the volume. (one of "CLOUD_NVME15K" or "CLOUD_NVME20K")
+                                      This is the same as '--volume=type:enum'.
 ```
 
 ## Global Flags:

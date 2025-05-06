@@ -1,20 +1,17 @@
-# List
+# Delete
 
-List all snapshots.
+Deletes a parameter for a group.
 
 ## Usage:
 ```
-mgc dbaas instances snapshots list [instance-id] [flags]
+mgc dbaas parameter-groups parameters delete [parameter-group-id] [parameter-id] [flags]
 ```
 
 ## Flags:
 ```
-    --control.limit integer    The maximum number of items per page. (range: 1 - 50)
-    --control.offset integer   The number of items to skip before starting to collect the result set. (min: 0)
--h, --help                     help for list
-    --instance-id uuid         Value referring to instance Id. (required)
-    --status enum              Value referring to snapshot status. (one of "AVAILABLE", "CREATING", "DELETED", "DELETING", "ERROR", "PENDING" or "RESTORING")
-    --type enum                Backup Type: Value referring to snapshot type. (one of "AUTOMATED" or "ON_DEMAND")
+-h, --help                      help for delete
+    --parameter-group-id uuid   Value referring to parameter group Id. (required)
+    --parameter-id uuid         Parameter Id. (required)
 ```
 
 ## Global Flags:

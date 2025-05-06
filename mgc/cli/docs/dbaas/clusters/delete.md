@@ -1,22 +1,16 @@
-# Snapshots
+# Delete
 
-Snapshots management.
+Removes a database cluster and it"s instances for a tenant.
 
 ## Usage:
 ```
-mgc dbaas snapshots [flags]
-mgc dbaas snapshots [command]
-```
-
-## Commands:
-```
-clusters-snapshots  clusters-snapshots
-instances-snapshots instances-snapshots
+mgc dbaas clusters delete [cluster-id] [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for snapshots
+    --cluster-id uuid   Value referring to cluster Id. (required)
+-h, --help              help for delete
 ```
 
 ## Global Flags:
@@ -28,8 +22,11 @@ instances-snapshots instances-snapshots
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
+    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+    --server-url uri           Manually specify the server to use
 ```
 

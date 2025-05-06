@@ -1,22 +1,24 @@
-# Snapshots
+# Parameters
 
-Snapshots management.
+Parameter groups management. | parameters
 
 ## Usage:
 ```
-mgc dbaas snapshots [flags]
-mgc dbaas snapshots [command]
+mgc dbaas parameter-groups parameters [flags]
+mgc dbaas parameter-groups parameters [command]
 ```
 
 ## Commands:
 ```
-clusters-snapshots  clusters-snapshots
-instances-snapshots instances-snapshots
+create      Create a parameter.
+delete      Parameters delete.
+list        Parameters list.
+update      Update a parameter.
 ```
 
 ## Flags:
 ```
--h, --help   help for snapshots
+-h, --help   help for parameters
 ```
 
 ## Global Flags:

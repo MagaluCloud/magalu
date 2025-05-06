@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/cloud/dbaas/docs
         email: cloud-iaas-dbaas@luizalabs.com
-    version: 1.42.0
+    version: 2.3.3
 tags:
 -   name: engines
     description: Engines available for database instances.
@@ -16,16 +16,23 @@ tags:
     description: Database instances management.
 -   name: replicas
     description: Database replicas management.
+-   name: clusters
+    description: Clusters management.
 -   name: snapshots
     description: Snapshots management.
+-   name: parameter-groups
+    description: Parameter groups management.
 paths:
-    /v1/engines:
+    /v2/engines:
         get:
-            operationId: engines_v1_get_all
+            operationId: engines_v2_get_all
             tags:
             - engines
             summary: List available engines.
             description: Returns a list of available engines.
+            x-permission:
+                permission-name: db_engine_list
+                product-name: database
             parameters:
             -   $ref: '#/components/parameters/offset'
             -   $ref: '#/components/parameters/limit_medium'
@@ -54,13 +61,16 @@ paths:
                 - dbaas.read
             -   OAuth2Prod:
                 - dbaas.read
-    /v1/engines/{engine_id}:
+    /v2/engines/{engine_id}:
         get:
-            operationId: engines_v1_get_by_id
+            operationId: engines_v2_get_by_id
             tags:
             - engines
             summary: Engine detail.
             description: Returns a engine detail.
+            x-permission:
+                permission-name: db_engine_get
+                product-name: database
             parameters:
             -   $ref: '#/components/parameters/engine_id'
             responses:
@@ -70,6 +80,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/EngineResponse'
+                    links:
+                        parameters:
+                            operationId: engines_parameters_v2_get_all
+                            description: List available engine parameters.
+                            parameters:
+                                engine_id: $response.body#/id
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -89,14 +105,392 @@ paths:
                 - dbaas.read
             -   OAuth2Prod:
                 - dbaas.read
-    /v1/instance-types:
+    /v2/engines/{engine_id}/parameters:
         get:
-            operationId: instance_types_v1_get_all
+            description: Returns a list of available engine parameters.
+            x-permission:
+                permission-name: db_engine_parameter_list
+                product-name: database
+            operationId: engines_parameters_v2_get_all
+            parameters:
+            -   $ref: '#/components/parameters/offset'
+            -   $ref: '#/components/parameters/limit_optional'
+            -   $ref: '#/components/parameters/engine_id'
+            -   $ref: '#/components/parameters/parameter_name_query'
+            -   $ref: '#/components/parameters/dynamic_query'
+            -   $ref: '#/components/parameters/modifiable_query'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/EngineParametersResponse'
+                    description: Successful Response
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            summary: List available engine parameters.
+            tags:
+            - engines
+            security:
+            -   OAuth2:
+                - dbaas.read
+    /v2/parameter-groups:
+        get:
+            description: List all Parameter Groups for a x-tenant-id
+            x-permission:
+                permission-name: db_parameter_group_list
+                product-name: database
+            operationId: parameter_groups_v2_get_all
+            parameters:
+            -   $ref: '#/components/parameters/offset'
+            -   $ref: '#/components/parameters/limit_small'
+            -   $ref: '#/components/parameters/parameter_group_type_query'
+            -   $ref: '#/components/parameters/engine_id_query'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ParameterGroupsResponse'
+                    description: Successful Response
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            summary: List all Parameter Groups
+            tags:
+            - parameter-groups
+            security:
+            -   OAuth2:
+                - dbaas.read
+        post:
+            description: Creates a new parameter group for a tenant.
+            x-permission:
+                permission-name: db_parameter_group_create
+                product-name: database
+            operationId: parameter_groups_v2_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ParameterGroupCreateRequest'
+                required: true
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ParameterGroupResponse'
+                    description: Successful Response
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            summary: Creates a new parameter group.
+            tags:
+            - parameter-groups
+            security:
+            -   OAuth2:
+                - dbaas.write
+    /v2/parameter-groups/{parameter_group_id}:
+        delete:
+            description: Deletes a parameter group.
+            x-permission:
+                permission-name: db_parameter_group_delete
+                product-name: database
+            operationId: parameter_groups_v2_delete
+            parameters:
+            -   $ref: '#/components/parameters/parameter_group_id'
+            responses:
+                '204':
+                    description: Successful Response
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            summary: Deletes a parameter group.
+            tags:
+            - parameter-groups
+            security:
+            -   OAuth2:
+                - dbaas.write
+        get:
+            description: Returns a parameter group detail.
+            x-permission:
+                permission-name: db_parameter_group_get
+                product-name: database
+            operationId: parameter_groups_v2_get_by_id
+            parameters:
+            -   $ref: '#/components/parameters/parameter_group_id'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ParameterGroupDetailResponse'
+                    description: Successful Response
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            summary: Parameter group details.
+            tags:
+            - parameter-groups
+            security:
+            -   OAuth2:
+                - dbaas.read
+        patch:
+            description: Updates a parameter group.
+            x-permission:
+                permission-name: db_parameter_group_update
+                product-name: database
+            operationId: parameter_groups_v2_patch
+            parameters:
+            -   $ref: '#/components/parameters/parameter_group_id'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ParameterGroupUpdateRequest'
+                required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ParameterGroupDetailResponse'
+                    description: Successful Response
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            summary: Parameter group update.
+            tags:
+            - parameter-groups
+            security:
+            -   OAuth2:
+                - dbaas.write
+    /v2/parameter-groups/{parameter_group_id}/parameters:
+        get:
+            description: Return details of a group's parameters.
+            x-permission:
+                permission-name: db_parameter_group_parameter_get
+                product-name: database
+            operationId: parameters_v2_get_all
+            parameters:
+            -   $ref: '#/components/parameters/parameter_group_id'
+            -   $ref: '#/components/parameters/offset'
+            -   $ref: '#/components/parameters/limit_optional'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ParametersResponse'
+                    description: Successful Response
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            summary: Parameters list.
+            tags:
+            - parameter-groups
+            security:
+            -   OAuth2:
+                - dbaas.read
+        post:
+            description: Create a parameter for a group.
+            x-permission:
+                permission-name: db_parameter_group_parameter_create
+                product-name: database
+            operationId: parameters_v2_create
+            parameters:
+            -   $ref: '#/components/parameters/parameter_group_id'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ParameterCreateRequest'
+                required: true
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ParameterResponse'
+                    description: Successful Response
+                    links:
+                        update:
+                            operationId: parameters_v2_update
+                            description: Update a parameter.
+                            parameters:
+                                parameter_id: $response.body#/id
+                        delete:
+                            operationId: parameters_v2_delete
+                            description: Parameters delete.
+                            parameters:
+                                parameter_id: $response.body#/id
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            summary: Create a parameter.
+            tags:
+            - parameter-groups
+            security:
+            -   OAuth2:
+                - dbaas.write
+    /v2/parameter-groups/{parameter_group_id}/parameters/{parameter_id}:
+        patch:
+            description: Updates a parameter for a group.
+            x-permission:
+                permission-name: db_parameter_group_parameter_update
+                product-name: database
+            operationId: parameters_v2_update
+            parameters:
+            -   $ref: '#/components/parameters/parameter_group_id'
+            -   $ref: '#/components/parameters/parameter_id'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ParameterUpdateRequest'
+                required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ParameterDetailResponse'
+                    description: Successful Response
+                    links:
+                        delete:
+                            operationId: parameters_v2_delete
+                            description: Parameters delete.
+                            parameters:
+                                parameter_id: $response.body#/id
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            summary: Update a parameter.
+            tags:
+            - parameter-groups
+            security:
+            -   OAuth2:
+                - dbaas.write
+        delete:
+            description: Deletes a parameter for a group.
+            operationId: parameters_v2_delete
+            parameters:
+            -   $ref: '#/components/parameters/parameter_group_id'
+            -   $ref: '#/components/parameters/parameter_id'
+            responses:
+                '204':
+                    description: Successful Response
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            summary: Parameters delete.
+            tags:
+            - parameter-groups
+            security:
+            -   OAuth2:
+                - dbaas.write
+    /v2/instance-types:
+        get:
+            operationId: instance_types_v2_get_all
             tags:
             - instance_types
             summary: List available instance types.
             description: Returns a list of available instance types. An instance type
                 is a hardware template that defines the size of RAM and vCPU.
+            x-permission:
+                permission-name: db_instance_type_list
+                product-name: database
             parameters:
             -   $ref: '#/components/parameters/offset'
             -   $ref: '#/components/parameters/limit_medium'
@@ -133,13 +527,16 @@ paths:
                 - dbaas.read
             -   OAuth2Prod:
                 - dbaas.read
-    /v1/instance-types/{instance_type_id}:
+    /v2/instance-types/{instance_type_id}:
         get:
-            operationId: instance_types_v1_get_by_id
+            operationId: instance_types_v2_get_by_id
             tags:
             - instance_types
             summary: Instance Type detail.
             description: Returns an instance type detail.
+            x-permission:
+                permission-name: db_instance_type_get
+                product-name: database
             parameters:
             -   required: true
                 schema:
@@ -175,13 +572,17 @@ paths:
                 - dbaas.read
             -   OAuth2Prod:
                 - dbaas.read
-    /v1/instances:
-        get:
-            operationId: instances_v1_get_all
+    /v2/instances:
+        head:
+            operationId: instances_v2_head_all
             tags:
             - instances
-            summary: List all database instances.
-            description: Returns a list of database instances for a x-tenant-id.
+            description: Returns headers containing information for the list of database
+                instances, with no response body.
+            summary: Header information for listing all database instances.
+            x-permission:
+                permission-name: db_instance_head
+                product-name: database
             parameters:
             -   $ref: '#/components/parameters/offset'
             -   $ref: '#/components/parameters/limit_small'
@@ -193,6 +594,62 @@ paths:
             -   $ref: '#/components/parameters/volume_size_gte'
             -   $ref: '#/components/parameters/volume_size_lt'
             -   $ref: '#/components/parameters/volume_size_lte'
+            -   $ref: '#/components/parameters/parameter_group_id_query'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema: {}
+                    description: Successful Response
+                    headers:
+                        x-pagination-count:
+                            $ref: '#/components/headers/PaginationCount'
+                        x-pagination-limit:
+                            $ref: '#/components/headers/PaginationLimit'
+                        x-pagination-max-limit:
+                            $ref: '#/components/headers/PaginationMaxLimit'
+                        x-pagination-offset:
+                            $ref: '#/components/headers/PaginationOffset'
+                        x-pagination-total:
+                            $ref: '#/components/headers/PaginationTotal'
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.read
+            -   OAuth2PreProd:
+                - dbaas.read
+            -   OAuth2Prod:
+                - dbaas.read
+        get:
+            operationId: instances_v2_get_all
+            tags:
+            - instances
+            summary: List all database instances.
+            description: Returns a list of database instances for a x-tenant-id.
+            x-permission:
+                permission-name: db_instance_list
+                product-name: database
+            parameters:
+            -   $ref: '#/components/parameters/offset'
+            -   $ref: '#/components/parameters/limit_small'
+            -   $ref: '#/components/parameters/instance_status'
+            -   $ref: '#/components/parameters/instance_expand'
+            -   $ref: '#/components/parameters/engine_id_query'
+            -   $ref: '#/components/parameters/volume_size_query'
+            -   $ref: '#/components/parameters/volume_size_gt'
+            -   $ref: '#/components/parameters/volume_size_gte'
+            -   $ref: '#/components/parameters/volume_size_lt'
+            -   $ref: '#/components/parameters/volume_size_lte'
+            -   $ref: '#/components/parameters/parameter_group_id_query'
             responses:
                 '200':
                     description: Successful Response.
@@ -218,11 +675,14 @@ paths:
             -   OAuth2Prod:
                 - dbaas.read
         post:
-            operationId: instances_v1_post
+            operationId: instances_v2_post
             tags:
             - instances
             summary: Creates a new database instance.
             description: Creates a new database instance asynchronously for a tenant.
+            x-permission:
+                permission-name: db_instance_create
+                product-name: database
             requestBody:
                 content:
                     application/json:
@@ -238,32 +698,32 @@ paths:
                                 $ref: '#/components/schemas/InstanceResponse'
                     links:
                         get:
-                            operationId: instances_v1_get_by_id
+                            operationId: instances_v2_get_by_id
                             description: Database instance details.
                             parameters:
                                 instance_id: $response.body#/id
                         update:
-                            operationId: instances_v1_patch
+                            operationId: instances_v2_patch
                             description: Database instance update.
                             parameters:
                                 instance_id: $response.body#/id
                         delete:
-                            operationId: instances_v1_delete
+                            operationId: instances_v2_delete
                             description: Deletes a database instance.
                             parameters:
                                 instance_id: $response.body#/id
                         resize:
-                            operationId: instances_v1_resize
+                            operationId: instances_v2_resize
                             description: Resizes a database instance.
                             parameters:
                                 instance_id: $response.body#/id
                         start:
-                            operationId: instances_v1_start
+                            operationId: instances_v2_start
                             description: Starts a database instance.
                             parameters:
                                 instance_id: $response.body#/id
                         stop:
-                            operationId: instances_v1_stop
+                            operationId: instances_v2_stop
                             description: Stops a database instance.
                             parameters:
                                 instance_id: $response.body#/id
@@ -284,13 +744,16 @@ paths:
                 - dbaas.write
             -   OAuth2Prod:
                 - dbaas.write
-    /v1/instances/{instance_id}:
+    /v2/instances/{instance_id}:
         get:
-            operationId: instances_v1_get_by_id
+            operationId: instances_v2_get_by_id
             tags:
             - instances
             summary: Database instance details.
             description: Returns a database instance detail.
+            x-permission:
+                permission-name: db_instance_get
+                product-name: database
             parameters:
             -   $ref: '#/components/parameters/instance_id'
             -   $ref: '#/components/parameters/instance_expand'
@@ -303,27 +766,27 @@ paths:
                                 $ref: '#/components/schemas/InstanceDetailResponse'
                     links:
                         update:
-                            operationId: instances_v1_patch
+                            operationId: instances_v2_patch
                             description: Database instance update.
                             parameters:
                                 instance_id: $response.body#/id
                         delete:
-                            operationId: instances_v1_delete
+                            operationId: instances_v2_delete
                             description: Deletes a database instance.
                             parameters:
                                 instance_id: $response.body#/id
                         resize:
-                            operationId: instances_v1_resize
+                            operationId: instances_v2_resize
                             description: Resizes a database instance.
                             parameters:
                                 instance_id: $response.body#/id
                         start:
-                            operationId: instances_v1_start
+                            operationId: instances_v2_start
                             description: Starts a database instance.
                             parameters:
                                 instance_id: $response.body#/id
                         stop:
-                            operationId: instances_v1_stop
+                            operationId: instances_v2_stop
                             description: Stops a database instance.
                             parameters:
                                 instance_id: $response.body#/id
@@ -347,11 +810,14 @@ paths:
             -   OAuth2Prod:
                 - dbaas.read
         patch:
-            operationId: instances_v1_patch
+            operationId: instances_v2_patch
             tags:
             - instances
             summary: Database instance update.
             description: Updates a database instance.
+            x-permission:
+                permission-name: db_instance_update
+                product-name: database
             parameters:
             -   $ref: '#/components/parameters/instance_id'
             requestBody:
@@ -369,27 +835,27 @@ paths:
                                 $ref: '#/components/schemas/InstanceDetailResponse'
                     links:
                         get:
-                            operationId: instances_v1_get_by_id
+                            operationId: instances_v2_get_by_id
                             description: Database instance details.
                             parameters:
                                 instance_id: $response.body#/id
                         delete:
-                            operationId: instances_v1_delete
+                            operationId: instances_v2_delete
                             description: Deletes a database instance.
                             parameters:
                                 instance_id: $response.body#/id
                         resize:
-                            operationId: instances_v1_resize
+                            operationId: instances_v2_resize
                             description: Resizes a database instance.
                             parameters:
                                 instance_id: $response.body#/id
                         start:
-                            operationId: instances_v1_start
+                            operationId: instances_v2_start
                             description: Starts a database instance.
                             parameters:
                                 instance_id: $response.body#/id
                         stop:
-                            operationId: instances_v1_stop
+                            operationId: instances_v2_stop
                             description: Stops a database instance.
                             parameters:
                                 instance_id: $response.body#/id
@@ -413,11 +879,14 @@ paths:
             -   OAuth2Prod:
                 - dbaas.write
         delete:
-            operationId: instances_v1_delete
+            operationId: instances_v2_delete
             tags:
             - instances
             summary: Deletes a database instance.
             description: Deletes a database instance.
+            x-permission:
+                permission-name: db_instance_delete
+                product-name: database
             parameters:
             -   $ref: '#/components/parameters/instance_id'
             responses:
@@ -445,13 +914,16 @@ paths:
                 - dbaas.write
             -   OAuth2Prod:
                 - dbaas.write
-    /v1/instances/{instance_id}/resize:
+    /v2/instances/{instance_id}/resize:
         post:
             tags:
             - instances
             summary: Resizes a database instance.
             description: Resizes a database instance.
-            operationId: instances_v1_resize
+            x-permission:
+                permission-name: db_instance_resize
+                product-name: database
+            operationId: instances_v2_resize
             parameters:
             -   $ref: '#/components/parameters/instance_id'
             requestBody:
@@ -469,27 +941,27 @@ paths:
                                 $ref: '#/components/schemas/InstanceDetailResponse'
                     links:
                         get:
-                            operationId: instances_v1_get_by_id
+                            operationId: instances_v2_get_by_id
                             description: Database instance details.
                             parameters:
                                 instance_id: $response.body#/id
                         update:
-                            operationId: instances_v1_patch
+                            operationId: instances_v2_patch
                             description: Database instance update.
                             parameters:
                                 instance_id: $response.body#/id
                         delete:
-                            operationId: instances_v1_delete
+                            operationId: instances_v2_delete
                             description: Deletes a database instance.
                             parameters:
                                 instance_id: $response.body#/id
                         start:
-                            operationId: instances_v1_start
+                            operationId: instances_v2_start
                             description: Starts a database instance.
                             parameters:
                                 instance_id: $response.body#/id
                         stop:
-                            operationId: instances_v1_stop
+                            operationId: instances_v2_stop
                             description: Stops a database instance.
                             parameters:
                                 instance_id: $response.body#/id
@@ -512,13 +984,16 @@ paths:
                 - dbaas.write
             -   OAuth2Prod:
                 - dbaas.write
-    /v1/instances/{instance_id}/start:
+    /v2/instances/{instance_id}/start:
         post:
             tags:
             - instances
             summary: Starts a database instance.
             description: Starts a database instance.
-            operationId: instances_v1_start
+            x-permission:
+                permission-name: db_instance_start
+                product-name: database
+            operationId: instances_v2_start
             parameters:
             -   $ref: '#/components/parameters/instance_id'
             responses:
@@ -530,27 +1005,27 @@ paths:
                                 $ref: '#/components/schemas/InstanceDetailResponse'
                     links:
                         get:
-                            operationId: instances_v1_get_by_id
+                            operationId: instances_v2_get_by_id
                             description: Database instance details.
                             parameters:
                                 instance_id: $response.body#/id
                         update:
-                            operationId: instances_v1_patch
+                            operationId: instances_v2_patch
                             description: Database instance update.
                             parameters:
                                 instance_id: $response.body#/id
                         delete:
-                            operationId: instances_v1_delete
+                            operationId: instances_v2_delete
                             description: Deletes a database instance.
                             parameters:
                                 instance_id: $response.body#/id
                         resize:
-                            operationId: instances_v1_resize
+                            operationId: instances_v2_resize
                             description: Resizes a database instance.
                             parameters:
                                 instance_id: $response.body#/id
                         stop:
-                            operationId: instances_v1_stop
+                            operationId: instances_v2_stop
                             description: Stops a database instance.
                             parameters:
                                 instance_id: $response.body#/id
@@ -573,13 +1048,16 @@ paths:
                 - dbaas.write
             -   OAuth2Prod:
                 - dbaas.write
-    /v1/instances/{instance_id}/stop:
+    /v2/instances/{instance_id}/stop:
         post:
             tags:
             - instances
             summary: Stops a database instance.
             description: Stops a database instance.
-            operationId: instances_v1_stop
+            x-permission:
+                permission-name: db_instance_stop
+                product-name: database
+            operationId: instances_v2_stop
             parameters:
             -   $ref: '#/components/parameters/instance_id'
             responses:
@@ -591,27 +1069,27 @@ paths:
                                 $ref: '#/components/schemas/InstanceDetailResponse'
                     links:
                         get:
-                            operationId: instances_v1_get_by_id
+                            operationId: instances_v2_get_by_id
                             description: Database instance details.
                             parameters:
                                 instance_id: $response.body#/id
                         update:
-                            operationId: instances_v1_patch
+                            operationId: instances_v2_patch
                             description: Database instance update.
                             parameters:
                                 instance_id: $response.body#/id
                         delete:
-                            operationId: instances_v1_delete
+                            operationId: instances_v2_delete
                             description: Deletes a database instance.
                             parameters:
                                 instance_id: $response.body#/id
                         resize:
-                            operationId: instances_v1_resize
+                            operationId: instances_v2_resize
                             description: Resizes a database instance.
                             parameters:
                                 instance_id: $response.body#/id
                         start:
-                            operationId: instances_v1_start
+                            operationId: instances_v2_start
                             description: Starts a database instance.
                             parameters:
                                 instance_id: $response.body#/id
@@ -634,13 +1112,474 @@ paths:
                 - dbaas.write
             -   OAuth2Prod:
                 - dbaas.write
-    /v1/replicas:
+    /v2/clusters:
+        get:
+            summary: List all database clusters.
+            tags:
+            - clusters
+            description: Returns a list of database clusters for a x-tenant-id.
+            x-permission:
+                permission-name: db_cluster_get
+                product-name: database
+            operationId: clusters_list_v2_clusters_get
+            parameters:
+            -   $ref: '#/components/parameters/offset'
+            -   $ref: '#/components/parameters/limit_small'
+            -   $ref: '#/components/parameters/cluster_status'
+            -   $ref: '#/components/parameters/engine_id_query'
+            -   $ref: '#/components/parameters/volume_size_query'
+            -   $ref: '#/components/parameters/volume_size_gt'
+            -   $ref: '#/components/parameters/volume_size_gte'
+            -   $ref: '#/components/parameters/volume_size_lt'
+            -   $ref: '#/components/parameters/volume_size_lte'
+            -   $ref: '#/components/parameters/parameter_group_id_query'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClustersResponse'
+                    description: Successful Response
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.read
+            -   OAuth2PreProd:
+                - dbaas.read
+            -   OAuth2Prod:
+                - dbaas.read
+        head:
+            description: Returns headers containing information for the list of database
+                clusters, with no response body.
+            x-permission:
+                permission-name: db_cluster_head
+                product-name: database
+            operationId: clusters_list_v2_clusters_head
+            parameters:
+            -   $ref: '#/components/parameters/offset'
+            -   $ref: '#/components/parameters/limit_small'
+            -   $ref: '#/components/parameters/cluster_status'
+            -   $ref: '#/components/parameters/engine_id_query'
+            -   $ref: '#/components/parameters/volume_size_query'
+            -   $ref: '#/components/parameters/volume_size_gt'
+            -   $ref: '#/components/parameters/volume_size_gte'
+            -   $ref: '#/components/parameters/volume_size_lt'
+            -   $ref: '#/components/parameters/volume_size_lte'
+            -   $ref: '#/components/parameters/parameter_group_id_query'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema: {}
+                    description: Successful Response
+                    headers:
+                        x-pagination-count:
+                            description: The number of items on the current page.
+                            schema:
+                                type: integer
+                        x-pagination-limit:
+                            description: The maximum number of items per page.
+                            schema:
+                                type: integer
+                        x-pagination-max-limit:
+                            description: The maximum allowable limit for the number
+                                of items per page.
+                            schema:
+                                type: integer
+                        x-pagination-offset:
+                            description: The number of items to skip before starting
+                                to collect the result set.
+                            schema:
+                                type: integer
+                        x-pagination-total:
+                            description: The total number of items available across
+                                all pages.
+                            schema:
+                                type: integer
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.read
+            -   OAuth2PreProd:
+                - dbaas.read
+            -   OAuth2Prod:
+                - dbaas.read
+            summary: Header information for listing all database clusters.
+            tags:
+            - clusters
+        post:
+            operationId: clusters_v2_post
+            tags:
+            - clusters
+            summary: Creates a new database high availability cluster.
+            description: Creates a new database high availability cluster asynchronously
+                for a tenant.
+            x-permission:
+                permission-name: db_cluster_create
+                product-name: database
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ClusterCreateRequest'
+                required: true
+            responses:
+                '202':
+                    description: Accepted - Database Cluster creation in progress.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClusterResponse'
+                    links:
+                        get:
+                            operationId: clusters_v2_get_by_id
+                            description: Database cluster details.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        update:
+                            operationId: clusters_v2_patch
+                            description: Database cluster update.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        delete:
+                            operationId: clusters_v2_delete
+                            description: Deletes a database cluster.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        start:
+                            operationId: clusters_v2_start
+                            description: Starts a database cluster.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        stop:
+                            operationId: clusters_v2_stop
+                            description: Stops a database cluster.
+                            parameters:
+                                cluster_id: $response.body#/id
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
+                - dbaas.write
+    /v2/clusters/{cluster_id}:
+        delete:
+            operationId: clusters_v2_delete
+            tags:
+            - clusters
+            summary: Deletes a database cluster.
+            description: Removes a database cluster and it"s instances for a tenant.
+            x-permission:
+                permission-name: db_cluster_delete
+                product-name: database
+            parameters:
+            -   $ref: '#/components/parameters/cluster_id'
+            responses:
+                '202':
+                    content:
+                        application/json:
+                            schema: {}
+                    description: Accepted - Database cluster deletion in progress.
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
+                - dbaas.write
+        get:
+            operationId: clusters_v2_get_by_id
+            tags:
+            - clusters
+            summary: Database cluster details.
+            description: Returns a database cluster detail.
+            x-permission:
+                permission-name: db_cluster_get
+                product-name: database
+            parameters:
+            -   $ref: '#/components/parameters/cluster_id'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClusterDetailResponse'
+                    description: Successful Response
+                    links:
+                        update:
+                            operationId: clusters_v2_patch
+                            description: Database cluster update.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        delete:
+                            operationId: clusters_v2_delete
+                            description: Deletes a database cluster.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        start:
+                            operationId: clusters_v2_start
+                            description: Starts a database cluster.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        stop:
+                            operationId: clusters_v2_stop
+                            description: Stops a database cluster.
+                            parameters:
+                                cluster_id: $response.body#/id
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.read
+            -   OAuth2PreProd:
+                - dbaas.read
+            -   OAuth2Prod:
+                - dbaas.read
+        patch:
+            description: Updates a database cluster.
+            x-permission:
+                permission-name: db_cluster_update
+                product-name: database
+            operationId: clusters_v2_patch
+            summary: Database cluster update.
+            tags:
+            - clusters
+            parameters:
+            -   $ref: '#/components/parameters/cluster_id'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ClusterUpdateRequest'
+                required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClusterDetailResponse'
+                    description: Successful Response
+                    links:
+                        get:
+                            operationId: clusters_v2_get_by_id
+                            description: Database cluster details.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        delete:
+                            operationId: clusters_v2_delete
+                            description: Deletes a database cluster.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        start:
+                            operationId: clusters_v2_start
+                            description: Starts a database cluster.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        stop:
+                            operationId: clusters_v2_stop
+                            description: Stops a database cluster.
+                            parameters:
+                                cluster_id: $response.body#/id
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.read
+            -   OAuth2PreProd:
+                - dbaas.read
+            -   OAuth2Prod:
+                - dbaas.read
+    /v2/clusters/{cluster_id}/start:
+        post:
+            tags:
+            - clusters
+            summary: Starts a database cluster.
+            description: Starts a database cluster.
+            x-permission:
+                permission-name: db_cluster_start
+                product-name: database
+            operationId: clusters_v2_start
+            parameters:
+            -   $ref: '#/components/parameters/cluster_id'
+            responses:
+                '200':
+                    description: Successful Response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClusterDetailResponse'
+                    links:
+                        get:
+                            operationId: clusters_v2_get_by_id
+                            description: Database cluster details.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        update:
+                            operationId: clusters_v2_patch
+                            description: Database cluster update.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        delete:
+                            operationId: clusters_v2_delete
+                            description: Deletes a database cluster.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        stop:
+                            operationId: clusters_v2_stop
+                            description: Stops a database cluster.
+                            parameters:
+                                cluster_id: $response.body#/id
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
+                - dbaas.write
+    /v2/clusters/{cluster_id}/stop:
+        post:
+            tags:
+            - clusters
+            summary: Stops a database cluster.
+            description: Stops a database cluster.
+            x-permission:
+                permission-name: db_cluster_stop
+                product-name: database
+            operationId: clusters_v2_stop
+            parameters:
+            -   $ref: '#/components/parameters/cluster_id'
+            responses:
+                '200':
+                    description: Successful Response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClusterDetailResponse'
+                    links:
+                        get:
+                            operationId: clusters_v2_get_by_id
+                            description: Database cluster details.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        update:
+                            operationId: clusters_v2_patch
+                            description: Database cluster update.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        delete:
+                            operationId: clusters_v2_delete
+                            description: Deletes a database cluster.
+                            parameters:
+                                cluster_id: $response.body#/id
+                        start:
+                            operationId: clusters_v2_start
+                            description: Starts a database cluster.
+                            parameters:
+                                cluster_id: $response.body#/id
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
+                - dbaas.write
+    /v2/replicas:
         get:
             tags:
             - replicas
             summary: Replicas List.
             description: List all replicas for a given instance.
-            operationId: replicas_v1_get_all
+            x-permission:
+                permission-name: db_replica_list
+                product-name: database
+            operationId: replicas_v2_get_all
             parameters:
             -   $ref: '#/components/parameters/source_id'
             -   $ref: '#/components/parameters/offset'
@@ -676,7 +1615,10 @@ paths:
             - replicas
             summary: Replica Create.
             description: Creates a new replica for an instance asynchronously.
-            operationId: replicas_v1_post
+            x-permission:
+                permission-name: db_replica_create
+                product-name: database
+            operationId: replicas_v2_post
             requestBody:
                 content:
                     application/json:
@@ -692,27 +1634,27 @@ paths:
                                 $ref: '#/components/schemas/ReplicaResponse'
                     links:
                         get:
-                            operationId: replicas_v1_get_by_id
+                            operationId: replicas_v2_get_by_id
                             description: Replica Detail.
                             parameters:
                                 replica_id: $response.body#/id
                         delete:
-                            operationId: replicas_v1_delete
+                            operationId: replicas_v2_delete
                             description: Deletes a replica instance.
                             parameters:
                                 replica_id: $response.body#/id
                         resize:
-                            operationId: replicas_v1_resize
+                            operationId: replicas_v2_resize
                             description: Replica Resize.
                             parameters:
                                 replica_id: $response.body#/id
                         start:
-                            operationId: replicas_v1_start
+                            operationId: replicas_v2_start
                             description: Replica Start.
                             parameters:
                                 replica_id: $response.body#/id
                         stop:
-                            operationId: replicas_v1_stop
+                            operationId: replicas_v2_stop
                             description: Replica Stop.
                             parameters:
                                 replica_id: $response.body#/id
@@ -735,13 +1677,16 @@ paths:
                 - dbaas.write
             -   OAuth2Prod:
                 - dbaas.write
-    /v1/replicas/{replica_id}:
+    /v2/replicas/{replica_id}:
         get:
             tags:
             - replicas
             summary: Replica Detail.
             description: Get an instance replica detail.
-            operationId: replicas_v1_get_by_id
+            x-permission:
+                permission-name: db_replica_get
+                product-name: database
+            operationId: replicas_v2_get_by_id
             parameters:
             -   $ref: '#/components/parameters/replica_id'
             responses:
@@ -753,22 +1698,28 @@ paths:
                                 $ref: '#/components/schemas/ReplicaDetailResponse'
                     links:
                         delete:
-                            operationId: replicas_v1_delete
+                            operationId: replicas_v2_delete
                             description: Deletes a replica instance.
                             parameters:
                                 replica_id: $response.body#/id
                         resize:
-                            operationId: replicas_v1_resize
+                            operationId: replicas_v2_resize
                             description: Replica Resize.
                             parameters:
                                 replica_id: $response.body#/id
+                        update/instance_type_id:
+                            operationId: replicas_v2_resize
+                            description: Replica Resize.
+                            parameters:
+                                replica_id: $response.body#/id
+                            x-mgc-hidden: true
                         start:
-                            operationId: replicas_v1_start
+                            operationId: replicas_v2_start
                             description: Replica Start.
                             parameters:
                                 replica_id: $response.body#/id
                         stop:
-                            operationId: replicas_v1_stop
+                            operationId: replicas_v2_stop
                             description: Replica Stop.
                             parameters:
                                 replica_id: $response.body#/id
@@ -792,11 +1743,14 @@ paths:
             -   OAuth2Prod:
                 - dbaas.read
         delete:
-            operationId: replicas_v1_delete
+            operationId: replicas_v2_delete
             tags:
             - replicas
             summary: Deletes a replica instance.
             description: Deletes a replica instance.
+            x-permission:
+                permission-name: db_replica_delete
+                product-name: database
             parameters:
             -   required: true
                 schema:
@@ -828,13 +1782,16 @@ paths:
                 - dbaas.write
             -   OAuth2Prod:
                 - dbaas.write
-    /v1/replicas/{replica_id}/resize:
+    /v2/replicas/{replica_id}/resize:
         post:
             tags:
             - replicas
             summary: Replica Resize.
             description: Resize an instance replica.
-            operationId: replicas_v1_resize
+            x-permission:
+                permission-name: db_replica_resize
+                product-name: database
+            operationId: replicas_v2_resize
             parameters:
             -   $ref: '#/components/parameters/replica_id'
             requestBody:
@@ -852,25 +1809,37 @@ paths:
                                 $ref: '#/components/schemas/ReplicaDetailResponse'
                     links:
                         get:
-                            operationId: replicas_v1_get_by_id
+                            operationId: replicas_v2_get_by_id
                             description: Replica Detail.
                             parameters:
                                 replica_id: $response.body#/id
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.instance_type_id == $.owner.parameters.instance_type_id
                         delete:
-                            operationId: replicas_v1_delete
+                            operationId: replicas_v2_delete
                             description: Deletes a replica instance.
                             parameters:
                                 replica_id: $response.body#/id
                         start:
-                            operationId: replicas_v1_start
+                            operationId: replicas_v2_start
                             description: Replica Start.
                             parameters:
                                 replica_id: $response.body#/id
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.instance_type_id == $.owner.parameters.instance_type_id
                         stop:
-                            operationId: replicas_v1_stop
+                            operationId: replicas_v2_stop
                             description: Replica Stop.
                             parameters:
                                 replica_id: $response.body#/id
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.instance_type_id == $.owner.parameters.instance_type_id
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -890,13 +1859,16 @@ paths:
                 - dbaas.write
             -   OAuth2Prod:
                 - dbaas.write
-    /v1/replicas/{replica_id}/start:
+    /v2/replicas/{replica_id}/start:
         post:
             tags:
             - replicas
             summary: Replica Start.
             description: Start an instance replica.
-            operationId: replicas_v1_start
+            x-permission:
+                permission-name: db_replica_start
+                product-name: database
+            operationId: replicas_v2_start
             parameters:
             -   $ref: '#/components/parameters/replica_id'
             responses:
@@ -908,22 +1880,22 @@ paths:
                                 $ref: '#/components/schemas/ReplicaDetailResponse'
                     links:
                         get:
-                            operationId: replicas_v1_get_by_id
+                            operationId: replicas_v2_get_by_id
                             description: Replica Detail.
                             parameters:
                                 replica_id: $response.body#/id
                         delete:
-                            operationId: replicas_v1_delete
+                            operationId: replicas_v2_delete
                             description: Deletes a replica instance.
                             parameters:
                                 replica_id: $response.body#/id
                         resize:
-                            operationId: replicas_v1_resize
+                            operationId: replicas_v2_resize
                             description: Replica Resize.
                             parameters:
                                 replica_id: $response.body#/id
                         stop:
-                            operationId: replicas_v1_stop
+                            operationId: replicas_v2_stop
                             description: Replica Stop.
                             parameters:
                                 replica_id: $response.body#/id
@@ -946,13 +1918,16 @@ paths:
                 - dbaas.write
             -   OAuth2Prod:
                 - dbaas.write
-    /v1/replicas/{replica_id}/stop:
+    /v2/replicas/{replica_id}/stop:
         post:
             tags:
             - replicas
             summary: Replica Stop.
             description: Stop an instance replica.
-            operationId: replicas_v1_stop
+            x-permission:
+                permission-name: db_replica_stop
+                product-name: database
+            operationId: replicas_v2_stop
             parameters:
             -   $ref: '#/components/parameters/replica_id'
             responses:
@@ -964,22 +1939,22 @@ paths:
                                 $ref: '#/components/schemas/ReplicaDetailResponse'
                     links:
                         get:
-                            operationId: replicas_v1_get_by_id
+                            operationId: replicas_v2_get_by_id
                             description: Replica Detail.
                             parameters:
                                 replica_id: $response.body#/id
                         delete:
-                            operationId: replicas_v1_delete
+                            operationId: replicas_v2_delete
                             description: Deletes a replica instance.
                             parameters:
                                 replica_id: $response.body#/id
                         resize:
-                            operationId: replicas_v1_resize
+                            operationId: replicas_v2_resize
                             description: Replica Resize.
                             parameters:
                                 replica_id: $response.body#/id
                         start:
-                            operationId: replicas_v1_start
+                            operationId: replicas_v2_start
                             description: Replica Start.
                             parameters:
                                 replica_id: $response.body#/id
@@ -1002,13 +1977,16 @@ paths:
                 - dbaas.write
             -   OAuth2Prod:
                 - dbaas.write
-    /v1/instances/{instance_id}/snapshots:
+    /v2/instances/{instance_id}/snapshots:
         get:
             tags:
-            - instances
+            - snapshots
             summary: Snapshots List.
             description: List all snapshots.
-            operationId: instances_v1_snapshots_get_all
+            x-permission:
+                permission-name: db_instance_snapshot_list
+                product-name: database
+            operationId: instances_v2_snapshots_get_all
             parameters:
             -   $ref: '#/components/parameters/instance_id'
             -   $ref: '#/components/parameters/offset'
@@ -1021,7 +1999,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/SnapshotsResponse'
+                                $ref: '#/components/schemas/SnapshotsInstanceResponse'
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -1041,10 +2019,13 @@ paths:
                 - dbaas.read
         post:
             tags:
-            - instances
+            - snapshots
             summary: Snapshot Create.
             description: Creates a new snapshot asynchronously.
-            operationId: instances_v1_snapshots_post
+            x-permission:
+                permission-name: db_instance_snapshot_create
+                product-name: database
+            operationId: instances_v2_snapshots_post
             parameters:
             -   $ref: '#/components/parameters/instance_id'
             requestBody:
@@ -1060,22 +2041,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SnapshotResponse'
-                    links:
-                        get:
-                            operationId: instances_v1_snapshot_get_by_id
-                            description: Snapshot Detail.
-                            parameters:
-                                snapshot_id: $response.body#/id
-                        update:
-                            operationId: instances_v1_snapshots_patch
-                            description: Snapshot Update.
-                            parameters:
-                                snapshot_id: $response.body#/id
-                        delete:
-                            operationId: instances_v1_snapshots_delete
-                            description: Delete Snapshot.
-                            parameters:
-                                snapshot_id: $response.body#/id
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -1095,13 +2060,16 @@ paths:
                 - dbaas.write
             -   OAuth2Prod:
                 - dbaas.write
-    /v1/instances/{instance_id}/snapshots/{snapshot_id}:
+    /v2/instances/{instance_id}/snapshots/{snapshot_id}:
         get:
             tags:
-            - instances
+            - snapshots
             summary: Snapshot Detail.
             description: Get a snapshot detail.
-            operationId: instances_v1_snapshot_get_by_id
+            x-permission:
+                permission-name: db_instance_snapshot_get
+                product-name: database
+            operationId: instances_v2_snapshot_get_by_id
             parameters:
             -   $ref: '#/components/parameters/instance_id'
             -   $ref: '#/components/parameters/snapshot_id'
@@ -1112,17 +2080,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SnapshotDetailResponse'
-                    links:
-                        update:
-                            operationId: instances_v1_snapshots_patch
-                            description: Snapshot Update.
-                            parameters:
-                                snapshot_id: $response.body#/id
-                        delete:
-                            operationId: instances_v1_snapshots_delete
-                            description: Delete Snapshot.
-                            parameters:
-                                snapshot_id: $response.body#/id
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -1144,10 +2101,13 @@ paths:
                 - dbaas.read
         patch:
             tags:
-            - instances
+            - snapshots
             summary: Snapshot Update.
             description: Updates a snapshot.
-            operationId: instances_v1_snapshots_patch
+            x-permission:
+                permission-name: db_instance_snapshot_update
+                product-name: database
+            operationId: instances_v2_snapshots_patch
             parameters:
             -   $ref: '#/components/parameters/instance_id'
             -   $ref: '#/components/parameters/snapshot_id'
@@ -1164,17 +2124,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SnapshotDetailResponse'
-                    links:
-                        get:
-                            operationId: instances_v1_snapshot_get_by_id
-                            description: Snapshot Detail.
-                            parameters:
-                                snapshot_id: $response.body#/id
-                        delete:
-                            operationId: instances_v1_snapshots_delete
-                            description: Delete Snapshot.
-                            parameters:
-                                snapshot_id: $response.body#/id
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -1196,10 +2145,13 @@ paths:
                 - dbaas.write
         delete:
             tags:
-            - instances
+            - snapshots
             summary: Delete Snapshot.
             description: Deletes a database snapshot.
-            operationId: instances_v1_snapshots_delete
+            x-permission:
+                permission-name: db_instance_snapshot_delete
+                product-name: database
+            operationId: instances_v2_snapshots_delete
             parameters:
             -   $ref: '#/components/parameters/instance_id'
             -   $ref: '#/components/parameters/snapshot_id'
@@ -1228,15 +2180,19 @@ paths:
                 - dbaas.write
             -   OAuth2Prod:
                 - dbaas.write
-    /v1/snapshots/{snapshot_id}/restores:
+    /v2/instances/{instance_id}/snapshots/{snapshot_id}/restore:
         post:
-            operationId: restores_instance_from_snapshot_v1__snapshot_id__post
-            parameters:
-            -   $ref: '#/components/parameters/snapshot_id'
             tags:
             - snapshots
             summary: Create a new instance from snapshot asynchronously.
             description: Create a new instance from snapshot.
+            x-permission:
+                permission-name: db_instance_snapshot_restore
+                product-name: database
+            operationId: instances_v2_snapshots_restore
+            parameters:
+            -   $ref: '#/components/parameters/instance_id'
+            -   $ref: '#/components/parameters/snapshot_id'
             requestBody:
                 content:
                     application/json:
@@ -1249,7 +2205,253 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/InstanceResponse'
+                                $ref: '#/components/schemas/InstanceDetailResponse'
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
+                - dbaas.write
+    /v2/clusters/{cluster_id}/snapshots:
+        get:
+            tags:
+            - snapshots
+            summary: Snapshots List.
+            description: List all snapshots.
+            x-permission:
+                permission-name: db_cluster_snapshot_list
+                product-name: database
+            operationId: clusters_v2_snapshots_get_all
+            parameters:
+            -   $ref: '#/components/parameters/cluster_id'
+            -   $ref: '#/components/parameters/offset'
+            -   $ref: '#/components/parameters/limit_medium'
+            -   $ref: '#/components/parameters/snapshot_type'
+            -   $ref: '#/components/parameters/snapshot_status'
+            responses:
+                '200':
+                    description: Successful Response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SnapshotsClusterResponse'
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.read
+            -   OAuth2PreProd:
+                - dbaas.read
+            -   OAuth2Prod:
+                - dbaas.read
+        post:
+            tags:
+            - snapshots
+            summary: Snapshot Create.
+            description: Creates a new snapshot asynchronously.
+            x-permission:
+                permission-name: db_cluster_snapshot_create
+                product-name: database
+            operationId: clusters_v2_snapshots_post
+            parameters:
+            -   $ref: '#/components/parameters/cluster_id'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ClusterSnapshotCreateRequest'
+                required: true
+            responses:
+                '202':
+                    description: Successful Response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClusterSnapshotResponse'
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
+                - dbaas.write
+    /v2/clusters/{cluster_id}/snapshots/{snapshot_id}:
+        get:
+            tags:
+            - snapshots
+            summary: Snapshot Detail.
+            description: Get a snapshot detail.
+            x-permission:
+                permission-name: db_cluster_snapshot_get
+                product-name: database
+            operationId: clusters_v2_snapshot_get_by_id
+            parameters:
+            -   $ref: '#/components/parameters/cluster_id'
+            -   $ref: '#/components/parameters/snapshot_id'
+            responses:
+                '200':
+                    description: Successful Response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SnapshotClusterDetailResponse'
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.read
+            -   OAuth2PreProd:
+                - dbaas.read
+            -   OAuth2Prod:
+                - dbaas.read
+        patch:
+            tags:
+            - snapshots
+            summary: Snapshot Update.
+            description: Updates a snapshot.
+            x-permission:
+                permission-name: db_cluster_snapshot_update
+                product-name: database
+            operationId: clusters_v2_snapshots_patch
+            parameters:
+            -   $ref: '#/components/parameters/cluster_id'
+            -   $ref: '#/components/parameters/snapshot_id'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SnapshotUpdateRequest'
+                required: true
+            responses:
+                '200':
+                    description: Successful Response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SnapshotClusterDetailResponse'
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
+                - dbaas.write
+        delete:
+            tags:
+            - snapshots
+            summary: Delete Snapshot.
+            description: Deletes a database snapshot.
+            x-permission:
+                permission-name: db_cluster_snapshot_delete
+                product-name: database
+            operationId: clusters_v2_snapshots_delete
+            parameters:
+            -   $ref: '#/components/parameters/cluster_id'
+            -   $ref: '#/components/parameters/snapshot_id'
+            responses:
+                '202':
+                    content:
+                        application/json:
+                            schema: {}
+                    description: Successful Response.
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
+                - dbaas.write
+    /v2/clusters/{cluster_id}/snapshots/{snapshot_id}/restore:
+        post:
+            operationId: clusters_v2_snapshots_restore
+            parameters:
+            -   $ref: '#/components/parameters/cluster_id'
+            -   $ref: '#/components/parameters/snapshot_id'
+            tags:
+            - snapshots
+            summary: Create a new cluster from snapshot asynchronously.
+            description: Create a new cluster from snapshot.
+            x-permission:
+                permission-name: db_cluster_snapshot_restore
+                product-name: database
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ClusterRestoreRequest'
+                required: true
+            responses:
+                '202':
+                    description: Accepted - Snapshot restore cluster in progress.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClusterDetailResponse'
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -1319,6 +2521,46 @@ components:
                 format: uuid
             example: f21999cb-302f-48f7-b584-6a84748e112c
             description: Value referring to instance Id.
+        parameter_group_id:
+            name: parameter_group_id
+            in: path
+            required: true
+            schema:
+                title: Parameter Group Id
+                type: string
+                format: uuid
+            example: f21999cb-302f-48f7-b584-6a84748e112c
+            description: Value referring to parameter group Id.
+        parameter_id:
+            in: path
+            name: parameter_id
+            required: true
+            schema:
+                description: Parameter Id.
+                format: uuid
+                title: Parameter Id
+                type: string
+            example: f21999cb-302f-48f7-b584-6a84748e112c
+        cluster_id:
+            name: cluster_id
+            in: path
+            required: true
+            schema:
+                title: Cluster Id
+                type: string
+                format: uuid
+            example: f21999cb-302f-48f7-b584-6a84748e112c
+            description: Value referring to cluster Id.
+        parameter_group_id_query:
+            name: parameter_group_id
+            in: query
+            required: false
+            schema:
+                title: Parameter Group Id
+                type: string
+                format: uuid
+            example: f21999cb-302f-48f7-b584-6a84748e112c
+            description: Value referring to parameter group Id.
         instance_id_query:
             name: instance_id
             in: query
@@ -1334,29 +2576,20 @@ components:
             in: path
             required: true
             schema:
-                title: Datastore Id (Deprecated)
+                title: Engine Id
                 type: string
                 format: uuid
-                description: '**Deprecated**: This property is being deprecated in
-                    favor of `engine_id`. Please update your requests to use `engine_id`
-                    for improved functionality and future compatibility.
-
-                    '
             example: 7a11cfc5-f9f8-4fa2-a418-94a423f6a51f
-            description: Value referring to datastore Id.
+            description: Value referring to engine Id.
         instance_type_id:
             name: instance_type_id
             in: path
             required: true
             schema:
-                title: Flavor Id (Deprecated)
+                title: Instance Type Id
                 type: string
                 format: uuid
-                description: '**Deprecated**: This property is being deprecated in
-                    favor of `instance_type_id`. Please update your requests to use
-                    `instance_type_id` for improved functionality and future compatibility.
-
-                    '
+                description: Value referring to instance type Id.
             example: 7a11cfc5-f9f8-4fa2-a418-94a423f6a51f
             description: Value referring to instance type Id.
         engine_id_query:
@@ -1376,6 +2609,14 @@ components:
                 title: Volume.Size
                 type: integer
             description: Value referring to volume size.
+        parameter_group_type_query:
+            name: type
+            in: query
+            required: false
+            schema:
+                allOf:
+                -   $ref: '#/components/schemas/ParameterGroupType'
+                title: Type
         volume_size_gt:
             name: volume.size__gt
             in: query
@@ -1448,6 +2689,42 @@ components:
                 maximum: 50
                 default: 10
             description: The maximum number of items per page.
+        limit_optional:
+            name: _limit
+            in: query
+            required: false
+            schema:
+                type: integer
+                minimum: 1
+            description: The maximum number of items per page.
+        parameter_name_query:
+            in: query
+            name: name
+            required: false
+            schema:
+                title: Name
+                type: string
+            description: Value referring to engine parameter name.
+        dynamic_query:
+            in: query
+            name: dynamic
+            required: false
+            schema:
+                title: Dynamic
+                type: boolean
+            description: "Parameters that can be modified while the database is running.\
+                \  \nChanges to these parameters take effect immediately without requiring\
+                \ a service restart.\n"
+        modifiable_query:
+            name: modifiable
+            in: query
+            required: false
+            schema:
+                title: Modifiable
+                type: boolean
+            description: "Parameters that influence the machine creation process.\
+                \  \nThese parameters are set during instance provisioning and become\
+                \ immutable after the machine is created.\n"
         engine_status:
             name: status
             in: query
@@ -1460,7 +2737,6 @@ components:
             schema:
                 allOf:
                 -   $ref: '#/components/schemas/InstanceTypeStatus'
-                default: ACTIVE
             description: An enumeration.
         snapshot_type:
             name: type
@@ -1480,6 +2756,34 @@ components:
             schema:
                 $ref: '#/components/schemas/InstanceStatus'
             description: Value referring to instance status.
+        cluster_status:
+            name: status
+            in: query
+            schema:
+                $ref: '#/components/schemas/ClusterStatus'
+            description: Value referring to cluster status.
+    headers:
+        PaginationCount:
+            description: The number of items on the current page.
+            schema:
+                type: integer
+        PaginationLimit:
+            description: The maximum number of items per page.
+            schema:
+                type: integer
+        PaginationMaxLimit:
+            description: The maximum allowable limit for the number of items per page.
+            schema:
+                type: integer
+        PaginationOffset:
+            description: The number of items to skip before starting to collect the
+                result set.
+            schema:
+                type: integer
+        PaginationTotal:
+            description: The total number of items available across all pages.
+            schema:
+                type: integer
     schemas:
         MetaResponse:
             properties:
@@ -1544,11 +2848,280 @@ components:
             - max_limit
             title: PageResponse
             type: object
+        ClusterCreateRequest:
+            properties:
+                backup_retention_days:
+                    default: 7
+                    title: Backup Retention Days
+                    type: integer
+                backup_start_at:
+                    default: 04:00:00
+                    format: time
+                    title: Backup Start At
+                    type: string
+                engine_id:
+                    format: uuid
+                    title: Engine Id
+                    type: string
+                instance_type_id:
+                    format: uuid
+                    title: Machine Type Id
+                    type: string
+                name:
+                    maxLength: 100
+                    title: Name
+                    type: string
+                password:
+                    maxLength: 50
+                    title: Password
+                    type: string
+                user:
+                    maxLength: 25
+                    title: User
+                    type: string
+                volume:
+                    $ref: '#/components/schemas/ClusterVolumeRequest'
+                parameter_group_id:
+                    title: Parameter group Id
+                    type: string
+                    format: uuid
+            required:
+            - name
+            - engine_id
+            - instance_type_id
+            - user
+            - password
+            - volume
+            title: ClusterCreateRequest
+            type: object
+        ClusterUpdateRequest:
+            properties:
+                parameter_group_id:
+                    title: Parameter group Id
+                    type: string
+                    format: uuid
+                backup_retention_days:
+                    title: Backup Retention Days
+                    type: integer
+                    example: 7
+                    description: The number of days that a particular backup is kept
+                        until its deletion.
+                backup_start_at:
+                    title: Backup Start At
+                    description: Start time (UTC timezone) which is allowed to start
+                        the automated backup process.
+                    type: string
+                    format: time
+                    example: 04:00:00
+            title: ClusterUpdateRequest
+            type: object
+        ClusterDetailResponse:
+            properties:
+                backup_retention_days:
+                    title: Backup Retention Days
+                    type: integer
+                backup_start_at:
+                    format: time
+                    title: Backup Start At
+                    type: string
+                created_at:
+                    format: date-time
+                    title: Created At
+                    type: string
+                engine_id:
+                    format: uuid
+                    title: Engine Id
+                    type: string
+                finished_at:
+                    format: date-time
+                    title: Finished At
+                    type: string
+                id:
+                    format: uuid
+                    title: Id
+                    type: string
+                instance_type_id:
+                    format: uuid
+                    title: Machine Type Id
+                    type: string
+                name:
+                    maxLength: 100
+                    title: Name
+                    type: string
+                parameter_group_id:
+                    format: uuid
+                    title: Parameter Group Id
+                    type: string
+                started_at:
+                    format: date-time
+                    title: Started At
+                    type: string
+                status:
+                    $ref: '#/components/schemas/ClusterStatusResponse'
+                updated_at:
+                    format: date-time
+                    title: Updated At
+                    type: string
+                volume:
+                    $ref: '#/components/schemas/ClusterVolumeResponse'
+                apply_parameters_pending:
+                    title: Apply Parameters Pending
+                    type: boolean
+                addresses:
+                    title: Addresses
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/LoadBalancerAddress'
+            required:
+            - id
+            - name
+            - engine_id
+            - instance_type_id
+            - volume
+            - status
+            - created_at
+            - backup_retention_days
+            - backup_start_at
+            - parameter_group_id
+            - apply_parameters_pending
+            - addresses
+            title: ClusterDetailResponse
+            type: object
+        ClusterStatusResponse:
+            description: An enumeration.
+            enum:
+            - ACTIVE
+            - ERROR
+            - PENDING
+            - CREATING
+            - DELETING
+            - DELETED
+            - ERROR_DELETING
+            - STARTING
+            - STOPPING
+            - STOPPED
+            - BACKING_UP
+            title: ClusterStatusResponse
+            type: string
+        ClusterVolumeResponse:
+            properties:
+                size:
+                    maximum: 50000
+                    minimum: 20
+                    title: Size
+                    type: integer
+                type:
+                    $ref: '#/components/schemas/VolumeTypeResponse'
+            required:
+            - size
+            - type
+            title: ClusterVolumeResponse
+            type: object
+        ClustersResponse:
+            properties:
+                meta:
+                    $ref: '#/components/schemas/MetaResponse'
+                results:
+                    items:
+                        $ref: '#/components/schemas/ClusterDetailResponse'
+                    title: Results
+                    type: array
+            required:
+            - meta
+            - results
+            title: ClustersResponse
+            type: object
+        ClusterResponse:
+            properties:
+                id:
+                    format: uuid
+                    title: Id
+                    type: string
+            required:
+            - id
+            title: ClusterResponse
+            type: object
+        ClusterVolumeRequest:
+            title: Cluster Volume Request
+            required:
+            - size
+            type: object
+            properties:
+                size:
+                    description: The size of the volume (in GiB).
+                    type: integer
+                    minimum: 20
+                    maximum: 50000
+                    example: 30
+                type:
+                    $ref: '#/components/schemas/VolumeTypeRequest'
         SnapshotDetailResponse:
             title: Snapshot Detail Response
             required:
             - id
             - instance
+            - allocated_size
+            - name
+            - description
+            - type
+            - status
+            - availability_zone
+            - created_at
+            type: object
+            properties:
+                id:
+                    title: Id
+                    type: string
+                    format: uuid
+                instance:
+                    $ref: '#/components/schemas/SnapshotInstanceDetailResponse'
+                name:
+                    title: Name
+                    type: string
+                description:
+                    title: Description
+                    type: string
+                type:
+                    $ref: '#/components/schemas/SnapshotType'
+                status:
+                    $ref: '#/components/schemas/SnapshotStatus'
+                allocated_size:
+                    title: Allocated Size
+                    type: integer
+                    description: Allocated size in gibibytes.
+                created_at:
+                    title: Created At
+                    type: string
+                    format: date-time
+                started_at:
+                    title: Started At
+                    type: string
+                    format: date-time
+                finished_at:
+                    title: Finished At
+                    type: string
+                    format: date-time
+                updated_at:
+                    title: Updated At
+                    type: string
+                    format: date-time
+                availability_zone:
+                    $ref: '#/components/schemas/AvailabilityZone'
+        ClusterSnapshotResponse:
+            properties:
+                id:
+                    format: uuid
+                    title: Id
+                    type: string
+            required:
+            - id
+            title: ClusterSnapshotResponse
+            type: object
+        SnapshotClusterDetailResponse:
+            title: Snapshot Detail Response
+            required:
+            - id
+            - cluster
             - allocated_size
             - name
             - description
@@ -1561,8 +3134,8 @@ components:
                     title: Id
                     type: string
                     format: uuid
-                instance:
-                    $ref: '#/components/schemas/SnapshotInstanceDetailResponse'
+                cluster:
+                    $ref: '#/components/schemas/SnapshotEntityClusterDetailResponse'
                 name:
                     title: Name
                     type: string
@@ -1612,7 +3185,7 @@ components:
             enum:
             - ON_DEMAND
             - AUTOMATED
-        SnapshotsResponse:
+        SnapshotsInstanceResponse:
             title: Snapshots Response
             required:
             - meta
@@ -1626,6 +3199,20 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/SnapshotDetailResponse'
+        SnapshotsClusterResponse:
+            title: Snapshots Response
+            required:
+            - meta
+            - results
+            type: object
+            properties:
+                meta:
+                    $ref: '#/components/schemas/MetaResponse'
+                results:
+                    title: Results
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SnapshotClusterDetailResponse'
         SnapshotInstanceDetailResponse:
             title: Instance Detail Response
             description: 'This response object provides details about a database instance
@@ -1648,6 +3235,42 @@ components:
                     type: string
                     maxLength: 100
                     example: my-db-instance
+        SnapshotEntityClusterDetailResponse:
+            title: Cluster Detail Response
+            description: 'This response object provides details about a database cluster
+                associated with a snapshot.
+
+                '
+            required:
+            - id
+            - name
+            type: object
+            properties:
+                id:
+                    title: Id
+                    description: Database cluster unique identifier.
+                    type: string
+                    format: uuid
+                name:
+                    title: Name
+                    description: Database cluster unique name.
+                    type: string
+                    maxLength: 100
+                    example: my-db-cluster
+        ClusterSnapshotCreateRequest:
+            properties:
+                description:
+                    title: Description
+                    maxLength: 255
+                    type: string
+                name:
+                    maxLength: 100
+                    title: Name
+                    type: string
+            required:
+            - name
+            title: ClusterSnapshotCreateRequest
+            type: object
         SnapshotCreateRequest:
             required:
             - name
@@ -1720,6 +3343,36 @@ components:
                     type: string
                     format: time
                     default: 04:00:00
+        ClusterRestoreRequest:
+            title: Restore Cluster Snapshot Request
+            required:
+            - name
+            - instance_type_id
+            type: object
+            properties:
+                name:
+                    title: Name
+                    maxLength: 100
+                    type: string
+                instance_type_id:
+                    title: Instance Type Id
+                    type: string
+                    format: uuid
+                volume:
+                    $ref: '#/components/schemas/ClusterVolumeRequest'
+                backup_retention_days:
+                    title: Backup Retention Days
+                    type: integer
+                    default: 7
+                    description: The number of days that a particular backup is kept
+                        until its deletion.
+                backup_start_at:
+                    title: Backup Start At
+                    description: Start time (UTC timezone) which is allowed to start
+                        the automated backup process.
+                    type: string
+                    format: time
+                    default: 04:00:00
         InstanceTypesResponse:
             title: InstanceTypes Response
             required:
@@ -1748,13 +3401,6 @@ components:
             - IPv4
             - IPv6
             example: IPv4
-        InstanceStatusUpdate:
-            title: Instance Status Update
-            type: string
-            enum:
-            - ACTIVE
-            - STOPPED
-            example: ACTIVE
         InstancesResponse:
             title: Instances Response
             required:
@@ -1790,6 +3436,32 @@ components:
             - MAINTENANCE
             - MAINTENANCE_ERROR
             example: ACTIVE
+        AvailabilityZone:
+            title: Availability Zone
+            type: string
+            enum:
+            - br-se1-a
+            - br-se1-b
+            - br-se1-c
+            - br-ne1-a
+            - br-ne1-b
+            example: br-ne1-a
+        ClusterStatus:
+            title: Instance Status
+            type: string
+            enum:
+            - ACTIVE
+            - ERROR
+            - PENDING
+            - CREATING
+            - DELETING
+            - DELETED
+            - ERROR_DELETING
+            - STARTING
+            - STOPPING
+            - STOPPED
+            - BACKING_UP
+            example: ACTIVE
         InstanceGeneration:
             title: Instance Generation
             description: Current database instance generation
@@ -1807,47 +3479,9 @@ components:
             - G9B
             - G10B
             - G1
-            example: G1B
-        InstanceParametersNames:
-            title: Instance Parameters Name
-            description: Database parameter name.
-            type: string
-            enum:
-            - LOWER_CASE_TABLE_NAMES
-        InstanceParametersRequest:
-            properties:
-                name:
-                    $ref: '#/components/schemas/InstanceParametersNames'
-                value:
-                    title: Instance Parameters Value
-                    description: Database parameter value.
-                    anyOf:
-                    -   type: number
-                    -   type: integer
-                    -   type: boolean
-                    -   type: string
-            required:
-            - name
-            - value
-            title: InstanceParametersRequest
-            type: object
-        InstanceParametersResponse:
-            properties:
-                name:
-                    $ref: '#/components/schemas/InstanceParametersNames'
-                value:
-                    title: Instance Parameters Value
-                    description: Database parameter value.
-                    anyOf:
-                    -   type: number
-                    -   type: integer
-                    -   type: boolean
-                    -   type: string
-            required:
-            - name
-            - value
-            title: InstanceParametersResponse
-            type: object
+            - G2
+            - G3
+            example: G3
         InstanceCreateRequest:
             title: Instance Create Request
             required:
@@ -1855,6 +3489,8 @@ components:
             - password
             - user
             - volume
+            - engine_id
+            - instance_type_id
             type: object
             properties:
                 name:
@@ -1865,27 +3501,6 @@ components:
                     title: Engine Id
                     type: string
                     format: uuid
-                datastore_id:
-                    deprecated: true
-                    title: Datastore Id (Deprecated)
-                    type: string
-                    format: uuid
-                    description: '**Deprecated**: This property is being deprecated
-                        in favor of `engine_id`. Please update your requests to use
-                        `engine_id` for improved functionality and future compatibility.
-
-                        '
-                flavor_id:
-                    deprecated: true
-                    title: Flavor Id (Deprecated)
-                    type: string
-                    format: uuid
-                    description: '**Deprecated**: This property is being deprecated
-                        in favor of `instance_type_id`. Please update your requests
-                        to use `instance_type_id` for improved functionality and future
-                        compatibility.
-
-                        '
                 instance_type_id:
                     title: Instance Type Id
                     type: string
@@ -1900,11 +3515,10 @@ components:
                     type: string
                 volume:
                     $ref: '#/components/schemas/InstanceVolumeRequest'
-                parameters:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/InstanceParametersRequest'
-                    default: []
+                parameter_group_id:
+                    title: Parameter group Id
+                    type: string
+                    format: uuid
                 backup_retention_days:
                     title: Backup Retention Days
                     type: integer
@@ -1918,6 +3532,88 @@ components:
                     type: string
                     format: time
                     default: 04:00:00
+                availability_zone:
+                    $ref: '#/components/schemas/AvailabilityZone'
+        ParameterGroupCreateRequest:
+            title: ParameterGroupCreateRequest
+            required:
+            - name
+            - engine_id
+            type: object
+            properties:
+                description:
+                    title: Description
+                    maxLength: 255
+                    type: string
+                    example: Parameter Group for MySQL 8 engine
+                engine_id:
+                    format: uuid
+                    title: Engine Id
+                    type: string
+                name:
+                    maxLength: 100
+                    title: Name
+                    type: string
+                    example: my_parameter_group
+        ParameterGroupResponse:
+            title: ParameterGroupResponse
+            required:
+            - id
+            type: object
+            properties:
+                id:
+                    format: uuid
+                    title: Id
+                    type: string
+        ParameterGroupDetailResponse:
+            properties:
+                id:
+                    format: uuid
+                    title: Id
+                    type: string
+                name:
+                    title: Name
+                    type: string
+                    example: my_parameter_group
+                description:
+                    title: Description
+                    example: Parameter Group for MySQL 8 engine
+                    type: string
+                type:
+                    $ref: '#/components/schemas/ParameterGroupType'
+                engine_id:
+                    format: uuid
+                    title: Engine Id
+                    type: string
+            required:
+            - id
+            - name
+            - description
+            - type
+            - engine_id
+            title: ParameterGroupDetailResponse
+            type: object
+        ParameterGroupsResponse:
+            properties:
+                meta:
+                    $ref: '#/components/schemas/MetaResponse'
+                results:
+                    items:
+                        $ref: '#/components/schemas/ParameterGroupDetailResponse'
+                    title: Results
+                    type: array
+            required:
+            - meta
+            - results
+            title: ParameterGroupsResponse
+            type: object
+        ParameterGroupType:
+            enum:
+            - SYSTEM
+            - USER
+            title: ParameterGroupType
+            type: string
+            example: USER
         InstanceVolumeRequest:
             title: Instance Volume Request
             required:
@@ -1931,10 +3627,33 @@ components:
                     maximum: 50000
                     example: 30
                 type:
-                    description: The type of the volume.
-                    allOf:
-                    -   $ref: '#/components/schemas/VolumeType'
-                    default: CLOUD_NVME_15K
+                    $ref: '#/components/schemas/VolumeTypeRequest'
+        ParameterCreateRequest:
+            properties:
+                name:
+                    $ref: '#/components/schemas/EngineParametersMysql8'
+                value:
+                    anyOf:
+                    -   type: number
+                    -   type: integer
+                    -   type: boolean
+                    -   type: string
+                    title: Value
+            required:
+            - name
+            - value
+            title: ParameterCreateRequest
+            type: object
+        ParameterResponse:
+            properties:
+                id:
+                    format: uuid
+                    title: Id
+                    type: string
+            required:
+            - id
+            title: ParameterResponse
+            type: object
         InstanceVolumeResizeRequest:
             title: Instance Volume Request
             type: object
@@ -1947,11 +3666,6 @@ components:
                     minimum: 10
                     maximum: 50000
                     example: 30
-                type:
-                    description: The type of the volume.
-                    allOf:
-                    -   $ref: '#/components/schemas/VolumeType'
-                    default: CLOUD_NVME_15K
         InstanceResponse:
             title: Instance Response
             required:
@@ -1968,17 +3682,17 @@ components:
             - id
             - name
             - engine_id
-            - datastore_id
-            - flavor_id
             - instance_type_id
+            - parameter_group_id
             - volume
             - addresses
             - status
+            - availability_zone
             - generation
-            - parameters
             - created_at
             - backup_start_at
             - backup_retention_days
+            - apply_parameters_pending
             type: object
             properties:
                 id:
@@ -1996,47 +3710,32 @@ components:
                     description: Engine unique identifier.
                     type: string
                     format: uuid
-                datastore_id:
-                    deprecated: true
-                    description: 'Datastore unique identifier (Deprecated).
-
-                        **Deprecated**: This property is being deprecated in favor
-                        of `engine_id`. Please update your requests to use `engine_id`
-                        for improved functionality and future compatibility.
-
-                        '
+                parameter_group_id:
+                    description: Parameter group unique identifier.
                     type: string
                     format: uuid
-                flavor_id:
-                    deprecated: true
-                    description: 'Flavor unique identifier. Instance size  (Deprecated).
-
-                        **Deprecated**: This property is being deprecated in favor
-                        of `instance_type_id`. Please update your requests to use
-                        `instance_type_id` for improved functionality and future compatibility.
-
-                        '
-                    type: string
-                    format: uuid
+                apply_parameters_pending:
+                    description: Flag that defines whether an instance should be restarted
+                        to apply parameters.
+                    title: Parameter Apply Pending
+                    type: boolean
                 instance_type_id:
                     description: Instance Type unique identifier. Instance size.
                     type: string
                     format: uuid
                 volume:
-                    $ref: '#/components/schemas/Volume'
+                    $ref: '#/components/schemas/VolumeResponse'
                 addresses:
                     title: Addresses
                     type: array
                     items:
-                        $ref: '#/components/schemas/Address'
+                        $ref: '#/components/schemas/InstanceAddress'
                 status:
                     $ref: '#/components/schemas/InstanceStatus'
+                availability_zone:
+                    $ref: '#/components/schemas/AvailabilityZone'
                 generation:
                     $ref: '#/components/schemas/InstanceGeneration'
-                parameters:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/InstanceParametersResponse'
                 backup_retention_days:
                     title: Backup Retention Days
                     type: integer
@@ -2079,8 +3778,6 @@ components:
             title: Database Instance Update Request
             type: object
             properties:
-                status:
-                    $ref: '#/components/schemas/InstanceStatusUpdate'
                 backup_retention_days:
                     title: Backup Retention Days
                     type: integer
@@ -2094,6 +3791,11 @@ components:
                     type: string
                     format: time
                     example: 04:00:00
+                parameter_group_id:
+                    title: Parameter group Id
+                    type: string
+                    format: uuid
+                    example: 44ae8773-a21e-4d5e-a38f-b677ccfeb7f8
         EngineStatus:
             title: EngineStatus
             description: An enumeration.
@@ -2101,6 +3803,156 @@ components:
             enum:
             - ACTIVE
             - DEPRECATED
+        EngineParametersMysql8:
+            title: Parameter name
+            type: string
+            example: LOWER_CASE_TABLE_NAMES
+        EngineParameterResponse:
+            properties:
+                allowed_values:
+                    title: Allowed Values
+                    items:
+                        anyOf:
+                        -   type: number
+                        -   type: integer
+                        -   type: boolean
+                        -   type: string
+                    example:
+                    - 0
+                    - 1
+                    type: array
+                data_type:
+                    anyOf:
+                    -   type: number
+                    -   type: integer
+                    -   type: boolean
+                    -   type: string
+                    title: Data Type
+                    example: integer
+                default_value:
+                    anyOf:
+                    -   type: number
+                    -   type: integer
+                    -   type: boolean
+                    -   type: string
+                    title: Default Value
+                    example: 0
+                description:
+                    title: Description
+                    type: string
+                dynamic:
+                    title: Dynamic
+                    type: boolean
+                    example: false
+                engine_id:
+                    format: uuid
+                    title: Engine Id
+                    type: string
+                modifiable:
+                    title: Modifiable
+                    type: boolean
+                    example: false
+                name:
+                    $ref: '#/components/schemas/EngineParametersMysql8'
+                parameter_name:
+                    title: Parameter Name
+                    type: string
+                    example: lower_case_table_names
+                ranged_value:
+                    title: Ranged Value
+                    type: boolean
+                    example: false
+            required:
+            - name
+            - parameter_name
+            - default_value
+            - allowed_values
+            - ranged_value
+            - data_type
+            - description
+            - dynamic
+            - modifiable
+            - engine_id
+            title: EngineParameterResponse
+            type: object
+        EngineParametersResponse:
+            properties:
+                meta:
+                    $ref: '#/components/schemas/MetaResponse'
+                results:
+                    items:
+                        $ref: '#/components/schemas/EngineParameterResponse'
+                    title: Results
+                    type: array
+            required:
+            - meta
+            - results
+            title: EngineParametersResponse
+            type: object
+        ParameterGroupUpdateRequest:
+            properties:
+                name:
+                    maxLength: 100
+                    title: Name
+                    type: string
+                    example: production_parameter_group
+                description:
+                    title: Description
+                    maxLength: 255
+                    type: string
+                    example: Production parameter group for MySQL 8 engine
+            title: ParameterGroupUpdateRequest
+            type: object
+        ParameterUpdateRequest:
+            properties:
+                value:
+                    anyOf:
+                    -   type: number
+                    -   type: integer
+                    -   type: boolean
+                    -   type: string
+                    title: Value
+            required:
+            - value
+            title: ParameterUpdateRequest
+            type: object
+        ParameterDetailResponse:
+            properties:
+                id:
+                    format: uuid
+                    title: Id
+                    type: string
+                    example: 44ae8773-a21e-4d5e-a38f-b677ccfeb7f8
+                name:
+                    $ref: '#/components/schemas/EngineParametersMysql8'
+                value:
+                    anyOf:
+                    -   type: number
+                    -   type: integer
+                    -   type: boolean
+                    -   type: string
+                    title: Value
+                    example: 1
+            required:
+            - id
+            - name
+            - value
+            title: ParameterDetailResponse
+            type: object
+        ParametersResponse:
+            properties:
+                meta:
+                    $ref: '#/components/schemas/MetaResponse'
+                results:
+                    items:
+                        $ref: '#/components/schemas/ParameterDetailResponse'
+                    title: Results
+                    type: array
+            required:
+            - meta
+            - results
+            title: ParametersResponse
+            type: object
         EnginesResponse:
             title: Engines Response
             required:
@@ -2118,7 +3970,6 @@ components:
         EngineResponse:
             title: Engine Response
             required:
-            - engine
             - name
             - id
             - version
@@ -2130,18 +3981,6 @@ components:
                     type: string
                     format: uuid
                     description: Engine unique identifier.
-                engine:
-                    deprecated: true
-                    title: Engine
-                    type: string
-                    example: mysql
-                    description: 'Database engine (Deprecated).
-
-                        **Deprecated**: This property is being deprecated in favor
-                        of `name`. Please update your requests to use `name` for improved
-                        functionality and future compatibility.
-
-                        '
                 name:
                     title: Name
                     type: string
@@ -2167,14 +4006,24 @@ components:
             type: string
             enum:
             - replicas
-        VolumeType:
+        VolumeTypeRequest:
             title: Volume Type
             description: The type of the volume.
             type: string
             enum:
-            - CLOUD_NVME_15K
-            - CLOUD_NVME
+            - CLOUD_NVME15K
+            - CLOUD_NVME20K
+            default: CLOUD_NVME15K
+        VolumeTypeResponse:
+            title: Volume Type
+            description: The type of the volume.
+            type: string
+            enum:
             - CLOUD_HDD
+            - CLOUD_NVME
+            - CLOUD_NVME_15K
+            - CLOUD_NVME15K
+            - CLOUD_NVME20K
         ReplicasResponse:
             title: Replicas Response
             required:
@@ -2195,16 +4044,15 @@ components:
             - addresses
             - created_at
             - engine_id
-            - datastore_id
-            - flavor_id
             - instance_type_id
+            - parameter_group_id
             - volume
             - id
             - name
             - source_id
             - status
+            - availability_zone
             - generation
-            - parameters
             type: object
             properties:
                 id:
@@ -2222,34 +4070,16 @@ components:
                     description: Engine unique identifier.
                     type: string
                     format: uuid
-                datastore_id:
-                    deprecated: true
-                    description: 'Datastore unique identifier (Deprecated).
-
-                        **Deprecated**: This property is being deprecated in favor
-                        of `engine_id`. Please update your requests to use `engine_id`
-                        for improved functionality and future compatibility.
-
-                        '
+                parameter_group_id:
+                    description: Parameter group unique identifier.
                     type: string
                     format: uuid
                 instance_type_id:
                     title: Instance Type Id
                     type: string
                     format: uuid
-                flavor_id:
-                    deprecated: true
-                    description: 'Instance Type Id (Deprecated).
-
-                        **Deprecated**: This property is being deprecated in favor
-                        of `instance_type_id`. Please update your requests to use
-                        `engine_id` for improved functionality and future compatibility.
-
-                        '
-                    type: string
-                    format: uuid
                 volume:
-                    $ref: '#/components/schemas/Volume'
+                    $ref: '#/components/schemas/VolumeResponse'
                 addresses:
                     title: Addresses
                     type: array
@@ -2257,12 +4087,10 @@ components:
                         $ref: '#/components/schemas/ReplicaAddressResponse'
                 status:
                     $ref: '#/components/schemas/InstanceStatus'
+                availability_zone:
+                    $ref: '#/components/schemas/AvailabilityZone'
                 generation:
                     $ref: '#/components/schemas/InstanceGeneration'
-                parameters:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/InstanceParametersResponse'
                 created_at:
                     title: Created At
                     type: string
@@ -2311,14 +4139,6 @@ components:
                     title: Name
                     maxLength: 255
                     type: string
-                flavor_id:
-                    deprecated: true
-                    description: "Flavor Id (Deprecated).\n**Deprecated**: This property\
-                        \ is being deprecated in favor of `instance_type_id`. Please\
-                        \ update your requests to use `instance_type_id` for improved\
-                        \ functionality and future compatibility.          \n"
-                    type: string
-                    format: uuid
                 instance_type_id:
                     title: Instance Type Id
                     type: string
@@ -2331,11 +4151,6 @@ components:
                     title: Instance Type Id
                     type: string
                     format: uuid
-                flavor_id:
-                    deprecated: true
-                    format: uuid
-                    title: Flavor Id
-                    type: string
         ReplicaResponse:
             title: Replica Response
             required:
@@ -2356,16 +4171,25 @@ components:
                     maximum: 50000
                     example: 30
                 type:
-                    description: The type of the volume.
-                    type: string
-                    enum:
-                    - CLOUD_NVME
-                    - CLOUD_HDD
-                    - CLOUD_NVME_15K
+                    $ref: '#/components/schemas/VolumeTypeResponse'
             required:
             - size
             - type
-        Address:
+        VolumeResponse:
+            type: object
+            properties:
+                size:
+                    description: The size of the volume (in GiB).
+                    type: integer
+                    minimum: 10
+                    maximum: 50000
+                    example: 30
+                type:
+                    $ref: '#/components/schemas/VolumeTypeResponse'
+            required:
+            - size
+            - type
+        InstanceAddress:
             required:
             - access
             type: object
@@ -2384,10 +4208,37 @@ components:
                     - IPv4
                     - IPv6
                 address:
-                    title: Address
+                    title: InstanceAddress
                     type: string
                     example: 172.53.10.82
-        InstanceType:
+        LoadBalancerAddress:
+            required:
+            - access
+            type: object
+            properties:
+                access:
+                    title: Access
+                    description: Determine if the IP can be accessed from the internet.
+                    type: string
+                    enum:
+                    - PRIVATE
+                    - PUBLIC
+                type:
+                    title: Type
+                    type: string
+                    enum:
+                    - IPv4
+                    - IPv6
+                address:
+                    title: LoadBalancerAddress
+                    type: string
+                    example: 172.53.10.82
+                port:
+                    title: Port
+                    type: string
+                    default: '3306'
+                    example: '3306'
+        Flavor:
             type: object
             required:
             - id
@@ -2400,6 +4251,58 @@ components:
             - size
             - sku_source
             - sku_replica
+            properties:
+                id:
+                    description: Flavor unique identifier.
+                    type: string
+                    format: uuid
+                name:
+                    description: Flavor name.
+                    type: string
+                    example: i0-c1-r4-d10
+                label:
+                    description: Flavor label.
+                    type: string
+                    example: cloud-dbaas-bs1.small
+                vcpu:
+                    description: Number of vCPUs.
+                    type: string
+                    example: '1'
+                ram:
+                    description: RAM Amount.
+                    type: string
+                    example: 4 GB
+                family_description:
+                    description: Flavor Family Description.
+                    type: string
+                    example: Basic
+                family_slug:
+                    description: Flavor Family SLUG.
+                    type: string
+                    example: bs1
+                size:
+                    description: Flavor Size Description.
+                    type: string
+                    example: Small
+                sku_source:
+                    description: SKU Database Instance Source.
+                    type: string
+                    example: BRNE10600101sm
+                sku_replica:
+                    description: SKU Database Instance Replica.
+                    type: string
+                    example: BRNE10610101sm
+        InstanceType:
+            type: object
+            required:
+            - id
+            - name
+            - label
+            - vcpu
+            - ram
+            - family_description
+            - family_slug
+            - size
             properties:
                 id:
                     description: Instance Type unique identifier.
@@ -2433,14 +4336,6 @@ components:
                     description: Instance Type Size Description.
                     type: string
                     example: Small
-                sku_source:
-                    description: SKU Database Instance Source.
-                    type: string
-                    example: BRNE10600101sm
-                sku_replica:
-                    description: SKU Database Instance Replica.
-                    type: string
-                    example: BRNE10610101sm
         ErrorResponse:
             title: Error Response
             type: object
@@ -2465,15 +4360,6 @@ components:
                     title: Instance Type Id
                     type: string
                     format: uuid
-                flavor_id:
-                    deprecated: true
-                    title: Flavor Id (Deprecated)
-                    type: string
-                    format: uuid
-                    description: "**Deprecated**: This property is being deprecated\
-                        \ in favor of `instance_type_id`. Please update your requests\
-                        \ to use `instance_type_id` for improved functionality and\
-                        \ future compatibility.\t\t\n"
                 volume:
                     $ref: '#/components/schemas/InstanceVolumeResizeRequest'
     securitySchemes:

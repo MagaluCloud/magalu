@@ -12,6 +12,7 @@ mgc dbaas engines [command]
 ```
 get         Engine detail.
 list        List available engines.
+parameters  List available engine parameters.
 ```
 
 ## Flags:
