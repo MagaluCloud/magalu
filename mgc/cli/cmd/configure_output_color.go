@@ -187,12 +187,12 @@ func styleExecName(template string, config *ColorScheme) string {
 	return template
 }
 
-func configureOutputColor(rootCmd *cobra.Command, colorScheme *ColorScheme) {
+func configureOutputColor(rootCmd *cobra.Command) {
 	if rootCmd == nil {
 		return
 	}
 
-	colorScheme = &ColorScheme{
+	darkScheme := &ColorScheme{
 		headers:       color.New(color.FgHiBlue, color.Bold, color.Underline),
 		commands:      color.New(color.FgHiWhite, color.Bold),
 		execName:      color.New(color.FgHiWhite, color.Bold),
@@ -202,14 +202,19 @@ func configureOutputColor(rootCmd *cobra.Command, colorScheme *ColorScheme) {
 		isRequired:    color.New(color.FgHiRed),
 	}
 
-	if !termenv.HasDarkBackground() {
-		colorScheme.headers = color.New(color.FgHiBlue, color.Bold, color.Underline)
-		colorScheme.commands = color.New(color.FgHiBlack, color.Bold)
-		colorScheme.execName = color.New(color.FgHiBlack, color.Bold)
-		colorScheme.flags = color.New(color.FgHiBlack, color.Bold)
-		colorScheme.flagsDataType = color.New(color.FgHiBlack, color.Italic)
-		colorScheme.example = color.New(color.Italic)
-		colorScheme.isRequired = color.New(color.FgHiRed)
+	lightScheme := &ColorScheme{
+		headers:       color.New(color.FgHiBlue, color.Bold, color.Underline),
+		commands:      color.New(color.FgHiBlack, color.Bold),
+		execName:      color.New(color.FgHiBlack, color.Bold),
+		flags:         color.New(color.FgHiBlack, color.Bold),
+		flagsDataType: color.New(color.FgHiBlack, color.Italic),
+		example:       color.New(color.Italic),
+		isRequired:    color.New(color.FgHiRed),
+	}
+
+	colorScheme := lightScheme
+	if termenv.HasDarkBackground() {
+		colorScheme = darkScheme
 	}
 
 	template := rootCmd.UsageTemplate()

@@ -283,7 +283,7 @@ Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
 Use "%[1]s ! <link> --help" for more information about a command.{{end}}
 `, c.cmdPath))
 
-	configureOutputColor(c.root, nil)
+	configureOutputColor(c.root)
 
 	for _, link := range c.links {
 		if link.IsInternal() {
