@@ -26,7 +26,7 @@ func (u *smallFileDownloader) Download(ctx context.Context) error {
 		return err
 	}
 
-	resp, err := SendRequest(ctx, req)
+	resp, err := SendRequest(ctx, req, u.cfg)
 	if err != nil {
 		return err
 	}

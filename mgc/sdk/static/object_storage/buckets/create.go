@@ -107,7 +107,7 @@ func create(ctx context.Context, params createParams, cfg common.Config) (*creat
 		return nil, err
 	}
 
-	resp, err := common.SendRequest(ctx, req)
+	resp, err := common.SendRequest(ctx, req, cfg)
 	if err != nil {
 		return nil, err
 	}

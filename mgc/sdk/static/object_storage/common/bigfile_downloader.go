@@ -33,7 +33,7 @@ func (u *bigFileDownloader) createPartDownloaderProcessor(cancel context.CancelC
 		downloadByteRange := fmt.Sprintf("bytes=%d-%d", chunk.StartOffset, chunk.EndOffset)
 		req.Header.Set("Range", downloadByteRange)
 
-		resp, err := SendRequest(ctx, req)
+		resp, err := SendRequest(ctx, req, cfg)
 		if err != nil {
 			cancel(err)
 			return err, pipeline.ProcessAbort

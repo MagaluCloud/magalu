@@ -160,7 +160,7 @@ func (p ACLStandardPermissions) tenantIdFromUserProject(userProject string) (str
 }
 
 func (p ACLStandardPermissions) userProjectFromTenantId(tenantId string, cfg Config) string {
-	pattern := fmt.Sprintf("cloud_%s_prod_%s", cfg.translateRegion(), tenantId)
+	pattern := fmt.Sprintf("cloud_%s_prod_%s", cfg.Region, tenantId)
 	return fmt.Sprintf("%s:%s", pattern, pattern)
 }
 
