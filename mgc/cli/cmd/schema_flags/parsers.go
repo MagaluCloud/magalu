@@ -304,11 +304,6 @@ func parseArrayCSV(itemsSchema *core.Schema, rawValue string) (value []any, err 
 }
 
 func parseArrayFlagValueSingle(itemsSchema *core.Schema, rawValue string) (value []any, err error) {
-	if itemsSchema.Nullable && rawValue == "[]" {
-		value = []any{}
-		return value, nil
-	}
-
 	value, err = parseJSONFlagValue[[]any](rawValue)
 	if err == nil {
 		return
