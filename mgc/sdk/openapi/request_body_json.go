@@ -85,14 +85,15 @@ func (o *requestBodyJSON) create(pValues core.Parameters) (mimeType string, size
 	_, err = o.forEachSchemaProperty(func(externalName, internalName string, propRef *openapi3.SchemaRef, containerSchema *openapi3.Schema) (run bool, err error) {
 		// NOTE: keep this paired with addToSchema()
 		if propRef != nil && propRef.Value != nil && propRef.Value.Type.Is(openapi3.TypeArray) && propRef.Value.Nullable {
-			value, ok := pValues[externalName]
+			if value, ok := pValues[externalName]; ok {
+				if value == nil || len(value.([]any)) == 0 {
+					body[internalName] = []interface{}{}
+					return true, nil
+				}
 
-			if value == nil || !ok || len(value.([]any)) == 0 {
-				body[internalName] = []interface{}{}
-			} else {
 				body[internalName] = value
+				return true, nil
 			}
-			return true, nil
 		}
 
 		if val, ok := pValues[externalName]; ok {
