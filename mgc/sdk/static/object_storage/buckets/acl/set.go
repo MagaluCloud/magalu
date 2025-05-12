@@ -43,7 +43,7 @@ func setACL(ctx context.Context, params setBucketACLParams, cfg common.Config) (
 		return
 	}
 
-	resp, err := common.SendRequest(ctx, req)
+	resp, err := common.SendRequest(ctx, req, cfg)
 	if err != nil {
 		return
 	}

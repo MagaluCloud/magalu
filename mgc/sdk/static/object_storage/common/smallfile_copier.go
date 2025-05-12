@@ -26,7 +26,7 @@ func (u *smallFileCopier) Copy(ctx context.Context) error {
 		req.Header.Set("X-Amz-Storage-Class", u.storageClass)
 	}
 
-	resp, err := SendRequest(ctx, req)
+	resp, err := SendRequest(ctx, req, u.cfg)
 	if err != nil {
 		return err
 	}

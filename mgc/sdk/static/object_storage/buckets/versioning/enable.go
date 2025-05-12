@@ -33,7 +33,7 @@ func enableBucketVersioning(ctx context.Context, params enableBucketVersioningPa
 		return nil, err
 	}
 
-	res, err := common.SendRequest(ctx, req)
+	res, err := common.SendRequest(ctx, req, cfg)
 	if err != nil {
 		return nil, err
 	}

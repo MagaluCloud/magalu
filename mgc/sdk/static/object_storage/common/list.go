@@ -238,7 +238,7 @@ func ListGenerator(ctx context.Context, params ListObjectsParams, cfg Config, on
 				return
 			}
 
-			resp, err := SendRequest(ctx, req)
+			resp, err := SendRequest(ctx, req, cfg)
 			if err != nil {
 				logger.Warnw("failed to send request", "err", err)
 				return

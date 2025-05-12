@@ -38,7 +38,7 @@ func unsetObjectLocking(ctx context.Context, params unsetBucketObjectLockParams,
 		return
 	}
 
-	resp, err := common.SendRequest(ctx, req)
+	resp, err := common.SendRequest(ctx, req, cfg)
 	if err != nil {
 		return
 	}

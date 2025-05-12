@@ -26,7 +26,7 @@ mgc object-storage buckets policy get [dst] [flags]
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+    --region string            Region to reach the service (default "br-se1")
     --server-url uri           Manually specify the server to use
     --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (required) (default 5)
 ```

@@ -53,7 +53,7 @@ func deleteLabels(ctx context.Context, params deleteBucketLabelParams, cfg commo
 		return
 	}
 
-	resp, err := common.SendRequest(ctx, req)
+	resp, err := common.SendRequest(ctx, req, cfg)
 	if err != nil {
 		return
 	}

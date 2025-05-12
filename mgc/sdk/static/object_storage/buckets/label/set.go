@@ -81,7 +81,7 @@ func setLabels(ctx context.Context, params setBucketLabelParams, cfg common.Conf
 		return
 	}
 
-	resp, err := common.SendRequest(ctx, req)
+	resp, err := common.SendRequest(ctx, req, cfg)
 	if err != nil {
 		return
 	}

@@ -54,7 +54,7 @@ func getObjectVersioning(ctx context.Context, params versioningObjectParams, cfg
 		return
 	}
 
-	resp, err := common.SendRequest(ctx, req)
+	resp, err := common.SendRequest(ctx, req, cfg)
 	if err != nil {
 		return
 	}
