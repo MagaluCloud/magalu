@@ -14,6 +14,7 @@ create            Create an instance.
 delete            Delete an instance.
 get               Retrieve the details of a specific instance.
 list              List all instances.
+logs              Get Instance Console Logs
 network-interface network-interface
 password          Retrieve the first windows admin password
 reboot            Reboot an instance.

@@ -67,25 +67,18 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.read
-    /v1/instances:
+    /v1/instance-types:
         get:
             tags:
-            - instances
-            summary: List all instances.
-            description: 'List Virtual Machine instances in the current tenant which
-                is logged in.
-
-
-                #### Notes
-
-                - You can use the **extend** argument to get more details from the
-                inner objects
-
-                like image or type.'
-            operationId: list_instances_v1_v1_instances_get
+            - instance-types
+            summary: Retrieves all instance-types.
+            description: Retrieves a list of instance types allowed for the current
+                tenant which is logged in.
+            operationId: list_instance_types_v1_cli_v1_instance_types_get
             parameters:
             -   name: _limit
                 in: query
+                description: limit the number of the results
                 required: false
                 schema:
                     exclusiveMinimum: false
@@ -94,7 +87,6 @@ paths:
                     maximum: 1000
                     description: limit the number of the results
                     default: 200
-                description: limit the number of the results
             -   name: _offset
                 in: query
                 description: pagination for the results limited
@@ -115,6 +107,92 @@ paths:
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     description: order of the results using informed fields
                     default: created_at:asc
+            -   name: availability-zone
+                in: query
+                description: br-ne1-a
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Availability-Zone
+                    description: br-ne1-a
+                    nullable: true
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PaginateInstanceTypesV1ListResponseCli'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-output-flag: table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu
+            security:
+            -   OAuth2:
+                - virtual-machine.read
+    /v1/instances:
+        get:
+            tags:
+            - instances
+            summary: List all instances.
+            description: 'List Virtual Machine instances in the current tenant which
+                is logged in.
+
+
+                #### Notes
+
+                - You can use the **extend** argument to get more details from the
+                inner objects
+
+                like image or type.'
+            operationId: list_instances_v1_v1_instances_get
+            parameters:
+            -   name: _limit
+                in: query
+                description: limit the number of the results
+                required: false
+                schema:
+                    exclusiveMinimum: false
+                    type: integer
+                    title: ' Limit'
+                    maximum: 1000
+                    description: limit the number of the results
+                    default: 200
+            -   name: _offset
+                in: query
+                description: pagination for the results limited
+                required: false
+                schema:
+                    type: integer
+                    title: ' Offset'
+                    maximum: 2147483647
+                    description: pagination for the results limited
+                    default: 0
+            -   name: _sort
+                in: query
+                description: order of the results using informed fields
+                required: false
+                schema:
+                    type: string
+                    title: ' Sort'
+                    pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+                    description: order of the results using informed fields
+                    default: created_at:asc
+            -   name: name
+                in: query
+                description: name of the instance
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Name
+                    description: name of the instance
+                    nullable: true
             -   name: expand
                 in: query
                 description: 'You can get more detailed info about: [''image'', ''machine-type'',
@@ -183,7 +261,6 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.read
-            x-mgc-description: List Virtual Machine instances
         post:
             tags:
             - instances
@@ -198,13 +275,16 @@ paths:
                 \ instance using the virtual-machine get\ncommand.\n\n#### Rules\n\
                 \n- If you don't specify a VPC, the default VPC will be used. When\
                 \ the\ndefault VPC is not available, the command will fail.\n- If\
-                \ you don't specify an network interface, an default network interface\n\
-                will be created.\n- You can either specify an image id or an image\
-                \ name. If you specify\nboth, the image id will be used.\n- You can\
-                \ either specify a machine type id or a machine type name. If\nyou\
-                \ specify both, the machine type id will be used.\n- You can either\
-                \ specify an VPC id or an VPC name. If you specify both,\nthe VPC\
-                \ id will be used.\n- The user data must be a Base64 encoded string."
+                \ you don't specify a network interface, a default network interface\n\
+                will be created.\n- For the network interface, you can specify either\
+                \ an interface id or a list\nof security groups. If both are specified,\
+                \ the interface id will take priority.\n- You can either specify an\
+                \ image id or an image name. If you specify\nboth, the image id will\
+                \ be used.\n- You can either specify a machine type id or a machine\
+                \ type name. If\nyou specify both, the machine type id will be used.\n\
+                - You can either specify a VPC id or a VPC name. If you specify both,\n\
+                the VPC id will be used.\n- The user data must be a Base64 encoded\
+                \ string."
             operationId: instance_create_v1_v1_instances_post
             requestBody:
                 content:
@@ -227,42 +307,47 @@ paths:
                                 id: $response.body#/id
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
-                            description: Read Virtual Machine instance
+                            description: Retrieve the details of a specific instance.
                             parameters:
                                 id: $response.body#/id
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete an instance.
+                            parameters:
+                                id: $response.body#/id
+                        logs:
+                            operationId: get_instance_console_logs_v1_instances__id__init_logs_get
+                            description: Get Instance Console Logs
                             parameters:
                                 id: $response.body#/id
                         reboot:
                             operationId: reboot_instance_v1_instances__id__reboot_post
-                            description: Reboot a Virtual Machine instance
+                            description: Reboot an instance.
                             parameters:
                                 id: $response.body#/id
                         rename:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $response.body#/id
                         retype:
                             operationId: retype_instance_v1_instances__id__retype_post
-                            description: Retype a Virtual Machine instance
+                            description: Changes an instance machine-type.
                             parameters:
                                 id: $response.body#/id
                         start:
                             operationId: start_instance_v1_instances__id__start_post
-                            description: Start a Virtual Machine instance
+                            description: Starts an instance.
                             parameters:
                                 id: $response.body#/id
                         stop:
                             operationId: stop_instance_v1_instances__id__stop_post
-                            description: Stop a Virtual Machine instance
+                            description: Stops an instance.
                             parameters:
                                 id: $response.body#/id
                         suspend:
                             operationId: suspend_instance_v1_instances__id__suspend_post
-                            description: Suspend a Virtual Machine instance
+                            description: Suspends instance.
                             parameters:
                                 id: $response.body#/id
                 '400':
@@ -300,7 +385,6 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
-            x-mgc-description: Create a Virtual Machine instance
     /v1/instances/config/{id}/first-windows-password:
         get:
             tags:
@@ -334,6 +418,11 @@ paths:
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
                             description: Delete an instance.
+                            parameters:
+                                id: $request.path.id
+                        logs:
+                            operationId: get_instance_console_logs_v1_instances__id__init_logs_get
+                            description: Get Instance Console Logs
                             parameters:
                                 id: $request.path.id
                         reboot:
@@ -551,28 +640,33 @@ paths:
                                 id: $request.path.id
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete an instance.
+                            parameters:
+                                id: $request.path.id
+                        logs:
+                            operationId: get_instance_console_logs_v1_instances__id__init_logs_get
+                            description: Get Instance Console Logs
                             parameters:
                                 id: $request.path.id
                         reboot:
                             operationId: reboot_instance_v1_instances__id__reboot_post
-                            description: Reboot a Virtual Machine instance
+                            description: Reboot an instance.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $request.path.id
                         update/name:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $request.path.id
                             x-mgc-hidden: true
                         retype:
                             operationId: retype_instance_v1_instances__id__retype_post
-                            description: Retype a Virtual Machine instance
+                            description: Changes an instance machine-type.
                             parameters:
                                 id: $request.path.id
                         update/machine_type:
@@ -583,37 +677,19 @@ paths:
                             x-mgc-hidden: true
                         start:
                             operationId: start_instance_v1_instances__id__start_post
-                            description: Start a Virtual Machine instance
+                            description: Starts an instance.
                             parameters:
                                 id: $request.path.id
                         stop:
                             operationId: stop_instance_v1_instances__id__stop_post
-                            description: Stop a Virtual Machine instance
+                            description: Stops an instance.
                             parameters:
                                 id: $request.path.id
                         suspend:
                             operationId: suspend_instance_v1_instances__id__suspend_post
-                            description: Suspend a Virtual Machine instance
+                            description: Suspends instance.
                             parameters:
                                 id: $request.path.id
-                        update/state/running:
-                            description: Start a Virtual Machine instance
-                            operationId: start_instance_v1_instances__id__start_post
-                            parameters:
-                                id: $request.path.id
-                            x-mgc-hidden: true
-                        update/state/stopped:
-                            description: Stop a Virtual Machine instance
-                            operationId: stop_instance_v1_instances__id__stop_post
-                            parameters:
-                                id: $request.path.id
-                            x-mgc-hidden: true
-                        update/state/suspended:
-                            description: Suspend a Virtual Machine instance
-                            operationId: suspend_instance_v1_instances__id__suspend_post
-                            parameters:
-                                id: $request.path.id
-                            x-mgc-hidden: true
                 '400':
                     description: Instance Not Allowed Exception
                     content:
@@ -650,12 +726,6 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.read
-            x-mgc-description: Get a Virtual Machine instance details
-            x-mgc-wait-termination:
-                maxRetries: 30
-                interval: 5s
-                jsonPathQuery: $.result.status == "completed"
-                errorJsonPathQuery: contains($.result.status, "error")
         delete:
             tags:
             - instances
@@ -738,7 +808,94 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
-            x-mgc-description: Delete a Virtual Machine instance
+    /v1/instances/{id}/init-logs:
+        get:
+            tags:
+            - instances
+            summary: Get Instance Console Logs
+            description: Retrieve instance init log output.
+            operationId: get_instance_console_logs_v1_instances__id__init_logs_get
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            -   name: max-lines-count
+                in: query
+                description: max lines returned for newly until older logs
+                required: false
+                schema:
+                    exclusiveMinimum: false
+                    type: integer
+                    title: Max-Lines-Count
+                    maximum: 5000
+                    description: max lines returned for newly until older logs
+                    default: 50
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LogsOutputResponse'
+                    links:
+                        password:
+                            operationId: view_instance_access_v1_instances_config__id__first_windows_password_get
+                            description: Retrieve the first windows admin password
+                            parameters:
+                                id: $request.path.id
+                        get:
+                            operationId: instance_details_v1_v1_instances__id__get
+                            description: Retrieve the details of a specific instance.
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: instance_delete_v1_v1_instances__id__delete
+                            description: Delete an instance.
+                            parameters:
+                                id: $request.path.id
+                        reboot:
+                            operationId: reboot_instance_v1_instances__id__reboot_post
+                            description: Reboot an instance.
+                            parameters:
+                                id: $request.path.id
+                        rename:
+                            operationId: update_instance_name_v1_instances__id__rename_patch
+                            description: Renames an instance.
+                            parameters:
+                                id: $request.path.id
+                        retype:
+                            operationId: retype_instance_v1_instances__id__retype_post
+                            description: Changes an instance machine-type.
+                            parameters:
+                                id: $request.path.id
+                        start:
+                            operationId: start_instance_v1_instances__id__start_post
+                            description: Starts an instance.
+                            parameters:
+                                id: $request.path.id
+                        stop:
+                            operationId: stop_instance_v1_instances__id__stop_post
+                            description: Stops an instance.
+                            parameters:
+                                id: $request.path.id
+                        suspend:
+                            operationId: suspend_instance_v1_instances__id__suspend_post
+                            description: Suspends instance.
+                            parameters:
+                                id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine.read
     /v1/instances/{id}/reboot:
         post:
             tags:
@@ -783,37 +940,42 @@ paths:
                                 id: $request.path.id
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
-                            description: Read Virtual Machine instance
+                            description: Retrieve the details of a specific instance.
                             parameters:
                                 id: $request.path.id
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete an instance.
+                            parameters:
+                                id: $request.path.id
+                        logs:
+                            operationId: get_instance_console_logs_v1_instances__id__init_logs_get
+                            description: Get Instance Console Logs
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $request.path.id
                         retype:
                             operationId: retype_instance_v1_instances__id__retype_post
-                            description: Retype a Virtual Machine instance
+                            description: Changes an instance machine-type.
                             parameters:
                                 id: $request.path.id
                         start:
                             operationId: start_instance_v1_instances__id__start_post
-                            description: Start a Virtual Machine instance
+                            description: Starts an instance.
                             parameters:
                                 id: $request.path.id
                         stop:
                             operationId: stop_instance_v1_instances__id__stop_post
-                            description: Stop a Virtual Machine instance
+                            description: Stops an instance.
                             parameters:
                                 id: $request.path.id
                         suspend:
                             operationId: suspend_instance_v1_instances__id__suspend_post
-                            description: Suspend a Virtual Machine instance
+                            description: Suspends instance.
                             parameters:
                                 id: $request.path.id
                 '422':
@@ -871,7 +1033,7 @@ paths:
                                 id: $request.path.id
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
-                            description: Read Virtual Machine instance
+                            description: Retrieve the details of a specific instance.
                             parameters:
                                 id: $request.path.id
                             x-mgc-wait-termination:
@@ -880,32 +1042,37 @@ paths:
                                 jsonPathQuery: $.result.name == $.owner.parameters.name
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete an instance.
+                            parameters:
+                                id: $request.path.id
+                        logs:
+                            operationId: get_instance_console_logs_v1_instances__id__init_logs_get
+                            description: Get Instance Console Logs
                             parameters:
                                 id: $request.path.id
                         reboot:
                             operationId: reboot_instance_v1_instances__id__reboot_post
-                            description: Reboot a Virtual Machine instance
+                            description: Reboot an instance.
                             parameters:
                                 id: $request.path.id
                         retype:
                             operationId: retype_instance_v1_instances__id__retype_post
-                            description: Retype a Virtual Machine instance
+                            description: Changes an instance machine-type.
                             parameters:
                                 id: $request.path.id
                         start:
                             operationId: start_instance_v1_instances__id__start_post
-                            description: Start a Virtual Machine instance
+                            description: Starts an instance.
                             parameters:
                                 id: $request.path.id
                         stop:
                             operationId: stop_instance_v1_instances__id__stop_post
-                            description: Stop a Virtual Machine instance
+                            description: Stops an instance.
                             parameters:
                                 id: $request.path.id
                         suspend:
                             operationId: suspend_instance_v1_instances__id__suspend_post
-                            description: Suspend a Virtual Machine instance
+                            description: Suspends instance.
                             parameters:
                                 id: $request.path.id
                 '400':
@@ -1005,7 +1172,7 @@ paths:
                                 id: $request.path.id
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
-                            description: Read Virtual Machine instance
+                            description: Retrieve the details of a specific instance.
                             parameters:
                                 id: $request.path.id
                             x-mgc-wait-termination:
@@ -1014,32 +1181,37 @@ paths:
                                 jsonPathQuery: $.result.machine_type == $.owner.parameters.machine_type
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete an instance.
+                            parameters:
+                                id: $request.path.id
+                        logs:
+                            operationId: get_instance_console_logs_v1_instances__id__init_logs_get
+                            description: Get Instance Console Logs
                             parameters:
                                 id: $request.path.id
                         reboot:
                             operationId: reboot_instance_v1_instances__id__reboot_post
-                            description: Reboot a Virtual Machine instance
+                            description: Reboot an instance.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $request.path.id
                         start:
                             operationId: start_instance_v1_instances__id__start_post
-                            description: Start a Virtual Machine instance
+                            description: Starts an instance.
                             parameters:
                                 id: $request.path.id
                         stop:
                             operationId: stop_instance_v1_instances__id__stop_post
-                            description: Stop a Virtual Machine instance
+                            description: Stops an instance.
                             parameters:
                                 id: $request.path.id
                         suspend:
                             operationId: suspend_instance_v1_instances__id__suspend_post
-                            description: Suspend a Virtual Machine instance
+                            description: Suspends instance.
                             parameters:
                                 id: $request.path.id
                 '400':
@@ -1119,37 +1291,42 @@ paths:
                                 id: $request.path.id
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
-                            description: Read Virtual Machine instance
+                            description: Retrieve the details of a specific instance.
                             parameters:
                                 id: $request.path.id
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete an instance.
+                            parameters:
+                                id: $request.path.id
+                        logs:
+                            operationId: get_instance_console_logs_v1_instances__id__init_logs_get
+                            description: Get Instance Console Logs
                             parameters:
                                 id: $request.path.id
                         reboot:
                             operationId: reboot_instance_v1_instances__id__reboot_post
-                            description: Reboot a Virtual Machine instance
+                            description: Reboot an instance.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $request.path.id
                         retype:
                             operationId: retype_instance_v1_instances__id__retype_post
-                            description: Retype a Virtual Machine instance
+                            description: Changes an instance machine-type.
                             parameters:
                                 id: $request.path.id
                         stop:
                             operationId: stop_instance_v1_instances__id__stop_post
-                            description: Stop a Virtual Machine instance
+                            description: Stops an instance.
                             parameters:
                                 id: $request.path.id
                         suspend:
                             operationId: suspend_instance_v1_instances__id__suspend_post
-                            description: Suspend a Virtual Machine instance
+                            description: Suspends instance.
                             parameters:
                                 id: $request.path.id
                 '422':
@@ -1206,37 +1383,42 @@ paths:
                                 id: $request.path.id
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
-                            description: Read Virtual Machine instance
+                            description: Retrieve the details of a specific instance.
                             parameters:
                                 id: $request.path.id
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete an instance.
+                            parameters:
+                                id: $request.path.id
+                        logs:
+                            operationId: get_instance_console_logs_v1_instances__id__init_logs_get
+                            description: Get Instance Console Logs
                             parameters:
                                 id: $request.path.id
                         reboot:
                             operationId: reboot_instance_v1_instances__id__reboot_post
-                            description: Reboot a Virtual Machine instance
+                            description: Reboot an instance.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $request.path.id
                         retype:
                             operationId: retype_instance_v1_instances__id__retype_post
-                            description: Retype a Virtual Machine instance
+                            description: Changes an instance machine-type.
                             parameters:
                                 id: $request.path.id
                         start:
                             operationId: start_instance_v1_instances__id__start_post
-                            description: Start a Virtual Machine instance
+                            description: Starts an instance.
                             parameters:
                                 id: $request.path.id
                         suspend:
                             operationId: suspend_instance_v1_instances__id__suspend_post
-                            description: Suspend a Virtual Machine instance
+                            description: Suspends instance.
                             parameters:
                                 id: $request.path.id
                 '422':
@@ -1294,37 +1476,42 @@ paths:
                                 id: $request.path.id
                         get:
                             operationId: instance_details_v1_v1_instances__id__get
-                            description: Read Virtual Machine instance
+                            description: Retrieve the details of a specific instance.
                             parameters:
                                 id: $request.path.id
                         delete:
                             operationId: instance_delete_v1_v1_instances__id__delete
-                            description: Delete Virtual Machine instance
+                            description: Delete an instance.
+                            parameters:
+                                id: $request.path.id
+                        logs:
+                            operationId: get_instance_console_logs_v1_instances__id__init_logs_get
+                            description: Get Instance Console Logs
                             parameters:
                                 id: $request.path.id
                         reboot:
                             operationId: reboot_instance_v1_instances__id__reboot_post
-                            description: Reboot a Virtual Machine instance
+                            description: Reboot an instance.
                             parameters:
                                 id: $request.path.id
                         rename:
                             operationId: update_instance_name_v1_instances__id__rename_patch
-                            description: Rename a Virtual Machine instance
+                            description: Renames an instance.
                             parameters:
                                 id: $request.path.id
                         retype:
                             operationId: retype_instance_v1_instances__id__retype_post
-                            description: Retype a Virtual Machine instance
+                            description: Changes an instance machine-type.
                             parameters:
                                 id: $request.path.id
                         start:
                             operationId: start_instance_v1_instances__id__start_post
-                            description: Start a Virtual Machine instance
+                            description: Starts an instance.
                             parameters:
                                 id: $request.path.id
                         stop:
                             operationId: stop_instance_v1_instances__id__stop_post
-                            description: Stop a Virtual Machine instance
+                            description: Stops an instance.
                             parameters:
                                 id: $request.path.id
                 '422':
@@ -1338,74 +1525,6 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
-    /v1/machine-types:
-        get:
-            tags:
-            - machine-types
-            summary: Retrieves all machine-types.
-            description: Retrieves a list of machine types allowed for the current
-                tenant which is logged in.
-            operationId: list_instance_types_v1_v1_machine_types_get
-            parameters:
-            -   name: _limit
-                in: query
-                required: false
-                schema:
-                    exclusiveMinimum: false
-                    type: integer
-                    title: ' Limit'
-                    maximum: 1000
-                    description: limit the number of the results
-                    default: 200
-                description: limit the number of the results
-            -   name: _offset
-                in: query
-                description: pagination for the results limited
-                required: false
-                schema:
-                    type: integer
-                    title: ' Offset'
-                    maximum: 2147483647
-                    description: pagination for the results limited
-                    default: 0
-            -   name: _sort
-                in: query
-                description: order of the results using informed fields
-                required: false
-                schema:
-                    type: string
-                    title: ' Sort'
-                    pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
-                    description: order of the results using informed fields
-                    default: created_at:asc
-            -   name: availability-zone
-                in: query
-                description: br-ne1-a
-                required: false
-                schema:
-                    anyOf:
-                    -   type: string
-                    title: Availability-Zone
-                    description: br-ne1-a
-                    nullable: true
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/PaginateInstanceTypesV1ListResponse'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-output-flag: table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu
-            security:
-            -   OAuth2:
-                - virtual-machine.read
     /v1/snapshots:
         get:
             tags:
@@ -1433,7 +1552,7 @@ paths:
                     title: ' Limit'
                     maximum: 1000
                     description: limit the number of the results
-                    default: 50
+                    default: 200
             -   name: _offset
                 in: query
                 description: pagination for the results limited
@@ -1561,7 +1680,7 @@ paths:
                                 id: $response.body#/id
                         delete:
                             operationId: snapshots_delete_v1_snapshots__id__delete
-                            description: Delete Instance Type
+                            description: Delete a Snapshot.
                             parameters:
                                 id: $response.body#/id
                         copy:
@@ -1572,7 +1691,7 @@ paths:
                                 id: $response.body#/id
                         rename:
                             operationId: rename_snapshot_v1_snapshots__id__rename_patch
-                            description: Rename Instance Type
+                            description: Renames a snapshot.
                             parameters:
                                 id: $response.body#/id
                 '400':
@@ -1681,7 +1800,7 @@ paths:
                                 id: $request.path.id
                         update/name:
                             operationId: rename_snapshot_v1_snapshots__id__rename_patch
-                            description: Rename the snapshot
+                            description: Renames a snapshot.
                             parameters:
                                 id: $request.path.id
                             x-mgc-hidden: true
@@ -2453,6 +2572,7 @@ components:
                     title: Vpc
                     default:
                         name: vpc_default
+                    nullable: true
                 interface:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
@@ -2666,6 +2786,55 @@ components:
                 sku: sku0102
                 status: active
                 vcpus: 1
+        InstanceTypesV1ResponseCli:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                vcpus:
+                    type: integer
+                    title: Vcpus
+                ram:
+                    type: integer
+                    title: Ram
+                disk:
+                    type: integer
+                    title: Disk
+                gpu:
+                    type: integer
+                    title: Gpu
+                    default: 0
+                status:
+                    type: string
+                    title: Status
+                availability_zones:
+                    type: array
+                    items:
+                        type: string
+                    title: Availability Zones
+            title: InstanceTypesV1ResponseCli
+            required:
+            - id
+            - name
+            - vcpus
+            - ram
+            - disk
+            - status
+            example:
+                availability_zones:
+                - br-ne1-a
+                - br-ne1-y
+                disk: 10
+                gpu: 0
+                id: c78b759d-af80-4489-acf1-04c48851f273
+                name: BV1-1-40
+                ram: 1024
+                status: active
+                vcpus: 1
         InstanceV1Response:
             type: object
             properties:
@@ -2736,8 +2905,6 @@ components:
                     - deleting_error
                     - deleting_network_error
                     - deleted
-                    x-mgc-transforms:
-                    -   type: lowercase
                 state:
                     type: string
                     title: InstanceV1State
@@ -2748,8 +2915,6 @@ components:
                     - stopped
                     - suspended
                     - deleted
-                    x-mgc-transforms:
-                    -   type: lowercase
                 user_data:
                     anyOf:
                     -   type: string
@@ -2930,6 +3095,22 @@ components:
                     title: Public Ipv6
                     nullable: true
             title: IpAddressNewExpand
+        LogsOutputResponse:
+            type: object
+            properties:
+                logs:
+                    type: array
+                    items:
+                        type: string
+                    title: Logs
+            title: LogsOutputResponse
+            required:
+            - logs
+            example:
+                logs:
+                - FAKE CONSOLE OUTPUT
+                - ANOTHER
+                - LAST LINE
         Meta:
             type: object
             properties:
@@ -3229,6 +3410,109 @@ components:
                     name: BV1-1-40
                     ram: 2
                     sku: some_sku
+                    status: active
+                    vcpus: 2
+                meta:
+                    page:
+                        count: 50
+                        limit: 50
+                        offset: 0
+                        total: 100
+        PaginateInstanceTypesV1ListResponseCli:
+            type: object
+            properties:
+                instance_types:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                            name:
+                                type: string
+                                title: Name
+                            vcpus:
+                                type: integer
+                                title: Vcpus
+                            ram:
+                                type: integer
+                                title: Ram
+                            disk:
+                                type: integer
+                                title: Disk
+                            gpu:
+                                type: integer
+                                title: Gpu
+                                default: 0
+                            status:
+                                type: string
+                                title: Status
+                            availability_zones:
+                                type: array
+                                items:
+                                    type: string
+                                title: Availability Zones
+                        title: InstanceTypesV1ResponseCli
+                        required:
+                        - id
+                        - name
+                        - vcpus
+                        - ram
+                        - disk
+                        - status
+                        example:
+                            availability_zones:
+                            - br-ne1-a
+                            - br-ne1-y
+                            disk: 10
+                            gpu: 0
+                            id: c78b759d-af80-4489-acf1-04c48851f273
+                            name: BV1-1-40
+                            ram: 1024
+                            status: active
+                            vcpus: 1
+                    title: Instance Types
+                meta:
+                    type: object
+                    properties:
+                        page:
+                            type: object
+                            properties:
+                                limit:
+                                    type: integer
+                                    title: Limit
+                                offset:
+                                    type: integer
+                                    title: Offset
+                                count:
+                                    type: integer
+                                    title: Count
+                                total:
+                                    type: integer
+                                    title: Total
+                            title: MetaPage
+                            required:
+                            - limit
+                            - offset
+                            - count
+                            - total
+                    title: Meta
+                    required:
+                    - page
+            title: PaginateInstanceTypesV1ListResponseCli
+            required:
+            - instance_types
+            - meta
+            example:
+                instance_types:
+                -   availability_zones:
+                    - br-ne-1-a
+                    disk: 10
+                    gpu: 1
+                    id: 3a4dc05b-eb10-42ec-8c0c-848e06f7aded
+                    name: BV1-1-40
+                    ram: 2
                     status: active
                     vcpus: 2
                 meta:
@@ -4045,8 +4329,8 @@ tags:
         reboot and other actions.
 -   name: images
     description: Operations with images for instances.
--   name: machine-types
-    description: Operations with machine types for instances.
+-   name: instance-types
+    description: Operations with instance types.
 -   name: snapshots
     description: Operations with snapshots for instances.
 $id: https://virtual-machine.jaxyendy.com/openapi.json

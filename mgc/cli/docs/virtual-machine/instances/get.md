@@ -1,6 +1,6 @@
 # Get
 
-Get a Virtual Machine instance details
+Get an instance details for the current tenant which is logged in.
 
 ## Usage:
 ```
