@@ -34,7 +34,7 @@ oapi-index-gen: build-cicd
 # specs
 download-specs: build-cicd
 	@./mgc/spec_manipulator/cicd spec download -d $(SPECS_DIR)
-	@echo "\nNow, run 'make prepare-specs' to validate and pretify the specs"
+	@echo "\nNow, run 'make prepare-specs' to validate and prettify the specs"
 
 prepare-specs: build-cicd
 	@./mgc/spec_manipulator/cicd spec prepare -d $(SPECS_DIR)

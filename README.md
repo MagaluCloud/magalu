@@ -31,8 +31,19 @@ For this, [Poetry](https://python-poetry.org/) is used. Check [Poetry.md](Poetry
 
 Building needs [goreleaser](https://goreleaser.com/install/) and can be done using Makefile targets.
 
-If you have API spec changes, update them on `specs`, on the corresponding product and run
+If you have API spec changes, update them on `specs`, on the corresponding product and run the following commands:
 
+1. :zap: to validate and prettify the specs
+```bash
+$ make prepare-specs
+```
+
+2. :zap: this command will convert the oas file with 3.1.x version to 3.0.x version.
+```bash
+$ make downgrade-specs
+```
+
+3. :zap: refresh specs
 ```bash
 $ make refresh-specs
 ```
