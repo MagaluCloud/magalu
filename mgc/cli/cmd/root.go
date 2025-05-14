@@ -78,7 +78,7 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	})
 	rootCmd.SetHelpCommandGroupID("other")
 	rootCmd.SetCompletionCommandGroupID("other")
-	configureOutputColor(rootCmd, nil)
+	configureOutputColor(rootCmd)
 	addOutputFlag(rootCmd)
 	addLogFilterFlag(rootCmd, getLogFilterConfig(sdk))
 	addLogDebugFlag(rootCmd)

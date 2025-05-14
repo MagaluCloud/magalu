@@ -42,7 +42,9 @@ func upload(ctx context.Context, params uploadParams, cfg common.Config) (*uploa
 		return nil, core.UsageError{Err: fmt.Errorf("destination cannot be empty")}
 	}
 
-	fileName := params.Source.AsURI().Filename()
+	srcPath := params.Source.AsURI().String()
+	fileName := common.ExtractFileName(srcPath)
+	
 	if params.Destination.IsRoot() || strings.HasSuffix(fullDstPath.String(), "/") {
 		fullDstPath = fullDstPath.JoinPath(fileName)
 	}
