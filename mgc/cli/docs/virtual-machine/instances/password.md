@@ -12,7 +12,6 @@ mgc virtual-machine instances password [id] [flags]
 ## Flags:
 ```
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
 -h, --help                          help for password
     --id uuid                       Id (required)
 ```

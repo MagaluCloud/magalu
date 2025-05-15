@@ -1,6 +1,6 @@
 # List
 
-List Virtual Machine instances
+List Virtual Machine instances in the current tenant which is logged in.
 
 ## Usage:
 ```
@@ -14,6 +14,7 @@ mgc virtual-machine instances list [flags]
     --control.sort string       Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
     --expand array(string)     Expand: You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels'] 
 -h, --help                     help for list
+    --name string              name of the instance
 ```
 
 ## Global Flags:

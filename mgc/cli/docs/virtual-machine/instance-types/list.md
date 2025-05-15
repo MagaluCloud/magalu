@@ -1,20 +1,19 @@
-# Stop
+# List
 
-Stops a Virtual Machine instance with the id provided in the current tenant which is logged in.
-#### Notes
-- You can use the virtual-machine list command to retrieve all instances, so you can get the id of
-the instance that you want to stop.
+Retrieves a list of instance types allowed for the current tenant which is logged in.
 
 ## Usage:
 ```
-mgc virtual-machine instances stop [id] [flags]
+mgc virtual-machine instance-types list [flags]
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for stop
-    --id uuid                       Instance id - for help use ./mgc virtual-machines instances list . (required)
+    --availability-zone string   Availability-Zone: br-ne1-a
+    --control.limit integer       Limit: limit the number of the results (max: 1000)
+    --control.offset integer      Offset: pagination for the results limited (max: 2147483647)
+    --control.sort string         Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
+-h, --help                       help for list
 ```
 
 ## Global Flags:

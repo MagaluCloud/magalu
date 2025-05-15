@@ -34,13 +34,17 @@ oapi-index-gen: build-cicd
 # specs
 download-specs: build-cicd
 	@./mgc/spec_manipulator/cicd spec download -d $(SPECS_DIR)
-	@echo "Now, run 'make prepare-specs' validate and pretify the specs"
+	@echo "\nNow, run 'make prepare-specs' to validate and prettify the specs"
 
 prepare-specs: build-cicd
 	@./mgc/spec_manipulator/cicd spec prepare -d $(SPECS_DIR)
+	@echo "\nNow, run 'make downgrade-specs' to downgrade the specs"
+
+downgrade-specs: build-cicd
+	@./mgc/spec_manipulator/cicd spec downgrade -d $(SPECS_DIR)
+	@echo "\nNow, run 'make refresh-specs' to finally, refresh the specs"
 
 refresh-specs: build-cicd
-	@./mgc/spec_manipulator/cicd spec downgrade -d $(SPECS_DIR)
 	@poetry install
 	@poetry run ./scripts/add_all_specs.sh
 	@$(CICD_DIR)cicd pipeline oapi-index $(OAPIDIR)

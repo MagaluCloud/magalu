@@ -107,28 +107,28 @@
         "x-mgc-output-flag": "table=ID:$.images[*].id,NAME:$.images[*].name,VERSION:$.images[*].version,PLATFORM:$.images[*].platform,END_STANDARD_SUPPORT_AT:$.images[*].end_standard_support_at,STATUS:$.images[*].status,AVAILABILITY_ZONES:$.images[*].availability_zones"
       }
     },
-    "/v1/instances": {
+    "/v1/instance-types": {
       "get": {
         "tags": [
-          "instances"
+          "instance-types"
         ],
-        "summary": "List all instances.",
-        "description": "List Virtual Machine instances in the current tenant which is logged in.\n\n#### Notes\n- You can use the **extend** argument to get more details from the inner objects\nlike image or type.",
-        "operationId": "list_instances_v1_v1_instances_get",
+        "summary": "Retrieves all instance-types.",
+        "description": "Retrieves a list of instance types allowed for the current tenant which is logged in.",
+        "operationId": "list_instance_types_v1_cli_v1_instance_types_get",
         "parameters": [
           {
             "name": "_limit",
             "in": "query",
+            "description": "limit the number of the results",
             "required": false,
             "schema": {
-              "type": "integer",
-              "maximum": 1000,
               "exclusiveMinimum": 0,
+              "type": "integer",
+              "title": " Limit",
+              "maximum": 1000,
               "description": "limit the number of the results",
-              "default": 200,
-              "title": " Limit"
-            },
-            "description": "limit the number of the results"
+              "default": 200
+            }
           },
           {
             "name": "_offset",
@@ -155,6 +155,128 @@
               "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
               "description": "order of the results using informed fields",
               "default": "created_at:asc"
+            }
+          },
+          {
+            "name": "availability-zone",
+            "in": "query",
+            "description": "br-ne1-a",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Availability-Zone",
+              "description": "br-ne1-a"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginateInstanceTypesV1ListResponseCli"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true,
+        "x-mgc-output-flag": "table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu"
+      }
+    },
+    "/v1/instances": {
+      "get": {
+        "tags": [
+          "instances"
+        ],
+        "summary": "List all instances.",
+        "description": "List Virtual Machine instances in the current tenant which is logged in.\n\n#### Notes\n- You can use the **extend** argument to get more details from the inner objects\nlike image or type.",
+        "operationId": "list_instances_v1_v1_instances_get",
+        "parameters": [
+          {
+            "name": "_limit",
+            "in": "query",
+            "description": "limit the number of the results",
+            "required": false,
+            "schema": {
+              "exclusiveMinimum": 0,
+              "type": "integer",
+              "title": " Limit",
+              "maximum": 1000,
+              "description": "limit the number of the results",
+              "default": 200
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "description": "pagination for the results limited",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Offset",
+              "maximum": 2147483647,
+              "minimum": 0,
+              "description": "pagination for the results limited",
+              "default": 0
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "description": "order of the results using informed fields",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": " Sort",
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+              "description": "order of the results using informed fields",
+              "default": "created_at:asc"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "name of the instance",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name",
+              "description": "name of the instance"
             }
           },
           {
@@ -270,7 +392,7 @@
           "instances"
         ],
         "summary": "Create an instance.",
-        "description": "Creates a Virtual Machine instance in the current tenant which is logged in.\n\nAn instance is ready for you to use when it's in the running state.\n\n#### Notes\n- For the image data, you can use the virtual-machine images list command\n        to list all available images.\n- For the machine type data, you can use the virtual-machine machine-types\n        list command to list all available machine types.\n- You can verify the state of your instance using the virtual-machine get\ncommand.\n\n#### Rules\n\n- If you don't specify a VPC, the default VPC will be used. When the\ndefault VPC is not available, the command will fail.\n- If you don't specify an network interface, an default network interface\nwill be created.\n- You can either specify an image id or an image name. If you specify\nboth, the image id will be used.\n- You can either specify a machine type id or a machine type name. If\nyou specify both, the machine type id will be used.\n- You can either specify an VPC id or an VPC name. If you specify both,\nthe VPC id will be used.\n- The user data must be a Base64 encoded string.",
+        "description": "Creates a Virtual Machine instance in the current tenant which is logged in.\n\nAn instance is ready for you to use when it's in the running state.\n\n#### Notes\n- For the image data, you can use the virtual-machine images list command\n        to list all available images.\n- For the machine type data, you can use the virtual-machine machine-types\n        list command to list all available machine types.\n- You can verify the state of your instance using the virtual-machine get\ncommand.\n\n#### Rules\n\n- If you don't specify a VPC, the default VPC will be used. When the\ndefault VPC is not available, the command will fail.\n- If you don't specify a network interface, a default network interface\nwill be created.\n- For the network interface, you can specify either an interface id or a list\nof security groups. If both are specified, the interface id will take priority.\n- You can either specify an image id or an image name. If you specify\nboth, the image id will be used.\n- You can either specify a machine type id or a machine type name. If\nyou specify both, the machine type id will be used.\n- You can either specify a VPC id or a VPC name. If you specify both,\nthe VPC id will be used.\n- The user data must be a Base64 encoded string.",
         "operationId": "instance_create_v1_v1_instances_post",
         "parameters": [
           {
@@ -814,6 +936,73 @@
         "x-viveiro": true
       }
     },
+    "/v1/instances/{id}/init-logs": {
+      "get": {
+        "tags": [
+          "instances"
+        ],
+        "summary": "Get Instance Console Logs",
+        "description": "Retrieve instance init log output.",
+        "operationId": "get_instance_console_logs_v1_instances__id__init_logs_get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "max-lines-count",
+            "in": "query",
+            "description": "max lines returned for newly until older logs",
+            "required": false,
+            "schema": {
+              "exclusiveMinimum": 0,
+              "type": "integer",
+              "title": "Max-Lines-Count",
+              "maximum": 5000,
+              "description": "max lines returned for newly until older logs",
+              "default": 50
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogsOutputResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
     "/v1/instances/{id}/reboot": {
       "post": {
         "tags": [
@@ -1212,110 +1401,6 @@
         "x-mgc-name": "suspend"
       }
     },
-    "/v1/machine-types": {
-      "get": {
-        "tags": [
-          "machine-types"
-        ],
-        "summary": "Retrieves all machine-types.",
-        "description": "Retrieves a list of machine types allowed for the current tenant which is logged in.",
-        "operationId": "list_instance_types_v1_v1_machine_types_get",
-        "parameters": [
-          {
-            "name": "_limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 1000,
-              "exclusiveMinimum": 0,
-              "description": "limit the number of the results",
-              "default": 200,
-              "title": " Limit"
-            },
-            "description": "limit the number of the results"
-          },
-          {
-            "name": "_offset",
-            "in": "query",
-            "description": "pagination for the results limited",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "title": " Offset",
-              "maximum": 2147483647,
-              "minimum": 0,
-              "description": "pagination for the results limited",
-              "default": 0
-            }
-          },
-          {
-            "name": "_sort",
-            "in": "query",
-            "description": "order of the results using informed fields",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": " Sort",
-              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
-              "description": "order of the results using informed fields",
-              "default": "created_at:asc"
-            }
-          },
-          {
-            "name": "availability-zone",
-            "in": "query",
-            "description": "br-ne1-a",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Availability-Zone",
-              "description": "br-ne1-a"
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginateInstanceTypesV1ListResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "x-viveiro": true,
-        "x-mgc-output-flag": "table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu"
-      }
-    },
     "/v1/snapshots": {
       "get": {
         "tags": [
@@ -1336,7 +1421,7 @@
               "title": " Limit",
               "maximum": 1000,
               "description": "limit the number of the results",
-              "default": 50
+              "default": 200
             }
           },
           {
@@ -2590,6 +2675,9 @@
               },
               {
                 "$ref": "#/components/schemas/Name"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Vpc",
@@ -2918,6 +3006,69 @@
           "name": "BV1-1-40",
           "ram": 1024,
           "sku": "sku0102",
+          "status": "active",
+          "vcpus": 1
+        }
+      },
+      "InstanceTypesV1ResponseCli": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "vcpus": {
+            "type": "integer",
+            "title": "Vcpus"
+          },
+          "ram": {
+            "type": "integer",
+            "title": "Ram"
+          },
+          "disk": {
+            "type": "integer",
+            "title": "Disk"
+          },
+          "gpu": {
+            "type": "integer",
+            "title": "Gpu",
+            "default": 0
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "availability_zones": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "Availability Zones"
+          }
+        },
+        "title": "InstanceTypesV1ResponseCli",
+        "required": [
+          "id",
+          "name",
+          "vcpus",
+          "ram",
+          "disk",
+          "status"
+        ],
+        "example": {
+          "availability_zones": [
+            "br-ne1-a",
+            "br-ne1-y"
+          ],
+          "disk": 10,
+          "gpu": 0,
+          "id": "c78b759d-af80-4489-acf1-04c48851f273",
+          "name": "BV1-1-40",
+          "ram": 1024,
           "status": "active",
           "vcpus": 1
         }
@@ -3262,6 +3413,29 @@
         },
         "title": "IpAddressNewExpand"
       },
+      "LogsOutputResponse": {
+        "type": "object",
+        "properties": {
+          "logs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "Logs"
+          }
+        },
+        "title": "LogsOutputResponse",
+        "required": [
+          "logs"
+        ],
+        "example": {
+          "logs": [
+            "FAKE CONSOLE OUTPUT",
+            "ANOTHER",
+            "LAST LINE"
+          ]
+        }
+      },
       "Meta": {
         "type": "object",
         "properties": {
@@ -3496,6 +3670,50 @@
               "name": "BV1-1-40",
               "ram": 2,
               "sku": "some_sku",
+              "status": "active",
+              "vcpus": 2
+            }
+          ],
+          "meta": {
+            "page": {
+              "count": 50,
+              "limit": 50,
+              "offset": 0,
+              "total": 100
+            }
+          }
+        }
+      },
+      "PaginateInstanceTypesV1ListResponseCli": {
+        "type": "object",
+        "properties": {
+          "instance_types": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InstanceTypesV1ResponseCli"
+            },
+            "title": "Instance Types"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "title": "PaginateInstanceTypesV1ListResponseCli",
+        "required": [
+          "instance_types",
+          "meta"
+        ],
+        "example": {
+          "instance_types": [
+            {
+              "availability_zones": [
+                "br-ne-1-a"
+              ],
+              "disk": 10,
+              "gpu": 1,
+              "id": "3a4dc05b-eb10-42ec-8c0c-848e06f7aded",
+              "name": "BV1-1-40",
+              "ram": 2,
               "status": "active",
               "vcpus": 2
             }
@@ -4117,8 +4335,8 @@
       "description": "Operations with images for instances."
     },
     {
-      "name": "machine-types",
-      "description": "Operations with machine types for instances."
+      "name": "instance-types",
+      "description": "Operations with instance types."
     },
     {
       "name": "snapshots",
