@@ -2,6 +2,7 @@ package common
 
 import (
 	"net/url"
+	"path"
 	"strings"
 )
 
@@ -11,36 +12,32 @@ func NormalizeFilePath(srcPath string) string {
 	decodedPath, err := url.PathUnescape(srcPath)
 	if err != nil {
 		decodedPath = srcPath
-	}	
-	normalizedPath := strings.ReplaceAll(decodedPath, "\\", "/")
-	normalizedPath = strings.TrimPrefix(normalizedPath, "path://")
-	normalizedPath = strings.TrimPrefix(normalizedPath, "./")
-	normalizedPath = strings.TrimPrefix(normalizedPath, ".")
-	
-	return normalizedPath
+	}
+	unifiedPath := strings.ReplaceAll(decodedPath, "\\", "/")
+	unifiedPath = strings.TrimPrefix(unifiedPath, "path://")
+	cleanPath := path.Clean(unifiedPath)
+
+	return cleanPath
 }
 
 // ExtractFileName extracts just the filename from a path
-func ExtractFileName(path string) string {
-	normalizedPath := NormalizeFilePath(path)
-
-	var fileName string
-	if lastSlash := strings.LastIndex(normalizedPath, "/"); lastSlash >= 0 {
-		fileName = normalizedPath[lastSlash+1:]
-	} else {
-		fileName = normalizedPath
-	}
-	
-	return fileName
+func ExtractFileName(p string) string {
+	normalized := NormalizeFilePath(p)
+	return path.Base(normalized)
 }
 
 // GetRelativePath gets the relative path between a base path and a file path
 func GetRelativePath(basePath, filePath string) string {
-	normalizedBasePath := NormalizeFilePath(basePath)
-	normalizedFilePath := NormalizeFilePath(filePath)
-	
-	relPath := strings.TrimPrefix(normalizedFilePath, normalizedBasePath)
-	relPath = strings.TrimPrefix(relPath, "/")
-	
-	return relPath
+	normalizedBase := NormalizeFilePath(basePath)
+	normalizedFile := NormalizeFilePath(filePath)
+
+	if !strings.HasSuffix(normalizedBase, "/") {
+		normalizedBase += "/"
+	}
+
+	if strings.HasPrefix(normalizedFile, normalizedBase) {
+		return strings.TrimPrefix(normalizedFile, normalizedBase)
+	}
+
+	return normalizedFile
 }
