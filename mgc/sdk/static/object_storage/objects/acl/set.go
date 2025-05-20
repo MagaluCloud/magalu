@@ -45,7 +45,7 @@ func set(ctx context.Context, p setObjectACLParams, cfg common.Config) (result c
 		return
 	}
 
-	resp, err := common.SendRequest(ctx, req)
+	resp, err := common.SendRequest(ctx, req, cfg)
 	if err != nil {
 		return
 	}

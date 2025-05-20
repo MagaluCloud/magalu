@@ -59,7 +59,7 @@ func presign(ctx context.Context, p presignObjectParams, cfg common.Config) (pre
 		return nil, core.UsageError{Err: fmt.Errorf("error when parsing the expirationTime for presigned url: %w", err)}
 	}
 
-	presignedURL, err := getPresignedURL(req, accessKey, accessSecretKey, expirationTime)
+	presignedURL, err := getPresignedURL(cfg, req, accessKey, accessSecretKey, expirationTime)
 	if err != nil {
 		return
 	}
@@ -94,13 +94,13 @@ func newPresignedRequest(ctx context.Context, cfg common.Config, p presignObject
 	return http.NewRequestWithContext(ctx, p.Method, string(host), nil)
 }
 
-func getPresignedURL(req *http.Request, accessKey, secretKey string, expirationTime time.Duration) (presignedUrl string, err error) {
+func getPresignedURL(cfg common.Config, req *http.Request, accessKey, secretKey string, expirationTime time.Duration) (presignedUrl string, err error) {
 	if expirationTime < time.Second || expirationTime > 604000*time.Second {
 		err = core.UsageError{Err: fmt.Errorf("expirationTime for presigned URL should be between 1 second and 7 days")}
 		return
 	}
 
-	url, err := common.SignedUrl(req, accessKey, secretKey, expirationTime)
+	url, err := common.SignedUrl(req, accessKey, secretKey, cfg.Region, expirationTime)
 	if err != nil {
 		return
 	}

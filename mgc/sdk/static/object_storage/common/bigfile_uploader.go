@@ -92,7 +92,7 @@ func (u *bigFileUploader) getUploadId(ctx context.Context) (string, error) {
 			return "", err
 		}
 
-		resp, err := SendRequest(ctx, req)
+		resp, err := SendRequest(ctx, req, u.cfg)
 		if err != nil {
 			return "", err
 		}
@@ -154,7 +154,7 @@ func (u *bigFileUploader) sendCompletionRequest(ctx context.Context, parts []com
 	q.Set("uploadId", uploadId)
 	req.URL.RawQuery = q.Encode()
 
-	resp, err := SendRequestWithIgnoredHeaders(ctx, req, bigFileCopierExcludedHeaders)
+	resp, err := SendRequestWithIgnoredHeaders(ctx, req, u.cfg, bigFileCopierExcludedHeaders)
 	if err != nil {
 		return err
 	}
@@ -183,7 +183,7 @@ func (u *bigFileUploader) createPartSenderProcessor(cancel context.CancelCauseFu
 		}
 
 		bigfileUploaderLogger().Debugw("Sending part", "part", partNumber, "total", totalParts)
-		res, err := SendRequest(ctx, req)
+		res, err := SendRequest(ctx, req, u.cfg)
 		if err != nil {
 			cancel(err)
 			return part, pipeline.ProcessAbort

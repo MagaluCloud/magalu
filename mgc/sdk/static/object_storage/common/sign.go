@@ -35,11 +35,12 @@ func NewSignatureParameters(
 	signingTime time.Time,
 	payloadHash string,
 	signedHeaders []string,
+	region string,
 ) SignatureParameters {
 	shortDate := signingTime.Format(shortTimeFormat)
 	scope := strings.Join([]string{
 		shortDate,
-		signingRegion,
+		region,
 		signingService,
 		requestSuffix,
 	}, "/")
@@ -239,9 +240,9 @@ as the key for the initial hashing operation:
 
 	Secret -> Date -> Region -deriveKey> Service -> Request Suffix
 */
-func deriveKey(secretKey, shortTime string) []byte {
+func deriveKey(secretKey, shortTime, region string) []byte {
 	hmacDate := core.HMACSHA256String([]byte(secretPrefix+secretKey), shortTime)
-	hmacRegion := core.HMACSHA256String(hmacDate, signingRegion)
+	hmacRegion := core.HMACSHA256String(hmacDate, region)
 	hmacService := core.HMACSHA256String(hmacRegion, signingService)
 	return core.HMACSHA256String(hmacService, requestSuffix)
 }
@@ -286,17 +287,17 @@ func buildAuthorizationHeader(ctx *SignatureContext) string {
 	)
 }
 
-func sign(ctx *SignatureContext, secretKey string) (err error) {
+func sign(ctx *SignatureContext, secretKey, region string) (err error) {
 	strToSign, err := buildStringToSign(ctx)
 	if err != nil {
 		return
 	}
-	signKey := deriveKey(secretKey, ctx.Parameters.ShortDate)
+	signKey := deriveKey(secretKey, ctx.Parameters.ShortDate, region)
 	ctx.Signature = hex.EncodeToString(core.HMACSHA256String(signKey, strToSign))
 	return
 }
 
-func signHeaders(req *http.Request, accessKey, secretKey string, unsignedPayload bool, ignoredHeaders map[string]struct{}) (err error) {
+func signHeaders(req *http.Request, accessKey, secretKey, region string, unsignedPayload bool, ignoredHeaders map[string]struct{}) (err error) {
 	payloadHash, err := setContentHeader(req, unsignedPayload)
 	if err != nil {
 		return
@@ -321,10 +322,10 @@ func signHeaders(req *http.Request, accessKey, secretKey string, unsignedPayload
 	}
 
 	signedHeaders := getSignedHeaders(req, ignoredHeaders)
-	params := NewSignatureParameters(accessKey, signingTime, payloadHash, signedHeaders)
+	params := NewSignatureParameters(accessKey, signingTime, payloadHash, signedHeaders, region)
 
 	ctx := NewSignatureContext(params, req)
-	if err = sign(ctx, secretKey); err != nil {
+	if err = sign(ctx, secretKey, region); err != nil {
 		return
 	}
 
@@ -333,8 +334,8 @@ func signHeaders(req *http.Request, accessKey, secretKey string, unsignedPayload
 	return nil
 }
 
-func SignedUrl(req *http.Request, accessKey, secretKey string, expirationTime time.Duration) (url *url.URL, err error) {
-	params := NewSignatureParameters(accessKey, time.Now().UTC(), unsignedPayloadHeader, defaultSignedHeaders)
+func SignedUrl(req *http.Request, accessKey, secretKey, region string, expirationTime time.Duration) (url *url.URL, err error) {
+	params := NewSignatureParameters(accessKey, time.Now().UTC(), unsignedPayloadHeader, defaultSignedHeaders, region)
 
 	if req.Header.Get("Host") == "" {
 		req.Header.Set("Host", req.Host)
@@ -349,13 +350,17 @@ func SignedUrl(req *http.Request, accessKey, secretKey string, expirationTime ti
 	q.Set("X-Amz-SignedHeaders", strings.Join(params.SignedHeaders, ";"))
 	url.RawQuery = q.Encode()
 
-	ctx := NewSignatureContext(params, req)
-	if err = sign(ctx, secretKey); err != nil {
-		return
-	}
+	tempReq := req.Clone(req.Context())
+    tempReq.URL.RawQuery = url.RawQuery
 
-	q.Set("X-Amz-Signature", ctx.Signature)
+	ctx := NewSignatureContext(params, tempReq) 
 
-	url.RawQuery = q.Encode()
-	return
+    if err = sign(ctx, secretKey, region); err != nil {
+        return nil, err
+    }
+
+    q.Set("X-Amz-Signature", ctx.Signature)
+	
+    url.RawQuery = q.Encode()
+    return url, nil
 }

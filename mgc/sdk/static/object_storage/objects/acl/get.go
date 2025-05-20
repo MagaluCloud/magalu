@@ -37,7 +37,7 @@ func getACL(ctx context.Context, p getObjectACLParams, cfg common.Config) (resul
 		return
 	}
 
-	resp, err := common.SendRequest(ctx, req)
+	resp, err := common.SendRequest(ctx, req, cfg)
 	if err != nil {
 		return
 	}

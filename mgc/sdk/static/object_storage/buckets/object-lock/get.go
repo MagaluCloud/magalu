@@ -41,7 +41,7 @@ func GetObjectLocking(ctx context.Context, params GetBucketObjectLockParams, cfg
 		return
 	}
 
-	res, err := common.SendRequest(ctx, req)
+	res, err := common.SendRequest(ctx, req, cfg)
 	if err != nil {
 		return
 	}
