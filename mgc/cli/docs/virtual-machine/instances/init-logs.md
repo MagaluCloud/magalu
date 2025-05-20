@@ -1,16 +1,16 @@
-# Logs
+# Init-Logs
 
 Retrieve instance init log output.
 
 ## Usage:
 ```
-mgc virtual-machine instances logs [id] [flags]
+mgc virtual-machine instances init-logs [id] [flags]
 ```
 
 ## Flags:
 ```
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for logs
+-h, --help                          help for init-logs
     --id string                     Id (required)
     --max-lines-count integer       Max-Lines-Count: max lines returned for newly until older logs (max: 5000)
 ```

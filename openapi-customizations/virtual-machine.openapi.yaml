@@ -38,6 +38,9 @@ paths:
     /v1/snapshots/{id}:
         post:
             x-mgc-name: restore
+    /v1/instances/{id}/init-logs:
+        get:
+            x-mgc-name: init-logs
 servers:
 -   url: https://{env}/{region}/compute
     variables:

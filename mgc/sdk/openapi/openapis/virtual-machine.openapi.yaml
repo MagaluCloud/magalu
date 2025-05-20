@@ -896,6 +896,7 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.read
+            x-mgc-name: init-logs
     /v1/instances/{id}/reboot:
         post:
             tags:
