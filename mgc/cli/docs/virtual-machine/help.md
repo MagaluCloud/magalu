@@ -10,10 +10,10 @@ mgc virtual-machine [command]
 
 ## Commands:
 ```
-images         Operations with images for instances.
-instance-types Operations with instance types.
-instances      Operations with instances, including create, delete, start, stop, reboot and other actions.
-snapshots      Operations with snapshots for instances.
+images        Operations with images for instances.
+instances     Operations with instances, including create, delete, start, stop, reboot and other actions.
+machine-types Operations with machine types for instances.
+snapshots     Operations with snapshots for instances.
 ```
 
 ## Flags:

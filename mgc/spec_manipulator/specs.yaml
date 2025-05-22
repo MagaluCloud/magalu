@@ -15,7 +15,7 @@ jaxyendy:
     file: kubernetes.jaxyendy.openapi.json
     menu: kubernetes
     enabled: true
-  - url: https://virtual-machine.br-ne-1.jaxyendy.com/v1/openapi.json
+  - url: https://virtual-machine.br-se-1.jaxyendy.com/v1/openapi.json
     file: virtual-machine.jaxyendy.openapi.json
     menu: virtual-machine
     enabled: true

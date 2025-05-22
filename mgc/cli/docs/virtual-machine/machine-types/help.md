@@ -1,21 +1,21 @@
-# Instance-Types
+# Machine-Types
 
-Operations with instance types.
+Operations with machine types for instances.
 
 ## Usage:
 ```
-mgc virtual-machine instance-types [flags]
-mgc virtual-machine instance-types [command]
+mgc virtual-machine machine-types [flags]
+mgc virtual-machine machine-types [command]
 ```
 
 ## Commands:
 ```
-list        Retrieves all instance-types.
+list        Retrieves all machine-types.
 ```
 
 ## Flags:
 ```
--h, --help   help for instance-types
+-h, --help   help for machine-types
 ```
 
 ## Global Flags:

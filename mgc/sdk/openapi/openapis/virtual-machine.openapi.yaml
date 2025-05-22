@@ -1526,6 +1526,74 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+    /v1/machine-types:
+        get:
+            tags:
+            - machine-types
+            summary: Retrieves all machine-types.
+            description: Retrieves a list of machine types allowed for the current
+                tenant which is logged in.
+            operationId: list_instance_types_v1_v1_machine_types_get
+            parameters:
+            -   name: _limit
+                in: query
+                description: limit the number of the results
+                required: false
+                schema:
+                    exclusiveMinimum: false
+                    type: integer
+                    title: ' Limit'
+                    maximum: 1000
+                    description: limit the number of the results
+                    default: 200
+            -   name: _offset
+                in: query
+                description: pagination for the results limited
+                required: false
+                schema:
+                    type: integer
+                    title: ' Offset'
+                    maximum: 2147483647
+                    description: pagination for the results limited
+                    default: 0
+            -   name: _sort
+                in: query
+                description: order of the results using informed fields
+                required: false
+                schema:
+                    type: string
+                    title: ' Sort'
+                    pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+                    description: order of the results using informed fields
+                    default: created_at:asc
+            -   name: availability-zone
+                in: query
+                description: br-ne1-a
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Availability-Zone
+                    description: br-ne1-a
+                    nullable: true
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PaginateInstanceTypesV1ListResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-output-flag: table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu
+            security:
+            -   OAuth2:
+                - virtual-machine.read
     /v1/snapshots:
         get:
             tags:
@@ -2180,6 +2248,79 @@ paths:
                 - virtual-machine.write
 components:
     schemas:
+        Architecture:
+            type: string
+            title: Architecture
+            enum:
+            - x86/64
+        CreateCustomImageRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                    maxLength: 255
+                    minLength: 1
+                description:
+                    anyOf:
+                    -   type: string
+                        maxLength: 200
+                        minLength: 1
+                    title: Description
+                    nullable: true
+                version:
+                    anyOf:
+                    -   type: string
+                    title: Version
+                    nullable: true
+                url:
+                    type: string
+                    title: Url
+                requirements:
+                    anyOf:
+                    -   $ref: '#/components/schemas/CustomImageRequirements'
+                    nullable: true
+                platform:
+                    type: string
+                    title: Platform
+                    enum:
+                    - linux
+                license:
+                    type: string
+                    title: License
+                    enum:
+                    - unlicensed
+                architecture:
+                    type: string
+                    title: Architecture
+                    enum:
+                    - x86/64
+                uefi:
+                    anyOf:
+                    -   type: boolean
+                    title: Uefi
+                    default: false
+                    nullable: true
+            title: CreateCustomImageRequest
+            required:
+            - name
+            - url
+            - platform
+            - license
+            - architecture
+            example:
+                architecture: x86/64
+                description: A customized image for specific workloads.
+                license: unlicensed
+                name: my-linux-image-3
+                platform: linux
+                requirements:
+                    disk: 100
+                    ram: 8
+                    vcpu: 4
+                uefi: true
+                url: https://br-se1.magaluobjects.com/bucket/image.qcow2
+                version: '2.1'
         CreateResponse:
             type: object
             properties:
@@ -2191,6 +2332,23 @@ components:
             - id
             example:
                 id: 9ec75090-2872-4f51-8111-53d05d96d2c6
+        CustomImageRequirements:
+            type: object
+            properties:
+                disk:
+                    type: integer
+                    title: Disk
+                ram:
+                    type: integer
+                    title: Ram
+                vcpu:
+                    type: integer
+                    title: Vcpu
+            title: CustomImageRequirements
+            required:
+            - disk
+            - ram
+            - vcpu
         ErrorMessageV1:
             type: object
             properties:
@@ -2224,6 +2382,67 @@ components:
             - slug
             - message
             - details
+        GetCustomImageResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                description:
+                    anyOf:
+                    -   type: string
+                    title: Description
+                    nullable: true
+                version:
+                    anyOf:
+                    -   type: string
+                    title: Version
+                    nullable: true
+                requirements:
+                    anyOf:
+                    -   $ref: '#/components/schemas/CustomImageRequirements'
+                    nullable: true
+                platform:
+                    type: string
+                    title: Platform
+                    enum:
+                    - linux
+                metadata:
+                    anyOf:
+                    -   type: object
+                    title: Metadata
+                    nullable: true
+                license:
+                    type: string
+                    title: License
+                    enum:
+                    - unlicensed
+            title: GetCustomImageResponse
+            required:
+            - id
+            - name
+            - platform
+            - license
+            example:
+                description: A customized image for specific workloads.
+                id: 0a892d8a-9ee9-4c10-9efc-3c8c88f7cd61
+                license: unlicensed
+                metadata:
+                    build_date: '2025-05-13'
+                    installed_software:
+                    - nginx
+                    - postgresql
+                    os_version: Ubuntu 22.04 LTS
+                name: my-linux-image-3
+                platform: linux
+                requirements:
+                    disk: 100
+                    ram: 8
+                    vcpu: 4
+                version: '2.1'
         HTTPValidationError:
             type: object
             properties:
@@ -2403,6 +2622,17 @@ components:
                 release_at: '2022-06-10T18:33:12Z'
                 status: active
                 version: '22.10'
+        ImageResponseV1:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+            title: ImageResponseV1
+            required:
+            - id
+            example:
+                id: c47e974f-8002-46e9-8a63-d66505be2aa1
         ImageV1Status:
             type: string
             title: ImageV1Status
@@ -3096,6 +3326,133 @@ components:
                     title: Public Ipv6
                     nullable: true
             title: IpAddressNewExpand
+        License:
+            type: string
+            title: License
+            enum:
+            - unlicensed
+        ListCustomImageResponse:
+            type: object
+            properties:
+                images:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                            name:
+                                type: string
+                                title: Name
+                            description:
+                                anyOf:
+                                -   type: string
+                                title: Description
+                                nullable: true
+                            version:
+                                anyOf:
+                                -   type: string
+                                title: Version
+                                nullable: true
+                            requirements:
+                                anyOf:
+                                -   $ref: '#/components/schemas/CustomImageRequirements'
+                                nullable: true
+                            platform:
+                                type: string
+                                title: Platform
+                                enum:
+                                - linux
+                            metadata:
+                                anyOf:
+                                -   type: object
+                                title: Metadata
+                                nullable: true
+                            license:
+                                type: string
+                                title: License
+                                enum:
+                                - unlicensed
+                        title: GetCustomImageResponse
+                        required:
+                        - id
+                        - name
+                        - platform
+                        - license
+                        example:
+                            description: A customized image for specific workloads.
+                            id: 0a892d8a-9ee9-4c10-9efc-3c8c88f7cd61
+                            license: unlicensed
+                            metadata:
+                                build_date: '2025-05-13'
+                                installed_software:
+                                - nginx
+                                - postgresql
+                                os_version: Ubuntu 22.04 LTS
+                            name: my-linux-image-3
+                            platform: linux
+                            requirements:
+                                disk: 100
+                                ram: 8
+                                vcpu: 4
+                            version: '2.1'
+                    title: Images
+                    default: []
+                meta:
+                    type: object
+                    properties:
+                        page:
+                            type: object
+                            properties:
+                                limit:
+                                    type: integer
+                                    title: Limit
+                                offset:
+                                    type: integer
+                                    title: Offset
+                                count:
+                                    type: integer
+                                    title: Count
+                                total:
+                                    type: integer
+                                    title: Total
+                            title: MetaPage
+                            required:
+                            - limit
+                            - offset
+                            - count
+                            - total
+                    title: Meta
+                    required:
+                    - page
+            title: ListCustomImageResponse
+            required:
+            - meta
+            example:
+                images:
+                -   description: A customized image for specific workloads.
+                    id: 0a892d8a-9ee9-4c10-9efc-3c8c88f7cd61
+                    license: unlicensed
+                    metadata:
+                        build_date: '2025-05-13'
+                        installed_software:
+                        - nginx
+                        - postgresql
+                        os_version: Ubuntu 22.04 LTS
+                    name: my-linux-image-3
+                    platform: linux
+                    requirements:
+                        disk: 100
+                        ram: 8
+                        vcpu: 4
+                    version: '2.1'
+                meta:
+                    page:
+                        count: 0
+                        limit: 10
+                        offset: 0
+                        total: 0
         LogsOutputResponse:
             type: object
             properties:
@@ -4029,6 +4386,11 @@ components:
                     state: available
                     status: completed
                     updated_at: '2022-06-10T18:33:12Z'
+        Platform:
+            type: string
+            title: Platform
+            enum:
+            - linux
         PortID:
             type: object
             properties:
@@ -4262,7 +4624,7 @@ components:
                         maxLength: 255
                         minLength: 1
                     title: Availability Zone
-                    default: br-ne1-a
+                    default: br-mgl1-a
                     nullable: true
                 network:
                     anyOf:
@@ -4330,8 +4692,8 @@ tags:
         reboot and other actions.
 -   name: images
     description: Operations with images for instances.
--   name: instance-types
-    description: Operations with instance types.
+-   name: machine-types
+    description: Operations with machine types for instances.
 -   name: snapshots
     description: Operations with snapshots for instances.
 $id: https://virtual-machine.jaxyendy.com/openapi.json

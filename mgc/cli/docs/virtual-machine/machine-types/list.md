@@ -1,10 +1,10 @@
 # List
 
-Retrieves a list of instance types allowed for the current tenant which is logged in.
+Retrieves a list of machine types allowed for the current tenant which is logged in.
 
 ## Usage:
 ```
-mgc virtual-machine instance-types list [flags]
+mgc virtual-machine machine-types list [flags]
 ```
 
 ## Flags:
