@@ -39,6 +39,9 @@ func (u *bigFileCopier) newPreparationRequest(ctx context.Context) (*http.Reques
 	}
 	req.Method = http.MethodPost
 	req.Header.Set("Content-Type", "application/octet-stream")
+	if u.storageClass != "" {
+		req.Header.Set("X-Amz-Storage-Class", u.storageClass)
+	}
 	q := req.URL.Query()
 	q.Set("uploads", "")
 
