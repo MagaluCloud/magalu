@@ -9,7 +9,7 @@ mgc object-storage objects delete-all [bucket] [flags]
 
 ## Flags:
 ```
-    --batch-size integer     Limit of items per batch to delete (range: 1 - 1000)
+    --batch-size integer     Limit of items per batch to delete (range: 1 - 1000) (required) (default 1000)
     --bucket string          Name of the bucket to delete objects from (required)
     --filter array(object)   File name pattern to include or exclude
                              Use --filter=help for more details
