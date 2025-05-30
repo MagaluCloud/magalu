@@ -39,7 +39,7 @@ modules:
     - name: network
       url: https://network.jaxyendy.com/openapi.json
       path: network.openapi.yaml
-      version: 1.156.0
+      version: 1.170.0
       description: VPC Api Product
       summary: VPC Api Product
     - name: profile

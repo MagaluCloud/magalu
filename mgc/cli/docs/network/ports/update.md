@@ -1,17 +1,19 @@
-# Create
+# Update
 
-Create a new Virtual Private Cloud (VPC).
+Updates a Port from the provided tenant_id.<br><br>**ip_spoofing_guard**: Activates or deactivates the IP Spoofing protection.<br><br><font color="red">**WARNING: Disabling IP Spoofing protection can have serious security consequences. It allows attackers to bypass security controls using fake source IP addresses. Only disable this if necessary, and you understand the involved risks.**</font>
 
 ## Usage:
 ```
-mgc network vpcs create [flags]
+mgc network ports update [port-id] [flags]
 ```
 
 ## Flags:
 ```
-    --description string   Optional description for the VPC. Must not contain special characters, max 200 chars.
--h, --help                 help for create
-    --name string          Name of the VPC. Must be alphanumeric or hyphens, max 50 chars. (required)
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
+-h, --help                          help for update
+    --ip-spoofing-guard             Ip Spoofing Guard: Activates (true) or deactivates (false) the IP Spoofing protection
+    --port-id string                port_id: ID of the Port (required)
 ```
 
 ## Global Flags:

@@ -15,6 +15,7 @@ delete      Delete Port
 detach      Detach Security Group
 get         Port Details
 list        Details of a Port list
+update      Update a Port
 ```
 
 ## Flags:

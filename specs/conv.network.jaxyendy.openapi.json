@@ -7,7 +7,7 @@
             "name": "IaaS Products",
             "url": "https://github.com/luizalabs"
         },
-        "version": "1.156.0"
+        "version": "1.170.0"
     },
     "paths": {
         "/v0/ports": {
@@ -59,7 +59,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/PortResponse"
+                                        "$ref": "#/components/schemas/vpc_api_product__vpc__models__port__PortResponse"
                                     },
                                     "title": "Response Detail Ports V0 Ports Get"
                                 }
@@ -188,7 +188,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PortResponse"
+                                    "$ref": "#/components/schemas/vpc_api_product__vpc__models__port__PortResponse"
                                 }
                             }
                         }
@@ -208,6 +208,76 @@
                 "x-mgc-hidden": false,
                 "x-permission": {
                     "permission-name": "net_port_get",
+                    "product-name": "network"
+                }
+            },
+            "patch": {
+                "tags": [
+                    "ports"
+                ],
+                "summary": "Update a Port",
+                "description": "Updates a Port from the provided tenant_id.\u003cbr\u003e\u003cbr\u003e**ip_spoofing_guard**: Activates or deactivates the IP Spoofing protection.\u003cbr\u003e\u003cbr\u003e\u003cfont color=\"red\"\u003e**WARNING: Disabling IP Spoofing protection can have serious security consequences. It allows attackers to bypass security controls using fake source IP addresses. Only disable this if necessary, and you understand the involved risks.**\u003c/font\u003e",
+                "operationId": "update_port_v0_ports__port_id__patch",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "port_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "port_id",
+                            "description": "ID of the Port"
+                        },
+                        "description": "ID of the Port"
+                    },
+                    {
+                        "name": "x-tenant-id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "X-Tenant-Id",
+                            "description": "Tenant id of the project"
+                        },
+                        "description": "Tenant id of the project"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PortPatchRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Successful Response"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-viveiro": true,
+                "x-mgc-hidden": false,
+                "x-permission": {
+                    "permission-name": "net_port_update",
                     "product-name": "network"
                 }
             }
@@ -280,7 +350,7 @@
                 "x-viveiro": true,
                 "x-mgc-hidden": false,
                 "x-permission": {
-                    "permission-name": "net_port-attach_action",
+                    "permission-name": "net_port_attach_action",
                     "product-name": "network"
                 }
             }
@@ -353,7 +423,7 @@
                 "x-viveiro": true,
                 "x-mgc-hidden": false,
                 "x-permission": {
-                    "permission-name": "net_port-attach_action",
+                    "permission-name": "net_port_attach_action",
                     "product-name": "network"
                 }
             }
@@ -613,7 +683,7 @@
                 "x-viveiro": true,
                 "x-mgc-hidden": false,
                 "x-permission": {
-                    "permission-name": "net_fip-attach_action",
+                    "permission-name": "net_fip_attach_action",
                     "product-name": "network"
                 }
             }
@@ -686,7 +756,7 @@
                 "x-viveiro": true,
                 "x-mgc-hidden": false,
                 "x-permission": {
-                    "permission-name": "net_fip-attach_action",
+                    "permission-name": "net_fip_attach_action",
                     "product-name": "network"
                 }
             }
@@ -1185,7 +1255,7 @@
                 "x-viveiro": true,
                 "x-mgc-hidden": false,
                 "x-permission": {
-                    "permission-name": "net_sg-rule_list",
+                    "permission-name": "net_sg_rule_list",
                     "product-name": "network"
                 }
             },
@@ -1306,7 +1376,7 @@
                 "x-viveiro": true,
                 "x-mgc-hidden": false,
                 "x-permission": {
-                    "permission-name": "net_sg-rule_create",
+                    "permission-name": "net_sg_rule_create",
                     "product-name": "network"
                 }
             }
@@ -1709,7 +1779,7 @@
                 "x-viveiro": true,
                 "x-mgc-hidden": false,
                 "x-permission": {
-                    "permission-name": "net_subnetpool-book_action",
+                    "permission-name": "net_subnetpool_book_action",
                     "product-name": "network"
                 }
             }
@@ -1781,7 +1851,7 @@
                 "x-viveiro": true,
                 "x-mgc-hidden": false,
                 "x-permission": {
-                    "permission-name": "net_subnetpool-book_action",
+                    "permission-name": "net_subnetpool_book_action",
                     "product-name": "network"
                 }
             }
@@ -2315,7 +2385,7 @@
                 "x-viveiro": true,
                 "x-mgc-hidden": false,
                 "x-permission": {
-                    "permission-name": "net_vpc-port_list",
+                    "permission-name": "net_vpc_port_list",
                     "product-name": "network"
                 }
             },
@@ -2366,8 +2436,10 @@
                                     "type": "string"
                                 }
                             ],
-                            "title": "X-Zone"
-                        }
+                            "title": "X-Zone",
+                            "description": "Zone"
+                        },
+                        "description": "Zone"
                     }
                 ],
                 "requestBody": {
@@ -2405,7 +2477,7 @@
                 "x-viveiro": true,
                 "x-mgc-hidden": false,
                 "x-permission": {
-                    "permission-name": "net_vpc-port_create",
+                    "permission-name": "net_vpc_port_create",
                     "product-name": "network"
                 }
             }
@@ -2474,7 +2546,7 @@
                 "x-viveiro": true,
                 "x-mgc-hidden": false,
                 "x-permission": {
-                    "permission-name": "net_vpc-fip_list",
+                    "permission-name": "net_vpc_fip_list",
                     "product-name": "network"
                 }
             },
@@ -2591,7 +2663,7 @@
                 "x-viveiro": true,
                 "x-mgc-hidden": false,
                 "x-permission": {
-                    "permission-name": "net_vpc-fip_create",
+                    "permission-name": "net_vpc_fip_create",
                     "product-name": "network"
                 }
             }
@@ -2660,7 +2732,7 @@
                 "x-viveiro": true,
                 "x-mgc-hidden": false,
                 "x-permission": {
-                    "permission-name": "net_vpc-subnet_list",
+                    "permission-name": "net_vpc_subnet_list",
                     "product-name": "network"
                 }
             },
@@ -2711,8 +2783,10 @@
                                     "type": "string"
                                 }
                             ],
-                            "title": "X-Zone"
-                        }
+                            "title": "X-Zone",
+                            "description": "Zone"
+                        },
+                        "description": "Zone"
                     }
                 ],
                 "requestBody": {
@@ -2778,7 +2852,7 @@
                 "x-viveiro": true,
                 "x-mgc-hidden": false,
                 "x-permission": {
-                    "permission-name": "net_vpc-subnet_create",
+                    "permission-name": "net_vpc_subnet_create",
                     "product-name": "network"
                 }
             }
@@ -3375,11 +3449,9 @@
                     }
                 },
                 "title": "BookCidrRequest",
-                "example": [
-                    {
-                        "cidr": "172.26.0.0/16"
-                    }
-                ]
+                "example": {
+                    "cidr": "172.26.0.0/16"
+                }
             },
             "BookCidrResponse": {
                 "type": "object",
@@ -3456,37 +3528,6 @@
                     }
                 },
                 "title": "HTTPValidationError"
-            },
-            "IpAddress": {
-                "type": "object",
-                "properties": {
-                    "ip_address": {
-                        "type": "string",
-                        "title": "Ip Address"
-                    },
-                    "subnet_id": {
-                        "type": "string",
-                        "title": "Subnet Id"
-                    },
-                    "ethertype": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Ethertype"
-                    }
-                },
-                "title": "IpAddress",
-                "required": [
-                    "ip_address",
-                    "subnet_id"
-                ],
-                "example": {
-                    "ethertype": "IPv4",
-                    "ip_address": "172.20.0.2",
-                    "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                }
             },
             "LinkModel": {
                 "type": "object",
@@ -3774,7 +3815,9 @@
                             "processing",
                             "created",
                             "error",
-                            "deleting"
+                            "deleting",
+                            "deleted",
+                            "updating"
                         ]
                     }
                 },
@@ -3815,6 +3858,10 @@
                         "type": "string",
                         "title": "Zone"
                     },
+                    "availability_zone": {
+                        "type": "string",
+                        "title": "Availability Zone"
+                    },
                     "nat_gateway_ip": {
                         "anyOf": [
                             {
@@ -3849,7 +3896,9 @@
                             "processing",
                             "created",
                             "error",
-                            "deleting"
+                            "deleting",
+                            "deleted",
+                            "updating"
                         ]
                     }
                 },
@@ -3859,9 +3908,11 @@
                     "name",
                     "vpc_id",
                     "zone",
+                    "availability_zone",
                     "status"
                 ],
                 "example": {
+                    "availability_zone": "br-se1-a",
                     "created_at": "YYYY-MM-DD HH:mm:SS",
                     "description": "NatGateway description",
                     "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
@@ -3870,7 +3921,7 @@
                     "status": "created",
                     "updated": "YYYY-MM-DD HH:mm:SS",
                     "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-                    "zone": "zone"
+                    "zone": "a"
                 }
             },
             "NatGatewayListResponse": {
@@ -3977,6 +4028,10 @@
                                     "type": "string",
                                     "title": "Zone"
                                 },
+                                "availability_zone": {
+                                    "type": "string",
+                                    "title": "Availability Zone"
+                                },
                                 "nat_gateway_ip": {
                                     "anyOf": [
                                         {
@@ -4011,7 +4066,9 @@
                                         "processing",
                                         "created",
                                         "error",
-                                        "deleting"
+                                        "deleting",
+                                        "deleted",
+                                        "updating"
                                     ]
                                 }
                             },
@@ -4021,9 +4078,11 @@
                                 "name",
                                 "vpc_id",
                                 "zone",
+                                "availability_zone",
                                 "status"
                             ],
                             "example": {
+                                "availability_zone": "br-se1-a",
                                 "created_at": "YYYY-MM-DD HH:mm:SS",
                                 "description": "NatGateway description",
                                 "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
@@ -4032,7 +4091,7 @@
                                 "status": "created",
                                 "updated": "YYYY-MM-DD HH:mm:SS",
                                 "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-                                "zone": "zone"
+                                "zone": "a"
                             }
                         },
                         "title": "Result"
@@ -4060,6 +4119,7 @@
                     },
                     "result": [
                         {
+                            "availability_zone": "br-se1-a",
                             "created_at": "YYYY-MM-DD HH:mm:SS",
                             "description": "NatGateway description",
                             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
@@ -4068,9 +4128,37 @@
                             "status": "created",
                             "updated": "YYYY-MM-DD HH:mm:SS",
                             "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-                            "zone": "zone"
+                            "zone": "a"
                         }
                     ]
+                }
+            },
+            "NetworkZoneModel": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "zone": {
+                        "type": "string",
+                        "title": "Zone"
+                    },
+                    "availability_zone": {
+                        "type": "string",
+                        "title": "Availability Zone"
+                    }
+                },
+                "title": "NetworkZoneModel",
+                "required": [
+                    "id",
+                    "zone",
+                    "availability_zone"
+                ],
+                "example": {
+                    "availability_zone": "availability_zone_name",
+                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "zone": "zone_name"
                 }
             },
             "PageModel": {
@@ -4181,180 +4269,18 @@
                     "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                 }
             },
-            "PortResponse": {
+            "PortPatchRequest": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Id"
-                    },
-                    "name": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Name"
-                    },
-                    "description": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Description"
-                    },
-                    "is_admin_state_up": {
-                        "anyOf": [
-                            {
-                                "type": "boolean"
-                            }
-                        ],
-                        "title": "Is Admin State Up"
-                    },
-                    "vpc_id": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Vpc Id"
-                    },
-                    "is_port_security_enabled": {
-                        "anyOf": [
-                            {
-                                "type": "boolean"
-                            }
-                        ],
-                        "title": "Is Port Security Enabled"
-                    },
-                    "security_groups": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "title": "Security Groups",
-                        "default": []
-                    },
-                    "public_ip": {
-                        "anyOf": [
-                            {
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "properties": {
-                                        "public_ip_id": {
-                                            "anyOf": [
-                                                {
-                                                    "type": "string"
-                                                }
-                                            ],
-                                            "title": "Public Ip Id"
-                                        },
-                                        "public_ip": {
-                                            "anyOf": [
-                                                {
-                                                    "type": "string"
-                                                }
-                                            ],
-                                            "title": "Public Ip"
-                                        }
-                                    },
-                                    "title": "PublicIpResponsePort",
-                                    "example": {
-                                        "public_ip": "100.94.5.31",
-                                        "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                                    }
-                                }
-                            }
-                        ],
-                        "title": "Public Ip",
-                        "default": []
-                    },
-                    "ip_address": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "ip_address": {
-                                    "type": "string",
-                                    "title": "Ip Address"
-                                },
-                                "subnet_id": {
-                                    "type": "string",
-                                    "title": "Subnet Id"
-                                },
-                                "ethertype": {
-                                    "anyOf": [
-                                        {
-                                            "type": "string"
-                                        }
-                                    ],
-                                    "title": "Ethertype"
-                                }
-                            },
-                            "title": "IpAddress",
-                            "required": [
-                                "ip_address",
-                                "subnet_id"
-                            ],
-                            "example": {
-                                "ethertype": "IPv4",
-                                "ip_address": "172.20.0.2",
-                                "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                            }
-                        },
-                        "title": "Ip Address",
-                        "default": []
-                    },
-                    "created_at": {
-                        "anyOf": [
-                            {
-                                "type": "string",
-                                "format": "date-time"
-                            }
-                        ],
-                        "title": "Created At"
-                    },
-                    "updated": {
-                        "anyOf": [
-                            {
-                                "type": "string",
-                                "format": "date-time"
-                            }
-                        ],
-                        "title": "Updated"
+                    "ip_spoofing_guard": {
+                        "type": "boolean",
+                        "title": "Ip Spoofing Guard",
+                        "description": "Activates (true) or deactivates (false) the IP Spoofing protection"
                     }
                 },
-                "title": "PortResponse",
+                "title": "PortPatchRequest",
                 "example": {
-                    "created_at": "2022-01-01 00:00:00",
-                    "description": "port description",
-                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-                    "ip_address": [
-                        {
-                            "ip_address": "172.20.0.2",
-                            "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                        }
-                    ],
-                    "is_admin_state_up": true,
-                    "is_port_security_enabled": true,
-                    "name": "port_name",
-                    "public_ip": [
-                        {
-                            "public_ip": "100.94.5.31",
-                            "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                        }
-                    ],
-                    "security_groups": [
-                        "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                    ],
-                    "updated": "2022-01-01 00:00:00",
-                    "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                    "ip_spoofing_guard": true
                 }
             },
             "PortSimpleResponse": {
@@ -4568,6 +4494,21 @@
                                         }
                                     ],
                                     "title": "Updated"
+                                },
+                                "network": {
+                                    "anyOf": [
+                                        {
+                                            "$ref": "#/components/schemas/NetworkZoneModel"
+                                        }
+                                    ]
+                                },
+                                "ip_spoofing_guard": {
+                                    "anyOf": [
+                                        {
+                                            "type": "boolean"
+                                        }
+                                    ],
+                                    "title": "Ip Spoofing Guard"
                                 }
                             },
                             "title": "PortResponse",
@@ -4616,6 +4557,7 @@
                                     "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                                 }
                             ],
+                            "ip_spoofing_guard": true,
                             "is_admin_state_up": true,
                             "is_port_security_enabled": true,
                             "name": "port_name",
@@ -4869,32 +4811,6 @@
                     "tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "updated": "2022-01-01 00:00:00",
                     "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                }
-            },
-            "PublicIpResponsePort": {
-                "type": "object",
-                "properties": {
-                    "public_ip_id": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Public Ip Id"
-                    },
-                    "public_ip": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Public Ip"
-                    }
-                },
-                "title": "PublicIpResponsePort",
-                "example": {
-                    "public_ip": "100.94.5.31",
-                    "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                 }
             },
             "PublicIpsList": {
@@ -6116,7 +6032,9 @@
                     "processing",
                     "created",
                     "error",
-                    "deleting"
+                    "deleting",
+                    "deleted",
+                    "updating"
                 ]
             },
             "StatusCode400BadRequest": {
@@ -7054,7 +6972,8 @@
                 "properties": {
                     "name": {
                         "type": "string",
-                        "title": "Name"
+                        "title": "Name",
+                        "description": "Name of the VPC. Must be alphanumeric or hyphens, max 50 chars."
                     },
                     "description": {
                         "anyOf": [
@@ -7062,7 +6981,8 @@
                                 "type": "string"
                             }
                         ],
-                        "title": "Description"
+                        "title": "Description",
+                        "description": "Optional description for the VPC. Must not contain special characters, max 200 chars."
                     }
                 },
                 "title": "VpcCreatePayload",
@@ -7071,7 +6991,7 @@
                 ],
                 "example": {
                     "description": "Description",
-                    "name": "VPC Name"
+                    "name": "vpc-name"
                 }
             },
             "VpcResponse": {
@@ -7428,13 +7348,16 @@
                     },
                     "status": {
                         "type": "string",
-                        "title": "Status",
+                        "title": "VPCStatus",
                         "enum": [
                             "pending",
                             "processing",
+                            "processing_interconnect",
+                            "processing_azdc_migration",
+                            "error_interconnect",
+                            "error_azdc_migration",
                             "created",
-                            "error",
-                            "deleting"
+                            "error"
                         ]
                     }
                 },
@@ -7446,6 +7369,254 @@
                 "example": {
                     "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
                     "status": "pending"
+                }
+            },
+            "vpc_api_product__vpc__models__port__PortResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "title": "Id"
+                    },
+                    "name": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "title": "Name"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "title": "Description"
+                    },
+                    "is_admin_state_up": {
+                        "anyOf": [
+                            {
+                                "type": "boolean"
+                            }
+                        ],
+                        "title": "Is Admin State Up"
+                    },
+                    "vpc_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "title": "Vpc Id"
+                    },
+                    "is_port_security_enabled": {
+                        "anyOf": [
+                            {
+                                "type": "boolean"
+                            }
+                        ],
+                        "title": "Is Port Security Enabled"
+                    },
+                    "security_groups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "title": "Security Groups",
+                        "default": []
+                    },
+                    "public_ip": {
+                        "anyOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "public_ip_id": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string"
+                                                }
+                                            ],
+                                            "title": "Public Ip Id"
+                                        },
+                                        "public_ip": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string"
+                                                }
+                                            ],
+                                            "title": "Public Ip"
+                                        }
+                                    },
+                                    "title": "PublicIpResponsePort",
+                                    "example": {
+                                        "public_ip": "100.94.5.31",
+                                        "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                                    }
+                                }
+                            }
+                        ],
+                        "title": "Public Ip",
+                        "default": []
+                    },
+                    "ip_address": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "ip_address": {
+                                    "type": "string",
+                                    "title": "Ip Address"
+                                },
+                                "subnet_id": {
+                                    "type": "string",
+                                    "title": "Subnet Id"
+                                },
+                                "ethertype": {
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        }
+                                    ],
+                                    "title": "Ethertype"
+                                }
+                            },
+                            "title": "IpAddress",
+                            "required": [
+                                "ip_address",
+                                "subnet_id"
+                            ],
+                            "example": {
+                                "ethertype": "IPv4",
+                                "ip_address": "172.20.0.2",
+                                "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                            }
+                        },
+                        "title": "Ip Address",
+                        "default": []
+                    },
+                    "created_at": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        ],
+                        "title": "Created At"
+                    },
+                    "updated": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        ],
+                        "title": "Updated"
+                    },
+                    "network": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/NetworkZoneModel"
+                            }
+                        ]
+                    },
+                    "ip_spoofing_guard": {
+                        "anyOf": [
+                            {
+                                "type": "boolean"
+                            }
+                        ],
+                        "title": "Ip Spoofing Guard"
+                    }
+                },
+                "title": "PortResponse",
+                "example": {
+                    "created_at": "2022-01-01 00:00:00",
+                    "description": "port description",
+                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "ip_address": [
+                        {
+                            "ip_address": "172.20.0.2",
+                            "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                        }
+                    ],
+                    "is_admin_state_up": true,
+                    "is_port_security_enabled": true,
+                    "name": "port_name",
+                    "public_ip": [
+                        {
+                            "public_ip": "100.94.5.31",
+                            "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                        }
+                    ],
+                    "security_groups": [
+                        "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                    ],
+                    "updated": "2022-01-01 00:00:00",
+                    "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                }
+            },
+            "vpc_api_product__vpc__models__public_ip__IpAddress": {
+                "type": "object",
+                "properties": {
+                    "ip_address": {
+                        "type": "string",
+                        "title": "Ip Address"
+                    },
+                    "subnet_id": {
+                        "type": "string",
+                        "title": "Subnet Id"
+                    },
+                    "ethertype": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "title": "Ethertype"
+                    }
+                },
+                "title": "IpAddress",
+                "required": [
+                    "ip_address",
+                    "subnet_id"
+                ],
+                "example": {
+                    "ethertype": "IPv4",
+                    "ip_address": "172.20.0.2",
+                    "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                }
+            },
+            "vpc_api_product__vpc__models__public_ip__PublicIpResponsePort": {
+                "type": "object",
+                "properties": {
+                    "public_ip_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "title": "Public Ip Id"
+                    },
+                    "public_ip": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "title": "Public Ip"
+                    }
+                },
+                "title": "PublicIpResponsePort",
+                "example": {
+                    "public_ip": "100.94.5.31",
+                    "public_ip_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                 }
             }
         }
