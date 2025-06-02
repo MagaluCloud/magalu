@@ -16,7 +16,8 @@ import (
 
 type CORSConfiguration struct {
 	XMLName   xml.Name   `xml:"CORSConfiguration"`
-	CORSRules []CORSRule `xml:"CORSRule"`
+	XMLns    string     `xml:"xmlns,attr"`
+    CORSRules []CORSRule `xml:"CORSRule"`
 }
 
 type CORSRule struct {
@@ -91,19 +92,21 @@ func newSetBucketCorsRequest(ctx context.Context, p setBucketCorsParams, cfg com
 		}
 
 		var corsConfig CORSConfiguration
+		corsConfig.XMLns = "http://s3.amazonaws.com/doc/2006-03-01/"
+
 		err = json.Unmarshal(jsonBytes, &corsConfig)
 		if err != nil {
 			return nil, fmt.Errorf("invalid CORS JSON: %w", err)
 		}
 
-		xmlBytes, err := xml.MarshalIndent(corsConfig, "", "  ")
+		xmlBytes, err := xml.Marshal(corsConfig)
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert to XML: %w", err)
 		}
 
-		xmlWithHeader := append([]byte(xml.Header), xmlBytes...)
+		//xmlWithHeader := append([]byte(xml.Header), xmlBytes...)
 
-		reader := bytes.NewReader(xmlWithHeader)
+		reader := bytes.NewReader(xmlBytes)
 		return io.NopCloser(reader), nil
 	}
 
