@@ -27,7 +27,7 @@ jobs:
           python-version: "3.12"
           cache: "pip"
       - name: Set up Go
-        uses: actions/setup-go@vd35c59abb061a4a6fb18e82ac0862c26744d6ab5 #5.5.0
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 #5.5.0
         with:
           cache-dependency-path: "**/go.sum"
           go-version: ${{ vars.GO_VERSION }}
