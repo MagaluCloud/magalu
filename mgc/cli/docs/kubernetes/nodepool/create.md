@@ -9,7 +9,7 @@ mgc kubernetes nodepool create [cluster-id] [flags]
 
 ## Examples:
 ```
-mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --flavor="cloud-k8s.gp1.small" --name="nodepool-example" --replicas=3 --tags='["tag-value1"]'
+mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --flavor="cloud-k8s.gp1.small" --max-pods-per-node=32 --name="nodepool-example" --replicas=3 --tags='["tag-value1"]'
 ```
 
 ## Flags:
@@ -47,13 +47,15 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
                                         | cloud-k8s.i1-c32-r128-d500 | 32    | 128      | 500            |
                                          (required)
 -h, --help                              help for create
+    --max-pods-per-node integer         Maximum number of Pods allowed per node.
+                                         (range: 8 - 110)
     --name string                       Name of the node pool. The name is primarily for idempotence and must be unique within a namespace. The name cannot be changed.
                                         The name must follow the following rules:
                                           - Must contain a maximum of 63 characters
                                           - Must contain only lowercase alphanumeric characters or '-'
                                           - Must start with an alphabetic character
                                           - Must end with an alphanumeric character
-                                         (required)
+                                         (max character count: 63) (required)
     --replicas integer                  Number of replicas of the nodes in the node pool. (required) (default 1)
     --tags array(string)                List of tags applied to the node pool.
     --taints array(object)              Property associating a set of nodes.
