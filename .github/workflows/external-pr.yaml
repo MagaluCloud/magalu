@@ -12,7 +12,7 @@ concurrency:
   group: ci-check-${{ github.ref }}
 
 jobs:
-  validate:
+  external-validate:
     name: Project Checks
     runs-on: ubuntu-latest 
     timeout-minutes: 10
