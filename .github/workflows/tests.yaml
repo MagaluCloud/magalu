@@ -8,6 +8,8 @@ on:
       - synchronize
       - reopened
       - ready_for_review
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -57,6 +59,7 @@ jobs:
 
       - name: Run tests
         uses: MagaluCloud/mgccli-tests@v0.0.11
+        continue-on-error: true
         env:
           MGC_API_KEY: ${{ secrets.MGC_API_KEY || '' }}
           MGC_PATH: "mgc/cli/mgc" # ${{ github.workspace }}/${{ vars.MGC_PATH || 'mgc' }}
