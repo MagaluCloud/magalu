@@ -52,9 +52,6 @@ jobs:
           secret_access_key: $SECRET_KEY
           EOF
 
-          echo "Conteúdo do auth.yaml:"
-          cat "$AUTH_FILE"
-
       - name: Run tests
         uses: MagaluCloud/mgccli-tests@v0.0.11
         env:
