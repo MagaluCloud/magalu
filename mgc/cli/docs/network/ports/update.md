@@ -1,6 +1,6 @@
 # Update
 
-Updates a Port from the provided tenant_id.<br><br>**ip_spoofing_guard**: Activates or deactivates the IP Spoofing protection.<br><br><font color="red">**WARNING: Disabling IP Spoofing protection can have serious security consequences. It allows attackers to bypass security controls using fake source IP addresses. Only disable this if necessary, and you understand the involved risks.**</font>
+Updates a Port from the provided tenant_id.**ip_spoofing_guard**: Activates or deactivates the IP Spoofing protection.**WARNING: Disabling IP Spoofing protection can have serious security consequences. It allows attackers to bypass security controls using fake source IP addresses. Only disable this if necessary, and you understand the involved risks.**
 
 ## Usage:
 ```
