@@ -157,6 +157,10 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_cluster_list",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
@@ -296,30 +300,34 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_cluster_create",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
-            "source": "curl --request POST \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --header 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"name\":\"cluster-example\",\"version\":\"v1.30.2\",\"description\":\"This is an example cluster.\",\"zone\":\"br-region-zone\",\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\":[{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}],\"allowed_cidrs\":[\"192.168.1.0/24\",\"10.0.0.0/16\"]}'"
+            "source": "curl --request POST \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --header 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"name\":\"cluster-example\",\"version\":\"v1.30.2\",\"description\":\"This is an example cluster.\",\"zone\":\"br-region-zone\",\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\":[{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}],\"allowed_cidrs\":[\"192.168.1.0/24\",\"10.0.0.0/16\"],\"cluster_ipv4_cidr\":\"10.128.0.0/12\"}'"
           },
           {
             "lang": "Shell + Httpie",
-            "source": "echo '{\"name\":\"cluster-example\",\"version\":\"v1.30.2\",\"description\":\"This is an example cluster.\",\"zone\":\"br-region-zone\",\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\":[{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}],\"allowed_cidrs\":[\"192.168.1.0/24\",\"10.0.0.0/16\"]}' |  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json \\\n  x-tenant-id:SOME_STRING_VALUE"
+            "source": "echo '{\"name\":\"cluster-example\",\"version\":\"v1.30.2\",\"description\":\"This is an example cluster.\",\"zone\":\"br-region-zone\",\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\":[{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}],\"allowed_cidrs\":[\"192.168.1.0/24\",\"10.0.0.0/16\"],\"cluster_ipv4_cidr\":\"10.128.0.0/12\"}' |  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json \\\n  x-tenant-id:SOME_STRING_VALUE"
           },
           {
             "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\"\n\n\tpayload := strings.NewReader(\"{\\\"name\\\":\\\"cluster-example\\\",\\\"version\\\":\\\"v1.30.2\\\",\\\"description\\\":\\\"This is an example cluster.\\\",\\\"zone\\\":\\\"br-region-zone\\\",\\\"enabled_bastion\\\":false,\\\"enabled_server_group\\\":false,\\\"node_pools\\\":[{\\\"name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\":5}}],\\\"allowed_cidrs\\\":[\\\"192.168.1.0/24\\\",\\\"10.0.0.0/16\\\"]}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\")\n\treq.Header.Add(\"x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\"\n\n\tpayload := strings.NewReader(\"{\\\"name\\\":\\\"cluster-example\\\",\\\"version\\\":\\\"v1.30.2\\\",\\\"description\\\":\\\"This is an example cluster.\\\",\\\"zone\\\":\\\"br-region-zone\\\",\\\"enabled_bastion\\\":false,\\\"enabled_server_group\\\":false,\\\"node_pools\\\":[{\\\"name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\":5}}],\\\"allowed_cidrs\\\":[\\\"192.168.1.0/24\\\",\\\"10.0.0.0/16\\\"],\\\"cluster_ipv4_cidr\\\":\\\"10.128.0.0/12\\\"}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\")\n\treq.Header.Add(\"x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
           },
           {
             "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"name\\\":\\\"cluster-example\\\",\\\"version\\\":\\\"v1.30.2\\\",\\\"description\\\":\\\"This is an example cluster.\\\",\\\"zone\\\":\\\"br-region-zone\\\",\\\"enabled_bastion\\\":false,\\\"enabled_server_group\\\":false,\\\"node_pools\\\":[{\\\"name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\":5}}],\\\"allowed_cidrs\\\":[\\\"192.168.1.0/24\\\",\\\"10.0.0.0/16\\\"]}\"\n\nheaders = {\n    'content-type': \"application/json\",\n    'x-tenant-id': \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\nconn.request(\"POST\", \"/v0/clusters\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"name\\\":\\\"cluster-example\\\",\\\"version\\\":\\\"v1.30.2\\\",\\\"description\\\":\\\"This is an example cluster.\\\",\\\"zone\\\":\\\"br-region-zone\\\",\\\"enabled_bastion\\\":false,\\\"enabled_server_group\\\":false,\\\"node_pools\\\":[{\\\"name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\":5}}],\\\"allowed_cidrs\\\":[\\\"192.168.1.0/24\\\",\\\"10.0.0.0/16\\\"],\\\"cluster_ipv4_cidr\\\":\\\"10.128.0.0/12\\\"}\"\n\nheaders = {\n    'content-type': \"application/json\",\n    'x-tenant-id': \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\nconn.request(\"POST\", \"/v0/clusters\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
           },
           {
             "lang": "Node + Native",
-            "source": "const http = require(\"https\");\n\nconst options = {\n  \"method\": \"POST\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\",\n  \"port\": null,\n  \"path\": \"/v0/clusters\",\n  \"headers\": {\n    \"content-type\": \"application/json\",\n    \"x-tenant-id\": \"SOME_STRING_VALUE\",\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  name: 'cluster-example',\n  version: 'v1.30.2',\n  description: 'This is an example cluster.',\n  zone: 'br-region-zone',\n  enabled_bastion: false,\n  enabled_server_group: false,\n  node_pools: [\n    {\n      name: 'nodepool-example',\n      flavor: 'cloud-k8s.gp1.small',\n      replicas: 3,\n      tags: ['tag-value1'],\n      taints: [{key: 'example-key', value: 'valor1', effect: 'NoSchedule'}],\n      auto_scale: {min_replicas: 2, max_replicas: 5}\n    }\n  ],\n  allowed_cidrs: ['192.168.1.0/24', '10.0.0.0/16']\n}));\nreq.end();"
+            "source": "const http = require(\"https\");\n\nconst options = {\n  \"method\": \"POST\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\",\n  \"port\": null,\n  \"path\": \"/v0/clusters\",\n  \"headers\": {\n    \"content-type\": \"application/json\",\n    \"x-tenant-id\": \"SOME_STRING_VALUE\",\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  name: 'cluster-example',\n  version: 'v1.30.2',\n  description: 'This is an example cluster.',\n  zone: 'br-region-zone',\n  enabled_bastion: false,\n  enabled_server_group: false,\n  node_pools: [\n    {\n      name: 'nodepool-example',\n      flavor: 'cloud-k8s.gp1.small',\n      replicas: 3,\n      tags: ['tag-value1'],\n      taints: [{key: 'example-key', value: 'valor1', effect: 'NoSchedule'}],\n      auto_scale: {min_replicas: 2, max_replicas: 5}\n    }\n  ],\n  allowed_cidrs: ['192.168.1.0/24', '10.0.0.0/16'],\n  cluster_ipv4_cidr: '10.128.0.0/12'\n}));\nreq.end();"
           },
           {
             "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\nhttp.verify_mode = OpenSSL::SSL::VERIFY_NONE\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"x-tenant-id\"] = 'SOME_STRING_VALUE'\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest.body = \"{\\\"name\\\":\\\"cluster-example\\\",\\\"version\\\":\\\"v1.30.2\\\",\\\"description\\\":\\\"This is an example cluster.\\\",\\\"zone\\\":\\\"br-region-zone\\\",\\\"enabled_bastion\\\":false,\\\"enabled_server_group\\\":false,\\\"node_pools\\\":[{\\\"name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\":5}}],\\\"allowed_cidrs\\\":[\\\"192.168.1.0/24\\\",\\\"10.0.0.0/16\\\"]}\"\n\nresponse = http.request(request)\nputs response.read_body"
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\nhttp.verify_mode = OpenSSL::SSL::VERIFY_NONE\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"x-tenant-id\"] = 'SOME_STRING_VALUE'\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest.body = \"{\\\"name\\\":\\\"cluster-example\\\",\\\"version\\\":\\\"v1.30.2\\\",\\\"description\\\":\\\"This is an example cluster.\\\",\\\"zone\\\":\\\"br-region-zone\\\",\\\"enabled_bastion\\\":false,\\\"enabled_server_group\\\":false,\\\"node_pools\\\":[{\\\"name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\":5}}],\\\"allowed_cidrs\\\":[\\\"192.168.1.0/24\\\",\\\"10.0.0.0/16\\\"],\\\"cluster_ipv4_cidr\\\":\\\"10.128.0.0/12\\\"}\"\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       }
@@ -438,6 +446,10 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_cluster_get",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
@@ -581,6 +593,10 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_cluster_delete",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
@@ -730,6 +746,10 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_cluster_update",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
@@ -872,6 +892,10 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_cluster_access",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
@@ -1023,30 +1047,34 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_nodepool_create",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
-            "source": "curl --request POST \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --header 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"value1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}'"
+            "source": "curl --request POST \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --header 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"value1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5},\"max_pods_per_node\":32}'"
           },
           {
             "lang": "Shell + Httpie",
-            "source": "echo '{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"value1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}' |  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json \\\n  x-tenant-id:SOME_STRING_VALUE"
+            "source": "echo '{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"value1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5},\"max_pods_per_node\":32}' |  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json \\\n  x-tenant-id:SOME_STRING_VALUE"
           },
           {
             "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\"\n\n\tpayload := strings.NewReader(\"{\\\"name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"value1\\\",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\":5}}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\")\n\treq.Header.Add(\"x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\"\n\n\tpayload := strings.NewReader(\"{\\\"name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"value1\\\",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\":5},\\\"max_pods_per_node\\\":32}\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\")\n\treq.Header.Add(\"x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
           },
           {
             "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"value1\\\",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\":5}}\"\n\nheaders = {\n    'content-type': \"application/json\",\n    'x-tenant-id': \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\nconn.request(\"POST\", \"/v0/clusters/%7Bcluster_id%7D/node_pools\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"value1\\\",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\":5},\\\"max_pods_per_node\\\":32}\"\n\nheaders = {\n    'content-type': \"application/json\",\n    'x-tenant-id': \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\nconn.request(\"POST\", \"/v0/clusters/%7Bcluster_id%7D/node_pools\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
           },
           {
             "lang": "Node + Native",
-            "source": "const http = require(\"https\");\n\nconst options = {\n  \"method\": \"POST\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\",\n  \"port\": null,\n  \"path\": \"/v0/clusters/%7Bcluster_id%7D/node_pools\",\n  \"headers\": {\n    \"content-type\": \"application/json\",\n    \"x-tenant-id\": \"SOME_STRING_VALUE\",\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  name: 'nodepool-example',\n  flavor: 'cloud-k8s.gp1.small',\n  replicas: 3,\n  tags: ['tag-value1'],\n  taints: [{key: 'example-key', value: 'value1', effect: 'NoSchedule'}],\n  auto_scale: {min_replicas: 2, max_replicas: 5}\n}));\nreq.end();"
+            "source": "const http = require(\"https\");\n\nconst options = {\n  \"method\": \"POST\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\",\n  \"port\": null,\n  \"path\": \"/v0/clusters/%7Bcluster_id%7D/node_pools\",\n  \"headers\": {\n    \"content-type\": \"application/json\",\n    \"x-tenant-id\": \"SOME_STRING_VALUE\",\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n  name: 'nodepool-example',\n  flavor: 'cloud-k8s.gp1.small',\n  replicas: 3,\n  tags: ['tag-value1'],\n  taints: [{key: 'example-key', value: 'value1', effect: 'NoSchedule'}],\n  auto_scale: {min_replicas: 2, max_replicas: 5},\n  max_pods_per_node: 32\n}));\nreq.end();"
           },
           {
             "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\nhttp.verify_mode = OpenSSL::SSL::VERIFY_NONE\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"x-tenant-id\"] = 'SOME_STRING_VALUE'\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest.body = \"{\\\"name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"value1\\\",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\":5}}\"\n\nresponse = http.request(request)\nputs response.read_body"
+            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\nhttp.verify_mode = OpenSSL::SSL::VERIFY_NONE\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'application/json'\nrequest[\"x-tenant-id\"] = 'SOME_STRING_VALUE'\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\nrequest.body = \"{\\\"name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"value1\\\",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\":5},\\\"max_pods_per_node\\\":32}\"\n\nresponse = http.request(request)\nputs response.read_body"
           }
         ]
       }
@@ -1175,6 +1203,10 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_nodepool_get",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
@@ -1318,6 +1350,10 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_nodepool_delete",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
@@ -1477,6 +1513,10 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_nodepool_update",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
@@ -1629,6 +1669,10 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_nodepool_get",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
@@ -1739,6 +1783,10 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_cluster_info",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
@@ -1849,6 +1897,10 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_cluster_info",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
@@ -1991,6 +2043,10 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_nodepool_list",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
@@ -2101,6 +2157,10 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_cluster_info",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
@@ -2211,6 +2271,10 @@
             ]
           }
         ],
+        "x-permission": {
+          "permission-name": "kubernetes_cluster_info",
+          "product-name": "kubernetes"
+        },
         "x-codeSamples": [
           {
             "lang": "Shell + Curl",
@@ -2247,6 +2311,7 @@
         "properties": {
           "name": {
             "type": "string",
+            "maxLength": 63,
             "description": "Kubernetes cluster name. The name is primarily intended for idempotence, and must be unique within a namespace. The name cannot be changed.\nThe name must follow the following rules:\n  - must contain a maximum of 63 characters\n  - must contain only lowercase alphanumeric characters or '-'\n  - must start with an alphabetic character\n  - must end with an alphanumeric character\n",
             "example": "cluster-example"
           },
@@ -2322,6 +2387,9 @@
               "192.168.1.0/24",
               "10.0.0.0/16"
             ]
+          },
+          "cluster_ipv4_cidr": {
+            "$ref": "#/components/schemas/ClusterIpv4Cidr"
           }
         },
         "required": [
@@ -2356,6 +2424,9 @@
               "192.168.1.0/24",
               "10.0.0.0/16"
             ]
+          },
+          "cluster_ipv4_cidr": {
+            "$ref": "#/components/schemas/ClusterIpv4Cidr"
           }
         },
         "required": [
@@ -2419,11 +2490,22 @@
             "type": "string",
             "description": "Identifier of the region where the Kubernetes cluster is located.",
             "example": "br-ne-1a"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "machine_types_source": {
+            "$ref": "#/components/schemas/MachineTypesSource"
+          },
+          "cluster_ipv4_cidr": {
+            "$ref": "#/components/schemas/ClusterIpv4Cidr"
           }
         },
         "required": [
           "id",
-          "name"
+          "created_at",
+          "name",
+          "machine_types_source"
         ],
         "description": "Object of the cluster response request."
       },
@@ -2516,13 +2598,20 @@
               "192.168.1.0/24",
               "10.0.0.0/16"
             ]
+          },
+          "machine_types_source": {
+            "$ref": "#/components/schemas/MachineTypesSource"
+          },
+          "cluster_ipv4_cidr": {
+            "$ref": "#/components/schemas/ClusterIpv4Cidr"
           }
         },
         "required": [
           "name",
           "id",
           "version",
-          "region"
+          "region",
+          "machine_types_source"
         ],
         "description": "Object of the cluster response request by uuid."
       },
@@ -2531,6 +2620,7 @@
         "properties": {
           "name": {
             "type": "string",
+            "maxLength": 63,
             "description": "Name of the node pool. The name is primarily for idempotence and must be unique within a namespace. The name cannot be changed.\nThe name must follow the following rules:\n  - Must contain a maximum of 63 characters\n  - Must contain only lowercase alphanumeric characters or '-'\n  - Must start with an alphabetic character\n  - Must end with an alphanumeric character\n",
             "example": "nodepool-example"
           },
@@ -2567,6 +2657,9 @@
           },
           "auto_scale": {
             "$ref": "#/components/schemas/AutoScale"
+          },
+          "max_pods_per_node": {
+            "$ref": "#/components/schemas/MaxPodsPerNode"
           }
         },
         "required": [
@@ -2647,7 +2740,8 @@
             "type": "string",
             "format": "uuid",
             "description": "Node pool's UUID.",
-            "example": "2cc6f625-7d67-4ed2-8c5e-24e5b40b951b"
+            "example": "2cc6f625-7d67-4ed2-8c5e-24e5b40b951b",
+            "x-go-type": "string"
           },
           "name": {
             "type": "string",
@@ -2725,6 +2819,9 @@
           },
           "status": {
             "$ref": "#/components/schemas/Status"
+          },
+          "max_pods_per_node": {
+            "$ref": "#/components/schemas/MaxPodsPerNode"
           }
         },
         "required": [
@@ -2746,7 +2843,8 @@
             "type": "string",
             "format": "uuid",
             "description": "Node pool's UUID.",
-            "example": "2cc6f625-7d67-4ed2-8c5e-24e5b40b951b"
+            "example": "2cc6f625-7d67-4ed2-8c5e-24e5b40b951b",
+            "x-go-type": "string"
           },
           "name": {
             "type": "string",
@@ -2902,17 +3000,6 @@
             "description": "Name of the flavor.",
             "example": "cloud-k8s.gp1.small"
           },
-          "node_image": {
-            "type": "string",
-            "description": "Operating system image run by the node.",
-            "example": "ubuntu-2004-kube-v1.22.9-v1"
-          },
-          "zone": {
-            "type": "string",
-            "description": "Identifier of the region where the node is located.",
-            "nullable": true,
-            "example": "br-ne-1c"
-          },
           "infrastructure": {
             "$ref": "#/components/schemas/NodeInfrastructure"
           },
@@ -2932,8 +3019,6 @@
           "taints",
           "addresses",
           "flavor",
-          "node_image",
-          "zone",
           "infrastructure",
           "status"
         ],
@@ -3322,7 +3407,8 @@
           "ram",
           "size"
         ],
-        "description": "Definition of CPU capacity, RAM, and storage for nodes."
+        "description": "[Deprecated] Definition of CPU capacity, RAM, and storage for nodes. This will be removed in favor of using VM Machine Type.",
+        "deprecated": true
       },
       "FlavorWithSku": {
         "type": "object",
@@ -3439,13 +3525,77 @@
             "type": "boolean",
             "description": "Indicates whether the version is deprecated.",
             "example": false
+          },
+          "minimumRequirements": {
+            "type": "object",
+            "description": "Minimum requirements for a Kubernetes version.",
+            "$ref": "#/components/schemas/MinimumRequirements"
           }
         },
         "required": [
           "version",
-          "deprecated"
+          "deprecated",
+          "minimumRequirements"
         ],
         "description": "Object representing a Kubernetes version."
+      },
+      "MinimumRequirements": {
+        "type": "object",
+        "properties": {
+          "disk": {
+            "type": "integer",
+            "description": "Minimum required disk space in Gigabytes (GB).",
+            "example": 20
+          },
+          "ram": {
+            "type": "integer",
+            "description": "Minimum required Random Access Memory (RAM) in Gigabytes (GB).",
+            "example": 4
+          },
+          "vcpu": {
+            "type": "integer",
+            "description": "Minimum number of virtual Central Processing Units (vCPUs) required.",
+            "example": 4
+          }
+        },
+        "required": [
+          "disk",
+          "ram",
+          "vcpu"
+        ],
+        "description": "Minimum requirements for a object version."
+      },
+      "CreatedAt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Date of creation.",
+        "example": "2023-03-01T09:00:00Z"
+      },
+      "MachineTypesSource": {
+        "type": "string",
+        "enum": [
+          "external",
+          "internal"
+        ],
+        "description": "Source of machine types used on node pools creation.\nExternal: Must use machine types of virtual machine product\nInternal: Must use machine types listed by flavors list endpoint of Kubernetes product \n",
+        "example": "external"
+      },
+      "MaxPodsPerNode": {
+        "type": "integer",
+        "maximum": 110,
+        "minimum": 8,
+        "description": "Maximum number of Pods allowed per node.\n",
+        "default": 110,
+        "example": 32
+      },
+      "ClusterIpv4Cidr": {
+        "type": "string",
+        "items": {
+          "type": "string"
+        },
+        "description": "The IP address CIDR used by the Pods in the cluster.\nThe CIDR is always subdivided with a \"/24\" mask per node. If \"192.168.0.0/16\" is used, the first node PodCIDR will be \"192.168.0.0/24\", the second will be \"192.168.1.0/24\" and so forth.\nThis configuration can only be used during the cluster creation and can not be updated later.\nIf not specified, the \"192.168.0.0/16\" value is used by default.\n",
+        "default": "192.168.0.0/16",
+        "example": "10.128.0.0/12"
       }
     },
     "securitySchemes": {
