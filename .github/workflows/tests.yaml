@@ -35,5 +35,5 @@ jobs:
       - name: Run tests
         uses: MagaluCloud/mgccli-tests@v0.0.8
         env:
-          MGC_API_KEY: ${{ secrets.MGC_API_KEY || '608a41e1-c698-42b5-904f-54a634209356' }}
+          MGC_API_KEY: ${{ secrets.MGC_API_KEY || '' }}
           MGC_PATH: ${{ vars.MGC_PATH || './mgc/cli/mgc' }}
