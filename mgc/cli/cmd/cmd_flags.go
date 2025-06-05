@@ -195,7 +195,7 @@ func (cf *cmdFlags) positionalArgsFunction(cmd *cobra.Command, args []string) (e
 			positionalToPopulate++
 		}
 	}
-	if numArgs != positionalToPopulate {
+	if numArgs > positionalToPopulate {
 		return fmt.Errorf("this command has one or more invalid positional arguments, given: %s", strings.Join(args, ", "))
 	}
 
