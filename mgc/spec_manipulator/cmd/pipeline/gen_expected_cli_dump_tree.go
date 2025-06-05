@@ -16,7 +16,7 @@ func genCliDumpTree(cli string) ([]interface{}, error) {
 
 	output, err := cmd.Output()
 	if err != nil {
-		return nil, fmt.Errorf("error executing command: %w", err)
+		return nil, fmt.Errorf("error executing command: \n command: %s \n error: %w", cmd.String(), err)
 	}
 
 	var tree []interface{}
