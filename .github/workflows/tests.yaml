@@ -58,7 +58,7 @@ jobs:
           EOF
 
       - name: Run tests
-        uses: MagaluCloud/mgccli-tests@latest
+        uses: MagaluCloud/mgccli-tests@v0.0.12
         continue-on-error: true
         env:
           MGC_API_KEY: ${{ secrets.MGC_API_KEY || '' }}
