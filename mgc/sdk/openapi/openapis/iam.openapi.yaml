@@ -1,8 +1,24 @@
 openapi: 3.0.3
 info:
-    title: Magalu Cloud IAM - Local
+    title: Magalu Cloud IAM
     description: The Magalu Cloud IAM API.
     version: 0.1.0
+servers:
+-   url: https://{env}/iam
+    variables:
+        env:
+            description: Environment to use
+            default: api.magalu.cloud
+            enum:
+            - api.magalu.cloud
+            - api.pre-prod.jaxyendy.com
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: api.magalu.cloud
+                -   from: pre-prod
+                    to: api.pre-prod.jaxyendy.com
 paths:
     /api/v1/healthcheck:
         get:
@@ -26,45 +42,56 @@ paths:
             - Members
             summary: Get Members
             operationId: get_members_api_v1_members_get
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: email
+                in: query
+                required: false
+                schema:
+                    title: Email
+                    nullable: true
+                    type: string
             responses:
                 '200':
                     description: Successful Response
                     content:
                         application/json:
                             schema:
+                                type: array
                                 items:
                                     $ref: '#/components/schemas/Member'
-                                type: array
                                 title: Response Get Members Api V1 Members Get
-            security:
-            -   HTTPBearer: []
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
         post:
             tags:
             - Members
             summary: Add Member
             operationId: add_member_api_v1_members_post
+            security:
+            -   HTTPBearer: []
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/Email'
-                required: true
+                            $ref: '#/components/schemas/CreateMember'
             responses:
                 '200':
                     description: Successful Response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Uuid'
+                                $ref: '#/components/schemas/Member'
                     links:
                         delete:
                             operationId: remove_member_api_v1_members__uuid__delete
                             description: Remove Member
-                            parameters:
-                                uuid: $response.body#/uuid
-                        grants:
-                            operationId: add_grants_api_v1_members__uuid__grants_patch
-                            description: Add Grants
                             parameters:
                                 uuid: $response.body#/uuid
                 '422':
@@ -73,8 +100,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            security:
-            -   HTTPBearer: []
     /api/v1/members/{uuid}:
         delete:
             tags:
@@ -121,16 +146,43 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/EditPrivileges'
+                            $ref: '#/components/schemas/EditGrant'
             responses:
                 '204':
                     description: Successful Response
-                    links:
-                        delete:
-                            operationId: remove_member_api_v1_members__uuid__delete
-                            description: Remove Member
-                            parameters:
-                                uuid: $request.path.uuid
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /api/v1/members/grants:
+        get:
+            tags:
+            - Members
+            summary: Get Members Grants
+            operationId: get_members_grants_api_v1_members_grants_get
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: role_name
+                in: query
+                required: false
+                schema:
+                    title: Role Name
+                    nullable: true
+                    type: string
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/GrantsMember'
+                                title: Response Get Members Grants Api V1 Members
+                                    Grants Get
                 '422':
                     description: Validation Error
                     content:
@@ -143,43 +195,69 @@ paths:
             - Roles
             summary: Get Roles
             operationId: get_roles_api_v1_roles_get
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: role_name
+                in: query
+                required: false
+                schema:
+                    title: Role Name
+                    nullable: true
+                    type: string
             responses:
                 '200':
                     description: Successful Response
                     content:
                         application/json:
                             schema:
+                                type: array
                                 items:
                                     $ref: '#/components/schemas/Role'
-                                type: array
                                 title: Response Get Roles Api V1 Roles Get
-            security:
-            -   HTTPBearer: []
-        post:
-            tags:
-            - Roles
-            summary: Create Role
-            operationId: create_role_api_v1_roles_post
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/Role'
-                required: true
-            responses:
-                '201':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema: {}
                 '422':
                     description: Validation Error
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+        post:
+            tags:
+            - Roles
+            summary: Create Role
+            operationId: create_role_api_v1_roles_post
             security:
             -   HTTPBearer: []
+            parameters:
+            -   name: based_role
+                in: query
+                required: false
+                schema:
+                    title: Based Role
+                    nullable: true
+                    type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateRole'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Role'
+                                title: Response Create Role Api V1 Roles Post
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
     /api/v1/roles/{role_name}:
         delete:
             tags:
@@ -226,8 +304,16 @@ paths:
                         schema:
                             $ref: '#/components/schemas/EditPermissions'
             responses:
-                '204':
+                '200':
                     description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Role'
+                                title: Response Edit Permissions Api V1 Roles  Role
+                                    Name  Permissions Patch
                     links:
                         delete:
                             operationId: remove_role_api_v1_roles__role_name__delete
@@ -244,20 +330,35 @@ paths:
         get:
             tags:
             - Permissions
-            summary: Get
-            operationId: get_api_v1_permissions_get
+            summary: Get Products And Permissions
+            operationId: get_products_and_permissions_api_v1_permissions_get
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: product_name
+                in: query
+                required: false
+                schema:
+                    title: Product Name
+                    nullable: true
+                    type: string
             responses:
                 '200':
                     description: Successful Response
                     content:
                         application/json:
                             schema:
+                                type: array
                                 items:
                                     $ref: '#/components/schemas/Product'
-                                type: array
-                                title: Response Get Api V1 Permissions Get
-            security:
-            -   HTTPBearer: []
+                                title: Response Get Products And Permissions Api V1
+                                    Permissions Get
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
     /api/v1/access-control:
         get:
             tags:
@@ -282,7 +383,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/AccessControl'
+                            $ref: '#/components/schemas/AccessControlCreate'
                 required: true
             responses:
                 '201':
@@ -308,7 +409,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/AccessControl'
+                            $ref: '#/components/schemas/AccessControlStatus'
                 required: true
             responses:
                 '200':
@@ -325,22 +426,486 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             security:
             -   HTTPBearer: []
+    /api/v1/service-accounts:
+        get:
+            tags:
+            - Service-Accounts
+            summary: Get
+            operationId: get_api_v1_service_accounts_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/ServiceAccountDetail'
+                                type: array
+                                title: Response Get Api V1 Service Accounts Get
+            security:
+            -   HTTPBearer: []
+        post:
+            tags:
+            - Service-Accounts
+            summary: Create
+            operationId: create_api_v1_service_accounts_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ServiceAccountCreate'
+                required: true
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ServiceAccountDetail'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            security:
+            -   HTTPBearer: []
+    /api/v1/service-accounts/{sa_uuid}:
+        delete:
+            tags:
+            - Service-Accounts
+            summary: Remove
+            operationId: remove_api_v1_service_accounts__sa_uuid__delete
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: sa_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Sa Uuid
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        patch:
+            tags:
+            - Service-Accounts
+            summary: Edit
+            operationId: edit_api_v1_service_accounts__sa_uuid__patch
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: sa_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Sa Uuid
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ServiceAccountEdit'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ServiceAccountDetail'
+                    links:
+                        delete:
+                            operationId: remove_api_v1_service_accounts__sa_uuid__delete
+                            description: Remove
+                            parameters:
+                                sa_uuid: $request.path.sa_uuid
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /api/v1/service-accounts/{sa_uuid}/api-keys:
+        post:
+            tags:
+            - Service-Accounts
+            summary: Create Apikey
+            operationId: create_apikey_api_v1_service_accounts__sa_uuid__api_keys_post
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: sa_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Sa Uuid
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/APIKeyServiceAccountCreate'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/APIKeyServiceAccountDetail'
+                    links:
+                        list:
+                            operationId: get_apikeys_api_v1_service_accounts__sa_uuid__api_keys_get
+                            description: Get Apikeys
+                            parameters:
+                                sa_uuid: $request.path.sa_uuid
+                        update:
+                            operationId: edit_apikey_api_v1_service_accounts__sa_uuid__api_keys__apikey_uuid__patch
+                            description: Edit Apikey
+                            parameters:
+                                sa_uuid: $request.path.sa_uuid
+                        delete:
+                            operationId: revoke_apikey_api_v1_service_accounts__sa_uuid__api_keys__apikey_uuid__delete
+                            description: Revoke Apikey
+                            parameters:
+                                sa_uuid: $request.path.sa_uuid
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        get:
+            tags:
+            - Service-Accounts
+            summary: Get Apikeys
+            operationId: get_apikeys_api_v1_service_accounts__sa_uuid__api_keys_get
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: sa_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Sa Uuid
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/APIKeyServiceAccountDetail'
+                                title: Response Get Apikeys Api V1 Service Accounts  Sa
+                                    Uuid  Api Keys Get
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /api/v1/service-accounts/{sa_uuid}/api-keys/{apikey_uuid}:
+        delete:
+            tags:
+            - Service-Accounts
+            summary: Revoke Apikey
+            operationId: revoke_apikey_api_v1_service_accounts__sa_uuid__api_keys__apikey_uuid__delete
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: sa_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Sa Uuid
+            -   name: apikey_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Apikey Uuid
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        patch:
+            tags:
+            - Service-Accounts
+            summary: Edit Apikey
+            operationId: edit_apikey_api_v1_service_accounts__sa_uuid__api_keys__apikey_uuid__patch
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: sa_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Sa Uuid
+            -   name: apikey_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Apikey Uuid
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/APIKeyServiceAccountEditInput'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/APIKeyServiceAccountDetail'
+                    links:
+                        list:
+                            operationId: get_apikeys_api_v1_service_accounts__sa_uuid__api_keys_get
+                            description: Get Apikeys
+                            parameters:
+                                sa_uuid: $request.path.sa_uuid
+                        create:
+                            operationId: create_apikey_api_v1_service_accounts__sa_uuid__api_keys_post
+                            description: Create Apikey
+                            parameters:
+                                sa_uuid: $request.path.sa_uuid
+                        delete:
+                            operationId: revoke_apikey_api_v1_service_accounts__sa_uuid__api_keys__apikey_uuid__delete
+                            description: Revoke Apikey
+                            parameters:
+                                sa_uuid: $request.path.sa_uuid
+                                apikey_uuid: $request.path.apikey_uuid
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
 components:
     schemas:
+        APIKeyServiceAccountCreate:
+            properties:
+                name:
+                    type: string
+                    title: Name
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                scopes:
+                    title: Scopes
+                    default: []
+                    nullable: true
+                    items:
+                        type: string
+                    type: array
+            type: object
+            required:
+            - name
+            title: APIKeyServiceAccountCreate
+        APIKeyServiceAccountDetail:
+            properties:
+                uuid:
+                    type: string
+                    title: Uuid
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                key_pair_id:
+                    title: Key Pair Id
+                    nullable: true
+                    type: string
+                key_pair_secret:
+                    title: Key Pair Secret
+                    nullable: true
+                    type: string
+                scopes:
+                    title: Scopes
+                    default: []
+                    nullable: true
+                    items:
+                        type: string
+                    type: array
+                scopes_pending_approval:
+                    title: Scopes Pending Approval
+                    default: []
+                    nullable: true
+                    items:
+                        type: string
+                    type: array
+                start_validity:
+                    title: Start Validity
+                    nullable: true
+                    type: string
+                end_validity:
+                    title: End Validity
+                    nullable: true
+                    type: string
+                revoked_at:
+                    title: Revoked At
+                    nullable: true
+                    type: string
+                revoked_by:
+                    title: Revoked By
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - uuid
+            title: APIKeyServiceAccountDetail
+        APIKeyServiceAccountEditInput:
+            properties:
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                scopes:
+                    title: Scopes
+                    default: []
+                    nullable: true
+                    items:
+                        type: string
+                    type: array
+            type: object
+            title: APIKeyServiceAccountEditInput
         AccessControl:
             properties:
-                organization:
+                name:
+                    title: Name
+                    nullable: true
                     type: string
-                    title: Organization
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
                 tenant_id:
-                    type: string
                     title: Tenant Id
-                status:
+                    nullable: true
+                    type: string
+                enabled:
                     type: boolean
-                    title: Status
+                    title: Enabled
                     default: false
             type: object
             title: AccessControl
+        AccessControlCreate:
+            properties:
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+            type: object
+            title: AccessControlCreate
+        AccessControlStatus:
+            properties:
+                status:
+                    type: boolean
+                    title: Status
+            type: object
+            required:
+            - status
+            title: AccessControlStatus
+        CreateMember:
+            properties:
+                email:
+                    type: string
+                    title: Email
+                roles:
+                    title: Roles
+                    nullable: true
+                    items:
+                        type: string
+                    type: array
+                permissions:
+                    title: Permissions
+                    nullable: true
+                    items:
+                        type: string
+                    type: array
+            type: object
+            required:
+            - email
+            title: CreateMember
+        CreateRole:
+            properties:
+                name:
+                    type: string
+                    title: Name
+                description:
+                    type: string
+                    title: Description
+                permissions:
+                    items:
+                        type: string
+                    type: array
+                    title: Permissions
+            type: object
+            required:
+            - name
+            - description
+            title: CreateRole
+        EditGrant:
+            properties:
+                operation:
+                    $ref: '#/components/schemas/OperationType'
+                roles:
+                    title: Roles
+                    default: []
+                    nullable: true
+                    items:
+                        type: string
+                    type: array
+                permissions:
+                    title: Permissions
+                    default: []
+                    nullable: true
+                    items:
+                        type: string
+                    type: array
+            type: object
+            required:
+            - operation
+            title: EditGrant
         EditPermissions:
             properties:
                 add:
@@ -348,36 +913,31 @@ components:
                         type: string
                     type: array
                     title: Add
+                    default: []
                 remove:
                     items:
                         type: string
                     type: array
                     title: Remove
+                    default: []
             type: object
-            required:
-            - add
-            - remove
             title: EditPermissions
-        EditPrivileges:
+        GrantsMember:
             properties:
-                add:
-                    $ref: '#/components/schemas/Privileges'
-                remove:
-                    $ref: '#/components/schemas/Privileges'
-            type: object
-            required:
-            - add
-            - remove
-            title: EditPrivileges
-        Email:
-            properties:
-                email:
+                uuid:
                     type: string
-                    title: Email
+                    title: Uuid
+                roles:
+                    title: Roles
+                    nullable: true
+                    items:
+                        type: string
+                    type: array
             type: object
             required:
-            - email
-            title: Email
+            - uuid
+            - roles
+            title: GrantsMember
         HTTPValidationError:
             properties:
                 message:
@@ -405,20 +965,24 @@ components:
                     type: string
                     title: Name
                     default: ''
-                tenant:
+                tenant_id:
                     type: string
-                    title: Tenant
+                    title: Tenant Id
                     default: ''
                 profile:
-                    type: string
                     title: Profile
-                    default: ''
+                    nullable: true
+                    type: string
                 grants:
                     $ref: '#/components/schemas/Privileges'
             type: object
-            required:
-            - grants
             title: Member
+        OperationType:
+            type: string
+            enum:
+            - add
+            - remove
+            title: OperationType
         Permission:
             properties:
                 name:
@@ -435,15 +999,19 @@ components:
         Privileges:
             properties:
                 roles:
-                    items:
-                        type: string
-                    type: array
                     title: Roles
-                permissions:
+                    default: []
+                    nullable: true
                     items:
                         type: string
                     type: array
+                permissions:
                     title: Permissions
+                    default: []
+                    nullable: true
+                    items:
+                        type: string
+                    type: array
             type: object
             title: Privileges
         Product:
@@ -473,25 +1041,82 @@ components:
                     type: string
                     title: Origin
                 permissions:
+                    title: Permissions
+                    nullable: true
                     items:
                         type: string
                     type: array
-                    title: Permissions
             type: object
             required:
             - name
             - description
-            - permissions
             title: Role
-        Uuid:
+        ServiceAccountCreate:
+            properties:
+                name:
+                    type: string
+                    title: Name
+                description:
+                    type: string
+                    title: Description
+                email:
+                    type: string
+                    title: Email
+            type: object
+            required:
+            - name
+            - description
+            - email
+            title: ServiceAccountCreate
+        ServiceAccountDetail:
             properties:
                 uuid:
                     type: string
                     title: Uuid
+                name:
+                    type: string
+                    title: Name
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                email:
+                    type: string
+                    title: Email
+                tenant:
+                    $ref: '#/components/schemas/Tentant'
             type: object
             required:
             - uuid
-            title: Uuid
+            - name
+            - email
+            - tenant
+            title: ServiceAccountDetail
+        ServiceAccountEdit:
+            properties:
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+            type: object
+            title: ServiceAccountEdit
+        Tentant:
+            properties:
+                uuid:
+                    type: string
+                    title: Uuid
+                legal_name:
+                    type: string
+                    title: Legal Name
+            type: object
+            required:
+            - uuid
+            - legal_name
+            title: Tentant
         ValidationError:
             properties:
                 message:
@@ -524,20 +1149,6 @@ tags:
     description: Permissions
 -   name: Roles
     description: Roles
+-   name: Service-Accounts
+    description: Service-Accounts
 $id: https://iam.jaxyendy.com/openapi.json
-servers:
--   url: https://{env}/iam
-    variables:
-        env:
-            description: Environment to use
-            default: api.magalu.cloud
-            enum:
-            - api.magalu.cloud
-            - api.pre-prod.jaxyendy.com
-            x-mgc-transforms:
-            -   type: translate
-                translations:
-                -   from: prod
-                    to: api.magalu.cloud
-                -   from: pre-prod
-                    to: api.pre-prod.jaxyendy.com

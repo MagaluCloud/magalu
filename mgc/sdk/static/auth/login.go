@@ -114,6 +114,7 @@ func login(ctx context.Context, parameters loginParameters, _ struct{}) (*loginR
 
 	scopes.Add("evt:event-tr")
 	scopes.Add("pa:sa:manage")
+	scopes.Add("pa:tenants:read")
 
 	codeUrl, err := auth.CodeChallengeToURL(scopes)
 	if err != nil {
