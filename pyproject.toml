@@ -1,19 +1,19 @@
-[tool.poetry]
-name = "magalu"
-version = "0.1.0"
-description = ""
-authors = ["Rafael Oliveira <rafael.oliveira@profusion.mobi>"]
+[project]
+name = "MGCCLI"
+version = "1.0.0"
 readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pyyaml>=6.0.1,<7.0.0",
+    "jsonschema[format]>=4.19.0,<5.0.0",
+    "jsonpointer>=2.4,<3.0"
+]
+
+[tool.poetry]
 package-mode = false
 
-[tool.poetry.dependencies]
-python = "^3.11"
-pyyaml = "^6.0.1"
-jsonschema = { version = "^4.19.0", extras = ["format"] }
-jsonpointer = "^2.4"
-
-[tool.poetry.dev-dependencies]
-pre-commit = "^3.4.0"
+[tool.poetry.group.dev.dependencies]
+pre-commit = "4.2.0"
 
 [build-system]
 requires = ["poetry-core"]

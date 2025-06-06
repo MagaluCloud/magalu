@@ -8,6 +8,10 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: write        # para modificar arquivos, criar TAGs, commits
+  pull-requests: write
+
 concurrency:
   group: ci-check-${{ github.ref }}
 
