@@ -27,5 +27,6 @@ $BASEDIR/add_specs.sh load-balancer load-balancer specs/lbaas.openapi.yaml https
 
 $BASEDIR/add_specs_without_region.sh iam iam specs/iam.openapi.json https://iam.jaxyendy.com/openapi.json
 
-# EXAMPLE/
+make oapi-index-gen
+# EXAMPLE
 # $BASEDIR/SCRIPT.sh NOME_NO_MENU URL_PATH LOCAL_DA_SPEC SPEC_UID
