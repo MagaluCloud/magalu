@@ -9,7 +9,7 @@ mgc kubernetes nodepool create [cluster-id] [flags]
 
 ## Examples:
 ```
-mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --flavor="cloud-k8s.gp1.small" --max-pods-per-node=32 --name="nodepool-example" --replicas=3 --tags='["tag-value1"]'
+mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --availability-zones='["a","b","c"]' --flavor="cloud-k8s.gp1.small" --max-pods-per-node=32 --name="nodepool-example" --replicas=3 --tags='["tag-value1"]'
 ```
 
 ## Flags:
@@ -23,6 +23,8 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
     --auto-scale.min-replicas integer   Object specifying properties for updating workload resources in the Kubernetes cluster: Minimum number of replicas for autoscaling. If not provided, the autoscale value will be assumed based on the "replicas" field.
                                          (min: 0)
                                         This is the same as '--auto-scale=min_replicas:integer'.
+    --availability-zones array(enum)    List of availability zones where the resource can be created.
+                                        
     --cli.list-links enum[=table]       List all available links for this command (one of "json", "table" or "yaml")
     --cluster-id uuid                   Cluster's UUID. (required)
     --flavor string                     Definition of the CPU, RAM, and storage capacity of the nodes.

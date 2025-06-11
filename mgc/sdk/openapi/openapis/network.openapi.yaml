@@ -5,7 +5,7 @@ info:
     contact:
         name: IaaS Products
         url: https://github.com/luizalabs
-    version: 1.170.0
+    version: 1.173.0
 paths:
     /v0/ports:
         get:
@@ -1485,18 +1485,18 @@ paths:
             x-permission:
                 permission-name: net_vpc_list
                 product-name: network
-    /v0/vpcs/{vpc_id}:
+    /v0/vpcs/{id}:
         delete:
             tags:
             - vpcs
             summary: Delete VPC
             description: Delete a VPC from the provided tenant_id
-            operationId: delete_vpc_v0_vpcs__vpc_id__delete
+            operationId: delete_vpc_v0_vpcs__id__delete
             security:
             -   OAuth2:
                 - network.write
             parameters:
-            -   name: vpc_id
+            -   name: id
                 in: path
                 required: true
                 schema:
@@ -1523,12 +1523,12 @@ paths:
             - vpcs
             summary: VPC Details
             description: Return a VPC details
-            operationId: detail_vpc_v0_vpcs__vpc_id__get
+            operationId: detail_vpc_v0_vpcs__id__get
             security:
             -   OAuth2:
                 - network.read
             parameters:
-            -   name: vpc_id
+            -   name: id
                 in: path
                 required: true
                 schema:
@@ -1545,10 +1545,10 @@ paths:
                                 $ref: '#/components/schemas/VpcResponse'
                     links:
                         delete:
-                            operationId: delete_vpc_v0_vpcs__vpc_id__delete
+                            operationId: delete_vpc_v0_vpcs__id__delete
                             description: Delete VPC
                             parameters:
-                                vpc_id: $request.path.vpc_id
+                                id: $request.path.id
                 '422':
                     description: Validation Error
                     content:
@@ -2055,15 +2055,15 @@ paths:
                                 $ref: '#/components/schemas/NatGatewayCreateResponse'
                     links:
                         get:
-                            operationId: detail_nat_gateway_v1_nat_gateways__nat_gateway_id__get
+                            operationId: detail_nat_gateway_v1_nat_gateways__id__get
                             description: Detail a NAT Gateway from a VPC
                             parameters:
-                                nat_gateway_id: $response.body#/id
+                                id: $response.body#/id
                         delete:
-                            operationId: delete_nat_gateway_v1_nat_gateways__nat_gateway_id__delete
+                            operationId: delete_nat_gateway_v1_nat_gateways__id__delete
                             description: Delete a NAT Gateway from a VPC
                             parameters:
-                                nat_gateway_id: $response.body#/id
+                                id: $response.body#/id
                 '400':
                     description: Bad Request
                     content:
@@ -2099,24 +2099,24 @@ paths:
             x-permission:
                 permission-name: net_ng_create
                 product-name: network
-    /v1/nat_gateways/{nat_gateway_id}:
+    /v1/nat_gateways/{id}:
         delete:
             tags:
             - nat_gateways
             summary: Delete a NAT Gateway from a VPC
             description: Delete a NAT (Network Address Translation) Gateway from a
                 VPC.
-            operationId: delete_nat_gateway_v1_nat_gateways__nat_gateway_id__delete
+            operationId: delete_nat_gateway_v1_nat_gateways__id__delete
             security:
             -   OAuth2:
                 - network.write
             parameters:
-            -   name: nat_gateway_id
+            -   name: id
                 in: path
                 required: true
                 schema:
                     type: string
-                    title: Nat Gateway Id
+                    title: Id
             responses:
                 '202':
                     description: Accepted
@@ -2164,17 +2164,17 @@ paths:
             summary: Detail a NAT Gateway from a VPC
             description: Detail a NAT (Network Address Translation) Gateway from a
                 VPC.
-            operationId: detail_nat_gateway_v1_nat_gateways__nat_gateway_id__get
+            operationId: detail_nat_gateway_v1_nat_gateways__id__get
             security:
             -   OAuth2:
                 - network.read
             parameters:
-            -   name: nat_gateway_id
+            -   name: id
                 in: path
                 required: true
                 schema:
                     type: string
-                    title: Nat Gateway Id
+                    title: Id
             responses:
                 '200':
                     description: Ok
@@ -2184,10 +2184,10 @@ paths:
                                 $ref: '#/components/schemas/NatGatewayDetailsResponse'
                     links:
                         delete:
-                            operationId: delete_nat_gateway_v1_nat_gateways__nat_gateway_id__delete
+                            operationId: delete_nat_gateway_v1_nat_gateways__id__delete
                             description: Delete a NAT Gateway from a VPC
                             parameters:
-                                nat_gateway_id: $response.body#/id
+                                id: $request.path.id
                 '400':
                     description: Bad Request
                     content:

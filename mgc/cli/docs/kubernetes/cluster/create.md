@@ -9,7 +9,7 @@ mgc kubernetes cluster create [flags]
 
 ## Examples:
 ```
-mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]' --cluster-ipv4-cidr="10.128.0.0/12" --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --version="v1.30.2" --zone="br-region-zone"
+mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]' --cluster-ipv4-cidr="10.128.0.0/12" --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"availability_zones":["a","b","c"],"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --services-ipv4-cidr="10.128.0.0/12" --version="v1.30.2" --zone="br-region-zone"
 ```
 
 ## Flags:
@@ -40,6 +40,10 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
     --node-pools array(object)      An array representing a set of nodes within a Kubernetes cluster.
                                     
                                     Use --node-pools=help for more details
+    --services-ipv4-cidr string     The IPv4 subnet CIDR used by Kubernetes Services.
+                                    This parameter can only be set when creating a new cluster and can not be updated later.
+                                    If not specified, the value of "10.96.0.0/12" will be used by default.
+                                    
     --version string                The native Kubernetes version of the cluster.
                                     Please specify the Kubernetes version using the standard "vX.Y.Z" format.
                                     

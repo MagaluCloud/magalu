@@ -2491,8 +2491,8 @@
           },
           "size": {
             "type": "integer",
-            "maximum": 2147483648.0,
-            "minimum": 10.0,
+            "maximum": 2147483648,
+            "minimum": 10,
             "title": "Size",
             "description": "Gibibytes (GiB)"
           },
@@ -2552,7 +2552,7 @@
         "properties": {
           "size": {
             "type": "integer",
-            "exclusiveMinimum": 0.0,
+            "exclusiveMinimum": 0,
             "title": "Size",
             "description": "New volume size in GB"
           }

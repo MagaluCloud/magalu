@@ -14,9 +14,10 @@ mgc audit events list --data='{"data.machine_type.name":"cloud-bs1.xsmall","data
 
 ## Flags:
 ```
-    --authid string            Auth ID: Identification of the principal that triggered the occurrence
+    --authid string            Auth ID: Identification of the actor of the action
     --control.limit integer    Limit: Number of items per page
     --control.offset integer   Offset for pagination
+    --correlationid string     Correlation ID: Correlation between event chain
     --data object              The raw data event
                                Use --data=help for more details
 -h, --help                     help for list

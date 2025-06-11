@@ -7,7 +7,7 @@
             "name": "IaaS Products",
             "url": "https://github.com/luizalabs"
         },
-        "version": "1.170.0"
+        "version": "1.173.0"
     },
     "paths": {
         "/v0/ports": {
@@ -2120,14 +2120,14 @@
                 }
             }
         },
-        "/v0/vpcs/{vpc_id}": {
+        "/v0/vpcs/{id}": {
             "delete": {
                 "tags": [
                     "vpcs"
                 ],
                 "summary": "Delete VPC",
                 "description": "Delete a VPC from the provided tenant_id",
-                "operationId": "delete_vpc_v0_vpcs__vpc_id__delete",
+                "operationId": "delete_vpc_v0_vpcs__id__delete",
                 "security": [
                     {
                         "OAuth2": [
@@ -2137,7 +2137,7 @@
                 ],
                 "parameters": [
                     {
-                        "name": "vpc_id",
+                        "name": "id",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -2187,7 +2187,7 @@
                 ],
                 "summary": "VPC Details",
                 "description": "Return a VPC details",
-                "operationId": "detail_vpc_v0_vpcs__vpc_id__get",
+                "operationId": "detail_vpc_v0_vpcs__id__get",
                 "security": [
                     {
                         "OAuth2": [
@@ -2197,7 +2197,7 @@
                 ],
                 "parameters": [
                     {
-                        "name": "vpc_id",
+                        "name": "id",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -3107,14 +3107,14 @@
                 }
             }
         },
-        "/v1/nat_gateways/{nat_gateway_id}": {
+        "/v1/nat_gateways/{id}": {
             "delete": {
                 "tags": [
                     "nat_gateways"
                 ],
                 "summary": "Delete a NAT Gateway from a VPC",
                 "description": "Delete a NAT (Network Address Translation) Gateway from a VPC.",
-                "operationId": "delete_nat_gateway_v1_nat_gateways__nat_gateway_id__delete",
+                "operationId": "delete_nat_gateway_v1_nat_gateways__id__delete",
                 "security": [
                     {
                         "OAuth2": [
@@ -3124,12 +3124,12 @@
                 ],
                 "parameters": [
                     {
-                        "name": "nat_gateway_id",
+                        "name": "id",
                         "in": "path",
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "title": "Nat Gateway Id"
+                            "title": "Id"
                         }
                     },
                     {
@@ -3217,7 +3217,7 @@
                 ],
                 "summary": "Detail a NAT Gateway from a VPC",
                 "description": "Detail a NAT (Network Address Translation) Gateway from a VPC.",
-                "operationId": "detail_nat_gateway_v1_nat_gateways__nat_gateway_id__get",
+                "operationId": "detail_nat_gateway_v1_nat_gateways__id__get",
                 "security": [
                     {
                         "OAuth2": [
@@ -3227,12 +3227,12 @@
                 ],
                 "parameters": [
                     {
-                        "name": "nat_gateway_id",
+                        "name": "id",
                         "in": "path",
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "title": "Nat Gateway Id"
+                            "title": "Id"
                         }
                     },
                     {

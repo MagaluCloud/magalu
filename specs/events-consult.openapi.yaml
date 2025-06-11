@@ -3,7 +3,7 @@
   "info": {
     "title": "Cloud Events Consult API",
     "description": "Cloud Events API Product.",
-    "version": "0.27.0"
+    "version": "0.31.1"
   },
   "servers": [
     {
@@ -362,7 +362,7 @@
           "time": {
             "type": "string",
             "examples": [
-              "2024-07-16T22:50:00"
+              "2024-07-16T22:50:00Z"
             ],
             "title": "Time",
             "format": "date-time",
