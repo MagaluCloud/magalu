@@ -1,20 +1,25 @@
-# List
+# Custom
 
-Retrieves a list of machine types allowed for the current tenant which is logged in.
+Operations with images for instances. | custom
 
 ## Usage:
 ```
-mgc virtual-machine machine-types list [flags]
+mgc virtual-machine images custom [flags]
+mgc virtual-machine images custom [command]
+```
+
+## Commands:
+```
+create      Create Custom Image
+delete      Delete Image Custom
+get         Get Custom Image By Id
+list        Retrieves all active custom images.
+update      Patch Image Custom
 ```
 
 ## Flags:
 ```
-    --availability-zone string   Availability-Zone: br-ne1-a
-    --control.limit integer       Limit: limit the number of the results (max: 1000)
-    --control.offset integer      Offset: pagination for the results limited (max: 2147483647)
-    --control.sort string         Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
--h, --help                       help for list
-    --name string                name of the instance type
+-h, --help   help for custom
 ```
 
 ## Global Flags:
@@ -26,11 +31,8 @@ mgc virtual-machine machine-types list [flags]
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
-    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
-    --server-url uri           Manually specify the server to use
 ```
 

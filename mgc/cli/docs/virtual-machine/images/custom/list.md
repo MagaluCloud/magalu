@@ -1,20 +1,19 @@
 # List
 
-Retrieves a list of machine types allowed for the current tenant which is logged in.
+Retrieve a list of client active custom images.
 
 ## Usage:
 ```
-mgc virtual-machine machine-types list [flags]
+mgc virtual-machine images custom list [flags]
 ```
 
 ## Flags:
 ```
-    --availability-zone string   Availability-Zone: br-ne1-a
-    --control.limit integer       Limit: limit the number of the results (max: 1000)
-    --control.offset integer      Offset: pagination for the results limited (max: 2147483647)
-    --control.sort string         Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
--h, --help                       help for list
-    --name string                name of the instance type
+    --control.limit integer     Limit (max: 2147483647)
+    --control.offset integer    Offset (max: 2147483647)
+    --control.sort string       Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
+-h, --help                     help for list
+    --name string              name of the image
 ```
 
 ## Global Flags:

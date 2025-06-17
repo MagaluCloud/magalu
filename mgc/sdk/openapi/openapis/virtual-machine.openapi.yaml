@@ -39,6 +39,16 @@ paths:
                     title: ' Sort'
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     default: platform:asc,end_life_at:desc
+            -   name: name
+                in: query
+                description: name of the image
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Name
+                    description: name of the image
+                    nullable: true
             -   name: availability-zone
                 in: query
                 description: br-ne1-a
@@ -67,6 +77,224 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.read
+    /v1/images/custom:
+        get:
+            tags:
+            - images
+            summary: Retrieves all active custom images.
+            description: Retrieve a list of client active custom images.
+            operationId: list_images_custom_v1_images_custom_get
+            parameters:
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    exclusiveMinimum: false
+                    type: integer
+                    title: ' Limit'
+                    maximum: 2147483647
+                    default: 50
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    title: ' Offset'
+                    maximum: 2147483647
+                    default: 0
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    title: ' Sort'
+                    pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+                    default: platform:asc,end_life_at:desc
+            -   name: name
+                in: query
+                description: name of the image
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Name
+                    description: name of the image
+                    nullable: true
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListCustomImageResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine.read
+        post:
+            tags:
+            - images
+            summary: Create Custom Image
+            description: Create a custom image.
+            operationId: create_custom_image_v1_images_custom_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateCustomImageRequest'
+                required: true
+            responses:
+                '202':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ImageResponseV1'
+                    links:
+                        get:
+                            operationId: get_custom_image_by_id_v1_images_custom__id__get
+                            description: Get Custom Image By Id
+                            parameters:
+                                id: $response.body#/id
+                        update:
+                            operationId: patch_image_custom_v1_images_custom__id__patch
+                            description: Patch Image Custom
+                            parameters:
+                                id: $response.body#/id
+                        delete:
+                            operationId: delete_image_custom_v1_images_custom__id__delete
+                            description: Delete Image Custom
+                            parameters:
+                                id: $response.body#/id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine.write
+    /v1/images/custom/{id}:
+        get:
+            tags:
+            - images
+            summary: Get Custom Image By Id
+            description: Get details of a custom image by its ID.
+            operationId: get_custom_image_by_id_v1_images_custom__id__get
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetCustomImageResponse'
+                    links:
+                        update:
+                            operationId: patch_image_custom_v1_images_custom__id__patch
+                            description: Patch Image Custom
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: delete_image_custom_v1_images_custom__id__delete
+                            description: Delete Image Custom
+                            parameters:
+                                id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine.read
+        delete:
+            tags:
+            - images
+            summary: Delete Image Custom
+            description: delete custom image.
+            operationId: delete_image_custom_v1_images_custom__id__delete
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+                    format: uuid
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine.write
+        patch:
+            tags:
+            - images
+            summary: Patch Image Custom
+            description: patch custom image infos.
+            operationId: patch_image_custom_v1_images_custom__id__patch
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PatchCustomImageRequest'
+                required: true
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        get:
+                            operationId: get_custom_image_by_id_v1_images_custom__id__get
+                            description: Get Custom Image By Id
+                            parameters:
+                                id: $request.path.id
+                        delete:
+                            operationId: delete_image_custom_v1_images_custom__id__delete
+                            description: Delete Image Custom
+                            parameters:
+                                id: $request.path.id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            security:
+            -   OAuth2:
+                - virtual-machine.write
     /v1/instance-types:
         get:
             tags:
@@ -107,6 +335,16 @@ paths:
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     description: order of the results using informed fields
                     default: created_at:asc
+            -   name: name
+                in: query
+                description: name of the instance type
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Name
+                    description: name of the instance type
+                    nullable: true
             -   name: availability-zone
                 in: query
                 description: br-ne1-a
@@ -130,6 +368,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+            x-mgc-hidden: true
             x-viveiro: true
             x-mgc-output-flag: table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu
             security:
@@ -162,7 +401,7 @@ paths:
                     title: ' Limit'
                     maximum: 1000
                     description: limit the number of the results
-                    default: 200
+                    default: 50
             -   name: _offset
                 in: query
                 description: pagination for the results limited
@@ -1566,6 +1805,16 @@ paths:
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     description: order of the results using informed fields
                     default: created_at:asc
+            -   name: name
+                in: query
+                description: name of the instance type
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Name
+                    description: name of the instance type
+                    nullable: true
             -   name: availability-zone
                 in: query
                 description: br-ne1-a
@@ -1642,6 +1891,16 @@ paths:
                     pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
                     description: order of the results using informed fields
                     default: created_at:asc
+            -   name: name
+                in: query
+                description: name of the snapshot
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Name
+                    description: name of the snapshot
+                    nullable: true
             -   name: expand
                 in: query
                 description: 'You can get more detailed info about: [''image'', ''machine-type''] '
@@ -2259,13 +2518,9 @@ components:
                 name:
                     type: string
                     title: Name
-                    maxLength: 255
-                    minLength: 1
                 description:
                     anyOf:
                     -   type: string
-                        maxLength: 200
-                        minLength: 1
                     title: Description
                     nullable: true
                 version:
@@ -2277,30 +2532,43 @@ components:
                     type: string
                     title: Url
                 requirements:
-                    anyOf:
-                    -   $ref: '#/components/schemas/CustomImageRequirements'
-                    nullable: true
+                    type: object
+                    properties:
+                        disk:
+                            type: integer
+                            title: Disk
+                        ram:
+                            type: integer
+                            title: Ram
+                        vcpu:
+                            type: integer
+                            title: Vcpu
+                    title: CustomImageRequirements
+                    required:
+                    - disk
+                    - ram
+                    - vcpu
                 platform:
                     type: string
                     title: Platform
                     enum:
                     - linux
+                    - windows
                 license:
                     type: string
                     title: License
                     enum:
                     - unlicensed
+                    - licensed
                 architecture:
                     type: string
                     title: Architecture
                     enum:
                     - x86/64
                 uefi:
-                    anyOf:
-                    -   type: boolean
+                    type: boolean
                     title: Uefi
                     default: false
-                    nullable: true
             title: CreateCustomImageRequest
             required:
             - name
@@ -2391,6 +2659,19 @@ components:
                 name:
                     type: string
                     title: Name
+                status:
+                    type: string
+                    title: ImageV1Status
+                    enum:
+                    - active
+                    - deprecated
+                    - deleted
+                    - deleting
+                    - deleting_error
+                    - pending
+                    - creating
+                    - importing
+                    - error
                 description:
                     anyOf:
                     -   type: string
@@ -2410,6 +2691,7 @@ components:
                     title: Platform
                     enum:
                     - linux
+                    - windows
                 metadata:
                     anyOf:
                     -   type: object
@@ -2420,10 +2702,12 @@ components:
                     title: License
                     enum:
                     - unlicensed
+                    - licensed
             title: GetCustomImageResponse
             required:
             - id
             - name
+            - status
             - platform
             - license
             example:
@@ -2442,6 +2726,7 @@ components:
                     disk: 100
                     ram: 8
                     vcpu: 4
+                status: active
                 version: '2.1'
         HTTPValidationError:
             type: object
@@ -2533,11 +2818,12 @@ components:
                     - active
                     - deprecated
                     - deleted
+                    - deleting
+                    - deleting_error
                     - pending
                     - creating
                     - importing
                     - error
-                    - deleting_error
                 version:
                     anyOf:
                     -   type: string
@@ -2640,11 +2926,12 @@ components:
             - active
             - deprecated
             - deleted
+            - deleting
+            - deleting_error
             - pending
             - creating
             - importing
             - error
-            - deleting_error
         InstanceAccessResponseWithPass:
             type: object
             properties:
@@ -3331,6 +3618,7 @@ components:
             title: License
             enum:
             - unlicensed
+            - licensed
         ListCustomImageResponse:
             type: object
             properties:
@@ -3345,6 +3633,19 @@ components:
                             name:
                                 type: string
                                 title: Name
+                            status:
+                                type: string
+                                title: ImageV1Status
+                                enum:
+                                - active
+                                - deprecated
+                                - deleted
+                                - deleting
+                                - deleting_error
+                                - pending
+                                - creating
+                                - importing
+                                - error
                             description:
                                 anyOf:
                                 -   type: string
@@ -3364,6 +3665,7 @@ components:
                                 title: Platform
                                 enum:
                                 - linux
+                                - windows
                             metadata:
                                 anyOf:
                                 -   type: object
@@ -3374,10 +3676,12 @@ components:
                                 title: License
                                 enum:
                                 - unlicensed
+                                - licensed
                         title: GetCustomImageResponse
                         required:
                         - id
                         - name
+                        - status
                         - platform
                         - license
                         example:
@@ -3396,6 +3700,7 @@ components:
                                 disk: 100
                                 ram: 8
                                 vcpu: 4
+                            status: active
                             version: '2.1'
                     title: Images
                     default: []
@@ -3446,6 +3751,7 @@ components:
                         disk: 100
                         ram: 8
                         vcpu: 4
+                    status: active
                     version: '2.1'
                 meta:
                     page:
@@ -3900,11 +4206,12 @@ components:
                                 - active
                                 - deprecated
                                 - deleted
+                                - deleting
+                                - deleting_error
                                 - pending
                                 - creating
                                 - importing
                                 - error
-                                - deleting_error
                             version:
                                 anyOf:
                                 -   type: string
@@ -4386,11 +4693,37 @@ components:
                     state: available
                     status: completed
                     updated_at: '2022-06-10T18:33:12Z'
+        PatchCustomImageRequest:
+            type: object
+            properties:
+                description:
+                    anyOf:
+                    -   type: string
+                    title: Description
+                    nullable: true
+                version:
+                    anyOf:
+                    -   type: string
+                    title: Version
+                    nullable: true
+                requirements:
+                    anyOf:
+                    -   $ref: '#/components/schemas/CustomImageRequirements'
+                    nullable: true
+            title: PatchCustomImageRequest
+            example:
+                description: A customized image for specific workloads.
+                requirements:
+                    disk: 10
+                    ram: 1
+                    vcpu: 1
+                version: '1.0'
         Platform:
             type: string
             title: Platform
             enum:
             - linux
+            - windows
         PortID:
             type: object
             properties:

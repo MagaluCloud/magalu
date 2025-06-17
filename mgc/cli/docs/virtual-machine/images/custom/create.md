@@ -1,20 +1,32 @@
-# List
+# Create
 
-Retrieves a list of machine types allowed for the current tenant which is logged in.
+Create a custom image.
 
 ## Usage:
 ```
-mgc virtual-machine machine-types list [flags]
+mgc virtual-machine images custom create [flags]
 ```
 
 ## Flags:
 ```
-    --availability-zone string   Availability-Zone: br-ne1-a
-    --control.limit integer       Limit: limit the number of the results (max: 1000)
-    --control.offset integer      Offset: pagination for the results limited (max: 2147483647)
-    --control.sort string         Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
--h, --help                       help for list
-    --name string                name of the instance type
+    --architecture enum             Architecture (must be "x86/64") (required)
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --description string            Description
+-h, --help                          help for create
+    --license enum                  License (one of "licensed" or "unlicensed") (required)
+    --name string                   Name (required)
+    --platform enum                 Platform (one of "linux" or "windows") (required)
+    --requirements object           CustomImageRequirements (properties: disk, ram and vcpu)
+                                    Use --requirements=help for more details
+    --requirements.disk integer     CustomImageRequirements: Disk
+                                    This is the same as '--requirements=disk:integer'.
+    --requirements.ram integer      CustomImageRequirements: Ram
+                                    This is the same as '--requirements=ram:integer'.
+    --requirements.vcpu integer     CustomImageRequirements: Vcpu
+                                    This is the same as '--requirements=vcpu:integer'.
+    --uefi                          Uefi
+    --url string                    Url (required)
+    --version string                Version
 ```
 
 ## Global Flags:

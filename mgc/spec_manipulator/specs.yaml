@@ -3,7 +3,7 @@ jaxyendy:
     file: network.jaxyendy.openapi.json
     menu: network
     enabled: true
-  - url: https://block-storage.br-ne-1.jaxyendy.com/v1/openapi.json
+  - url: https://block-storage.br-se-1.jaxyendy.com/v1/openapi.json
     file: block-storage.jaxyendy.openapi.json
     menu: block-storage
     enabled: true

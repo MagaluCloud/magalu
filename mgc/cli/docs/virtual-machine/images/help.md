@@ -10,6 +10,7 @@ mgc virtual-machine images [command]
 
 ## Commands:
 ```
+custom      custom
 list        Retrieves all images.
 ```
 

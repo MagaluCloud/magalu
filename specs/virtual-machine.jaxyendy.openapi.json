@@ -54,6 +54,24 @@
             }
           },
           {
+            "name": "name",
+            "in": "query",
+            "description": "name of the image",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name",
+              "description": "name of the image"
+            }
+          },
+          {
             "name": "availability-zone",
             "in": "query",
             "description": "br-ne1-a",
@@ -107,6 +125,308 @@
         "x-mgc-output-flag": "table=ID:$.images[*].id,NAME:$.images[*].name,VERSION:$.images[*].version,PLATFORM:$.images[*].platform,END_STANDARD_SUPPORT_AT:$.images[*].end_standard_support_at,STATUS:$.images[*].status,AVAILABILITY_ZONES:$.images[*].availability_zones"
       }
     },
+    "/v1/images/custom": {
+      "get": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Retrieves all active custom images.",
+        "description": "Retrieve a list of client active custom images.",
+        "operationId": "list_images_custom_v1_images_custom_get",
+        "parameters": [
+          {
+            "name": "_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "exclusiveMinimum": 0,
+              "type": "integer",
+              "title": " Limit",
+              "maximum": 2147483647,
+              "default": 50
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Offset",
+              "maximum": 2147483647,
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": " Sort",
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+              "default": "platform:asc,end_life_at:desc"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "name of the image",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name",
+              "description": "name of the image"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListCustomImageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      },
+      "post": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Create Custom Image",
+        "description": "Create a custom image.",
+        "operationId": "create_custom_image_v1_images_custom_post",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCustomImageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageResponseV1"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
+    "/v1/images/custom/{id}": {
+      "get": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Get Custom Image By Id",
+        "description": "Get details of a custom image by its ID.",
+        "operationId": "get_custom_image_by_id_v1_images_custom__id__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCustomImageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      },
+      "delete": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Delete Image Custom",
+        "description": "delete custom image.",
+        "operationId": "delete_image_custom_v1_images_custom__id__delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      },
+      "patch": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Patch Image Custom",
+        "description": "patch custom image infos.",
+        "operationId": "patch_image_custom_v1_images_custom__id__patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchCustomImageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true
+      }
+    },
     "/v1/instance-types": {
       "get": {
         "tags": [
@@ -155,6 +475,24 @@
               "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
               "description": "order of the results using informed fields",
               "default": "created_at:asc"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "name of the instance type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name",
+              "description": "name of the instance type"
             }
           },
           {
@@ -207,6 +545,7 @@
             }
           }
         },
+        "x-mgc-hidden": true,
         "x-viveiro": true,
         "x-mgc-output-flag": "table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu"
       }
@@ -231,7 +570,7 @@
               "title": " Limit",
               "maximum": 1000,
               "description": "limit the number of the results",
-              "default": 200
+              "default": 50
             }
           },
           {
@@ -1452,6 +1791,24 @@
             }
           },
           {
+            "name": "name",
+            "in": "query",
+            "description": "name of the instance type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name",
+              "description": "name of the instance type"
+            }
+          },
+          {
             "name": "availability-zone",
             "in": "query",
             "description": "br-ne1-a",
@@ -1553,6 +1910,24 @@
               "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
               "description": "order of the results using informed fields",
               "default": "created_at:asc"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "name of the snapshot",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name",
+              "description": "name of the snapshot"
             }
           },
           {
@@ -2244,16 +2619,12 @@
         "properties": {
           "name": {
             "type": "string",
-            "title": "Name",
-            "maxLength": 255,
-            "minLength": 1
+            "title": "Name"
           },
           "description": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 200,
-                "minLength": 1
+                "type": "string"
               },
               {
                 "type": "null"
@@ -2277,14 +2648,7 @@
             "title": "Url"
           },
           "requirements": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/CustomImageRequirements"
-              },
-              {
-                "type": "null"
-              }
-            ]
+            "$ref": "#/components/schemas/CustomImageRequirements"
           },
           "platform": {
             "$ref": "#/components/schemas/Platform"
@@ -2296,14 +2660,7 @@
             "$ref": "#/components/schemas/Architecture"
           },
           "uefi": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "boolean",
             "title": "Uefi",
             "default": false
           }
@@ -2427,6 +2784,9 @@
             "type": "string",
             "title": "Name"
           },
+          "status": {
+            "$ref": "#/components/schemas/ImageV1Status"
+          },
           "description": {
             "anyOf": [
               {
@@ -2481,6 +2841,7 @@
         "required": [
           "id",
           "name",
+          "status",
           "platform",
           "license"
         ],
@@ -2503,6 +2864,7 @@
             "ram": 8,
             "vcpu": 4
           },
+          "status": "active",
           "version": "2.1"
         }
       },
@@ -2772,11 +3134,12 @@
           "active",
           "deprecated",
           "deleted",
+          "deleting",
+          "deleting_error",
           "pending",
           "creating",
           "importing",
-          "error",
-          "deleting_error"
+          "error"
         ]
       },
       "InstanceAccessResponseWithPass": {
@@ -3750,7 +4113,8 @@
         "type": "string",
         "title": "License",
         "enum": [
-          "unlicensed"
+          "unlicensed",
+          "licensed"
         ]
       },
       "ListCustomImageResponse": {
@@ -3793,6 +4157,7 @@
                 "ram": 8,
                 "vcpu": 4
               },
+              "status": "active",
               "version": "2.1"
             }
           ],
@@ -4290,11 +4655,59 @@
           ]
         }
       },
+      "PatchCustomImageRequest": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          },
+          "requirements": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CustomImageRequirements"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "title": "PatchCustomImageRequest",
+        "example": {
+          "description": "A customized image for specific workloads.",
+          "requirements": {
+            "disk": 10,
+            "ram": 1,
+            "vcpu": 1
+          },
+          "version": "1.0"
+        }
+      },
       "Platform": {
         "type": "string",
         "title": "Platform",
         "enum": [
-          "linux"
+          "linux",
+          "windows"
         ]
       },
       "PortID": {

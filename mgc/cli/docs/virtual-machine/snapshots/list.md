@@ -14,6 +14,7 @@ mgc virtual-machine snapshots list [flags]
     --control.sort string       Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
     --expand array(string)     Expand: You can get more detailed info about: ['image', 'machine-type'] 
 -h, --help                     help for list
+    --name string              name of the snapshot
 ```
 
 ## Global Flags:

@@ -14,6 +14,7 @@ mgc virtual-machine images list [flags]
     --control.offset integer      Offset (max: 2147483647)
     --control.sort string         Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
 -h, --help                       help for list
+    --name string                name of the image
 ```
 
 ## Global Flags:

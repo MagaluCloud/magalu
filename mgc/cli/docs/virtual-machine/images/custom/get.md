@@ -1,20 +1,17 @@
-# List
+# Get
 
-Retrieves a list of machine types allowed for the current tenant which is logged in.
+Get details of a custom image by its ID.
 
 ## Usage:
 ```
-mgc virtual-machine machine-types list [flags]
+mgc virtual-machine images custom get [id] [flags]
 ```
 
 ## Flags:
 ```
-    --availability-zone string   Availability-Zone: br-ne1-a
-    --control.limit integer       Limit: limit the number of the results (max: 1000)
-    --control.offset integer      Offset: pagination for the results limited (max: 2147483647)
-    --control.sort string         Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
--h, --help                       help for list
-    --name string                name of the instance type
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+-h, --help                          help for get
+    --id string                     Id (required)
 ```
 
 ## Global Flags:
