@@ -19,10 +19,6 @@ jaxyendy:
     file: virtual-machine.jaxyendy.openapi.json
     menu: virtual-machine
     enabled: true
-  - url: https://virtual-machine.br-ne-1.jaxyendy.com/internal/v1/openapi.json
-    file: virtual-machine-xaas.jaxyendy.openapi.json
-    menu: virtual-machine-xaas
-    enabled: true
   - url: https://mcr.br-ne-1.jaxyendy.com/docs/openapi.yaml
     file: container-registry.openapi.yaml
     menu: container-registry
