@@ -1,18 +1,16 @@
-# Create
+# Delete
 
-Creates a container registry in Magalu Cloud.
+Delete a proxycache by uuid.
 
 ## Usage:
 ```
-mgc container-registry registries create [flags]
+mgc container-registry proxy-caches delete [proxy-cache-id] [flags]
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for create
-    --name string                   A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters. (required)
-    --proxy-cache-id string         Proxy Cache UUID.
+-h, --help                  help for delete
+    --proxy-cache-id uuid   Proxy cache's UUID. (required)
 ```
 
 ## Global Flags:

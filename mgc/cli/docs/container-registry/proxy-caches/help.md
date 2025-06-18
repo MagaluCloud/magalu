@@ -1,18 +1,26 @@
-# Create
+# Proxy-Caches
 
-Creates a container registry in Magalu Cloud.
+Routes related to creating, listing and deletion of proxy-caches.
 
 ## Usage:
 ```
-mgc container-registry registries create [flags]
+mgc container-registry proxy-caches [flags]
+mgc container-registry proxy-caches [command]
+```
+
+## Commands:
+```
+create      Create a proxy cache
+delete      Delete a proxy cache by proxy_cache_id
+get         Get a proxy cache by proxy_cache_id
+list        List all proxy-caches
+status      status
+update      Update a proxy cache by proxy_cache_id
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for create
-    --name string                   A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters. (required)
-    --proxy-cache-id string         Proxy Cache UUID.
+-h, --help   help for proxy-caches
 ```
 
 ## Global Flags:
@@ -24,11 +32,8 @@ mgc container-registry registries create [flags]
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
-    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
-    --server-url uri           Manually specify the server to use
 ```
 

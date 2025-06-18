@@ -1,18 +1,21 @@
 # Create
 
-Creates a container registry in Magalu Cloud.
+Creates a proxy cache in Magalu Cloud.
 
 ## Usage:
 ```
-mgc container-registry registries create [flags]
+mgc container-registry proxy-caches create [flags]
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for create
-    --name string                   A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters. (required)
-    --proxy-cache-id string         Proxy Cache UUID.
+    --access-key string      A string consistent with provider access_id.
+    --access-secret string   A string consistent with provider access_secret.
+    --description string     A string.
+-h, --help                   help for create
+    --name string            A unique name for each tenant, used for the proxy-cache. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters. (required)
+    --provider string        A provider identifier string. Available providers can be checked through mcr-api or mgccli. (required)
+    --url string             An Endpoint URL for the proxied registry. Example URL for available providers can be checked through mcr-api or mgccli. (required)
 ```
 
 ## Global Flags:

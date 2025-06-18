@@ -1,18 +1,21 @@
 # Create
 
-Creates a container registry in Magalu Cloud.
+Validates the provided credentials and endpoint information for a remote registry
+used in a proxy cache configuration. This endpoint does not persist any data — it only
+tests if the given credentials allow access to the target registry.
 
 ## Usage:
 ```
-mgc container-registry registries create [flags]
+mgc container-registry proxy-caches status create [flags]
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for create
-    --name string                   A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters. (required)
-    --proxy-cache-id string         Proxy Cache UUID.
+    --access-key string      Access key or username for authentication (required)
+    --access-secret string   Secret or password for authentication (required)
+-h, --help                   help for create
+    --provider string        Type of the remote registry (e.g., harbor, dockerhub) (required)
+    --url string             Endpoint URL of the remote registry (required)
 ```
 
 ## Global Flags:

@@ -12,7 +12,7 @@ info:
     version: 0.1.0
 servers:
 -   url: https://{env}/{region}/container-registry
-    description: NE-1 pre-prod
+    description: SE1-YEL pre-prod
     variables:
         region:
             description: Region to reach the service
@@ -40,16 +40,12 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
--   url: https://api-mcr.team-integration.br-ne-1.jaxyendy.com
-    description: NE-1 team-integration
--   url: https://api-mcr.br-ne-1.jaxyendy.com
-    description: NE-1 prod
--   url: https://api-mcr.pre-prod.br-se-1.jaxyendy.com
-    description: SE1 pre-prod
--   url: https://api-mcr.team-integration.br-se-1.jaxyendy.com
-    description: SE1 team-integration
--   url: https://api-mcr.br-se-1.jaxyendy.com
-    description: SE1 prod
+-   url: https://api-mcr.csre-plat-prod.1.yel.se1.br.jaxyendy.com
+    description: SE1-YEL prod
+-   url: https://api-mcr.csre-plat-preprod.1.yel.ne1.br.jaxyendy.com
+    description: NE1-YEL pre-prod
+-   url: https://api-mcr.csre-plat-prod.1.yel.ne1.br.jaxyendy.com
+    description: NE1-YEL prod
 paths:
     /v0/credentials:
         get:
@@ -141,10 +137,6 @@ paths:
                             description: Get registry information
                             parameters:
                                 registry_id: $response.body#/id
-                            x-mgc-wait-termination:
-                                interval: 5s
-                                maxRetries: 10
-                                jsonPathQuery: $.result.name == $.owner.parameters.name
                         delete:
                             operationId: deleteRegistry
                             description: Delete a container registry by registry_id
@@ -645,8 +637,601 @@ paths:
                     $ref: '#/components/responses/TooManyRequestsError'
                 '500':
                     $ref: '#/components/responses/InternalServerError'
+    /v0/proxy-caches:
+        post:
+            tags:
+            - proxy-caches
+            summary: Create a proxy cache
+            description: Creates a proxy cache in Magalu Cloud.
+            operationId: createProxyCache
+            security:
+            -   BearerAuth:
+                - mcr.write
+            -   OAuth2:
+                - mcr.write
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ProxyCacheRequest'
+            responses:
+                '201':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateProxyCacheResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+        get:
+            tags:
+            - proxy-caches
+            summary: List all proxy-caches
+            description: List user's proxy caches.
+            operationId: getProxyCaches
+            security:
+            -   BearerAuth:
+                - mcr.read
+            -   OAuth2:
+                - mcr.read
+            parameters:
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    minimum: 1
+                    title: Limit
+                    type: integer
+                description: Limit
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    minimum: 0
+                    type: integer
+                description: Offset
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    default: created_at:asc
+                    pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+                    type: string
+                description: Fields to use as reference to sort.
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProxyCachesResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+    /v0/proxy-caches/{proxy_cache_id}:
+        get:
+            tags:
+            - proxy-caches
+            summary: Get a proxy cache by proxy_cache_id
+            description: Get a proxycache by uuid.
+            operationId: getProxyCache
+            security:
+            -   BearerAuth:
+                - mcr.read
+            -   OAuth2:
+                - mcr.read
+            parameters:
+            -   name: proxy_cache_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Proxy cache's UUID.
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProxyCacheDetailedResponse'
+                    links:
+                        update:
+                            operationId: updateProxyCache
+                            description: Update a proxy cache by proxy_cache_id
+                            parameters:
+                                proxy_cache_id: $request.path.proxy_cache_id
+                        delete:
+                            operationId: deleteProxyCache
+                            description: Delete a proxy cache by proxy_cache_id
+                            parameters:
+                                proxy_cache_id: $request.path.proxy_cache_id
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+        patch:
+            tags:
+            - proxy-caches
+            summary: Update a proxy cache by proxy_cache_id
+            description: Update a proxycache by uuid.
+            operationId: updateProxyCache
+            security:
+            -   BearerAuth:
+                - mcr.write
+            -   OAuth2:
+                - mcr.write
+            parameters:
+            -   name: proxy_cache_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Proxy cache's UUID.
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateProxyCacheRequest'
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpdateProxyCacheResponse'
+                    links:
+                        get:
+                            operationId: getProxyCache
+                            description: Get a proxy cache by proxy_cache_id
+                            parameters:
+                                proxy_cache_id: $request.path.proxy_cache_id
+                        delete:
+                            operationId: deleteProxyCache
+                            description: Delete a proxy cache by proxy_cache_id
+                            parameters:
+                                proxy_cache_id: $request.path.proxy_cache_id
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+        delete:
+            tags:
+            - proxy-caches
+            summary: Delete a proxy cache by proxy_cache_id
+            description: Delete a proxycache by uuid.
+            operationId: deleteProxyCache
+            security:
+            -   BearerAuth:
+                - mcr.write
+            -   OAuth2:
+                - mcr.write
+            parameters:
+            -   name: proxy_cache_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Proxy cache's UUID.
+            responses:
+                '204':
+                    description: Successful operation
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+    /v0/proxy-caches/status:
+        post:
+            tags:
+            - proxy-caches
+            summary: Test connectivity using proxy cache credentials
+            description: 'Validates the provided credentials and endpoint information
+                for a remote registry
+
+                used in a proxy cache configuration. This endpoint does not persist
+                any data — it only
+
+                tests if the given credentials allow access to the target registry.
+
+                '
+            operationId: checkProxyCacheCredentialStatus
+            security:
+            -   BearerAuth:
+                - mcr.read
+            -   OAuth2:
+                - mcr.read
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ProxyCacheCredentialStatusRequest'
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProxyCacheCredentialStatusResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+    /v0/proxy-caches/{proxy_cache_id}/status:
+        get:
+            tags:
+            - proxy-caches
+            summary: Get proxy cache connection status
+            description: 'Verifies and returns the current connection status of a
+                configured proxy cache,
+
+                including validation of credentials and endpoint accessibility.
+
+                '
+            operationId: getProxyCacheStatus
+            security:
+            -   BearerAuth:
+                - mcr.read
+            -   OAuth2:
+                - mcr.read
+            parameters:
+            -   name: proxy_cache_id
+                in: path
+                required: true
+                description: Unique identifier of the proxy cache configuration
+                schema:
+                    type: string
+                    format: uuid
+                    example: 123e4567-e89b-12d3-a456-426614174000
+            responses:
+                '200':
+                    description: Proxy cache status verification result
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProxyCacheStatusResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
 components:
     schemas:
+        UpdateProxyCacheRequest:
+            type: object
+            description: Update Proxy cache Request Object.
+            properties:
+                name:
+                    type: string
+                    default: ''
+                    description: A unique name for each tenant, used for the proxy-cache.
+                        It must be written in lowercase letters and consists only
+                        of numbers and letters, up to a limit of 63 characters.
+                url:
+                    type: string
+                    default: ''
+                    description: An Endpoint URL for the proxied registry. Example
+                        URL for available providers can be checked through mcr-api
+                        or mgccli.
+                access_key:
+                    type: string
+                    description: A string consistent with provider access_id.
+                    default: ''
+                access_secret:
+                    type: string
+                    description: A string consistent with provider access_secret.
+                    default: ''
+                description:
+                    type: string
+                    description: A string.
+                    default: ''
+            example:
+                name: updated_cool_registry_proxy
+                url: https://hub.docker.com
+                access_key: example-access-key
+                access_secret: example-access-secret
+                description: cool_description
+        ProxyCacheRequest:
+            type: object
+            description: Proxy cache Request Object.
+            properties:
+                name:
+                    type: string
+                    description: A unique name for each tenant, used for the proxy-cache.
+                        It must be written in lowercase letters and consists only
+                        of numbers and letters, up to a limit of 63 characters.
+                provider:
+                    type: string
+                    description: A provider identifier string. Available providers
+                        can be checked through mcr-api or mgccli.
+                url:
+                    type: string
+                    description: An Endpoint URL for the proxied registry. Example
+                        URL for available providers can be checked through mcr-api
+                        or mgccli.
+                access_key:
+                    type: string
+                    description: A string consistent with provider access_id.
+                    default: ''
+                access_secret:
+                    type: string
+                    description: A string consistent with provider access_secret.
+                    default: ''
+                description:
+                    type: string
+                    description: A string.
+                    default: ''
+            required:
+            - name
+            - provider
+            - url
+            example:
+                name: cool_registry_proxy
+                provider: docker-hub
+                url: https://hub.docker.com
+                access_key: example-access-key
+                access_secret: example-access-secret
+                description: cool_description
+        ProxyCacheCredentialStatusRequest:
+            type: object
+            description: Validate remote proxy cache credentials
+            properties:
+                provider:
+                    type: string
+                    description: Type of the remote registry (e.g., harbor, dockerhub)
+                url:
+                    type: string
+                    description: Endpoint URL of the remote registry
+                access_key:
+                    type: string
+                    description: Access key or username for authentication
+                access_secret:
+                    type: string
+                    description: Secret or password for authentication
+            required:
+            - provider
+            - url
+            - credential_type
+            - access_key
+            - access_secret
+            example:
+                provider: docker-hub
+                url: https://hub.docker.com
+                credential_type: basic
+                access_key: my_username
+                access_secret: my_password
+        ProxyCacheCredentialStatusResponse:
+            type: object
+            description: Result of validating the proxy cache credentials
+            properties:
+                status:
+                    type: string
+                    description: Connection status (e.g., "valid", "invalid")
+                message:
+                    type: string
+                    description: Additional details about the result of the validation
+            required:
+            - status
+            example:
+                status: valid
+                message: Proxy cache credentials are valid
+        CreateProxyCacheResponse:
+            type: object
+            description: Proxy Cache creation response.
+            properties:
+                id:
+                    type: string
+                    description: Proxy Cache UUID.
+                name:
+                    type: string
+                    description: A unique, global name for the container registry.
+                        It must be written in lowercase letters and consists only
+                        of numbers and letters, up to a limit of 63 characters.
+            required:
+            - id
+            - name
+            example:
+                id: 0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c
+                name: cool_registry_proxy
+        UpdateProxyCacheResponse:
+            type: object
+            description: Proxy Cache update response.
+            required:
+            - id
+            - name
+            - provider
+            - url
+            - created_at
+            - updated_at
+            properties:
+                id:
+                    type: string
+                    description: Proxy Cache's UUID.
+                name:
+                    type: string
+                    description: Name of the proxy cache created.
+                provider:
+                    type: string
+                    description: Name of proxy cache registry provider.
+                url:
+                    type: string
+                    description: URL of proxy cache provider.
+                created_at:
+                    type: string
+                    description: Date and time of creation of the proxy cache.
+                updated_at:
+                    type: string
+                    description: Date and time of the last change to the proxy cache.
+            example:
+                id: 0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c
+                name: cool_proxy
+                provider: docker-hub
+                url: https://hub.docker.com
+                created_at: '2024-05-15T19:56:47Z'
+                updated_at: '2024-05-15T19:56:47Z'
+                description: Proxy cache for Docker Hub
+        ProxyCacheDetailedResponse:
+            type: object
+            description: Container Proxy Cache's response data.
+            required:
+            - id
+            - name
+            - provider
+            - url
+            - created_at
+            - updated_at
+            - description
+            properties:
+                id:
+                    type: string
+                    description: Proxy Cache's UUID.
+                name:
+                    type: string
+                    description: Name of the proxy cache .
+                provider:
+                    type: string
+                    description: Name of proxy cache registry provider.
+                url:
+                    type: string
+                    description: URL of proxy cache provider.
+                    x-go-name: URL
+                created_at:
+                    type: string
+                    description: Date and time of creation of the proxy cache.
+                updated_at:
+                    type: string
+                    description: Date and time of the last change to the proxy cache.
+                description:
+                    type: string
+                    description: Description of the proxy-cache
+            example:
+                id: 0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c
+                name: cool_proxy
+                provider: docker-hub
+                url: https://hub.docker.com
+                created_at: '2024-05-15T19:56:47Z'
+                updated_at: '2024-05-15T19:56:47Z'
+                description: Proxy cache for Docker Hub
+        ProxyCachesResponse:
+            type: object
+            description: Proxy cache information response object.
+            required:
+            - results
+            properties:
+                results:
+                    type: array
+                    description: List of user proxy caches.
+                    items:
+                        $ref: '#/components/schemas/ProxyCacheResponse'
+        ProxyCacheResponse:
+            type: object
+            description: Container Proxy Cache's response data.
+            required:
+            - id
+            - name
+            - provider
+            - url
+            - created_at
+            - updated_at
+            properties:
+                id:
+                    type: string
+                    description: Proxy Cache's UUID.
+                name:
+                    type: string
+                    description: Name of the proxy cache created.
+                provider:
+                    type: string
+                    description: Name of proxy cache registry provider.
+                url:
+                    type: string
+                    description: URL of proxy cache provider.
+                created_at:
+                    type: string
+                    description: Date and time of creation of the proxy cache.
+                updated_at:
+                    type: string
+                    description: Date and time of the last change to the proxy cache.
+            example:
+                id: 0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c
+                name: cool_proxy
+                provider: docker-hub
+                url: https://hub.docker.com
+                created_at: '2024-05-15T19:56:47Z'
+                updated_at: '2024-05-15T19:56:47Z'
+                description: Proxy cache for Docker Hub
+        ProxyCacheStatusResponse:
+            type: object
+            description: Result of proxy cache connectivity
+            properties:
+                status:
+                    type: string
+                    description: Connection status (e.g., "connected", "unreachable")
+                message:
+                    type: string
+                    description: Detailed description of the validation result
+            required:
+            - status
+            example:
+                status: connected
+                message: Proxy cache configuration is active.
         RegistryRequest:
             type: object
             description: Container Registry Request Object.
@@ -656,10 +1241,15 @@ components:
                     description: A unique, global name for the container registry.
                         It must be written in lowercase letters and consists only
                         of numbers and letters, up to a limit of 63 characters.
+                proxy_cache_id:
+                    type: string
+                    description: Proxy Cache UUID.
+                    default: ''
             required:
             - name
             example:
                 name: cool_registry
+                proxy_cache_id: ef376048-a0f7-446c-826b-1d5cb3e5a5b0
         CreateRegistryResponse:
             type: object
             description: Container Registry's creation response.
@@ -672,6 +1262,10 @@ components:
                     description: A unique, global name for the container registry.
                         It must be written in lowercase letters and consists only
                         of numbers and letters, up to a limit of 63 characters.
+                proxy_cache_id:
+                    type: string
+                    description: Proxy Cache UUID.
+                    default: ''
             required:
             - id
             - name
@@ -715,12 +1309,16 @@ components:
                     type: string
                     description: Date and time of the last change to the container
                         registry.
+                proxy_cache_id:
+                    type: string
+                    description: Assigned proxy cache UUID.
             example:
                 id: 0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c
                 name: cool_registry
                 storage_usage_bytes: 12345
                 created_at: '2024-05-15T19:56:47Z'
                 updated_at: '2024-05-15T19:56:47Z'
+                proxy_cache_id: 3a1b8f76-1238-41d8-946d-b69f231d91e4
         RepositoriesResponse:
             type: object
             description: Information returned about the container registry repository.
@@ -996,4 +1594,6 @@ tags:
     description: Routes related to listing and deletion of repositories.
 -   name: images
     description: Routes related to listing and deletion of images.
+-   name: proxy-caches
+    description: Routes related to creating, listing and deletion of proxy-caches.
 $id: https://container-registry.jaxyendy.com/openapi.json
