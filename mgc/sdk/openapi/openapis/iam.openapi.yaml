@@ -3,22 +3,6 @@ info:
     title: Magalu Cloud IAM
     description: The Magalu Cloud IAM API.
     version: 0.1.0
-servers:
--   url: https://{env}/iam
-    variables:
-        env:
-            description: Environment to use
-            default: api.magalu.cloud
-            enum:
-            - api.magalu.cloud
-            - api.pre-prod.jaxyendy.com
-            x-mgc-transforms:
-            -   type: translate
-                translations:
-                -   from: prod
-                    to: api.magalu.cloud
-                -   from: pre-prod
-                    to: api.pre-prod.jaxyendy.com
 paths:
     /api/v1/healthcheck:
         get:
@@ -32,6 +16,16 @@ paths:
                     content:
                         application/json:
                             schema: {}
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
             x-mgc-hidden: true
             security:
             -   OAuth2:
@@ -68,6 +62,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
         post:
             tags:
             - Members
@@ -100,6 +104,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
     /api/v1/members/{uuid}:
         delete:
             tags:
@@ -125,7 +139,55 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
     /api/v1/members/{uuid}/grants:
+        get:
+            tags:
+            - Members
+            summary: Get Grants
+            operationId: get_grants_api_v1_members__uuid__grants_get
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Uuid
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Privileges'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
         patch:
             tags:
             - Members
@@ -150,12 +212,28 @@ paths:
             responses:
                 '204':
                     description: Successful Response
+                    links:
+                        list-uuid:
+                            operationId: get_grants_api_v1_members__uuid__grants_get
+                            description: Get Grants
+                            parameters:
+                                uuid: $request.path.uuid
                 '422':
                     description: Validation Error
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
     /api/v1/members/grants:
         get:
             tags:
@@ -189,6 +267,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
     /api/v1/roles:
         get:
             tags:
@@ -221,6 +309,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
         post:
             tags:
             - Roles
@@ -258,6 +356,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
     /api/v1/roles/{role_name}:
         delete:
             tags:
@@ -282,6 +390,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
     /api/v1/roles/{role_name}/permissions:
         patch:
             tags:
@@ -326,6 +444,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
     /api/v1/permissions:
         get:
             tags:
@@ -359,6 +487,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
     /api/v1/access-control:
         get:
             tags:
@@ -372,6 +510,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AccessControl'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
             security:
             -   HTTPBearer: []
         post:
@@ -398,6 +546,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
             security:
             -   HTTPBearer: []
         patch:
@@ -424,6 +582,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
             security:
             -   HTTPBearer: []
     /api/v1/service-accounts:
@@ -442,6 +610,16 @@ paths:
                                     $ref: '#/components/schemas/ServiceAccountDetail'
                                 type: array
                                 title: Response Get Api V1 Service Accounts Get
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
             security:
             -   HTTPBearer: []
         post:
@@ -468,6 +646,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
             security:
             -   HTTPBearer: []
     /api/v1/service-accounts/{sa_uuid}:
@@ -495,6 +683,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
         patch:
             tags:
             - Service-Accounts
@@ -535,6 +733,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
     /api/v1/service-accounts/{sa_uuid}/api-keys:
         post:
             tags:
@@ -586,6 +794,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
         get:
             tags:
             - Service-Accounts
@@ -618,6 +836,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
     /api/v1/service-accounts/{sa_uuid}/api-keys/{apikey_uuid}:
         delete:
             tags:
@@ -650,6 +878,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
         patch:
             tags:
             - Service-Accounts
@@ -708,6 +946,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
 components:
     schemas:
         APIKeyServiceAccountCreate:
@@ -1152,3 +1400,19 @@ tags:
 -   name: Service-Accounts
     description: Service-Accounts
 $id: https://iam.jaxyendy.com/openapi.json
+servers:
+-   url: https://{env}/iam
+    variables:
+        env:
+            description: Environment to use
+            default: api.magalu.cloud
+            enum:
+            - api.magalu.cloud
+            - api.pre-prod.jaxyendy.com
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: api.magalu.cloud
+                -   from: pre-prod
+                    to: api.pre-prod.jaxyendy.com
