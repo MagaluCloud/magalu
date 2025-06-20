@@ -3,147 +3,108 @@ package spec
 import (
 	"fmt"
 	"io"
+	"math"
 	"net/http"
 	"os"
+	"slices"
+	"strings"
+	"time"
 
+	"github.com/pterm/pterm"
 	"github.com/spf13/viper"
 )
 
 const (
-	VIPER_FILE = "specs.yaml"
-	SPEC_DIR   = "cli_specs"
+	VIPER_FILE    = "specs.yaml"
+	SPEC_DIR      = "cli_specs"
+	minRetryWait  = 1 * time.Second
+	maxRetryWait  = 10 * time.Second
+	maxRetryCount = 5
 )
 
 func verificarEAtualizarDiretorio(caminho string) error {
-	// Verifica se o diretório já existe
 	_, err := os.Stat(caminho)
 	if err == nil {
-		// O diretório já existe
 		return nil
 	}
 	if os.IsNotExist(err) {
-		// O diretório não existe, então tentamos criar
 		err := os.MkdirAll(caminho, 0755) // 0755 é o modo padrão de permissão para diretórios
 		if err != nil {
 			return err
 		}
 		return nil
 	}
-	// Se ocorrer algum outro erro ao verificar o diretório, retorna o erro
 	return err
 }
 
-// func verificarERenomearArquivo(caminho string) error {
-// 	// Verifica se o arquivo já existe
-// 	_, err := os.Stat(caminho)
-// 	if err != nil {
-// 		if os.IsNotExist(err) {
-// 			// Arquivo não existe
-// 			return nil
-// 		}
-// 		// Outro erro ao verificar o arquivo
-// 		return err
-// 	}
-
-// 	// Obtém a data de criação do arquivo
-// 	info, err := os.Stat(caminho)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	dataCriacao := info.ModTime()
-// 	dataCriacaoFormatada := dataCriacao.Format("2006-01-02_15-04-05")
-
-// 	// Obtém o nome e a extensão do arquivo
-// 	nomeArquivo := filepath.Base(caminho)
-// 	extensao := filepath.Ext(caminho)
-// 	nomeArquivoSemExtensao := nomeArquivo[0 : len(nomeArquivo)-len(extensao)]
-
-// 	// Renomeia o arquivo para incluir a data de criação
-// 	novoNome := fmt.Sprintf("%s_%s.old%s", nomeArquivoSemExtensao, dataCriacaoFormatada, extensao)
-// 	novoCaminho := filepath.Join(filepath.Dir(caminho), novoNome)
-// 	err = os.Rename(caminho, novoCaminho)
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	fmt.Printf("Arquivo renomeado para: %s\n", novoCaminho)
-// 	return nil
-// }
-
-// func removerArquivosOld(diretorio string) error {
-// 	// Abre o diretório especificado
-// 	dir, err := os.Open(diretorio)
-// 	if err != nil {
-// 		return fmt.Errorf("erro ao abrir o diretório: %v", err)
-// 	}
-// 	defer dir.Close()
-
-// 	// Lê o conteúdo do diretório
-// 	arquivos, err := dir.Readdir(-1)
-// 	if err != nil {
-// 		return fmt.Errorf("erro ao ler o conteúdo do diretório: %v", err)
-// 	}
-
-// 	// Itera sobre os arquivos do diretório
-// 	for _, arquivo := range arquivos {
-// 		// Verifica se é um arquivo com extensão ".old"
-// 		if !arquivo.IsDir() && filepath.Ext(arquivo.Name()) == ".old" {
-// 			// Monta o caminho completo do arquivo
-// 			caminhoArquivo := filepath.Join(diretorio, arquivo.Name())
-
-// 			// Remove o arquivo
-// 			err := os.Remove(caminhoArquivo)
-// 			if err != nil {
-// 				return fmt.Errorf("erro ao remover o arquivo %s: %v", caminhoArquivo, err)
-// 			}
-
-// 			fmt.Printf("Arquivo %s removido com sucesso.\n", caminhoArquivo)
-// 		}
-// 	}
-
-// 	return nil
-// }
-
 func validarEndpoint(url string) bool {
-	resp, err := http.Get(url)
-	if err != nil {
-		fmt.Printf("Erro ao acessar o endpoint: %v\n", err)
+	if strings.HasPrefix(url, "http") {
+		resp, err := http.Get(url)
+		if err != nil {
+			fmt.Printf("Erro ao acessar o endpoint: %v\n", err)
+			return false
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode != http.StatusOK {
+			fmt.Printf("Erro: Status code não OK: %d\n", resp.StatusCode)
+			return false
+		}
+
+		return true
+	}
+	if _, err := validateGitlabUrl(url); err != nil {
 		return false
 	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		fmt.Printf("Erro: Status code não OK: %d\n", resp.StatusCode)
-		return false
-	}
-
-	fmt.Println("Endpoint válido.")
 	return true
 }
 
-func getAndSaveFile(url, caminhoDestino string) error {
-	// Faz o download do arquivo JSON
-	resp, err := http.Get(url)
-	if err != nil {
-		return fmt.Errorf("erro ao fazer o download do arquivo JSON: %v", err)
-	}
-	defer resp.Body.Close()
+func getAndSaveFile(url, caminhoDestino, menu string) error {
+	var err error
+	var resp *http.Response
 
-	// Lê o corpo da resposta
-	fileBytes, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("erro ao ler o corpo da resposta: %v", err)
-	}
-	// Grava os dados no arquivo local
-	err = os.WriteFile(caminhoDestino, fileBytes, 0644)
-	if err != nil {
-		return fmt.Errorf("erro ao gravar os dados no arquivo: %v", err)
+	for i := 0; i < maxRetryCount; i++ {
+		resp, err = http.Get(url)
+		if err != nil {
+			wait := time.Duration(math.Pow(2, float64(i))) * minRetryWait
+			if wait > maxRetryWait {
+				wait = maxRetryWait
+			}
+			fmt.Printf("Erro ao fazer download do arquivo %s, tentando novamente em %s\n", menu, wait)
+			time.Sleep(wait)
+			continue
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode >= 300 {
+			wait := time.Duration(math.Pow(2, float64(i))) * minRetryWait
+			if wait > maxRetryWait {
+				wait = maxRetryWait
+			}
+			fmt.Printf("Erro ao fazer download do arquivo %s (status %d), tentando novamente em %s\n", menu, resp.StatusCode, wait)
+			time.Sleep(wait)
+			continue
+		}
+
+		fileBytes, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return fmt.Errorf("erro ao ler o corpo da resposta %s: %v", menu, err)
+		}
+		err = os.WriteFile(caminhoDestino, fileBytes, 0644)
+		if err != nil {
+			return fmt.Errorf("erro ao gravar os dados no arquivo %s: %v", menu, err)
+		}
+
+		return nil
 	}
 
-	return nil
+	if err != nil {
+		return fmt.Errorf("erro ao fazer o download do arquivo %s após %d tentativas: %v", menu, maxRetryCount, err)
+	}
+	return fmt.Errorf("erro ao fazer o download do arquivo %s após %d tentativas: status code %d", menu, maxRetryCount, resp.StatusCode)
 }
 
-func loadList() ([]specList, error) {
+func loadList(specificMenu string) ([]specList, error) {
 	var currentConfig []specList
 	config := viper.Get("jaxyendy")
 
@@ -152,6 +113,9 @@ func loadList() ([]specList, error) {
 			vv, ok := interfaceToMap(v)
 			if !ok {
 				return currentConfig, fmt.Errorf("fail to load current config")
+			}
+			if specificMenu != "" && vv["menu"].(string) != specificMenu {
+				continue
 			}
 			currentConfig = append(currentConfig, specList{
 				Url:     vv["url"].(string),
@@ -163,4 +127,52 @@ func loadList() ([]specList, error) {
 
 	}
 	return currentConfig, nil
+}
+
+func loadListMap() ([]string, []specList, error) {
+	currentConfig, err := loadList("")
+	if err != nil {
+		return nil, nil, err
+	}
+
+	menus := []string{}
+	for _, v := range currentConfig {
+		menus = append(menus, v.Menu)
+	}
+
+	slices.Sort(menus)
+
+	return menus, currentConfig, nil
+}
+
+func getConfigToRun() ([]specList, error) {
+	menus, currentConfig, err := loadListMap()
+	if err != nil {
+		return nil, err
+	}
+
+	ms := pterm.DefaultInteractiveMultiselect.
+		WithDefaultText("Select products").
+		WithMaxHeight(14).
+		WithOptions(menus)
+
+	op, err := ms.Show()
+	if err != nil {
+		return nil, err
+	}
+
+	if len(op) == 0 {
+		return nil, fmt.Errorf("no products selected")
+	}
+
+	configToRun := []specList{}
+	for _, v := range op {
+		for _, v2 := range currentConfig {
+			if v2.Menu == v {
+				configToRun = append(configToRun, v2)
+			}
+		}
+	}
+	pterm.Println()
+	return configToRun, nil
 }

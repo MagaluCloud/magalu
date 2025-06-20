@@ -12,39 +12,51 @@ build-local:
 
 # cicd
 build-cicd:
-	@echo "RUNNING $@"
-	cd $(CICD_DIR) && go build -o cicd
-	cd $(MGCDIR) && go build -tags \"embed\" -o mgc
+	@cd $(CICD_DIR) && go build -o cicd
 
-dump-tree: build-cicd
+build-cli:
+	@cd $(MGCDIR) && go build -tags \"embed\" -o mgc
+
+
+dump-tree:
+	@cd $(CICD_DIR) && go build -o cicd
+	@cd $(MGCDIR) && go build -tags \"embed\" -o mgc
 	@echo "generating $(DUMP_TREE)..."
 	$(CICD_DIR)cicd pipeline dumptree -c $(MGCDIR)mgc -o "$(DUMP_TREE)"
 	@echo "generating $(DUMP_TREE): done"
 	@echo "ENDING $@"
 
-generate-docs: build-cicd
+generate-docs:
+	@cd $(CICD_DIR) && go build -o cicd
+	@cd $(MGCDIR) && go build -tags \"embed\" -o mgc
 	@echo "generating $(OUT_DIR)..."
 	$(CICD_DIR)cicd pipeline cligendoc -g true -c $(MGCDIR)mgc -d "$(DUMP_TREE)" -o "$(OUT_DIR)" -v "0"
 	@echo "generating $(OUT_DIR): done"
 	@echo "ENDING $@"
 
-oapi-index-gen: build-cicd
+oapi-index-gen:
+	@cd $(CICD_DIR) && go build -o cicd
+	@cd $(MGCDIR) && go build -tags \"embed\" -o mgc
 	$(CICD_DIR)cicd pipeline oapi-index $(OAPIDIR)
 
 # specs
-download-specs: build-cicd
-	@./mgc/spec_manipulator/cicd spec download -d $(SPECS_DIR)
+download-specs: 
+	@cd $(CICD_DIR) && go build -o cicd
+	@./mgc/spec_manipulator/cicd specs download -d $(SPECS_DIR)
 	@echo "\nNow, run 'make prepare-specs' to validate and prettify the specs"
 
-prepare-specs: build-cicd
-	@./mgc/spec_manipulator/cicd spec prepare -d $(SPECS_DIR)
+prepare-specs:
+	@cd $(CICD_DIR) && go build -o cicd
+	@./mgc/spec_manipulator/cicd specs prepare -d $(SPECS_DIR)
 	@echo "\nNow, run 'make downgrade-specs' to downgrade the specs"
 
-downgrade-specs: build-cicd
-	@./mgc/spec_manipulator/cicd spec downgrade -d $(SPECS_DIR)
+downgrade-specs:
+	@cd $(CICD_DIR) && go build -o cicd
+	@./mgc/spec_manipulator/cicd specs downgrade -d $(SPECS_DIR)
 	@echo "\nNow, run 'make refresh-specs' to finally, refresh the specs"
 
-refresh-specs: build-cicd
+refresh-specs:
+	@cd $(CICD_DIR) && go build -o cicd
 	@poetry install
 	@poetry run ./scripts/add_all_specs.sh
 	@$(CICD_DIR)cicd pipeline oapi-index $(OAPIDIR)

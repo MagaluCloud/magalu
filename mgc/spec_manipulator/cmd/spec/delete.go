@@ -6,13 +6,29 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func delete(cmd *cobra.Command, args []string) {
-	fmt.Println("not implemented - remover diretamente no arquivo de config")
-}
+func deleteSpecCmd() *cobra.Command {
+	var menu string
 
-var deleteSpecsCmd = &cobra.Command{
-	Use:   "delete",
-	Short: "Delete spec",
-	Args:  cobra.MinimumNArgs(1),
-	Run:   delete,
+	cmd := &cobra.Command{
+		Use:   "delete [menu]",
+		Short: "Delete spec",
+		Run: func(cmd *cobra.Command, args []string) {
+			currentConfig, err := loadList("")
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			newConfig := []specList{}
+			for _, v := range currentConfig {
+				if v.Menu != menu {
+					newConfig = append(newConfig, v)
+				}
+			}
+			saveConfig(newConfig)
+			fmt.Println("Spec removed successfully")
+		},
+	}
+
+	cmd.Flags().StringVarP(&menu, "menu", "m", "", "Menu to delete")
+	return cmd
 }

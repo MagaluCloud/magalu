@@ -2,9 +2,7 @@ package spec
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
-	"slices"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -26,43 +24,33 @@ func interfaceToMap(i interface{}) (map[string]interface{}, bool) {
 	return mapa, true
 }
 
+func saveConfig(config []specList) {
+	viper.Set("jaxyendy", config)
+	err := viper.WriteConfig()
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
 func add(options AddMenu) {
 
-	var toSave []specList
 	file := fmt.Sprintf("%s.jaxyendy.openapi.json", options.menu)
 
-	toSave = append(toSave, specList{Url: options.url, File: file, Menu: options.menu, Enabled: true})
-	currentConfig, err := loadList()
+	currentConfig, err := loadList("")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	if slices.Contains(currentConfig, toSave[0]) {
-		fmt.Println("url already exists")
-		return
-	}
-	if !validarEndpoint(options.url) {
-		fmt.Println("url is invalid")
-		return
-	}
 
-	toSave = append(toSave, currentConfig...)
-	// move it to common function
-	ex, err := os.Executable()
-	home := filepath.Dir(ex)
-	cobra.CheckErr(err)
-
-	// Search config in home directory with name ".cobra" (without extension).
-	viper.AddConfigPath(home)
-	viper.SetConfigType("yaml")
-	viper.SetConfigName(VIPER_FILE)
-
-	viper.Set("jaxyendy", toSave)
-	err = viper.WriteConfigAs(SPEC_DIR)
-	if err != nil {
-		fmt.Println(err)
+	for _, v := range currentConfig {
+		if v.Url == options.url {
+			fmt.Println("url already exists with menu: " + v.Menu)
+			return
+		}
 	}
-	fmt.Println("done")
+	currentConfig = append(currentConfig, specList{Url: options.url, File: file, Menu: options.menu, Enabled: true})
+	saveConfig(currentConfig)
+	fmt.Println("Added successfully")
 }
 
 type AddMenu struct {
@@ -78,6 +66,23 @@ func specAddNewCmd() *cobra.Command {
 		Short:   "Add new spec",
 		Example: "specs add https://block-storage.br-ne-1.jaxyendy.com/v1/openapi.json block-storage",
 		Run: func(cmd *cobra.Command, args []string) {
+			if options.menu == "" {
+				fmt.Println(cmd.UsageString())
+				fmt.Println(">> menu is required")
+				return
+			}
+			if !validarEndpoint(options.url) {
+				fmt.Println(cmd.UsageString())
+
+				fmt.Print(">> url is invalid\n\n")
+				fmt.Print("Gitlab example: \n    main/api_products/mcr-api/br-ne1-prod-yel-1/openapi.yaml\n\n")
+				fmt.Print("Gitlab example: \n    https://gitlab.luizalabs.com/open-platform/pcx/u0/-/blob/main/api_products/mcr-api/br-ne1-prod-yel-1/openapi.yaml?plain=1\n\n")
+				fmt.Print("Deployed spec example: \n    https://block-storage.br-ne-1.jaxyendy.com/v1/openapi.json\n\n")
+				return
+			}
+			options.url = strings.TrimSuffix(options.url, "?plain=1")
+			options.url = strings.TrimPrefix(options.url, "https://gitlab.luizalabs.com/open-platform/pcx/u0/-/blob/")
+
 			add(*options)
 		},
 	}
