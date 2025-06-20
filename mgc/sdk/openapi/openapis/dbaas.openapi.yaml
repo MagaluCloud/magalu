@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/cloud/dbaas/docs
         email: cloud-iaas-dbaas@luizalabs.com
-    version: 2.3.3
+    version: 2.15.2
 tags:
 -   name: engines
     description: Engines available for database instances.
@@ -142,7 +142,11 @@ paths:
             tags:
             - engines
             security:
-            -   OAuth2:
+            -   bearerAuth:
+                - dbaas.read
+            -   OAuth2PreProd:
+                - dbaas.read
+            -   OAuth2Prod:
                 - dbaas.read
     /v2/parameter-groups:
         get:
@@ -155,7 +159,7 @@ paths:
             -   $ref: '#/components/parameters/offset'
             -   $ref: '#/components/parameters/limit_small'
             -   $ref: '#/components/parameters/parameter_group_type_query'
-            -   $ref: '#/components/parameters/engine_id_query'
+            -   $ref: '#/components/parameters/engine_id_query_without_default'
             responses:
                 '200':
                     content:
@@ -179,7 +183,11 @@ paths:
             tags:
             - parameter-groups
             security:
-            -   OAuth2:
+            -   bearerAuth:
+                - dbaas.read
+            -   OAuth2PreProd:
+                - dbaas.read
+            -   OAuth2Prod:
                 - dbaas.read
         post:
             description: Creates a new parameter group for a tenant.
@@ -216,7 +224,11 @@ paths:
             tags:
             - parameter-groups
             security:
-            -   OAuth2:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
                 - dbaas.write
     /v2/parameter-groups/{parameter_group_id}:
         delete:
@@ -246,7 +258,11 @@ paths:
             tags:
             - parameter-groups
             security:
-            -   OAuth2:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
                 - dbaas.write
         get:
             description: Returns a parameter group detail.
@@ -279,7 +295,11 @@ paths:
             tags:
             - parameter-groups
             security:
-            -   OAuth2:
+            -   bearerAuth:
+                - dbaas.read
+            -   OAuth2PreProd:
+                - dbaas.read
+            -   OAuth2Prod:
                 - dbaas.read
         patch:
             description: Updates a parameter group.
@@ -318,7 +338,11 @@ paths:
             tags:
             - parameter-groups
             security:
-            -   OAuth2:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
                 - dbaas.write
     /v2/parameter-groups/{parameter_group_id}/parameters:
         get:
@@ -354,7 +378,11 @@ paths:
             tags:
             - parameter-groups
             security:
-            -   OAuth2:
+            -   bearerAuth:
+                - dbaas.read
+            -   OAuth2PreProd:
+                - dbaas.read
+            -   OAuth2Prod:
                 - dbaas.read
         post:
             description: Create a parameter for a group.
@@ -404,7 +432,11 @@ paths:
             tags:
             - parameter-groups
             security:
-            -   OAuth2:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
                 - dbaas.write
     /v2/parameter-groups/{parameter_group_id}/parameters/{parameter_id}:
         patch:
@@ -451,10 +483,17 @@ paths:
             tags:
             - parameter-groups
             security:
-            -   OAuth2:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
                 - dbaas.write
         delete:
             description: Deletes a parameter for a group.
+            x-permission:
+                permission-name: db_parameter_group_parameter_delete
+                product-name: database
             operationId: parameters_v2_delete
             parameters:
             -   $ref: '#/components/parameters/parameter_group_id'
@@ -478,7 +517,11 @@ paths:
             tags:
             - parameter-groups
             security:
-            -   OAuth2:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
                 - dbaas.write
     /v2/instance-types:
         get:
@@ -495,14 +538,8 @@ paths:
             -   $ref: '#/components/parameters/offset'
             -   $ref: '#/components/parameters/limit_medium'
             -   $ref: '#/components/parameters/instance_type_status'
-            -   in: query
-                name: engine_id
-                required: false
-                description: Engine Id unique identifier
-                schema:
-                    format: uuid
-                    title: Engine Id
-                    type: string
+            -   $ref: '#/components/parameters/instance_type_compatible_product'
+            -   $ref: '#/components/parameters/engine_id_query'
             responses:
                 '200':
                     description: Successful Response.
@@ -588,7 +625,7 @@ paths:
             -   $ref: '#/components/parameters/limit_small'
             -   $ref: '#/components/parameters/instance_status'
             -   $ref: '#/components/parameters/instance_expand'
-            -   $ref: '#/components/parameters/engine_id_query'
+            -   $ref: '#/components/parameters/engine_id_query_without_default'
             -   $ref: '#/components/parameters/volume_size_query'
             -   $ref: '#/components/parameters/volume_size_gt'
             -   $ref: '#/components/parameters/volume_size_gte'
@@ -643,7 +680,7 @@ paths:
             -   $ref: '#/components/parameters/limit_small'
             -   $ref: '#/components/parameters/instance_status'
             -   $ref: '#/components/parameters/instance_expand'
-            -   $ref: '#/components/parameters/engine_id_query'
+            -   $ref: '#/components/parameters/engine_id_query_without_default'
             -   $ref: '#/components/parameters/volume_size_query'
             -   $ref: '#/components/parameters/volume_size_gt'
             -   $ref: '#/components/parameters/volume_size_gte'
@@ -824,7 +861,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/DatabaseInstanceUpdateRequest'
+                            $ref: '#/components/schemas/InstanceUpdateRequest'
                 required: true
             responses:
                 '200':
@@ -1126,7 +1163,7 @@ paths:
             -   $ref: '#/components/parameters/offset'
             -   $ref: '#/components/parameters/limit_small'
             -   $ref: '#/components/parameters/cluster_status'
-            -   $ref: '#/components/parameters/engine_id_query'
+            -   $ref: '#/components/parameters/engine_id_query_without_default'
             -   $ref: '#/components/parameters/volume_size_query'
             -   $ref: '#/components/parameters/volume_size_gt'
             -   $ref: '#/components/parameters/volume_size_gte'
@@ -1168,7 +1205,7 @@ paths:
             -   $ref: '#/components/parameters/offset'
             -   $ref: '#/components/parameters/limit_small'
             -   $ref: '#/components/parameters/cluster_status'
-            -   $ref: '#/components/parameters/engine_id_query'
+            -   $ref: '#/components/parameters/engine_id_query_without_default'
             -   $ref: '#/components/parameters/volume_size_query'
             -   $ref: '#/components/parameters/volume_size_gt'
             -   $ref: '#/components/parameters/volume_size_gte'
@@ -2600,6 +2637,16 @@ components:
                 format: uuid
                 title: Engine Id
                 type: string
+                default: 063f3994-b6c2-4c37-96c9-bab8d82d36f7
+            description: Value referring to engine Id.
+        engine_id_query_without_default:
+            name: engine_id
+            in: query
+            required: false
+            schema:
+                format: uuid
+                title: Engine Id
+                type: string
             description: Value referring to engine Id.
         volume_size_query:
             name: volume.size
@@ -2738,6 +2785,12 @@ components:
                 allOf:
                 -   $ref: '#/components/schemas/InstanceTypeStatus'
             description: An enumeration.
+        instance_type_compatible_product:
+            name: compatible_product
+            in: query
+            schema:
+                $ref: '#/components/schemas/InstanceTypeCompatibleProducts'
+            description: Value referring to instance type compatible products.
         snapshot_type:
             name: type
             in: query
@@ -2972,6 +3025,10 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/LoadBalancerAddress'
+                ip_address:
+                    title: ClusterIpAddress
+                    type: string
+                    example: 172.53.10.82
             required:
             - id
             - name
@@ -3001,6 +3058,7 @@ components:
             - STOPPING
             - STOPPED
             - BACKING_UP
+            - BALANCING
             title: ClusterStatusResponse
             type: string
         ClusterVolumeResponse:
@@ -3432,6 +3490,9 @@ components:
             - BACKING_UP
             - DELETING
             - RESTORING
+            - ERROR_RESIZING
+            - ERROR_STARTING
+            - ERROR_STOPPING
             - ERROR_DELETING
             - MAINTENANCE
             - MAINTENANCE_ERROR
@@ -3461,6 +3522,7 @@ components:
             - STOPPING
             - STOPPED
             - BACKING_UP
+            - BALANCING
             example: ACTIVE
         InstanceGeneration:
             title: Instance Generation
@@ -3481,7 +3543,8 @@ components:
             - G1
             - G2
             - G3
-            example: G3
+            - G4
+            example: G4
         InstanceCreateRequest:
             title: Instance Create Request
             required:
@@ -3513,6 +3576,15 @@ components:
                     title: Password
                     maxLength: 50
                     type: string
+                security_groups:
+                    title: Security Group IDs
+                    description: Security Group IDs from the Network API to control
+                        the database access rules.
+                    items:
+                        format: uuid
+                        type: string
+                    type: array
+                    uniqueItems: true
                 volume:
                     $ref: '#/components/schemas/InstanceVolumeRequest'
                 parameter_group_id:
@@ -3631,7 +3703,7 @@ components:
         ParameterCreateRequest:
             properties:
                 name:
-                    $ref: '#/components/schemas/EngineParametersMysql8'
+                    $ref: '#/components/schemas/EngineParametersMysql84'
                 value:
                     anyOf:
                     -   type: number
@@ -3714,13 +3786,18 @@ components:
                     description: Parameter group unique identifier.
                     type: string
                     format: uuid
+                port_id:
+                    description: Port ID used by the Network API to identify the communication
+                        port.
+                    format: uuid
+                    type: string
                 apply_parameters_pending:
                     description: Flag that defines whether an instance should be restarted
                         to apply parameters.
                     title: Parameter Apply Pending
                     type: boolean
                 instance_type_id:
-                    description: Instance Type unique identifier. Instance size.
+                    description: Instance Type unique identifier.
                     type: string
                     format: uuid
                 volume:
@@ -3774,7 +3851,7 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/ReplicaDetailResponse'
-        DatabaseInstanceUpdateRequest:
+        InstanceUpdateRequest:
             title: Database Instance Update Request
             type: object
             properties:
@@ -3803,8 +3880,191 @@ components:
             enum:
             - ACTIVE
             - DEPRECATED
+            - PREVIEW
         EngineParametersMysql8:
-            title: Parameter name
+            enum:
+            - ACTIVATE_ALL_ROLES_ON_LOGIN
+            - AUTOCOMMIT
+            - AUTOMATIC_SP_PRIVILEGES
+            - BACK_LOG
+            - BLOCK_ENCRYPTION_MODE
+            - CHARACTER_SET_SERVER
+            - COLLATION_SERVER
+            - CONNECT_TIMEOUT
+            - CTE_MAX_RECURSION_DEPTH
+            - DEFAULT_WEEK_FORMAT
+            - DIV_PRECISION_INCREMENT
+            - END_MARKERS_IN_JSON
+            - EQ_RANGE_INDEX_DIVE_LIMIT
+            - EVENT_SCHEDULER
+            - FT_QUERY_EXPANSION_LIMIT
+            - GENERAL_LOG
+            - GENERATED_RANDOM_PASSWORD_LENGTH
+            - GROUP_CONCAT_MAX_LEN
+            - INNODB_BUFFER_POOL_INSTANCES
+            - INNODB_FILL_FACTOR
+            - INNODB_FT_ENABLE_STOPWORD
+            - INNODB_FT_MAX_TOKEN_SIZE
+            - INNODB_FT_MIN_TOKEN_SIZE
+            - INNODB_FT_NUM_WORD_OPTIMIZE
+            - INNODB_FT_RESULT_CACHE_LIMIT
+            - INNODB_LOCK_WAIT_TIMEOUT
+            - INNODB_LOG_BUFFER_SIZE
+            - INNODB_MAX_UNDO_LOG_SIZE
+            - INNODB_OPTIMIZE_FULLTEXT_ONLY
+            - INNODB_PRINT_ALL_DEADLOCKS
+            - INNODB_PRINT_DDL_LOGS
+            - INNODB_READ_IO_THREADS
+            - INNODB_REDO_LOG_CAPACITY
+            - INNODB_ROLLBACK_ON_TIMEOUT
+            - INNODB_SEGMENT_RESERVE_FACTOR
+            - INNODB_WRITE_IO_THREADS
+            - INTERACTIVE_TIMEOUT
+            - JOIN_BUFFER_SIZE
+            - LC_TIME_NAMES
+            - LOCK_WAIT_TIMEOUT
+            - LOG_ERROR_VERBOSITY
+            - LOG_QUERIES_NOT_USING_INDEXES
+            - LOG_SLOW_ADMIN_STATEMENTS
+            - LOG_THROTTLE_QUERIES_NOT_USING_INDEXES
+            - LONG_QUERY_TIME
+            - LOWER_CASE_TABLE_NAMES
+            - MAX_ALLOWED_PACKET
+            - MAX_CONNECT_ERRORS
+            - MAX_CONNECTIONS
+            - MAX_EXECUTION_TIME
+            - MAX_JOIN_SIZE
+            - MAX_POINTS_IN_GEOMETRY
+            - MAX_PREPARED_STMT_COUNT
+            - MAX_SEEKS_FOR_KEY
+            - MAX_SORT_LENGTH
+            - MAX_SP_RECURSION_DEPTH
+            - MAX_USER_CONNECTIONS
+            - MAX_WRITE_LOCK_COUNT
+            - MIN_EXAMINED_ROW_LIMIT
+            - NET_READ_TIMEOUT
+            - NET_RETRY_COUNT
+            - NET_WRITE_TIMEOUT
+            - NGRAM_TOKEN_SIZE
+            - PARSER_MAX_MEM_SIZE
+            - PASSWORD_REQUIRE_CURRENT
+            - PASSWORD_REUSE_INTERVAL
+            - QUERY_ALLOC_BLOCK_SIZE
+            - REGEXP_STACK_LIMIT
+            - REGEXP_TIME_LIMIT
+            - SHOW_CREATE_TABLE_VERBOSITY
+            - SKIP_NAME_RESOLVE
+            - SKIP_SHOW_DATABASE
+            - SLOW_LAUNCH_TIME
+            - SLOW_QUERY_LOG
+            - SQL_MODE
+            - STORED_PROGRAM_CACHE
+            - STORED_PROGRAM_DEFINITION_CACHE
+            - TABLE_DEFINITION_CACHE
+            - TABLE_OPEN_CACHE
+            - TABLE_OPEN_CACHE_INSTANCES
+            - TABLESPACE_DEFINITION_CACHE
+            - TEMPTABLE_MAX_MMAP
+            - TEMPTABLE_MAX_RAM
+            - TMP_TABLE_SIZE
+            - TRANSACTION_ISOLATION
+            - UPDATABLE_VIEWS_WITH_LIMIT
+            - WAIT_TIMEOUT
+            - WINDOWING_USE_HIGH_PRECISION
+            title: EngineParametersMysql8
+            type: string
+            example: LOWER_CASE_TABLE_NAMES
+        EngineParametersMysql84:
+            enum:
+            - ACTIVATE_ALL_ROLES_ON_LOGIN
+            - AUTOCOMMIT
+            - AUTOMATIC_SP_PRIVILEGES
+            - BACK_LOG
+            - BLOCK_ENCRYPTION_MODE
+            - CHARACTER_SET_SERVER
+            - COLLATION_SERVER
+            - CONNECT_TIMEOUT
+            - CTE_MAX_RECURSION_DEPTH
+            - DEFAULT_WEEK_FORMAT
+            - DIV_PRECISION_INCREMENT
+            - END_MARKERS_IN_JSON
+            - EQ_RANGE_INDEX_DIVE_LIMIT
+            - EVENT_SCHEDULER
+            - FT_QUERY_EXPANSION_LIMIT
+            - GENERAL_LOG
+            - GENERATED_RANDOM_PASSWORD_LENGTH
+            - GROUP_CONCAT_MAX_LEN
+            - INNODB_BUFFER_POOL_INSTANCES
+            - INNODB_FILL_FACTOR
+            - INNODB_FT_ENABLE_STOPWORD
+            - INNODB_FT_MAX_TOKEN_SIZE
+            - INNODB_FT_MIN_TOKEN_SIZE
+            - INNODB_FT_NUM_WORD_OPTIMIZE
+            - INNODB_FT_RESULT_CACHE_LIMIT
+            - INNODB_LOCK_WAIT_TIMEOUT
+            - INNODB_LOG_BUFFER_SIZE
+            - INNODB_MAX_UNDO_LOG_SIZE
+            - INNODB_OPTIMIZE_FULLTEXT_ONLY
+            - INNODB_PRINT_ALL_DEADLOCKS
+            - INNODB_PRINT_DDL_LOGS
+            - INNODB_READ_IO_THREADS
+            - INNODB_REDO_LOG_CAPACITY
+            - INNODB_ROLLBACK_ON_TIMEOUT
+            - INNODB_SEGMENT_RESERVE_FACTOR
+            - INNODB_WRITE_IO_THREADS
+            - INTERACTIVE_TIMEOUT
+            - JOIN_BUFFER_SIZE
+            - LC_TIME_NAMES
+            - LOCK_WAIT_TIMEOUT
+            - LOG_ERROR_VERBOSITY
+            - LOG_QUERIES_NOT_USING_INDEXES
+            - LOG_SLOW_ADMIN_STATEMENTS
+            - LOG_THROTTLE_QUERIES_NOT_USING_INDEXES
+            - LONG_QUERY_TIME
+            - LOWER_CASE_TABLE_NAMES
+            - MAX_ALLOWED_PACKET
+            - MAX_CONNECT_ERRORS
+            - MAX_CONNECTIONS
+            - MAX_EXECUTION_TIME
+            - MAX_JOIN_SIZE
+            - MAX_POINTS_IN_GEOMETRY
+            - MAX_PREPARED_STMT_COUNT
+            - MAX_SEEKS_FOR_KEY
+            - MAX_SORT_LENGTH
+            - MAX_SP_RECURSION_DEPTH
+            - MAX_USER_CONNECTIONS
+            - MAX_WRITE_LOCK_COUNT
+            - MIN_EXAMINED_ROW_LIMIT
+            - NET_READ_TIMEOUT
+            - NET_RETRY_COUNT
+            - NET_WRITE_TIMEOUT
+            - NGRAM_TOKEN_SIZE
+            - PARSER_MAX_MEM_SIZE
+            - PASSWORD_REQUIRE_CURRENT
+            - PASSWORD_REUSE_INTERVAL
+            - QUERY_ALLOC_BLOCK_SIZE
+            - REGEXP_STACK_LIMIT
+            - REGEXP_TIME_LIMIT
+            - SHOW_CREATE_TABLE_VERBOSITY
+            - SKIP_NAME_RESOLVE
+            - SKIP_SHOW_DATABASE
+            - SLOW_LAUNCH_TIME
+            - SLOW_QUERY_LOG
+            - SQL_MODE
+            - STORED_PROGRAM_CACHE
+            - STORED_PROGRAM_DEFINITION_CACHE
+            - TABLE_DEFINITION_CACHE
+            - TABLE_OPEN_CACHE
+            - TABLE_OPEN_CACHE_INSTANCES
+            - TABLESPACE_DEFINITION_CACHE
+            - TEMPTABLE_MAX_MMAP
+            - TEMPTABLE_MAX_RAM
+            - TMP_TABLE_SIZE
+            - TRANSACTION_ISOLATION
+            - UPDATABLE_VIEWS_WITH_LIMIT
+            - WAIT_TIMEOUT
+            - WINDOWING_USE_HIGH_PRECISION
+            title: EngineParametersMysql84
             type: string
             example: LOWER_CASE_TABLE_NAMES
         EngineParameterResponse:
@@ -3853,7 +4113,7 @@ components:
                     type: boolean
                     example: false
                 name:
-                    $ref: '#/components/schemas/EngineParametersMysql8'
+                    $ref: '#/components/schemas/EngineParametersMysql84'
                 parameter_name:
                     title: Parameter Name
                     type: string
@@ -3924,7 +4184,7 @@ components:
                     type: string
                     example: 44ae8773-a21e-4d5e-a38f-b677ccfeb7f8
                 name:
-                    $ref: '#/components/schemas/EngineParametersMysql8'
+                    $ref: '#/components/schemas/EngineParametersMysql84'
                 value:
                     anyOf:
                     -   type: number
@@ -4000,6 +4260,14 @@ components:
             enum:
             - ACTIVE
             - DEPRECATED
+        InstanceTypeCompatibleProducts:
+            title: Instance Type Compatible per product
+            description: An enumeration.
+            type: string
+            enum:
+            - CLUSTER
+            - SINGLE_INSTANCE
+            - SINGLE_INSTANCE_REPLICA
         InstanceExpand:
             title: Instance Expand
             description: An enumeration.
@@ -4111,6 +4379,11 @@ components:
                     title: Maintenance schedule date
                     type: string
                     format: date-time
+                port_id:
+                    description: Port ID used by the Network API to identify the communication
+                        port.
+                    format: uuid
+                    type: string
         ReplicaAddressResponse:
             title: Replica Address Response
             required:
@@ -4143,6 +4416,15 @@ components:
                     title: Instance Type Id
                     type: string
                     format: uuid
+                security_groups:
+                    title: Security Group IDs
+                    description: Security Group IDs from the Network API to control
+                        the database access rules.
+                    items:
+                        format: uuid
+                        type: string
+                    type: array
+                    uniqueItems: true
         ReplicaResizeRequest:
             title: Replica Resize Request
             type: object
@@ -4214,6 +4496,7 @@ components:
         LoadBalancerAddress:
             required:
             - access
+            - purpose
             type: object
             properties:
                 access:
@@ -4238,6 +4521,13 @@ components:
                     type: string
                     default: '3306'
                     example: '3306'
+                purpose:
+                    title: Port Purpose
+                    type: string
+                    enum:
+                    - READ_WRITE
+                    - READONLY
+                    - METRICS
         Flavor:
             type: object
             required:
@@ -4303,6 +4593,9 @@ components:
             - family_description
             - family_slug
             - size
+            - compatible_product
+            - engine_id
+            - status
             properties:
                 id:
                     description: Instance Type unique identifier.
@@ -4336,6 +4629,16 @@ components:
                     description: Instance Type Size Description.
                     type: string
                     example: Small
+                compatible_product:
+                    description: Compatible Instance Type Product.
+                    type: string
+                    example: SINGLE_INSTANCE
+                engine_id:
+                    format: uuid
+                    title: Engine Id
+                    type: string
+                status:
+                    $ref: '#/components/schemas/InstanceTypeStatus'
         ErrorResponse:
             title: Error Response
             type: object

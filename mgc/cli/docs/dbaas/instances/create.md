@@ -24,6 +24,7 @@ mgc dbaas instances create --availability-zone="br-ne1-a" --volume.size=30
     --name string                     Name (max character count: 100) (required)
     --parameter-group-id uuid         Parameter group Id
     --password string                 Password (max character count: 50) (required)
+    --security-groups array(uuid)     Security Group IDs from the Network API to control the database access rules.
     --user string                     User (max character count: 25) (required)
     --volume object                   Instance Volume Request (properties: size and type)
                                       Use --volume=help for more details (required)

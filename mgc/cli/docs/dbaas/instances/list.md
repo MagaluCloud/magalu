@@ -20,7 +20,7 @@ mgc dbaas instances list --status="ACTIVE"
     --engine-id uuid            Value referring to engine Id.
 -h, --help                      help for list
     --parameter-group-id uuid   Value referring to parameter group Id.
-    --status enum               Value referring to instance status. (one of "ACTIVE", "BACKING_UP", "CREATING", "DELETED", "DELETING", "ERROR", "ERROR_DELETING", "MAINTENANCE", "MAINTENANCE_ERROR", "PENDING", "REBOOT", "RESIZING", "RESTORING", "STARTING", "STOPPED" or "STOPPING")
+    --status enum               Value referring to instance status. (one of "ACTIVE", "BACKING_UP", "CREATING", "DELETED", "DELETING", "ERROR", "ERROR_DELETING", "ERROR_RESIZING", "ERROR_STARTING", "ERROR_STOPPING", "MAINTENANCE", "MAINTENANCE_ERROR", "PENDING", "REBOOT", "RESIZING", "RESTORING", "STARTING", "STOPPED" or "STOPPING")
     --volume.size integer       Volume.Size: Value referring to volume size.
     --volume.size-gt integer    Volume.Size Gt: Value referring to volume size greater than.
     --volume.size-gte integer   Volume.Size Gte: Value referring to volume size greater than or equal to.

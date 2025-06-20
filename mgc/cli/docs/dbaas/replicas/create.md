@@ -13,6 +13,7 @@ mgc dbaas replicas create [flags]
 -h, --help                          help for create
     --instance-type-id uuid         Instance Type Id
     --name string                   Name (max character count: 255) (required)
+    --security-groups array(uuid)   Security Group IDs from the Network API to control the database access rules.
     --source-id uuid                Source Id (required)
 ```
 
