@@ -34,16 +34,18 @@ func downloadSpecsCmd() *cobra.Command {
 			spinner.Start("Downloading ...")
 			for _, v := range currentConfig {
 				spinner.UpdateText("Downloading " + v.File)
-				if strings.HasPrefix(v.Url, "http") {
+				if !strings.Contains(v.Url, "gitlab.luizalabs.com") {
 					err = getAndSaveFile(v.Url, filepath.Join(dir, v.File), v.Menu)
 					if err != nil {
+						spinner.Fail(err)
 						return
 					}
 				}
 
-				if !strings.HasPrefix(v.Url, "http") {
+				if strings.Contains(v.Url, "gitlab.luizalabs.com") {
 					err = downloadGitlab(v.Url, filepath.Join(dir, v.File))
 					if err != nil {
+						spinner.Fail(err)
 						return
 					}
 				}

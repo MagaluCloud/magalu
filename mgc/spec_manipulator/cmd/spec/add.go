@@ -2,7 +2,6 @@ package spec
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -80,8 +79,6 @@ func specAddNewCmd() *cobra.Command {
 				fmt.Print("Deployed spec example: \n    https://block-storage.br-ne-1.jaxyendy.com/v1/openapi.json\n\n")
 				return
 			}
-			options.url = strings.TrimSuffix(options.url, "?plain=1")
-			options.url = strings.TrimPrefix(options.url, "https://gitlab.luizalabs.com/open-platform/pcx/u0/-/blob/")
 
 			add(*options)
 		},

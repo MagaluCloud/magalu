@@ -41,14 +41,14 @@ func diffCheckerCmd() *cobra.Command {
 
 				tmpFile := filepath.Join(dir, v.File)
 
-				if strings.HasPrefix(v.Url, "http") {
+				if !strings.Contains(v.Url, "gitlab.luizalabs.com") {
 					err = getAndSaveFile(v.Url, tmpFile, v.Menu)
 					if err != nil {
 						return
 					}
 				}
 
-				if !strings.HasPrefix(v.Url, "http") {
+				if strings.Contains(v.Url, "gitlab.luizalabs.com") {
 					err = downloadGitlab(v.Url, tmpFile)
 					if err != nil {
 						return
