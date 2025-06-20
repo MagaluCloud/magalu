@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Delete
 
 Delete a VPC from the provided tenant_id

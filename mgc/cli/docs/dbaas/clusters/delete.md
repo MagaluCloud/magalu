@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Delete
 
 Removes a database cluster and it"s instances for a tenant.

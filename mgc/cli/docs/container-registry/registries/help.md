@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Registries
 
 Routes related to creation, listing and deletion of registries.

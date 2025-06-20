@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Delete
 
 Delete a Snapshot for the currently authenticated tenant.

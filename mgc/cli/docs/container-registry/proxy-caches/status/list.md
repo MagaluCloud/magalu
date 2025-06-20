@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 Verifies and returns the current connection status of a configured proxy cache,

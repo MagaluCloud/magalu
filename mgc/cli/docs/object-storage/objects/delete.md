@@ -1,3 +1,6 @@
+---
+sidebar_position: 6
+---
 # Delete
 
 Delete an object from a bucket

@@ -1,3 +1,6 @@
+---
+sidebar_position: 2
+---
 # Create
 
 Creates a new database instance asynchronously for a tenant.

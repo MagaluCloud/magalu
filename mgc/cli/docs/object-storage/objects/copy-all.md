@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Copy-All
 
 Copy all objects from a bucket to another bucket

@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 Lists all types of events emitted by other products.

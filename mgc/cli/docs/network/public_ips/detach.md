@@ -1,3 +1,6 @@
+---
+sidebar_position: 5
+---
 # Detach
 
 Detach a Public IP to a Port

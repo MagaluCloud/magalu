@@ -32,15 +32,15 @@ generate-docs:
 	@echo "generating $(OUT_DIR)..."
 	$(CICD_DIR)cicd pipeline cligendoc -g true -c $(MGCDIR)mgc -d "$(DUMP_TREE)" -o "$(OUT_DIR)" -v "0"
 	@echo "generating $(OUT_DIR): done"
+	@$(CICD_DIR)cicd pipeline gen-docs-magalu $(OUT_DIR)
 	@echo "ENDING $@"
 
 oapi-index-gen:
 	@cd $(CICD_DIR) && go build -o cicd
 	@cd $(MGCDIR) && go build -tags \"embed\" -o mgc
 	$(CICD_DIR)cicd pipeline oapi-index $(OAPIDIR)
-
 # specs
-download-specs: 
+download-specs:
 	@cd $(CICD_DIR) && go build -o cicd
 	@./mgc/spec_manipulator/cicd specs download -d $(SPECS_DIR)
 	@echo "\nNow, run 'make prepare-specs' to validate and prettify the specs"

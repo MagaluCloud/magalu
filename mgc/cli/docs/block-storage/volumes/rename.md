@@ -1,3 +1,6 @@
+---
+sidebar_position: 8
+---
 # Rename
 
 Rename a Volume for the currently authenticated tenant.

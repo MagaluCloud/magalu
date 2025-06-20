@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Info
 
 Endpoints related to listing available flavors (resource configurations) and Kubernetes versions for a Kubernetes cluster.

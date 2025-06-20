@@ -1,3 +1,6 @@
+---
+sidebar_position: 6
+---
 # Revoke
 
 Revoke credentials used in Object Storage requests

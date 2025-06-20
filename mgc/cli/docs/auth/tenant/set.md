@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Set
 
 Set the active Tenant to be used for all subsequent requests

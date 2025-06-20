@@ -1,3 +1,6 @@
+---
+sidebar_position: 6
+---
 # Get
 
 Get details of a specific Subnet Pool

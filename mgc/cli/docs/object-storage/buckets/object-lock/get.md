@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Get
 
 Get object locking configuration for the specified bucket

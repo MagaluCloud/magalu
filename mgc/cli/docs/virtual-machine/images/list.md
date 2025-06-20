@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 Retrieve a list of images allowed for the current region.

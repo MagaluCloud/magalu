@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Credentials
 
 Routes related to credentials to login to Docker.

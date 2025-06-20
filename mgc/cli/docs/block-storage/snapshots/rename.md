@@ -1,3 +1,6 @@
+---
+sidebar_position: 6
+---
 # Rename
 
 Rename a Snapshot for the currently authenticated tenant.

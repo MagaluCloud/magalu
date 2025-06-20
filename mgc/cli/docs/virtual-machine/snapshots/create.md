@@ -1,3 +1,6 @@
+---
+sidebar_position: 2
+---
 # Create
 
 Create a snapshot of a Virtual Machine in the current tenant which is logged in. 

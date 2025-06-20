@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Get
 
 Get a specific API key by its ID

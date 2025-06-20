@@ -1,3 +1,6 @@
+---
+sidebar_position: 2
+---
 # Create
 
 Creates a proxy cache in Magalu Cloud.

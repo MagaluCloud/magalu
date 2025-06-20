@@ -1,3 +1,6 @@
+---
+sidebar_position: 7
+---
 # Update
 
 Updates a database cluster.

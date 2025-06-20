@@ -1,3 +1,6 @@
+---
+sidebar_position: 5
+---
 # Kubeconfig
 
 Retrieves the kubeconfig of a Kubernetes cluster by cluster_uuid.

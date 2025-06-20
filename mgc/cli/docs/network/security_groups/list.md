@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 Returns a list of security groups for a provided tenant_id

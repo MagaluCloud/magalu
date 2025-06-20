@@ -1,3 +1,6 @@
+---
+sidebar_position: 5
+---
 # Set
 
 Set policy document for the specified bucket. The policy can be provided as a direct JSON string or a file path using @./policy.json.

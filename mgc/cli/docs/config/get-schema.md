@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Get-Schema
 
 Get the JSON Schema for the specified Config. The Schema has

@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 Returns a list of available instance types. An instance type is a hardware template that defines the size of RAM and vCPU.

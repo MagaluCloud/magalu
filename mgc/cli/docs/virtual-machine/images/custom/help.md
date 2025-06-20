@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Custom
 
 Operations with images for instances. | custom

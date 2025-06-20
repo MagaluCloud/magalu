@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Targets
 
 Network Load Balancer Backends (Target Pools) | targets

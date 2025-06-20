@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Add
 
 Change current Object Storage credential

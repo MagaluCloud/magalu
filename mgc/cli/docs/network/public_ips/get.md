@@ -1,3 +1,6 @@
+---
+sidebar_position: 6
+---
 # Get
 
 Return a Public IP details

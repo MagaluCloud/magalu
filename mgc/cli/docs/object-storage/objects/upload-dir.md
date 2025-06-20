@@ -1,3 +1,6 @@
+---
+sidebar_position: 15
+---
 # Upload-Dir
 
 Upload a directory to a bucket

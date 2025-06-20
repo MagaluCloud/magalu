@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Create-Book-Cidr
 
 Booking a CIDR range from a subnetpool

@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Public-Ips
 
 Operations related to VPCs | public-ips

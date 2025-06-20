@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Get
 
 Get labels for the specified bucket

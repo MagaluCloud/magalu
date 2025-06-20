@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 List Virtual Machine instances in the current tenant which is logged in.

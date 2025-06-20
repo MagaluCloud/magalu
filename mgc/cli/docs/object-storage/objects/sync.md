@@ -1,3 +1,6 @@
+---
+sidebar_position: 14
+---
 # Sync
 
 This command uploads any file from the local path to the bucket if it is not already present or has modified time changed.

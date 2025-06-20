@@ -1,3 +1,6 @@
+---
+sidebar_position: 5
+---
 # Restore
 
 Create a new instance from snapshot.

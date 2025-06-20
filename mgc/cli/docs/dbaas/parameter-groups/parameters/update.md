@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Update
 
 Updates a parameter for a group.

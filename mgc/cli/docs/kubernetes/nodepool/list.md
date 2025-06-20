@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 Gets a node pool from a Kubernetes cluster by cluster_uuid.

@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Objects
 
 Object operations for Object Storage API

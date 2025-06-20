@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Images
 
 Operations with images for instances.

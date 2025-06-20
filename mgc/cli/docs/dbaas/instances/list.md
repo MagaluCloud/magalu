@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 Returns a list of database instances for a x-tenant-id.

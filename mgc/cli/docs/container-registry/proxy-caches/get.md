@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Get
 
 Get a proxycache by uuid.

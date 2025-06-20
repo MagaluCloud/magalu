@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Get
 
 Get the policy document for the specified bucket

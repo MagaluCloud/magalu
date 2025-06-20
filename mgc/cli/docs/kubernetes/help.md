@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Kubernetes
 
 APIs related to the Kubernetes product.

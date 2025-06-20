@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Copy
 
 Copy an object from a bucket to another bucket

@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Get
 
 Retrieve detailed information about a bucket

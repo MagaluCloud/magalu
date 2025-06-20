@@ -1,3 +1,6 @@
+---
+sidebar_position: 6
+---
 # Rename
 
 Renames a Snapshot with the id provided in the current tenant which is logged in.

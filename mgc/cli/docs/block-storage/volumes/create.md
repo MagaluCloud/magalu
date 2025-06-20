@@ -1,3 +1,6 @@
+---
+sidebar_position: 2
+---
 # Create
 
 Create a Volume for the currently authenticated tenant.

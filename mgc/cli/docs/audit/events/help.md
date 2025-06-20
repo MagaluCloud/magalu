@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Events
 
 Endpoints related to listing events emitted by other products.

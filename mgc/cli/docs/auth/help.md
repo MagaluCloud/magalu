@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Auth
 
 The authentication credentials set here will be used as a basis for a variety

@@ -1,3 +1,6 @@
+---
+sidebar_position: 7
+---
 # Download-All
 
 Download all objects from a bucket
