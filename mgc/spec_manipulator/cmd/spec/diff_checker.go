@@ -65,7 +65,7 @@ func diffCheckerCmd() *cobra.Command {
 					}
 				}
 
-				justRunValidate(dir, v)
+				justRunValidate(dirTmp, v)
 
 				//
 				runMarkdownReport(filepath.Join(dir, v.File), tmpFile)
