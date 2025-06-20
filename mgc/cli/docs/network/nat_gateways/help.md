@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Nat_gateways
 
 Operations related to Nat Gateway

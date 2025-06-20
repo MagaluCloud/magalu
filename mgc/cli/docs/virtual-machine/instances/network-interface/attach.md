@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Attach
 
 Attach network interface to an instance for a default project.

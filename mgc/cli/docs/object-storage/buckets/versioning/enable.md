@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Enable
 
 Enable versioning for a Bucket

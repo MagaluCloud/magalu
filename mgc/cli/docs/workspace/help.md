@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Workspace
 
 Workspace hold auth and runtime configuration, like tokens and log filter settings.

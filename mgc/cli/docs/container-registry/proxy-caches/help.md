@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Proxy-Caches
 
 Routes related to creating, listing and deletion of proxy-caches.

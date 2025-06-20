@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Flavor
 
 Endpoints related to listing available flavors for a Kubernetes cluster.

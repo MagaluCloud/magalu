@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Revoke
 
 Revoke an API key by its ID

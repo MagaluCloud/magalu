@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Nodepool
 
 Endpoints related to the creation, listing of nodepools and nodes, updating, and deletion of nodepools for a Kubernetes cluster.

@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Api-Key
 
 Manage credentials to use Object Storage

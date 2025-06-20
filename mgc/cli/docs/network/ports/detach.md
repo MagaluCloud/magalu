@@ -1,3 +1,6 @@
+---
+sidebar_position: 5
+---
 # Detach
 
 Detach a Security Group to a Port with provided port_id, security_group_id, x-tenant-id of an specific project type

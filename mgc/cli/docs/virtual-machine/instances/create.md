@@ -1,3 +1,6 @@
+---
+sidebar_position: 2
+---
 # Create
 
 Creates a Virtual Machine instance in the current tenant which is logged in.

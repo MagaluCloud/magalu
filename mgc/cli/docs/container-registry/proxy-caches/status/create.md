@@ -1,3 +1,6 @@
+---
+sidebar_position: 2
+---
 # Create
 
 Validates the provided credentials and endpoint information for a remote registry

@@ -1,3 +1,6 @@
+---
+sidebar_position: 6
+---
 # Start
 
 Starts a database instance.

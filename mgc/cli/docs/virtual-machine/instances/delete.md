@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Delete
 
 Deletes permanently an instance with the id provided in the current tenant

@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Profile
 
 The profile group provides commands to view and modify user account settings. 

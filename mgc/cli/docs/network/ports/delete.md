@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Delete
 
 Delete a port from the provided tenant_id

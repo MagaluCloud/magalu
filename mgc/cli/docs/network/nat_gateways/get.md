@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Get
 
 Detail a NAT (Network Address Translation) Gateway from a VPC.

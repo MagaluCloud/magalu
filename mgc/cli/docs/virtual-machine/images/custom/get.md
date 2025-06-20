@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Get
 
 Get details of a custom image by its ID.

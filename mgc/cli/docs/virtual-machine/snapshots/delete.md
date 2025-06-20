@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Delete
 
 Deletes an snapshot with the id provided in the current tenant

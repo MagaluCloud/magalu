@@ -1,3 +1,6 @@
+---
+sidebar_position: 7
+---
 # Stop
 
 Stop an instance replica.

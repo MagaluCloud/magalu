@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Parameter-Groups
 
 Parameter groups management.

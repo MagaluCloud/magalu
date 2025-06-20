@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 Returns a list of Public IPs for a provided vpc_id

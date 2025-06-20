@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Update
 
 Update a client (Oauth Application)

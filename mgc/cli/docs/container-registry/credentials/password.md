@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Password
 
 Reset container registry user's password.

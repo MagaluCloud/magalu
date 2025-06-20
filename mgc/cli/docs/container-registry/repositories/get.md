@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Get
 
 Return detailed repository's information filtered by name.

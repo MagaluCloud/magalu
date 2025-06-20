@@ -1,3 +1,6 @@
+---
+sidebar_position: 16
+---
 # Upload
 
 Upload a file to a bucket

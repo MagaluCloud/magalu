@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Get
 
 Get Health Check by ID

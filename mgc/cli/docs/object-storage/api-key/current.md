@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Current
 
 Get the current Object Storage credentials

@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Public_ips
 
 Operations related to Public IPs

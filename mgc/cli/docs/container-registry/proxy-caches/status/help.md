@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Status
 
 Routes related to creating, listing and deletion of proxy-caches. | status

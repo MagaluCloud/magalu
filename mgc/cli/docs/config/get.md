@@ -1,3 +1,6 @@
+---
+sidebar_position: 5
+---
 # Get
 
 Get a specific Config value that has been previously set. If there's an env variable

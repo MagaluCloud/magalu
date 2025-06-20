@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 Return container registry user's authentication credentials.

@@ -1,3 +1,6 @@
+---
+sidebar_position: 5
+---
 # Detach
 
 Detach a Volume from a Virtual Machine instance for the

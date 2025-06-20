@@ -1,3 +1,6 @@
+---
+sidebar_position: 5
+---
 # Resize
 
 Resize an instance replica.

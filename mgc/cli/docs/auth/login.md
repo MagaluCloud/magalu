@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Login
 
 Log in to your Magalu Cloud account. When you login with this command,

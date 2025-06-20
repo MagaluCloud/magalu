@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Version
 
 Endpoints related to listing available Kubernetes versions for a Kubernetes cluster.

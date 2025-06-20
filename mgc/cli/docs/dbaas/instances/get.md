@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Get
 
 Returns a database instance detail.

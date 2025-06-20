@@ -1,3 +1,6 @@
+---
+sidebar_position: 5
+---
 # Delete-All
 
 Delete all objects from a bucket

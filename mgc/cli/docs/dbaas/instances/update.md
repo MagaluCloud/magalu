@@ -1,3 +1,6 @@
+---
+sidebar_position: 8
+---
 # Update
 
 Updates a database instance.

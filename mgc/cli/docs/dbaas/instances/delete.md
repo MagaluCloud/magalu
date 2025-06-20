@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Delete
 
 Deletes a database instance.

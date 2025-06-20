@@ -1,3 +1,6 @@
+---
+sidebar_position: 10
+---
 # Move-Dir
 
 Moves objects from a source to a destination.

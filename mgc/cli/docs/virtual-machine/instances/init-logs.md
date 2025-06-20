@@ -1,3 +1,6 @@
+---
+sidebar_position: 5
+---
 # Init-Logs
 
 Retrieve instance init log output.

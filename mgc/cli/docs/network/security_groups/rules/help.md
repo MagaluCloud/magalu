@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Rules
 
 Operations related to Security Groups | rules

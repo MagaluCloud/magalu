@@ -1,3 +1,6 @@
+---
+sidebar_position: 5
+---
 # Delete
 
 Delete one Subnet Pool by ID

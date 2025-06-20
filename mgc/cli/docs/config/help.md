@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Config
 
 Configuration values are available to be set so that they persist between

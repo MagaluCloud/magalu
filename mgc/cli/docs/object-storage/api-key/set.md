@@ -1,3 +1,6 @@
+---
+sidebar_position: 7
+---
 # Set
 
 Change current Object Storage credential to selected

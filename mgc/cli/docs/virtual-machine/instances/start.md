@@ -1,3 +1,6 @@
+---
+sidebar_position: 10
+---
 # Start
 
 Starts a Virtual Machine instance with the id provided in the current tenant which is logged in.

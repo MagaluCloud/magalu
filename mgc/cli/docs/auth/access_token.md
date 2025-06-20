@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Access_token
 
 Retrieve the access token used in the APIs

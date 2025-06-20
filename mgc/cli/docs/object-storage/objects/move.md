@@ -1,3 +1,6 @@
+---
+sidebar_position: 11
+---
 # Move
 
 Moves one object from a source to a destination.

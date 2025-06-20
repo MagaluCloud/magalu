@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 List all user's repositories in the container registry.

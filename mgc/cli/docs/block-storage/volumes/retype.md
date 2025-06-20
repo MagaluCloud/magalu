@@ -1,3 +1,6 @@
+---
+sidebar_position: 9
+---
 # Retype
 
 Change the Volume Type of an existing Volume for the currently

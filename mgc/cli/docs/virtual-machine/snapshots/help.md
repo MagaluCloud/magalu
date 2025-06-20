@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Snapshots
 
 Operations with snapshots for instances.

@@ -1,3 +1,6 @@
+---
+sidebar_position: 5
+---
 # Nodes
 
 Lists nodes in a node pool by nodepool_uuid.

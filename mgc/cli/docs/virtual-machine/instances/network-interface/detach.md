@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Detach
 
 Detach a non primary network interface from an instance for a default project

@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Delete
 
 Delete policy document for the specified bucket

@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Current
 
 The current Tenant is used for all Magalu HTTP requests

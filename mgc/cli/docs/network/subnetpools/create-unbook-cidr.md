@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Create-Unbook-Cidr
 
 Unbooking a CIDR range from a subnetpool

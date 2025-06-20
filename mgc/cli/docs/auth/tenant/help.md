@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Tenant
 
 Tenants work like sub-accounts. You may have more than one Tenant under your

@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 Retrieve a list of Snapshots for the currently authenticated tenant.

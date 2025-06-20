@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Get
 
 Returns an instance type detail.
