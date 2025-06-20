@@ -189,14 +189,14 @@ func runMarkdownReport(left, right string) error {
 	go listenForUpdates(updateChan, errorChan)
 
 	// check if the first arg is a URL, if so download it, if not - assume it's a file.
-	left, urlErr = checkURL(left, errorChan)
+	left, urlErr = markdownReport.CheckURL(left, errorChan)
 	if urlErr != nil {
 		pterm.Error.Println(urlErr.Error())
 		return urlErr
 	}
 
 	// check if the second arg is a URL, if so download it, if not - assume it's a file.
-	right, urlErr = checkURL(right, errorChan)
+	right, urlErr = markdownReport.CheckURL(right, errorChan)
 	if urlErr != nil {
 		pterm.Error.Println(urlErr.Error())
 		return urlErr
@@ -211,7 +211,7 @@ func runMarkdownReport(left, right string) error {
 		return errors.New("unable to process specifications")
 	}
 
-	return writeReportFile(reportFile, report)
+	return markdownReport.WriteReportFile(reportFile, report)
 }
 
 func RunLeftRightMarkDownReport(left, right string, useCDN bool,
