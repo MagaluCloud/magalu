@@ -117,6 +117,9 @@ func login(ctx context.Context, parameters loginParameters, _ struct{}) (*loginR
 	scopes.Add("pa:tenants:read")
 	scopes.Add("pa:whoami:read")
 	scopes.Add("pa:delegations:write")
+	scopes.Add("pa:delegations:read")
+	scopes.Add("pa:delegations:delete")
+	scopes.Add("pa:accounts:read")
 	scopes.Add("pa:accounts-business:update")
 
 	codeUrl, err := auth.CodeChallengeToURL(scopes)
