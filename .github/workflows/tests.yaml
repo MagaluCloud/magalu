@@ -14,9 +14,6 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: ci-check-${{ github.ref }}
-
 jobs:
   test:
     name: Project Checks
@@ -35,8 +32,11 @@ jobs:
           cache-dependency-path: "**/go.sum"
           go-version: ${{ vars.GO_VERSION || '1.24.2' }}
           
-      - name: "Go build"
+      - name: "Go build CICD"
         run: make build-cicd
+
+      - name: "Go build MGC"
+        run: make build-cli        
 
       - name: Set MGC Profiles
         env:
@@ -58,8 +58,81 @@ jobs:
           EOF
 
       - name: Run tests
-        uses: MagaluCloud/mgccli-tests@v0.0.12
+        id: mgccli-tests
+        uses: MagaluCloud/mgccli-tests@v0.0.23
         continue-on-error: true
         env:
           MGC_API_KEY: ${{ secrets.MGC_API_KEY || '' }}
-          MGC_PATH: "mgc/cli/mgc" # ${{ github.workspace }}/${{ vars.MGC_PATH || 'mgc' }}
+          MGC_PATH: "mgc/cli/mgc"
+
+      - name: Download pytest results artifact
+        if: github.event_name == 'pull_request'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: pytest-results
+          path: ./pytest-results
+
+      - name: Comment test results on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          github-token: ${{ secrets.GH_PAT2 }}
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Ler o arquivo pytest_output.txt
+            const pytestOutputPath = path.join('./pytest-results', 'pytest_output.txt');
+            let testOutput = '';
+            let exitCode = 1; // Default para falha
+            
+            try {
+              if (fs.existsSync(pytestOutputPath)) {
+                testOutput = fs.readFileSync(pytestOutputPath, 'utf8');
+                
+                // Tentar extrair o exit code do output
+                const exitCodeMatch = testOutput.match(/exit_code: (\d+)/);
+                if (exitCodeMatch) {
+                  exitCode = parseInt(exitCodeMatch[1]);
+                }
+              }
+            } catch (error) {
+              console.log('Erro ao ler arquivo pytest_output.txt:', error.message);
+            }
+            
+            // Determinar status baseado no exit code
+            const testResult = exitCode === 0 ? '✅ PASSED' : '❌ FAILED';
+            const testSummary = exitCode === 0 
+              ? 'Todos os testes passaram com sucesso!' 
+              : 'Alguns testes falharam. Verifique os detalhes abaixo.';
+            
+            // Criar comentário no PR
+            const comment = `## 🧪 Resultados dos Testes
+            
+            **Status:** ${testResult}
+            
+            **Resumo:** ${testSummary}
+            
+            **Exit Code:** ${exitCode}
+            
+            <details>
+            <summary>📋 Detalhes dos Testes</summary>
+            
+            \`\`\`
+            ${testOutput || 'Nenhum output disponível'}
+            \`\`\`
+            </details>`;
+            
+            // Comentar no PR
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+            
+            // Definir outputs para uso em outros steps se necessário
+            core.setOutput('test-result', testResult);
+            core.setOutput('test-summary', testSummary);
+            core.setOutput('test-output', testOutput);
+            core.setOutput('exit-code', exitCode.toString());

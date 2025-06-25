@@ -3,7 +3,7 @@ sidebar_position: 1
 ---
 # List
 
-Gets a node pool from a Kubernetes cluster by cluster_uuid.
+V1alpha0 Gets a node pool from a Kubernetes cluster by cluster_uuid.
 
 ## Usage:
 ```

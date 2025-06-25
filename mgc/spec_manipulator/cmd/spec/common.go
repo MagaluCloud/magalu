@@ -6,12 +6,8 @@ import (
 	"math"
 	"net/http"
 	"os"
-	"slices"
 	"strings"
 	"time"
-
-	"github.com/pterm/pterm"
-	"github.com/spf13/viper"
 )
 
 const (
@@ -102,77 +98,4 @@ func getAndSaveFile(url, caminhoDestino, menu string) error {
 		return fmt.Errorf("erro ao fazer o download do arquivo %s após %d tentativas: %v", menu, maxRetryCount, err)
 	}
 	return fmt.Errorf("erro ao fazer o download do arquivo %s após %d tentativas: status code %d", menu, maxRetryCount, resp.StatusCode)
-}
-
-func loadList(specificMenu string) ([]specList, error) {
-	var currentConfig []specList
-	config := viper.Get("jaxyendy")
-
-	if config != nil {
-		for _, v := range config.([]interface{}) {
-			vv, ok := interfaceToMap(v)
-			if !ok {
-				return currentConfig, fmt.Errorf("fail to load current config")
-			}
-			if specificMenu != "" && vv["menu"].(string) != specificMenu {
-				continue
-			}
-			currentConfig = append(currentConfig, specList{
-				Url:     vv["url"].(string),
-				Menu:    vv["menu"].(string),
-				File:    vv["file"].(string),
-				Enabled: vv["enabled"].(bool),
-			})
-		}
-
-	}
-	return currentConfig, nil
-}
-
-func loadListMap() ([]string, []specList, error) {
-	currentConfig, err := loadList("")
-	if err != nil {
-		return nil, nil, err
-	}
-
-	menus := []string{}
-	for _, v := range currentConfig {
-		menus = append(menus, v.Menu)
-	}
-
-	slices.Sort(menus)
-
-	return menus, currentConfig, nil
-}
-
-func getConfigToRun() ([]specList, error) {
-	menus, currentConfig, err := loadListMap()
-	if err != nil {
-		return nil, err
-	}
-
-	ms := pterm.DefaultInteractiveMultiselect.
-		WithDefaultText("Select products").
-		WithMaxHeight(14).
-		WithOptions(menus)
-
-	op, err := ms.Show()
-	if err != nil {
-		return nil, err
-	}
-
-	if len(op) == 0 {
-		return nil, fmt.Errorf("no products selected")
-	}
-
-	configToRun := []specList{}
-	for _, v := range op {
-		for _, v2 := range currentConfig {
-			if v2.Menu == v {
-				configToRun = append(configToRun, v2)
-			}
-		}
-	}
-	pterm.Println()
-	return configToRun, nil
 }

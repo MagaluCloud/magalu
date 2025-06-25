@@ -3,9 +3,9 @@ modules:
     - name: audit
       url: https://events-consult.jaxyendy.com/openapi-cli.json
       path: audit.openapi.yaml
-      version: 0.31.1
-      description: Cloud Events API Product.
-      summary: Cloud Events API Product.
+      version: 0.1.0
+      description: Consult API
+      summary: Consult API
     - name: block-storage
       url: https://block-storage.jaxyendy.com/openapi.json
       path: block-storage.openapi.yaml
@@ -39,7 +39,7 @@ modules:
     - name: network
       url: https://network.jaxyendy.com/openapi.json
       path: network.openapi.yaml
-      version: 1.173.0
+      version: 1.173.1
       description: VPC Api Product
       summary: VPC Api Product
     - name: profile

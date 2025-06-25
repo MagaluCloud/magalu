@@ -27,15 +27,16 @@ paths:
                 ."
             operationId: create_attachment_v1_v1_attachments_post
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/CreateAttachmentRequest'
+                required: true
             responses:
                 '204':
                     description: Successful Response
                 '404':
+                    description: Not Found
                     content:
                         application/json:
                             schema:
@@ -44,8 +45,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 404 Create Attachment V1 V1 Attachments
                                     Post
-                    description: Not Found
                 '409':
+                    description: Conflict
                     content:
                         application/json:
                             schema:
@@ -54,8 +55,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 409 Create Attachment V1 V1 Attachments
                                     Post
-                    description: Conflict
                 '422':
+                    description: Unprocessable Entity
                     content:
                         application/json:
                             schema:
@@ -64,8 +65,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Create Attachment V1 V1 Attachments
                                     Post
-                    description: Unprocessable Entity
             x-viveiro: true
+            x-permission-name: bs_volume_attach
             security:
             -   OAuth2:
                 - block-storage.write
@@ -104,6 +105,7 @@ paths:
                 '204':
                     description: Successful Response
                 '404':
+                    description: Not Found
                     content:
                         application/json:
                             schema:
@@ -111,8 +113,8 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 404 Delete Attachment V1 V1 Attachments  Id  Delete
-                    description: Not Found
                 '409':
+                    description: Conflict
                     content:
                         application/json:
                             schema:
@@ -120,8 +122,8 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 409 Delete Attachment V1 V1 Attachments  Id  Delete
-                    description: Conflict
                 '422':
+                    description: Unprocessable Entity
                     content:
                         application/json:
                             schema:
@@ -129,8 +131,8 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Delete Attachment V1 V1 Attachments  Id  Delete
-                    description: Unprocessable Entity
             x-viveiro: true
+            x-permission-name: bs_volume_detach
             security:
             -   OAuth2:
                 - block-storage.write
@@ -203,6 +205,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/SnapshotListResponse'
                 '404':
+                    description: Not Found
                     content:
                         application/json:
                             schema:
@@ -210,8 +213,8 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 404 List Snapshot V1 Snapshots Get
-                    description: Not Found
                 '409':
+                    description: Conflict
                     content:
                         application/json:
                             schema:
@@ -219,8 +222,8 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 409 List Snapshot V1 Snapshots Get
-                    description: Conflict
                 '422':
+                    description: Unprocessable Entity
                     content:
                         application/json:
                             schema:
@@ -228,8 +231,8 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 List Snapshot V1 Snapshots Get
-                    description: Unprocessable Entity
             x-viveiro: true
+            x-permission-name: bs_snapshot_list
             security:
             -   OAuth2:
                 - block-storage.read
@@ -249,11 +252,11 @@ paths:
                 \ to create the\n Snapshot."
             operationId: create_snapshot_v1_snapshots_post
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/SnapshotCreationRequest'
+                required: true
             responses:
                 '202':
                     description: Successful Response
@@ -283,6 +286,7 @@ paths:
                             parameters:
                                 id: $response.body#/id
                 '404':
+                    description: Not Found
                     content:
                         application/json:
                             schema:
@@ -290,8 +294,8 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 404 Create Snapshot V1 Snapshots Post
-                    description: Not Found
                 '409':
+                    description: Conflict
                     content:
                         application/json:
                             schema:
@@ -299,8 +303,8 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 409 Create Snapshot V1 Snapshots Post
-                    description: Conflict
                 '422':
+                    description: Unprocessable Entity
                     content:
                         application/json:
                             schema:
@@ -308,69 +312,12 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Create Snapshot V1 Snapshots Post
-                    description: Unprocessable Entity
             x-viveiro: true
+            x-permission-name: bs_snapshot_create
             security:
             -   OAuth2:
                 - block-storage.write
     /v1/snapshots/{id}:
-        delete:
-            tags:
-            - snapshots
-            summary: Delete a snapshot.
-            description: "Delete a Snapshot for the currently authenticated tenant.\n\
-                \n#### Rules\n- The Snapshot's status must be \"completed\".\n- The\
-                \ Snapshot's state must be \"available\".\n- Deleting a Snapshot that\
-                \ has been restored is not possible. If necessary,\n delete the restored\
-                \ Volume first and then proceed to delete the Snapshot.\n\n#### Notes\n\
-                - Utilize the **block-storage snapshots** list command to retrieve\
-                \ a list of\n all Snapshots and obtain the ID of the Snapshot you\
-                \ wish to delete.\n- If needed, you can use the **block-storage volume\
-                \ list** command to retrieve\n a list of all Volumes and obtain the\
-                \ ID of the restored Volume."
-            operationId: delete_snapshot_v1_snapshots__id__delete
-            parameters:
-            -   name: id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    title: Id
-                    format: uuid
-            responses:
-                '204':
-                    description: Successful Response
-                '404':
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 404 Delete Snapshot V1 Snapshots  Id  Delete
-                    description: Not Found
-                '409':
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 409 Delete Snapshot V1 Snapshots  Id  Delete
-                    description: Conflict
-                '422':
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 422 Delete Snapshot V1 Snapshots  Id  Delete
-                    description: Unprocessable Entity
-            x-viveiro: true
-            security:
-            -   OAuth2:
-                - block-storage.write
         get:
             tags:
             - snapshots
@@ -432,6 +379,7 @@ paths:
                                 id: $request.path.id
                             x-mgc-hidden: true
                 '404':
+                    description: Not Found
                     content:
                         application/json:
                             schema:
@@ -439,8 +387,8 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 404 Get Snapshot V1 Snapshots  Id  Get
-                    description: Not Found
                 '409':
+                    description: Conflict
                     content:
                         application/json:
                             schema:
@@ -448,8 +396,8 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 409 Get Snapshot V1 Snapshots  Id  Get
-                    description: Conflict
                 '422':
+                    description: Unprocessable Entity
                     content:
                         application/json:
                             schema:
@@ -457,11 +405,69 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Get Snapshot V1 Snapshots  Id  Get
-                    description: Unprocessable Entity
             x-viveiro: true
+            x-permission-name: bs_snapshot_get
             security:
             -   OAuth2:
                 - block-storage.read
+        delete:
+            tags:
+            - snapshots
+            summary: Delete a snapshot.
+            description: "Delete a Snapshot for the currently authenticated tenant.\n\
+                \n#### Rules\n- The Snapshot's status must be \"completed\".\n- The\
+                \ Snapshot's state must be \"available\".\n- Deleting a Snapshot that\
+                \ has been restored is not possible. If necessary,\n delete the restored\
+                \ Volume first and then proceed to delete the Snapshot.\n\n#### Notes\n\
+                - Utilize the **block-storage snapshots** list command to retrieve\
+                \ a list of\n all Snapshots and obtain the ID of the Snapshot you\
+                \ wish to delete.\n- If needed, you can use the **block-storage volume\
+                \ list** command to retrieve\n a list of all Volumes and obtain the\
+                \ ID of the restored Volume."
+            operationId: delete_snapshot_v1_snapshots__id__delete
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+                    format: uuid
+            responses:
+                '204':
+                    description: Successful Response
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 404 Delete Snapshot V1 Snapshots  Id  Delete
+                '409':
+                    description: Conflict
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 409 Delete Snapshot V1 Snapshots  Id  Delete
+                '422':
+                    description: Unprocessable Entity
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 422 Delete Snapshot V1 Snapshots  Id  Delete
+            x-viveiro: true
+            x-permission-name: bs_snapshot_delete
+            security:
+            -   OAuth2:
+                - block-storage.write
     /v1/snapshots/{id}/copy:
         post:
             tags:
@@ -485,11 +491,11 @@ paths:
                     title: Id
                     format: uuid
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/CopyCrossRegionRequest'
+                required: true
             responses:
                 '204':
                     description: Successful Response
@@ -510,6 +516,7 @@ paths:
                             parameters:
                                 id: $request.path.id
                 '404':
+                    description: Not Found
                     content:
                         application/json:
                             schema:
@@ -518,8 +525,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 404 Copy Snapshot Cross Region V1
                                     Snapshots  Id  Copy Post
-                    description: Not Found
                 '409':
+                    description: Conflict
                     content:
                         application/json:
                             schema:
@@ -528,8 +535,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 409 Copy Snapshot Cross Region V1
                                     Snapshots  Id  Copy Post
-                    description: Conflict
                 '422':
+                    description: Unprocessable Entity
                     content:
                         application/json:
                             schema:
@@ -538,8 +545,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Copy Snapshot Cross Region V1
                                     Snapshots  Id  Copy Post
-                    description: Unprocessable Entity
             x-viveiro: true
+            x-permission-name: bs_snapshot_copy
             security:
             -   OAuth2:
                 - block-storage.write
@@ -563,11 +570,11 @@ paths:
                     title: Id
                     format: uuid
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/SnapshotRenameRequest'
+                required: true
             responses:
                 '204':
                     description: Successful Response
@@ -592,6 +599,7 @@ paths:
                             parameters:
                                 id: $request.path.id
                 '404':
+                    description: Not Found
                     content:
                         application/json:
                             schema:
@@ -600,8 +608,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 404 Rename Snapshot V1 Snapshots  Id  Rename
                                     Patch
-                    description: Not Found
                 '409':
+                    description: Conflict
                     content:
                         application/json:
                             schema:
@@ -610,8 +618,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 409 Rename Snapshot V1 Snapshots  Id  Rename
                                     Patch
-                    description: Conflict
                 '422':
+                    description: Unprocessable Entity
                     content:
                         application/json:
                             schema:
@@ -620,8 +628,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Rename Snapshot V1 Snapshots  Id  Rename
                                     Patch
-                    description: Unprocessable Entity
             x-viveiro: true
+            x-permission-name: bs_snapshot_rename
             security:
             -   OAuth2:
                 - block-storage.write
@@ -674,6 +682,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
+            x-permission-name: bs_volume_type_list
             security:
             -   OAuth2:
                 - block-storage.read
@@ -694,6 +703,8 @@ paths:
             parameters:
             -   name: expand
                 in: query
+                description: 'You can get more detailed info about: [''volume_type'',
+                    ''attachment'']'
                 required: false
                 schema:
                     type: array
@@ -703,8 +714,6 @@ paths:
                     description: 'You can get more detailed info about: [''volume_type'',
                         ''attachment'']'
                     default: []
-                description: 'You can get more detailed info about: [''volume_type'',
-                    ''attachment'']'
             -   name: _limit
                 in: query
                 required: false
@@ -744,6 +753,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/VolumesResponseV1'
                 '404':
+                    description: Not Found
                     content:
                         application/json:
                             schema:
@@ -751,8 +761,8 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 404 List Volume V1 V1 Volumes Get
-                    description: Not Found
                 '409':
+                    description: Conflict
                     content:
                         application/json:
                             schema:
@@ -760,7 +770,6 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 409 List Volume V1 V1 Volumes Get
-                    description: Conflict
                 '422':
                     description: Validation Error
                     content:
@@ -768,6 +777,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
+            x-permission-name: bs_volume_list
             security:
             -   OAuth2:
                 - block-storage.read
@@ -785,11 +795,11 @@ paths:
                 \ the\n**block-storage volume get --id [uuid]** command\"."
             operationId: create_volume_v1_v1_volumes_post
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/VolumeCreateRequestV1'
+                required: true
             responses:
                 '202':
                     description: Successful Response
@@ -834,6 +844,7 @@ paths:
                             parameters:
                                 id: $response.body#/id
                 '404':
+                    description: Not Found
                     content:
                         application/json:
                             schema:
@@ -841,8 +852,8 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 404 Create Volume V1 V1 Volumes Post
-                    description: Not Found
                 '409':
+                    description: Conflict
                     content:
                         application/json:
                             schema:
@@ -850,8 +861,8 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 409 Create Volume V1 V1 Volumes Post
-                    description: Conflict
                 '422':
+                    description: Unprocessable Entity
                     content:
                         application/json:
                             schema:
@@ -859,69 +870,12 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Create Volume V1 V1 Volumes Post
-                    description: Unprocessable Entity
             x-viveiro: true
+            x-permission-name: bs_volume_create
             security:
             -   OAuth2:
                 - block-storage.write
     /v1/volumes/{id}:
-        delete:
-            tags:
-            - volumes
-            summary: Delete a volume.
-            description: "Delete a Volume for the currently authenticated tenant.\n\
-                \n#### Rules\n- The Volume cannot be attached to a Virtual Machine,\
-                \ i.e., its state cannot\n be \"in-use\". If necessary, detach the\
-                \ Volume from the Virtual Machine before\n proceeding with deletion.\n\
-                - The Volume must not have any snapshots. If necessary, delete the\
-                \ Volume's\n  snapshots before proceeding with deletion.\n- The Volume\
-                \ must have the status \"completed\", i.e., must not have any\n  actions\
-                \ in progress.\n\n\n#### Notes\n- Check the state and status of your\
-                \ Volume using the\n**block-storage volume get --id [uuid]** command\"\
-                ."
-            operationId: delete_volume_v1_v1_volumes__id__delete
-            parameters:
-            -   name: id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    title: Id
-                    format: uuid
-            responses:
-                '204':
-                    description: Successful Response
-                '404':
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 404 Delete Volume V1 V1 Volumes  Id  Delete
-                    description: Not Found
-                '409':
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 409 Delete Volume V1 V1 Volumes  Id  Delete
-                    description: Conflict
-                '422':
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 422 Delete Volume V1 V1 Volumes  Id  Delete
-                    description: Unprocessable Entity
-            x-viveiro: true
-            security:
-            -   OAuth2:
-                - block-storage.write
         get:
             tags:
             - volumes
@@ -942,6 +896,8 @@ paths:
                     format: uuid
             -   name: expand
                 in: query
+                description: 'You can get more detailed info about: [''volume_type'',
+                    ''attachment'']'
                 required: false
                 schema:
                     type: array
@@ -951,8 +907,6 @@ paths:
                     description: 'You can get more detailed info about: [''volume_type'',
                         ''attachment'']'
                     default: []
-                description: 'You can get more detailed info about: [''volume_type'',
-                    ''attachment'']'
             responses:
                 '200':
                     description: Successful Response
@@ -1010,6 +964,7 @@ paths:
                                 id: $request.path.id
                             x-mgc-hidden: true
                 '404':
+                    description: Not Found
                     content:
                         application/json:
                             schema:
@@ -1017,8 +972,8 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 404 Get Volume V1 V1 Volumes  Id  Get
-                    description: Not Found
                 '409':
+                    description: Conflict
                     content:
                         application/json:
                             schema:
@@ -1026,7 +981,6 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 409 Get Volume V1 V1 Volumes  Id  Get
-                    description: Conflict
                 '422':
                     description: Validation Error
                     content:
@@ -1034,9 +988,68 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
+            x-permission-name: bs_volume_get
             security:
             -   OAuth2:
                 - block-storage.read
+        delete:
+            tags:
+            - volumes
+            summary: Delete a volume.
+            description: "Delete a Volume for the currently authenticated tenant.\n\
+                \n#### Rules\n- The Volume cannot be attached to a Virtual Machine,\
+                \ i.e., its state cannot\n be \"in-use\". If necessary, detach the\
+                \ Volume from the Virtual Machine before\n proceeding with deletion.\n\
+                - The Volume must not have any snapshots. If necessary, delete the\
+                \ Volume's\n  snapshots before proceeding with deletion.\n- The Volume\
+                \ must have the status \"completed\", i.e., must not have any\n  actions\
+                \ in progress.\n\n\n#### Notes\n- Check the state and status of your\
+                \ Volume using the\n**block-storage volume get --id [uuid]** command\"\
+                ."
+            operationId: delete_volume_v1_v1_volumes__id__delete
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Id
+                    format: uuid
+            responses:
+                '204':
+                    description: Successful Response
+                '404':
+                    description: Not Found
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 404 Delete Volume V1 V1 Volumes  Id  Delete
+                '409':
+                    description: Conflict
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 409 Delete Volume V1 V1 Volumes  Id  Delete
+                '422':
+                    description: Unprocessable Entity
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ErrorResponse'
+                                title: Response 422 Delete Volume V1 V1 Volumes  Id  Delete
+            x-viveiro: true
+            x-permission-name: bs_volume_delete
+            security:
+            -   OAuth2:
+                - block-storage.write
     /v1/volumes/{id}/attach/{virtual_machine_id}:
         post:
             tags:
@@ -1105,6 +1118,7 @@ paths:
                             parameters:
                                 id: $request.path.id
                 '404':
+                    description: Not Found
                     content:
                         application/json:
                             schema:
@@ -1113,8 +1127,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 404 Attach Volume V1 V1 Volumes  Id  Attach  Virtual
                                     Machine Id  Post
-                    description: Not Found
                 '409':
+                    description: Conflict
                     content:
                         application/json:
                             schema:
@@ -1123,8 +1137,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 409 Attach Volume V1 V1 Volumes  Id  Attach  Virtual
                                     Machine Id  Post
-                    description: Conflict
                 '422':
+                    description: Unprocessable Entity
                     content:
                         application/json:
                             schema:
@@ -1133,8 +1147,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Attach Volume V1 V1 Volumes  Id  Attach  Virtual
                                     Machine Id  Post
-                    description: Unprocessable Entity
             x-viveiro: true
+            x-permission-name: bs_volume_attach
             security:
             -   OAuth2:
                 - block-storage.write
@@ -1204,6 +1218,7 @@ paths:
                             parameters:
                                 id: $request.path.id
                 '404':
+                    description: Not Found
                     content:
                         application/json:
                             schema:
@@ -1212,8 +1227,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 404 Detach Volume V1 V1 Volumes  Id  Detach
                                     Post
-                    description: Not Found
                 '409':
+                    description: Conflict
                     content:
                         application/json:
                             schema:
@@ -1222,8 +1237,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 409 Detach Volume V1 V1 Volumes  Id  Detach
                                     Post
-                    description: Conflict
                 '422':
+                    description: Unprocessable Entity
                     content:
                         application/json:
                             schema:
@@ -1232,8 +1247,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Detach Volume V1 V1 Volumes  Id  Detach
                                     Post
-                    description: Unprocessable Entity
             x-viveiro: true
+            x-permission-name: bs_volume_detach
             security:
             -   OAuth2:
                 - block-storage.write
@@ -1262,11 +1277,11 @@ paths:
                     title: Id
                     format: uuid
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/VolumeExtendRequest'
+                required: true
             responses:
                 '204':
                     description: Successful Response
@@ -1306,6 +1321,7 @@ paths:
                             parameters:
                                 id: $request.path.id
                 '404':
+                    description: Not Found
                     content:
                         application/json:
                             schema:
@@ -1314,8 +1330,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 404 Extend Volume V1 Volumes  Id  Extend
                                     Post
-                    description: Not Found
                 '422':
+                    description: Unprocessable Entity
                     content:
                         application/json:
                             schema:
@@ -1324,8 +1340,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Extend Volume V1 Volumes  Id  Extend
                                     Post
-                    description: Unprocessable Entity
             x-viveiro: true
+            x-permission-name: bs_volume_extend
             security:
             -   OAuth2:
                 - block-storage.write
@@ -1349,11 +1365,11 @@ paths:
                     title: Id
                     format: uuid
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/RenameVolumeRequest'
+                required: true
             responses:
                 '204':
                     description: Successful Response
@@ -1393,6 +1409,7 @@ paths:
                             parameters:
                                 id: $request.path.id
                 '404':
+                    description: Not Found
                     content:
                         application/json:
                             schema:
@@ -1401,8 +1418,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 404 Rename Volume V1 V1 Volumes  Id  Rename
                                     Patch
-                    description: Not Found
                 '409':
+                    description: Conflict
                     content:
                         application/json:
                             schema:
@@ -1411,8 +1428,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 409 Rename Volume V1 V1 Volumes  Id  Rename
                                     Patch
-                    description: Conflict
                 '422':
+                    description: Unprocessable Entity
                     content:
                         application/json:
                             schema:
@@ -1421,8 +1438,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Rename Volume V1 V1 Volumes  Id  Rename
                                     Patch
-                    description: Unprocessable Entity
             x-viveiro: true
+            x-permission-name: bs_volume_rename
             security:
             -   OAuth2:
                 - block-storage.write
@@ -1451,11 +1468,11 @@ paths:
                     title: Id
                     format: uuid
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/VolumeRetypeRequest'
+                required: true
             responses:
                 '204':
                     description: Successful Response
@@ -1495,6 +1512,7 @@ paths:
                             parameters:
                                 id: $request.path.id
                 '404':
+                    description: Not Found
                     content:
                         application/json:
                             schema:
@@ -1503,8 +1521,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 404 Retype Volume V1 Volumes  Id  Retype
                                     Post
-                    description: Not Found
                 '422':
+                    description: Unprocessable Entity
                     content:
                         application/json:
                             schema:
@@ -1513,8 +1531,8 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Retype Volume V1 Volumes  Id  Retype
                                     Post
-                    description: Unprocessable Entity
             x-viveiro: true
+            x-permission-name: bs_volume_retype
             security:
             -   OAuth2:
                 - block-storage.write
@@ -1851,6 +1869,37 @@ components:
             - deleting
             - deleting_error
             - deleted
+        Metadata:
+            type: object
+            properties:
+                page:
+                    type: object
+                    properties:
+                        offset:
+                            type: integer
+                            title: Offset
+                        limit:
+                            type: integer
+                            title: Limit
+                        count:
+                            type: integer
+                            title: Count
+                        total:
+                            type: integer
+                            title: Total
+                        max_limit:
+                            type: integer
+                            title: Max Limit
+                    title: PageMetadata
+                    required:
+                    - offset
+                    - limit
+                    - count
+                    - total
+                    - max_limit
+            title: Metadata
+            required:
+            - page
         Name:
             type: object
             properties:
@@ -1864,6 +1913,31 @@ components:
             - name
             example:
                 name: some_resource_name
+        PageMetadata:
+            type: object
+            properties:
+                offset:
+                    type: integer
+                    title: Offset
+                limit:
+                    type: integer
+                    title: Limit
+                count:
+                    type: integer
+                    title: Count
+                total:
+                    type: integer
+                    title: Total
+                max_limit:
+                    type: integer
+                    title: Max Limit
+            title: PageMetadata
+            required:
+            - offset
+            - limit
+            - count
+            - total
+            - max_limit
         Regions:
             type: string
             title: Regions
@@ -1930,6 +2004,37 @@ components:
         SnapshotListResponse:
             type: object
             properties:
+                meta:
+                    type: object
+                    properties:
+                        page:
+                            type: object
+                            properties:
+                                offset:
+                                    type: integer
+                                    title: Offset
+                                limit:
+                                    type: integer
+                                    title: Limit
+                                count:
+                                    type: integer
+                                    title: Count
+                                total:
+                                    type: integer
+                                    title: Total
+                                max_limit:
+                                    type: integer
+                                    title: Max Limit
+                            title: PageMetadata
+                            required:
+                            - offset
+                            - limit
+                            - count
+                            - total
+                            - max_limit
+                    title: Metadata
+                    required:
+                    - page
                 snapshots:
                     type: array
                     items:
@@ -1970,9 +2075,10 @@ components:
                                 - deleted_error
                                 - replicating
                                 - replicating_error
+                                - replicating_error_quota
                                 - restoring
                                 - restoring_error
-                                - reserved
+                                - copying
                             created_at:
                                 anyOf:
                                 -   type: string
@@ -2005,6 +2111,9 @@ components:
                             type:
                                 type: string
                                 title: Type
+                            encrypted:
+                                type: boolean
+                                title: Encrypted
                         title: SnapshotResponse
                         required:
                         - id
@@ -2018,11 +2127,13 @@ components:
                         - volume
                         - availability_zones
                         - type
+                        - encrypted
                         example:
                             availability_zones:
                             - br-ne1-a
                             created_at: '2022-01-01T00:00:10Z'
                             description: my snapshot for testing
+                            encrypted: false
                             error:
                                 message: You have reached the limit of allowed snapshots.
                                     Please, remove unused snapshots or contact support
@@ -2040,13 +2151,22 @@ components:
                     title: Snapshots
             title: SnapshotListResponse
             required:
+            - meta
             - snapshots
             example:
+                meta:
+                    page:
+                        count: 0
+                        limit: 20
+                        max_limit: 100
+                        offset: 0
+                        total: 0
                 snapshots:
                 -   availability_zones:
                     - br-ne1-a
                     created_at: '2022-01-01T00:00:10Z'
                     description: my snapshot for testing
+                    encrypted: false
                     error:
                         message: You have reached the limit of allowed snapshots.
                             Please, remove unused snapshots or contact support to
@@ -2112,9 +2232,10 @@ components:
                     - deleted_error
                     - replicating
                     - replicating_error
+                    - replicating_error_quota
                     - restoring
                     - restoring_error
-                    - reserved
+                    - copying
                 created_at:
                     anyOf:
                     -   type: string
@@ -2147,6 +2268,9 @@ components:
                 type:
                     type: string
                     title: Type
+                encrypted:
+                    type: boolean
+                    title: Encrypted
             title: SnapshotResponse
             required:
             - id
@@ -2160,11 +2284,13 @@ components:
             - volume
             - availability_zones
             - type
+            - encrypted
             example:
                 availability_zones:
                 - br-ne1-a
                 created_at: '2022-01-01T00:00:10Z'
                 description: my snapshot for testing
+                encrypted: false
                 error:
                     message: You have reached the limit of allowed snapshots. Please,
                         remove unused snapshots or contact support to increase your
@@ -2216,9 +2342,10 @@ components:
             - deleted_error
             - replicating
             - replicating_error
+            - replicating_error_quota
             - restoring
             - restoring_error
-            - reserved
+            - copying
         SnapshotType:
             type: string
             title: SnapshotType
@@ -2717,6 +2844,37 @@ components:
         VolumesResponseV1:
             type: object
             properties:
+                meta:
+                    type: object
+                    properties:
+                        page:
+                            type: object
+                            properties:
+                                offset:
+                                    type: integer
+                                    title: Offset
+                                limit:
+                                    type: integer
+                                    title: Limit
+                                count:
+                                    type: integer
+                                    title: Count
+                                total:
+                                    type: integer
+                                    title: Total
+                                max_limit:
+                                    type: integer
+                                    title: Max Limit
+                            title: PageMetadata
+                            required:
+                            - offset
+                            - limit
+                            - count
+                            - total
+                            - max_limit
+                    title: Metadata
+                    required:
+                    - page
                 volumes:
                     type: array
                     items:
@@ -2850,8 +3008,16 @@ components:
                     title: Volumes
             title: VolumesResponseV1
             required:
+            - meta
             - volumes
             example:
+                meta:
+                    page:
+                        count: 0
+                        limit: 20
+                        max_limit: 100
+                        offset: 0
+                        total: 0
                 volumes:
                 -   attachment:
                         attached_at: '2022-01-01T00:00:10Z'

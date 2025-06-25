@@ -56,6 +56,8 @@ servers:
     description: SE1-BLU prod
 -   url: https:///api-mke.team-integration.se1.br.jaxyendy.com
     description: SE1-BLU team-integration
+-   url: https://api-mke.dev-qa.se1.br.jaxyendy.com
+    description: SE1-BLU dev-qa
 paths:
     /v0/clusters:
         get:
@@ -254,8 +256,10 @@ paths:
             security:
             -   BearerAuth:
                 - mke.write
+                - pa:sa:manage
             -   OAuth2:
                 - mke.write
+                - pa:sa:manage
             x-permission:
                 permission-name: kubernetes_cluster_create
                 product-name: kubernetes
@@ -265,7 +269,7 @@ paths:
                     \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
                     \ \\\n  --header 'content-type: application/json' \\\n  --header\
                     \ 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"name\":\"\
-                    cluster-example\",\"version\":\"v1.30.2\",\"description\":\"This\
+                    cluster-example\",\"version\":\"v1.32.3\",\"description\":\"This\
                     \ is an example cluster.\",\"zone\":\"br-region-zone\",\"enabled_bastion\"\
                     :false,\"enabled_server_group\":false,\"node_pools\":[{\"name\"\
                     :\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\"\
@@ -276,7 +280,7 @@ paths:
                     10.0.0.0/16\"],\"cluster_ipv4_cidr\":\"10.128.0.0/12\",\"services_ipv4_cidr\"\
                     :\"10.128.0.0/12\"}'"
             -   lang: Shell + Httpie
-                source: "echo '{\"name\":\"cluster-example\",\"version\":\"v1.30.2\"\
+                source: "echo '{\"name\":\"cluster-example\",\"version\":\"v1.32.3\"\
                     ,\"description\":\"This is an example cluster.\",\"zone\":\"br-region-zone\"\
                     ,\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\"\
                     :[{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\"\
@@ -293,7 +297,7 @@ paths:
                     net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"\
                     https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\"\n\n\
                     \tpayload := strings.NewReader(\"{\\\"name\\\":\\\"cluster-example\\\
-                    \",\\\"version\\\":\\\"v1.30.2\\\",\\\"description\\\":\\\"This\
+                    \",\\\"version\\\":\\\"v1.32.3\\\",\\\"description\\\":\\\"This\
                     \ is an example cluster.\\\",\\\"zone\\\":\\\"br-region-zone\\\
                     \",\\\"enabled_bastion\\\":false,\\\"enabled_server_group\\\"\
                     :false,\\\"node_pools\\\":[{\\\"name\\\":\\\"nodepool-example\\\
@@ -314,7 +318,7 @@ paths:
             -   lang: Python + Python3
                 source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
                     api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"\
-                    name\\\":\\\"cluster-example\\\",\\\"version\\\":\\\"v1.30.2\\\
+                    name\\\":\\\"cluster-example\\\",\\\"version\\\":\\\"v1.32.3\\\
                     \",\\\"description\\\":\\\"This is an example cluster.\\\",\\\"\
                     zone\\\":\\\"br-region-zone\\\",\\\"enabled_bastion\\\":false,\\\
                     \"enabled_server_group\\\":false,\\\"node_pools\\\":[{\\\"name\\\
@@ -342,7 +346,7 @@ paths:
                     \ {\n    chunks.push(chunk);\n  });\n\n  res.on(\"end\", function\
                     \ () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n\
                     \  });\n});\n\nreq.write(JSON.stringify({\n  name: 'cluster-example',\n\
-                    \  version: 'v1.30.2',\n  description: 'This is an example cluster.',\n\
+                    \  version: 'v1.32.3',\n  description: 'This is an example cluster.',\n\
                     \  zone: 'br-region-zone',\n  enabled_bastion: false,\n  enabled_server_group:\
                     \ false,\n  node_pools: [\n    {\n      name: 'nodepool-example',\n\
                     \      flavor: 'cloud-k8s.gp1.small',\n      replicas: 3,\n  \
@@ -378,7 +382,7 @@ paths:
 
                     request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
 
-                    request.body = "{\"name\":\"cluster-example\",\"version\":\"v1.30.2\",\"description\":\"This
+                    request.body = "{\"name\":\"cluster-example\",\"version\":\"v1.32.3\",\"description\":\"This
                     is an example cluster.\",\"zone\":\"br-region-zone\",\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\":[{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5},\"availability_zones\":[\"a\",\"b\",\"c\"]}],\"allowed_cidrs\":[\"192.168.1.0/24\",\"10.0.0.0/16\"],\"cluster_ipv4_cidr\":\"10.128.0.0/12\",\"services_ipv4_cidr\":\"10.128.0.0/12\"}"
 
 
@@ -747,8 +751,10 @@ paths:
             security:
             -   BearerAuth:
                 - mke.read
+                - mke.write
             -   OAuth2:
                 - mke.read
+                - mke.write
             x-permission:
                 permission-name: kubernetes_cluster_update
                 product-name: kubernetes
@@ -998,7 +1004,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/NodePoolResponse'
+                                $ref: '#/components/schemas/NodePoolsResponse'
                     links:
                         get:
                             operationId: getNodePool
@@ -1192,7 +1198,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/NodePoolResponse'
+                                $ref: '#/components/schemas/NodePoolsResponse'
                     links:
                         create:
                             operationId: createNodePool
@@ -1483,7 +1489,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/NodePoolResponse'
+                                $ref: '#/components/schemas/NodePoolsResponse'
                     links:
                         create:
                             operationId: createNodePool
@@ -2037,9 +2043,9 @@ paths:
         get:
             tags:
             - nodepool
-            summary: List node pools by cluster_id
-            description: Gets a node pool from a Kubernetes cluster by cluster_uuid.
-            operationId: ListNodePoolsV1alpha0
+            summary: V1alpha0 List node pools by cluster_id
+            description: V1alpha0 Gets a node pool from a Kubernetes cluster by cluster_uuid.
+            operationId: listNodePoolsV1alpha0
             parameters:
             -   name: cluster_id
                 in: path
@@ -2422,14 +2428,14 @@ components:
                     example: cluster-example
                 version:
                     type: string
-                    description: 'The native Kubernetes version of the cluster.
+                    description: 'The Kubernetes version for the cluster, specified
+                        in the standard "vX.Y.Z" format.
 
-                        Please specify the Kubernetes version using the standard "vX.Y.Z"
-                        format.
+                        If no version is provided, the latest available version will
+                        be used by default.
 
                         '
-                    default: v1.30.2
-                    example: v1.30.2
+                    example: v1.32.3
                 description:
                     type: string
                     description: 'A brief description of the Kubernetes cluster.
@@ -2664,13 +2670,13 @@ components:
                 network:
                     $ref: '#/components/schemas/NetworkResponse'
                 controlplane:
-                    $ref: '#/components/schemas/NodePoolResponse'
+                    $ref: '#/components/schemas/NodePoolsResponse'
                 kube_api_server:
                     $ref: '#/components/schemas/KubeApiServer'
                 node_pools:
                     type: array
                     items:
-                        $ref: '#/components/schemas/NodePoolResponse'
+                        $ref: '#/components/schemas/NodePoolsResponse'
                     description: Set of nodes in a Kubernetes cluster.
                 addons:
                     $ref: '#/components/schemas/Addons'
@@ -2835,7 +2841,7 @@ components:
                     description: Port used by the Kubernetes API Server.
                     example: 6443
             description: Information about the Kubernetes API Server of the cluster.
-        NodePoolResponse:
+        NodePoolsResponse:
             type: object
             properties:
                 id:
@@ -2963,7 +2969,7 @@ components:
                 results:
                     type: array
                     items:
-                        $ref: '#/components/schemas/NodePoolResponse'
+                        $ref: '#/components/schemas/NodePoolsResponse'
                     description: List of node pools.
             required:
             - results
@@ -3575,8 +3581,6 @@ components:
                     description: Indicates whether the version is deprecated.
                     example: false
                 minimumRequirements:
-                    type: object
-                    description: Minimum requirements for a Kubernetes version.
                     $ref: '#/components/schemas/MinimumRequirements'
             required:
             - version
@@ -3615,10 +3619,14 @@ components:
             enum:
             - external
             - internal
-            description: "Source of machine types used on node pools creation.\nExternal:\
-                \ Must use machine types of virtual machine product\nInternal: Must\
-                \ use machine types listed by flavors list endpoint of Kubernetes\
-                \ product \n"
+            description: 'Source of machine types used on node pools creation.
+
+                External: Must use machine types of virtual machine product
+
+                Internal: Must use machine types listed by flavors list endpoint of
+                Kubernetes product
+
+                '
             example: external
         MaxPodsPerNode:
             type: integer
@@ -3694,6 +3702,7 @@ components:
                     scopes:
                         mke.read: Read information about IaaS resources
                         mke.write: Write information about IaaS resources
+                        pa:sa:manage: Manage Service Accounts of ID Magalu
 tags:
 -   name: cluster
     description: Endpoints related to the creation, listing, deletion, and retrieval

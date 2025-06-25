@@ -31,20 +31,21 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateAttachmentRequest"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "204": {
             "description": "Successful Response"
           },
           "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -55,10 +56,10 @@
                   "title": "Response 404 Create Attachment V1 V1 Attachments Post"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -69,10 +70,10 @@
                   "title": "Response 409 Create Attachment V1 V1 Attachments Post"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
+            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -83,11 +84,11 @@
                   "title": "Response 422 Create Attachment V1 V1 Attachments Post"
                 }
               }
-            },
-            "description": "Unprocessable Entity"
+            }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_attach"
       }
     },
     "/v1/attachments/{id}": {
@@ -105,8 +106,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Id"
+              "title": "Id",
+              "format": "uuid"
             }
           },
           {
@@ -124,6 +125,7 @@
             "description": "Successful Response"
           },
           "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -134,10 +136,10 @@
                   "title": "Response 404 Delete Attachment V1 V1 Attachments  Id  Delete"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -148,10 +150,10 @@
                   "title": "Response 409 Delete Attachment V1 V1 Attachments  Id  Delete"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
+            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -162,11 +164,11 @@
                   "title": "Response 422 Delete Attachment V1 V1 Attachments  Id  Delete"
                 }
               }
-            },
-            "description": "Unprocessable Entity"
+            }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_detach"
       }
     },
     "/v1/snapshots": {
@@ -187,8 +189,8 @@
               "items": {
                 "$ref": "#/components/schemas/ExpandSnapshots"
               },
-              "default": [],
-              "title": "Expand"
+              "title": "Expand",
+              "default": []
             }
           },
           {
@@ -196,10 +198,10 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
               "exclusiveMinimum": 0,
-              "default": 50,
-              "title": " Limit"
+              "type": "integer",
+              "title": " Limit",
+              "default": 50
             }
           },
           {
@@ -208,9 +210,9 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "title": " Offset",
               "minimum": 0,
-              "default": 0,
-              "title": " Offset"
+              "default": 0
             }
           },
           {
@@ -219,9 +221,9 @@
             "required": false,
             "schema": {
               "type": "string",
+              "title": " Sort",
               "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
-              "default": "created_at:asc",
-              "title": " Sort"
+              "default": "created_at:asc"
             }
           },
           {
@@ -278,6 +280,7 @@
             }
           },
           "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -288,10 +291,10 @@
                   "title": "Response 404 List Snapshot V1 Snapshots Get"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -302,10 +305,10 @@
                   "title": "Response 409 List Snapshot V1 Snapshots Get"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
+            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -316,11 +319,11 @@
                   "title": "Response 422 List Snapshot V1 Snapshots Get"
                 }
               }
-            },
-            "description": "Unprocessable Entity"
+            }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_snapshot_list"
       },
       "post": {
         "tags": [
@@ -341,14 +344,14 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/SnapshotCreationRequest"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "202": {
@@ -362,6 +365,7 @@
             }
           },
           "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -372,10 +376,10 @@
                   "title": "Response 404 Create Snapshot V1 Snapshots Post"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -386,10 +390,10 @@
                   "title": "Response 409 Create Snapshot V1 Snapshots Post"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
+            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -400,91 +404,14 @@
                   "title": "Response 422 Create Snapshot V1 Snapshots Post"
                 }
               }
-            },
-            "description": "Unprocessable Entity"
+            }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_snapshot_create"
       }
     },
     "/v1/snapshots/{id}": {
-      "delete": {
-        "tags": [
-          "snapshots"
-        ],
-        "summary": "Delete a snapshot.",
-        "description": "Delete a Snapshot for the currently authenticated tenant.\n\n#### Rules\n- The Snapshot's status must be \"completed\".\n- The Snapshot's state must be \"available\".\n- Deleting a Snapshot that has been restored is not possible. If necessary,\n delete the restored Volume first and then proceed to delete the Snapshot.\n\n#### Notes\n- Utilize the **block-storage snapshots** list command to retrieve a list of\n all Snapshots and obtain the ID of the Snapshot you wish to delete.\n- If needed, you can use the **block-storage volume list** command to retrieve\n a list of all Volumes and obtain the ID of the restored Volume.",
-        "operationId": "delete_snapshot_v1_snapshots__id__delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Id"
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorResponse"
-                  },
-                  "title": "Response 404 Delete Snapshot V1 Snapshots  Id  Delete"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorResponse"
-                  },
-                  "title": "Response 409 Delete Snapshot V1 Snapshots  Id  Delete"
-                }
-              }
-            },
-            "description": "Conflict"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorResponse"
-                  },
-                  "title": "Response 422 Delete Snapshot V1 Snapshots  Id  Delete"
-                }
-              }
-            },
-            "description": "Unprocessable Entity"
-          }
-        },
-        "x-viveiro": true
-      },
       "get": {
         "tags": [
           "snapshots"
@@ -499,8 +426,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Id"
+              "title": "Id",
+              "format": "uuid"
             }
           },
           {
@@ -512,8 +439,8 @@
               "items": {
                 "$ref": "#/components/schemas/ExpandSnapshots"
               },
-              "default": [],
-              "title": "Expand"
+              "title": "Expand",
+              "default": []
             }
           },
           {
@@ -538,6 +465,7 @@
             }
           },
           "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -548,10 +476,10 @@
                   "title": "Response 404 Get Snapshot V1 Snapshots  Id  Get"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -562,10 +490,10 @@
                   "title": "Response 409 Get Snapshot V1 Snapshots  Id  Get"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
+            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -576,11 +504,89 @@
                   "title": "Response 422 Get Snapshot V1 Snapshots  Id  Get"
                 }
               }
-            },
-            "description": "Unprocessable Entity"
+            }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_snapshot_get"
+      },
+      "delete": {
+        "tags": [
+          "snapshots"
+        ],
+        "summary": "Delete a snapshot.",
+        "description": "Delete a Snapshot for the currently authenticated tenant.\n\n#### Rules\n- The Snapshot's status must be \"completed\".\n- The Snapshot's state must be \"available\".\n- Deleting a Snapshot that has been restored is not possible. If necessary,\n delete the restored Volume first and then proceed to delete the Snapshot.\n\n#### Notes\n- Utilize the **block-storage snapshots** list command to retrieve a list of\n all Snapshots and obtain the ID of the Snapshot you wish to delete.\n- If needed, you can use the **block-storage volume list** command to retrieve\n a list of all Volumes and obtain the ID of the restored Volume.",
+        "operationId": "delete_snapshot_v1_snapshots__id__delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Delete Snapshot V1 Snapshots  Id  Delete"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Delete Snapshot V1 Snapshots  Id  Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Delete Snapshot V1 Snapshots  Id  Delete"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true,
+        "x-permission-name": "bs_snapshot_delete"
       }
     },
     "/v1/snapshots/{id}/copy": {
@@ -598,8 +604,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Id"
+              "title": "Id",
+              "format": "uuid"
             }
           },
           {
@@ -613,20 +619,21 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CopyCrossRegionRequest"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "204": {
             "description": "Successful Response"
           },
           "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -637,10 +644,10 @@
                   "title": "Response 404 Copy Snapshot Cross Region V1 Snapshots  Id  Copy Post"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -651,10 +658,10 @@
                   "title": "Response 409 Copy Snapshot Cross Region V1 Snapshots  Id  Copy Post"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
+            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -665,11 +672,11 @@
                   "title": "Response 422 Copy Snapshot Cross Region V1 Snapshots  Id  Copy Post"
                 }
               }
-            },
-            "description": "Unprocessable Entity"
+            }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_snapshot_copy"
       }
     },
     "/v1/snapshots/{id}/rename": {
@@ -687,8 +694,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Id"
+              "title": "Id",
+              "format": "uuid"
             }
           },
           {
@@ -702,20 +709,21 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/SnapshotRenameRequest"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "204": {
             "description": "Successful Response"
           },
           "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -726,10 +734,10 @@
                   "title": "Response 404 Rename Snapshot V1 Snapshots  Id  Rename Patch"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -740,10 +748,10 @@
                   "title": "Response 409 Rename Snapshot V1 Snapshots  Id  Rename Patch"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
+            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -754,11 +762,11 @@
                   "title": "Response 422 Rename Snapshot V1 Snapshots  Id  Rename Patch"
                 }
               }
-            },
-            "description": "Unprocessable Entity"
+            }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_snapshot_rename"
       }
     },
     "/v1/volume-types": {
@@ -850,7 +858,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_type_list"
       }
     },
     "/v1/volumes": {
@@ -865,27 +874,27 @@
           {
             "name": "expand",
             "in": "query",
+            "description": "You can get more detailed info about: ['volume_type', 'attachment']",
             "required": false,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               },
+              "title": "Expand",
               "description": "You can get more detailed info about: ['volume_type', 'attachment']",
-              "default": [],
-              "title": "Expand"
-            },
-            "description": "You can get more detailed info about: ['volume_type', 'attachment']"
+              "default": []
+            }
           },
           {
             "name": "_limit",
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
               "exclusiveMinimum": 0,
-              "default": 50,
-              "title": " Limit"
+              "type": "integer",
+              "title": " Limit",
+              "default": 50
             }
           },
           {
@@ -894,9 +903,9 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "title": " Offset",
               "minimum": 0,
-              "default": 0,
-              "title": " Offset"
+              "default": 0
             }
           },
           {
@@ -905,9 +914,9 @@
             "required": false,
             "schema": {
               "type": "string",
+              "title": " Sort",
               "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
-              "default": "created_at:asc",
-              "title": " Sort"
+              "default": "created_at:asc"
             }
           },
           {
@@ -948,6 +957,7 @@
             }
           },
           "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -958,10 +968,10 @@
                   "title": "Response 404 List Volume V1 V1 Volumes Get"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -972,8 +982,7 @@
                   "title": "Response 409 List Volume V1 V1 Volumes Get"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -986,7 +995,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_list"
       },
       "post": {
         "tags": [
@@ -1007,14 +1017,14 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/VolumeCreateRequestV1"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "202": {
@@ -1028,6 +1038,7 @@
             }
           },
           "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1038,10 +1049,10 @@
                   "title": "Response 404 Create Volume V1 V1 Volumes Post"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -1052,10 +1063,10 @@
                   "title": "Response 409 Create Volume V1 V1 Volumes Post"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
+            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -1066,91 +1077,14 @@
                   "title": "Response 422 Create Volume V1 V1 Volumes Post"
                 }
               }
-            },
-            "description": "Unprocessable Entity"
+            }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_create"
       }
     },
     "/v1/volumes/{id}": {
-      "delete": {
-        "tags": [
-          "volumes"
-        ],
-        "summary": "Delete a volume.",
-        "description": "Delete a Volume for the currently authenticated tenant.\n\n#### Rules\n- The Volume cannot be attached to a Virtual Machine, i.e., its state cannot\n be \"in-use\". If necessary, detach the Volume from the Virtual Machine before\n proceeding with deletion.\n- The Volume must not have any snapshots. If necessary, delete the Volume's\n  snapshots before proceeding with deletion.\n- The Volume must have the status \"completed\", i.e., must not have any\n  actions in progress.\n\n\n#### Notes\n- Check the state and status of your Volume using the\n**block-storage volume get --id [uuid]** command\".",
-        "operationId": "delete_volume_v1_v1_volumes__id__delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Id"
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorResponse"
-                  },
-                  "title": "Response 404 Delete Volume V1 V1 Volumes  Id  Delete"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorResponse"
-                  },
-                  "title": "Response 409 Delete Volume V1 V1 Volumes  Id  Delete"
-                }
-              }
-            },
-            "description": "Conflict"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorResponse"
-                  },
-                  "title": "Response 422 Delete Volume V1 V1 Volumes  Id  Delete"
-                }
-              }
-            },
-            "description": "Unprocessable Entity"
-          }
-        },
-        "x-viveiro": true
-      },
       "get": {
         "tags": [
           "volumes"
@@ -1165,24 +1099,24 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Id"
+              "title": "Id",
+              "format": "uuid"
             }
           },
           {
             "name": "expand",
             "in": "query",
+            "description": "You can get more detailed info about: ['volume_type', 'attachment']",
             "required": false,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string"
               },
+              "title": "Expand",
               "description": "You can get more detailed info about: ['volume_type', 'attachment']",
-              "default": [],
-              "title": "Expand"
-            },
-            "description": "You can get more detailed info about: ['volume_type', 'attachment']"
+              "default": []
+            }
           },
           {
             "name": "x-tenant-id",
@@ -1206,6 +1140,7 @@
             }
           },
           "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1216,10 +1151,10 @@
                   "title": "Response 404 Get Volume V1 V1 Volumes  Id  Get"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -1230,8 +1165,7 @@
                   "title": "Response 409 Get Volume V1 V1 Volumes  Id  Get"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -1244,7 +1178,86 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_get"
+      },
+      "delete": {
+        "tags": [
+          "volumes"
+        ],
+        "summary": "Delete a volume.",
+        "description": "Delete a Volume for the currently authenticated tenant.\n\n#### Rules\n- The Volume cannot be attached to a Virtual Machine, i.e., its state cannot\n be \"in-use\". If necessary, detach the Volume from the Virtual Machine before\n proceeding with deletion.\n- The Volume must not have any snapshots. If necessary, delete the Volume's\n  snapshots before proceeding with deletion.\n- The Volume must have the status \"completed\", i.e., must not have any\n  actions in progress.\n\n\n#### Notes\n- Check the state and status of your Volume using the\n**block-storage volume get --id [uuid]** command\".",
+        "operationId": "delete_volume_v1_v1_volumes__id__delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Delete Volume V1 V1 Volumes  Id  Delete"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Delete Volume V1 V1 Volumes  Id  Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Delete Volume V1 V1 Volumes  Id  Delete"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_delete"
       }
     },
     "/v1/volumes/{id}/attach/{virtual_machine_id}": {
@@ -1262,8 +1275,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Id"
+              "title": "Id",
+              "format": "uuid"
             }
           },
           {
@@ -1272,8 +1285,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Virtual Machine Id"
+              "title": "Virtual Machine Id",
+              "format": "uuid"
             }
           },
           {
@@ -1291,6 +1304,7 @@
             "description": "Successful Response"
           },
           "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1301,10 +1315,10 @@
                   "title": "Response 404 Attach Volume V1 V1 Volumes  Id  Attach  Virtual Machine Id  Post"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -1315,10 +1329,10 @@
                   "title": "Response 409 Attach Volume V1 V1 Volumes  Id  Attach  Virtual Machine Id  Post"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
+            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -1329,11 +1343,11 @@
                   "title": "Response 422 Attach Volume V1 V1 Volumes  Id  Attach  Virtual Machine Id  Post"
                 }
               }
-            },
-            "description": "Unprocessable Entity"
+            }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_attach"
       }
     },
     "/v1/volumes/{id}/detach": {
@@ -1351,8 +1365,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Id"
+              "title": "Id",
+              "format": "uuid"
             }
           },
           {
@@ -1370,6 +1384,7 @@
             "description": "Successful Response"
           },
           "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1380,10 +1395,10 @@
                   "title": "Response 404 Detach Volume V1 V1 Volumes  Id  Detach Post"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -1394,10 +1409,10 @@
                   "title": "Response 409 Detach Volume V1 V1 Volumes  Id  Detach Post"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
+            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -1408,11 +1423,11 @@
                   "title": "Response 422 Detach Volume V1 V1 Volumes  Id  Detach Post"
                 }
               }
-            },
-            "description": "Unprocessable Entity"
+            }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_detach"
       }
     },
     "/v1/volumes/{id}/extend": {
@@ -1430,8 +1445,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Id"
+              "title": "Id",
+              "format": "uuid"
             }
           },
           {
@@ -1445,20 +1460,21 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/VolumeExtendRequest"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "204": {
             "description": "Successful Response"
           },
           "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1469,10 +1485,10 @@
                   "title": "Response 404 Extend Volume V1 Volumes  Id  Extend Post"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
+            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -1483,11 +1499,11 @@
                   "title": "Response 422 Extend Volume V1 Volumes  Id  Extend Post"
                 }
               }
-            },
-            "description": "Unprocessable Entity"
+            }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_extend"
       }
     },
     "/v1/volumes/{id}/rename": {
@@ -1505,8 +1521,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Id"
+              "title": "Id",
+              "format": "uuid"
             }
           },
           {
@@ -1520,20 +1536,21 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/RenameVolumeRequest"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "204": {
             "description": "Successful Response"
           },
           "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1544,10 +1561,10 @@
                   "title": "Response 404 Rename Volume V1 V1 Volumes  Id  Rename Patch"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -1558,10 +1575,10 @@
                   "title": "Response 409 Rename Volume V1 V1 Volumes  Id  Rename Patch"
                 }
               }
-            },
-            "description": "Conflict"
+            }
           },
           "422": {
+            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -1572,11 +1589,11 @@
                   "title": "Response 422 Rename Volume V1 V1 Volumes  Id  Rename Patch"
                 }
               }
-            },
-            "description": "Unprocessable Entity"
+            }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_rename"
       }
     },
     "/v1/volumes/{id}/retype": {
@@ -1594,8 +1611,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "uuid",
-              "title": "Id"
+              "title": "Id",
+              "format": "uuid"
             }
           },
           {
@@ -1609,20 +1626,21 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/VolumeRetypeRequest"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "204": {
             "description": "Successful Response"
           },
           "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1633,10 +1651,10 @@
                   "title": "Response 404 Retype Volume V1 Volumes  Id  Retype Post"
                 }
               }
-            },
-            "description": "Not Found"
+            }
           },
           "422": {
+            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -1647,17 +1665,18 @@
                   "title": "Response 422 Retype Volume V1 Volumes  Id  Retype Post"
                 }
               }
-            },
-            "description": "Unprocessable Entity"
+            }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_retype"
       }
     }
   },
   "components": {
     "schemas": {
       "AttachmentMachine": {
+        "type": "object",
         "properties": {
           "id": {
             "type": "string",
@@ -1699,10 +1718,10 @@
                 "format": "date-time"
               }
             ],
-            "title": "Created At",
             "examples": [
               "2022-01-01T00:00:10Z"
-            ]
+            ],
+            "title": "Created At"
           },
           "updated_at": {
             "anyOf": [
@@ -1714,13 +1733,13 @@
                 "format": "date-time"
               }
             ],
-            "title": "Updated At",
             "examples": [
               "2022-01-01T00:00:10Z"
-            ]
+            ],
+            "title": "Updated At"
           }
         },
-        "type": "object",
+        "title": "AttachmentMachine",
         "required": [
           "id",
           "name",
@@ -1729,7 +1748,6 @@
           "created_at",
           "updated_at"
         ],
-        "title": "AttachmentMachine",
         "example": {
           "created_at": "2022-01-01T00:00:10Z",
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
@@ -1740,6 +1758,7 @@
         }
       },
       "AttachmentResponseV1": {
+        "type": "object",
         "properties": {
           "instance": {
             "anyOf": [
@@ -1762,10 +1781,10 @@
                 "format": "date-time"
               }
             ],
-            "title": "Attached At",
             "examples": [
               "2022-01-01T00:00:10Z"
-            ]
+            ],
+            "title": "Attached At"
           },
           "device": {
             "anyOf": [
@@ -1779,12 +1798,11 @@
             "title": "Device"
           }
         },
-        "type": "object",
+        "title": "AttachmentResponseV1",
         "required": [
           "instance",
           "attached_at"
         ],
-        "title": "AttachmentResponseV1",
         "example": {
           "attached_at": "2022-01-01T00:00:10Z",
           "device": "/dev/vdb",
@@ -1799,21 +1817,22 @@
         }
       },
       "CopyCrossRegionRequest": {
+        "type": "object",
         "properties": {
           "destination_region": {
             "$ref": "#/components/schemas/Regions"
           }
         },
-        "type": "object",
+        "title": "CopyCrossRegionRequest",
         "required": [
           "destination_region"
         ],
-        "title": "CopyCrossRegionRequest",
         "example": {
           "destination_region": "br-se1"
         }
       },
       "CreateAttachmentRequest": {
+        "type": "object",
         "properties": {
           "volume": {
             "$ref": "#/components/schemas/IdRequest"
@@ -1833,12 +1852,11 @@
             "title": "Device"
           }
         },
-        "type": "object",
+        "title": "CreateAttachmentRequest",
         "required": [
           "volume",
           "instance"
         ],
-        "title": "CreateAttachmentRequest",
         "example": {
           "device": "/dev/vdc",
           "instance": {
@@ -1851,13 +1869,14 @@
       },
       "DiskType": {
         "type": "string",
+        "title": "DiskType",
         "enum": [
           "nvme",
           "hdd"
-        ],
-        "title": "DiskType"
+        ]
       },
       "ErrorResponse": {
+        "type": "object",
         "properties": {
           "slug": {
             "type": "string",
@@ -1872,13 +1891,12 @@
             "title": "Detail"
           }
         },
-        "type": "object",
+        "title": "ErrorResponse",
         "required": [
           "slug",
           "message",
           "detail"
         ],
-        "title": "ErrorResponse",
         "example": {
           "detail": {},
           "message": "Something went wrong",
@@ -1887,26 +1905,26 @@
       },
       "ExpandSnapshots": {
         "type": "string",
+        "title": "ExpandSnapshots",
         "enum": [
           "volume"
-        ],
-        "title": "ExpandSnapshots"
+        ]
       },
       "GenericVolumeTypeList_VolumeTypeResponseWithAzs_": {
+        "type": "object",
         "properties": {
           "types": {
+            "type": "array",
             "items": {
               "$ref": "#/components/schemas/VolumeTypeResponseWithAzs"
             },
-            "type": "array",
             "title": "Types"
           }
         },
-        "type": "object",
+        "title": "GenericVolumeTypeList[VolumeTypeResponseWithAzs]",
         "required": [
           "types"
         ],
-        "title": "GenericVolumeTypeList[VolumeTypeResponseWithAzs]",
         "example": {
           "types": [
             {
@@ -1928,65 +1946,66 @@
         }
       },
       "HTTPValidationError": {
+        "type": "object",
         "properties": {
           "detail": {
+            "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValidationError"
             },
-            "type": "array",
             "title": "Detail"
           }
         },
-        "type": "object",
         "title": "HTTPValidationError"
       },
       "IdRequest": {
+        "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "minLength": 1,
-            "title": "Id"
+            "title": "Id",
+            "minLength": 1
           }
         },
-        "type": "object",
+        "title": "IdRequest",
         "required": [
           "id"
         ],
-        "title": "IdRequest",
         "example": {
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         }
       },
       "IdResponse": {
+        "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "minLength": 1,
-            "title": "Id"
+            "title": "Id",
+            "minLength": 1
           }
         },
-        "type": "object",
+        "title": "IdResponse",
         "required": [
           "id"
         ],
-        "title": "IdResponse",
         "example": {
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
         }
       },
       "InstanceState": {
         "type": "string",
+        "title": "InstanceState",
         "enum": [
           "new",
           "running",
           "stopped",
           "suspended",
           "deleted"
-        ],
-        "title": "InstanceState"
+        ]
       },
       "InstanceStatus": {
         "type": "string",
+        "title": "InstanceStatus",
         "enum": [
           "provisioning",
           "creating",
@@ -2010,61 +2029,106 @@
           "deleting",
           "deleting_error",
           "deleted"
-        ],
-        "title": "InstanceStatus"
+        ]
+      },
+      "Metadata": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "$ref": "#/components/schemas/PageMetadata"
+          }
+        },
+        "title": "Metadata",
+        "required": [
+          "page"
+        ]
       },
       "Name": {
+        "type": "object",
         "properties": {
           "name": {
             "type": "string",
+            "title": "Name",
             "maxLength": 255,
-            "minLength": 1,
-            "title": "Name"
+            "minLength": 1
           }
         },
-        "type": "object",
+        "title": "Name",
         "required": [
           "name"
         ],
-        "title": "Name",
         "example": {
           "name": "some_resource_name"
         }
       },
+      "PageMetadata": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "max_limit": {
+            "type": "integer",
+            "title": "Max Limit"
+          }
+        },
+        "title": "PageMetadata",
+        "required": [
+          "offset",
+          "limit",
+          "count",
+          "total",
+          "max_limit"
+        ]
+      },
       "Regions": {
         "type": "string",
+        "title": "Regions",
         "enum": [
           "br-se1",
           "br-mgl1",
           "br-ne1"
-        ],
-        "title": "Regions"
+        ]
       },
       "RenameVolumeRequest": {
+        "type": "object",
         "properties": {
           "name": {
             "type": "string",
+            "title": "Name",
             "maxLength": 50,
-            "minLength": 3,
-            "title": "Name"
+            "minLength": 3
           }
         },
-        "type": "object",
+        "title": "RenameVolumeRequest",
         "required": [
           "name"
         ],
-        "title": "RenameVolumeRequest",
         "example": {
           "name": "volume-name"
         }
       },
       "SnapshotCreationRequest": {
+        "type": "object",
         "properties": {
           "name": {
             "type": "string",
+            "title": "Name",
             "maxLength": 50,
-            "minLength": 3,
-            "title": "Name"
+            "minLength": 3
           },
           "volume": {
             "anyOf": [
@@ -2110,12 +2174,11 @@
             "default": "instant"
           }
         },
-        "type": "object",
+        "title": "SnapshotCreationRequest",
         "required": [
           "name",
           "description"
         ],
-        "title": "SnapshotCreationRequest",
         "example": {
           "description": "my-snapshot",
           "name": "snapshot-name",
@@ -2129,21 +2192,34 @@
         }
       },
       "SnapshotListResponse": {
+        "type": "object",
         "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/Metadata"
+          },
           "snapshots": {
+            "type": "array",
             "items": {
               "$ref": "#/components/schemas/SnapshotResponse"
             },
-            "type": "array",
             "title": "Snapshots"
           }
         },
-        "type": "object",
+        "title": "SnapshotListResponse",
         "required": [
+          "meta",
           "snapshots"
         ],
-        "title": "SnapshotListResponse",
         "example": {
+          "meta": {
+            "page": {
+              "count": 0,
+              "limit": 20,
+              "max_limit": 100,
+              "offset": 0,
+              "total": 0
+            }
+          },
           "snapshots": [
             {
               "availability_zones": [
@@ -2151,6 +2227,7 @@
               ],
               "created_at": "2022-01-01T00:00:10Z",
               "description": "my snapshot for testing",
+              "encrypted": false,
               "error": {
                 "message": "You have reached the limit of allowed snapshots. Please, remove unused snapshots or contact support to increase your quota.",
                 "slug": "creating_error_quota"
@@ -2170,24 +2247,25 @@
         }
       },
       "SnapshotRenameRequest": {
+        "type": "object",
         "properties": {
           "name": {
             "type": "string",
+            "title": "Name",
             "maxLength": 50,
-            "minLength": 3,
-            "title": "Name"
+            "minLength": 3
           }
         },
-        "type": "object",
+        "title": "SnapshotRenameRequest",
         "required": [
           "name"
         ],
-        "title": "SnapshotRenameRequest",
         "example": {
           "name": "snapshot-name"
         }
       },
       "SnapshotResponse": {
+        "type": "object",
         "properties": {
           "id": {
             "type": "string",
@@ -2228,10 +2306,10 @@
                 "format": "date-time"
               }
             ],
-            "title": "Created At",
             "examples": [
               "2022-01-01T00:00:10Z"
-            ]
+            ],
+            "title": "Created At"
           },
           "updated_at": {
             "anyOf": [
@@ -2243,10 +2321,10 @@
                 "format": "date-time"
               }
             ],
-            "title": "Updated At",
             "examples": [
               "2022-01-01T00:00:10Z"
-            ]
+            ],
+            "title": "Updated At"
           },
           "volume": {
             "anyOf": [
@@ -2273,18 +2351,22 @@
             ]
           },
           "availability_zones": {
+            "type": "array",
             "items": {
               "type": "string"
             },
-            "type": "array",
             "title": "Availability Zones"
           },
           "type": {
             "type": "string",
             "title": "Type"
+          },
+          "encrypted": {
+            "type": "boolean",
+            "title": "Encrypted"
           }
         },
-        "type": "object",
+        "title": "SnapshotResponse",
         "required": [
           "id",
           "name",
@@ -2296,15 +2378,16 @@
           "updated_at",
           "volume",
           "availability_zones",
-          "type"
+          "type",
+          "encrypted"
         ],
-        "title": "SnapshotResponse",
         "example": {
           "availability_zones": [
             "br-ne1-a"
           ],
           "created_at": "2022-01-01T00:00:10Z",
           "description": "my snapshot for testing",
+          "encrypted": false,
           "error": {
             "message": "You have reached the limit of allowed snapshots. Please, remove unused snapshots or contact support to increase your quota.",
             "slug": "creating_error_quota"
@@ -2322,6 +2405,7 @@
         }
       },
       "SnapshotResponseError": {
+        "type": "object",
         "properties": {
           "slug": {
             "type": "string",
@@ -2332,12 +2416,11 @@
             "title": "Message"
           }
         },
-        "type": "object",
+        "title": "SnapshotResponseError",
         "required": [
           "slug",
           "message"
         ],
-        "title": "SnapshotResponseError",
         "example": {
           "message": "You have reached the limit of allowed snapshots. Please, remove unused snapshots or contact support to increase your quota.",
           "slug": "creating_error_quota"
@@ -2345,15 +2428,16 @@
       },
       "SnapshotStateV1": {
         "type": "string",
+        "title": "SnapshotStateV1",
         "enum": [
           "new",
           "available",
           "deleted"
-        ],
-        "title": "SnapshotStateV1"
+        ]
       },
       "SnapshotStatusV1": {
         "type": "string",
+        "title": "SnapshotStatusV1",
         "enum": [
           "provisioning",
           "creating",
@@ -2365,21 +2449,22 @@
           "deleted_error",
           "replicating",
           "replicating_error",
+          "replicating_error_quota",
           "restoring",
           "restoring_error",
-          "reserved"
-        ],
-        "title": "SnapshotStatusV1"
+          "copying"
+        ]
       },
       "SnapshotType": {
         "type": "string",
+        "title": "SnapshotType",
         "enum": [
           "instant",
           "object"
-        ],
-        "title": "SnapshotType"
+        ]
       },
       "SnapshotVolume": {
+        "type": "object",
         "properties": {
           "id": {
             "type": "string",
@@ -2397,14 +2482,13 @@
             "$ref": "#/components/schemas/SnapshotVolumeType"
           }
         },
-        "type": "object",
+        "title": "SnapshotVolume",
         "required": [
           "id",
           "name",
           "size",
           "type"
         ],
-        "title": "SnapshotVolume",
         "example": {
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "name": "My volume",
@@ -2416,6 +2500,7 @@
         }
       },
       "SnapshotVolumeType": {
+        "type": "object",
         "properties": {
           "id": {
             "type": "string",
@@ -2426,20 +2511,21 @@
             "title": "Name"
           }
         },
-        "type": "object",
+        "title": "SnapshotVolumeType",
         "required": [
           "id",
           "name"
         ],
-        "title": "SnapshotVolumeType",
         "example": {
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "name": "My volume type"
         }
       },
       "ValidationError": {
+        "type": "object",
         "properties": {
           "loc": {
+            "type": "array",
             "items": {
               "anyOf": [
                 {
@@ -2450,7 +2536,6 @@
                 }
               ]
             },
-            "type": "array",
             "title": "Location"
           },
           "msg": {
@@ -2462,15 +2547,15 @@
             "title": "Error Type"
           }
         },
-        "type": "object",
+        "title": "ValidationError",
         "required": [
           "loc",
           "msg",
           "type"
-        ],
-        "title": "ValidationError"
+        ]
       },
       "VolumeCreateRequestV1": {
+        "type": "object",
         "properties": {
           "availability_zone": {
             "anyOf": [
@@ -2485,15 +2570,15 @@
           },
           "name": {
             "type": "string",
+            "title": "Name",
             "maxLength": 50,
-            "minLength": 3,
-            "title": "Name"
+            "minLength": 3
           },
           "size": {
             "type": "integer",
+            "title": "Size",
             "maximum": 2147483648,
             "minimum": 10,
-            "title": "Size",
             "description": "Gibibytes (GiB)"
           },
           "type": {
@@ -2528,13 +2613,12 @@
             "default": false
           }
         },
-        "type": "object",
+        "title": "VolumeCreateRequestV1",
         "required": [
           "name",
           "size",
           "type"
         ],
-        "title": "VolumeCreateRequestV1",
         "example": {
           "availability_zone": "br-se1-a",
           "encrypted": false,
@@ -2549,24 +2633,25 @@
         }
       },
       "VolumeExtendRequest": {
+        "type": "object",
         "properties": {
           "size": {
-            "type": "integer",
             "exclusiveMinimum": 0,
+            "type": "integer",
             "title": "Size",
             "description": "New volume size in GB"
           }
         },
-        "type": "object",
+        "title": "VolumeExtendRequest",
         "required": [
           "size"
         ],
-        "title": "VolumeExtendRequest",
         "example": {
           "size": 20
         }
       },
       "VolumeResponseError": {
+        "type": "object",
         "properties": {
           "slug": {
             "type": "string",
@@ -2577,18 +2662,18 @@
             "title": "Message"
           }
         },
-        "type": "object",
+        "title": "VolumeResponseError",
         "required": [
           "slug",
           "message"
         ],
-        "title": "VolumeResponseError",
         "example": {
           "message": "You have reached the limit of allowed disks. Please, remove unused disks or contact support to increase your quota.",
           "slug": "creating_error_quota"
         }
       },
       "VolumeResponseV1": {
+        "type": "object",
         "properties": {
           "id": {
             "type": "string",
@@ -2618,10 +2703,10 @@
                 "format": "date-time"
               }
             ],
-            "title": "Created At",
             "examples": [
               "2022-01-01T00:00:10Z"
-            ]
+            ],
+            "title": "Created At"
           },
           "updated_at": {
             "anyOf": [
@@ -2633,10 +2718,10 @@
                 "format": "date-time"
               }
             ],
-            "title": "Updated At",
             "examples": [
               "2022-01-01T00:00:10Z"
-            ]
+            ],
+            "title": "Updated At"
           },
           "type": {
             "anyOf": [
@@ -2674,10 +2759,10 @@
             "title": "Availability Zone"
           },
           "availability_zones": {
+            "type": "array",
             "items": {
               "type": "string"
             },
-            "type": "array",
             "title": "Availability Zones"
           },
           "encrypted": {
@@ -2686,7 +2771,7 @@
             "default": false
           }
         },
-        "type": "object",
+        "title": "VolumeResponseV1",
         "required": [
           "id",
           "name",
@@ -2699,7 +2784,6 @@
           "availability_zone",
           "availability_zones"
         ],
-        "title": "VolumeResponseV1",
         "example": {
           "attachment": {
             "attached_at": "2022-01-01T00:00:10Z",
@@ -2735,6 +2819,7 @@
         }
       },
       "VolumeRetypeRequest": {
+        "type": "object",
         "properties": {
           "new_type": {
             "anyOf": [
@@ -2748,11 +2833,10 @@
             "title": "New Type"
           }
         },
-        "type": "object",
+        "title": "VolumeRetypeRequest",
         "required": [
           "new_type"
         ],
-        "title": "VolumeRetypeRequest",
         "example": {
           "new_type": {
             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -2761,17 +2845,18 @@
       },
       "VolumeStateV1": {
         "type": "string",
+        "title": "VolumeStateV1",
         "enum": [
           "new",
           "available",
           "in-use",
           "deleted",
           "legacy"
-        ],
-        "title": "VolumeStateV1"
+        ]
       },
       "VolumeStatusV1": {
         "type": "string",
+        "title": "VolumeStatusV1",
         "enum": [
           "provisioning",
           "creating",
@@ -2796,10 +2881,10 @@
           "deleting",
           "deleted",
           "deleted_error"
-        ],
-        "title": "VolumeStatusV1"
+        ]
       },
       "VolumeTypeResponse": {
+        "type": "object",
         "properties": {
           "iops": {
             "$ref": "#/components/schemas/VolumeTypeSpec"
@@ -2819,7 +2904,7 @@
             "$ref": "#/components/schemas/VolumeTypeStatus"
           }
         },
-        "type": "object",
+        "title": "VolumeTypeResponse",
         "required": [
           "iops",
           "id",
@@ -2827,7 +2912,6 @@
           "disk_type",
           "status"
         ],
-        "title": "VolumeTypeResponse",
         "example": {
           "disk_type": "nvme",
           "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
@@ -2841,6 +2925,7 @@
         }
       },
       "VolumeTypeResponseWithAzs": {
+        "type": "object",
         "properties": {
           "iops": {
             "$ref": "#/components/schemas/VolumeTypeSpec"
@@ -2860,10 +2945,10 @@
             "$ref": "#/components/schemas/VolumeTypeStatus"
           },
           "availability_zones": {
+            "type": "array",
             "items": {
               "type": "string"
             },
-            "type": "array",
             "title": "Availability Zones"
           },
           "allows_encryption": {
@@ -2872,7 +2957,7 @@
             "default": false
           }
         },
-        "type": "object",
+        "title": "VolumeTypeResponseWithAzs",
         "required": [
           "iops",
           "id",
@@ -2881,7 +2966,6 @@
           "status",
           "availability_zones"
         ],
-        "title": "VolumeTypeResponseWithAzs",
         "example": {
           "allows_encryption": true,
           "availability_zones": [
@@ -2899,6 +2983,7 @@
         }
       },
       "VolumeTypeSpec": {
+        "type": "object",
         "properties": {
           "read": {
             "type": "integer",
@@ -2913,13 +2998,12 @@
             "title": "Total"
           }
         },
-        "type": "object",
+        "title": "VolumeTypeSpec",
         "required": [
           "read",
           "write",
           "total"
         ],
-        "title": "VolumeTypeSpec",
         "example": {
           "read": 1000,
           "total": 1000,
@@ -2928,29 +3012,42 @@
       },
       "VolumeTypeStatus": {
         "type": "string",
+        "title": "VolumeTypeStatus",
         "enum": [
           "active",
           "deprecated",
           "deleted"
-        ],
-        "title": "VolumeTypeStatus"
+        ]
       },
       "VolumesResponseV1": {
+        "type": "object",
         "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/Metadata"
+          },
           "volumes": {
+            "type": "array",
             "items": {
               "$ref": "#/components/schemas/VolumeResponseV1"
             },
-            "type": "array",
             "title": "Volumes"
           }
         },
-        "type": "object",
+        "title": "VolumesResponseV1",
         "required": [
+          "meta",
           "volumes"
         ],
-        "title": "VolumesResponseV1",
         "example": {
+          "meta": {
+            "page": {
+              "count": 0,
+              "limit": 20,
+              "max_limit": 100,
+              "offset": 0,
+              "total": 0
+            }
+          },
           "volumes": [
             {
               "attachment": {

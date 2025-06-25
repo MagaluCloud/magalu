@@ -284,7 +284,7 @@ func renameHttpMethod(httpMethod string, endsWithVariable bool) string {
 }
 
 func isVersion(value string) bool {
-	versionRegex := `^v\d+(?:alpha\d+)?$`
+	versionRegex := `^v\d+(?:[a-z]+\d+)?$`
 	regex := regexp.MustCompile(versionRegex)
 	return regex.MatchString(value)
 }

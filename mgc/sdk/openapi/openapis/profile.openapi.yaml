@@ -2,58 +2,13 @@ openapi: 3.0.3
 info:
     title: Global resources management
     description: Manage users global data
+    version: 0.1.0
     contact:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/
         email: leandro.poloni@luizalabs.com
-    version: 0.1.0
 paths:
     /v0/ssh-keys:
-        get:
-            tags:
-            - ssh_keys
-            summary: List SSH keys
-            description: List the SSH keys. It is possible sort this list with parameters
-                id, name, key_type
-            operationId: list_ssh_keys
-            parameters:
-            -   name: _limit
-                in: query
-                required: false
-                schema:
-                    type: integer
-                    title: ' Limit'
-                    default: 50
-            -   name: _offset
-                in: query
-                required: false
-                schema:
-                    type: integer
-                    title: ' Offset'
-                    default: 0
-            -   name: _sort
-                in: query
-                required: false
-                schema:
-                    type: string
-                    title: ' Sort'
-                    default: name:asc
-            responses:
-                '200':
-                    description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/SSHPubKeyPublicOutputList'
-                '422':
-                    description: Validation Error
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/HTTPValidationError'
-            security:
-            -   OAuth2:
-                - gdb:ssh-pkey-r
         post:
             tags:
             - ssh_keys
@@ -65,12 +20,15 @@ paths:
                 The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519,
                 sk-ecdsa-sha, sk-ssh-ed25519'
             operationId: create_ssh_key
+            security:
+            -   OAuth2:
+                - gdb:ssh-pkey-w
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/SSHPubKeyPublicInput'
-                required: true
             responses:
                 '201':
                     description: Successful Response
@@ -84,9 +42,51 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+        get:
+            tags:
+            - ssh_keys
+            summary: List SSH keys
+            description: List the SSH keys. It is possible sort this list with parameters
+                id, name, key_type
+            operationId: list_ssh_keys
             security:
             -   OAuth2:
-                - gdb:ssh-pkey-w
+                - gdb:ssh-pkey-r
+            parameters:
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    default: 50
+                    title: ' Limit'
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    default: 0
+                    title: ' Offset'
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    default: name:asc
+                    title: ' Sort'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SSHPubKeyPublicOutputList'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
     /v0/ssh-keys/{key_id}:
         get:
             tags:
@@ -95,14 +95,17 @@ paths:
             description: Retrieve an SSH key using its ID. If you do not know the
                 ID, retrieve it by listing your keys.
             operationId: get_ssh_key
+            security:
+            -   OAuth2:
+                - gdb:ssh-pkey-r
             parameters:
             -   name: key_id
                 in: path
                 required: true
                 schema:
                     type: string
-                    title: Key Id
                     format: uuid
+                    title: Key Id
             responses:
                 '200':
                     description: Successful Response
@@ -122,23 +125,23 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            security:
-            -   OAuth2:
-                - gdb:ssh-pkey-r
         delete:
             tags:
             - ssh_keys
             summary: Delete SSH Key
             description: Delete an SSH key using its id.
             operationId: delete_ssh_key
+            security:
+            -   OAuth2:
+                - gdb:ssh-pkey-w
             parameters:
             -   name: key_id
                 in: path
                 required: true
                 schema:
                     type: string
-                    title: Key Id
                     format: uuid
+                    title: Key Id
             responses:
                 '200':
                     description: Successful Response
@@ -152,23 +155,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            security:
-            -   OAuth2:
-                - gdb:ssh-pkey-w
     /v0/availability-zones:
         get:
             tags:
             - availability_zones
             summary: List all availability zones.
+            description: List all the availability zones
             operationId: list_availability_zones
-            parameters:
-            -   name: show_is_blocked
-                in: query
-                required: false
-                schema:
-                    type: boolean
-                    title: Show Is Blocked
-                    default: false
+            security:
+            -   OAuth2:
+                - gdb:azs-r
             responses:
                 '200':
                     description: Successful Response
@@ -182,13 +178,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            security:
-            -   OAuth2:
-                - gdb:azs-r
 components:
     schemas:
         HTTPValidationError:
-            type: object
             properties:
                 message:
                     title: Message
@@ -196,40 +188,40 @@ components:
                 slug:
                     title: Slug
                     type: string
+            type: object
             title: HTTPValidationError
             example:
                 message: Unauthorized
                 slug: Unauthorized
         PublicAZBlockType:
             type: string
-            title: PublicAZBlockType
             enum:
             - none
             - total
             - read-only
+            title: PublicAZBlockType
         SSHPubKeyPublicInput:
-            type: object
             properties:
                 name:
                     type: string
-                    title: The SSH Key name
                     maxLength: 45
+                    title: The SSH Key name
                 key:
                     type: string
+                    maxLength: 16384
                     title: 'The SSH public key. The supported key types are: ssh-rsa,
                         ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519'
-                    maxLength: 16384
-            title: SSHPubKeyPublicInput
+            type: object
             required:
             - name
             - key
+            title: SSHPubKeyPublicInput
         SSHPubKeyPublicOutput:
-            type: object
             properties:
                 id:
                     type: string
-                    title: Id
                     format: uuid
+                    title: Id
                     example: d77c8402-ef4b-41b0-9cef-b116edf174ab
                 name:
                     type: string
@@ -243,49 +235,25 @@ components:
                     type: string
                     title: Key Type
                     example: ssh-rsa
-            title: SSHPubKeyPublicOutput
+            type: object
             required:
             - id
             - name
             - key
             - key_type
+            title: SSHPubKeyPublicOutput
         SSHPubKeyPublicOutputList:
-            type: object
             properties:
                 results:
-                    type: array
                     items:
-                        type: object
-                        properties:
-                            id:
-                                type: string
-                                title: Id
-                                format: uuid
-                                example: d77c8402-ef4b-41b0-9cef-b116edf174ab
-                            name:
-                                type: string
-                                title: Name
-                                example: my-first-key
-                            key:
-                                type: string
-                                title: Key
-                                example: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCt742ntUIcrMpW7mUXXFgYOAaZC/M4zlEvv60niuXXUHDXr2sq4Uizs1WBdQ4aZrEJnAeHi4DFj5PkPpLdQug5DbpoPbMdaT1BwuaJLaIxBTeq0c2V8GNP/XebPiC1eB+G7L3pWPEbvjpdYnHBxYpSzuJAczh+DKmBs08sbleqUNDkD8f7RsTVSjwpSbpTTxBwn1l1BSs9zcyysxDdAU2r7NtZdVPq6SBCkuCW/dHu6NWWfXgiVCpUKWIHSEWkkFGOFXdB0pPeCgjUG5JLf/BAIfSq/DjJw6Ki7dtezcuz/64Ei8DI5S1ajKfWIWIm5Cb/6gQ2cy0Muh/w+9KsXfbv
-                            key_type:
-                                type: string
-                                title: Key Type
-                                example: ssh-rsa
-                        title: SSHPubKeyPublicOutput
-                        required:
-                        - id
-                        - name
-                        - key
-                        - key_type
+                        $ref: '#/components/schemas/SSHPubKeyPublicOutput'
+                    type: array
                     title: Results
-            title: SSHPubKeyPublicOutputList
+            type: object
             required:
             - results
+            title: SSHPubKeyPublicOutputList
         UserAvailabilityZonePublicOutput:
-            type: object
             properties:
                 az_id:
                     type: string
@@ -294,80 +262,39 @@ components:
                 block_type:
                     allOf:
                     -   $ref: '#/components/schemas/PublicAZBlockType'
-                    example: total
-            title: UserAvailabilityZonePublicOutput
+            type: object
             required:
             - az_id
             - block_type
+            title: UserAvailabilityZonePublicOutput
         UserRegionPublicOutput:
-            type: object
             properties:
                 region_id:
                     type: string
                     title: Region Id
                     example: br-se1
                 availability_zones:
-                    type: array
                     items:
-                        type: object
-                        properties:
-                            az_id:
-                                type: string
-                                title: Az Id
-                                example: br-se1-a
-                            block_type:
-                                allOf:
-                                -   $ref: '#/components/schemas/PublicAZBlockType'
-                                example: total
-                        title: UserAvailabilityZonePublicOutput
-                        required:
-                        - az_id
-                        - block_type
+                        $ref: '#/components/schemas/UserAvailabilityZonePublicOutput'
+                    type: array
                     title: Availability Zones
-            title: UserRegionPublicOutput
+            type: object
             required:
             - region_id
             - availability_zones
+            title: UserRegionPublicOutput
         UserRegionsPublicOutput:
-            type: object
             properties:
                 results:
-                    type: array
                     items:
-                        type: object
-                        properties:
-                            region_id:
-                                type: string
-                                title: Region Id
-                                example: br-se1
-                            availability_zones:
-                                type: array
-                                items:
-                                    type: object
-                                    properties:
-                                        az_id:
-                                            type: string
-                                            title: Az Id
-                                            example: br-se1-a
-                                        block_type:
-                                            allOf:
-                                            -   $ref: '#/components/schemas/PublicAZBlockType'
-                                            example: total
-                                    title: UserAvailabilityZonePublicOutput
-                                    required:
-                                    - az_id
-                                    - block_type
-                                title: Availability Zones
-                        title: UserRegionPublicOutput
-                        required:
-                        - region_id
-                        - availability_zones
+                        $ref: '#/components/schemas/UserRegionPublicOutput'
+                    type: array
                     title: Results
-            title: UserRegionsPublicOutput
+            type: object
             required:
             - results
+            title: UserRegionsPublicOutput
         ValidationError:
-            type: object
             properties:
                 message:
                     title: Message
@@ -375,20 +302,33 @@ components:
                 slug:
                     title: Slug
                     type: string
-            title: ValidationError
+            type: object
             required:
             - loc
             - msg
             - type
+            title: ValidationError
             example:
                 message: Unauthorized
                 slug: Unauthorized
+    securitySchemes:
+        OAuth2:
+            type: oauth2
+            flows:
+                password:
+                    scopes:
+                        openid: Default OpenID scope.
+                        gdb:ssh-pkey-w: This scope allow the caller to write (create,
+                            update, delete) SSH Public Keys for logged tenant, on
+                            public GlobalDB
+                        gdb:ssh-pkey-r: This scope allow the caller to read SSH Public
+                            Keys of logged tenant, on public GlobalDB
+                    tokenUrl: https://autoseg-idp.luizalabs.com/oauth/token
 tags:
 -   name: ssh_keys
     description: Manage SSH Keys
 -   name: availability_zones
     description: Manage Availability Zones
-$id: https://globaldb.jaxyendy.com/openapi-cli.json
 servers:
 -   url: https://{env}/profile
     variables:
@@ -405,3 +345,4 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com
+$id: https://globaldb.jaxyendy.com/openapi-cli.json

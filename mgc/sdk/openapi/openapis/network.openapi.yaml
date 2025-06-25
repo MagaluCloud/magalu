@@ -5,7 +5,7 @@ info:
     contact:
         name: IaaS Products
         url: https://github.com/luizalabs
-    version: 1.173.0
+    version: 1.173.1
 paths:
     /v0/ports:
         get:

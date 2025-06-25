@@ -4,32 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
-
-type specList struct {
-	Url     string `json:"url"`
-	File    string `json:"file"`
-	Menu    string `json:"menu"`
-	Enabled bool   `json:"enabled"`
-}
-
-func interfaceToMap(i interface{}) (map[string]interface{}, bool) {
-	mapa, ok := i.(map[string]interface{})
-	if !ok {
-		fmt.Println("A interface não é um mapa ou mapa de interfaces.")
-		return nil, false
-	}
-	return mapa, true
-}
-
-func saveConfig(config []specList) {
-	viper.Set("jaxyendy", config)
-	err := viper.WriteConfig()
-	if err != nil {
-		fmt.Println(err)
-	}
-}
 
 func add(options AddMenu) {
 

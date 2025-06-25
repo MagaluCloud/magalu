@@ -6115,7 +6115,7 @@
               }
             ],
             "title": "Availability Zone",
-            "default": "br-mgl1-a",
+            "default": "br-se1-a",
             "nullable": true
           },
           "network": {

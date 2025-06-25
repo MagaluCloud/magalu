@@ -1,552 +1,356 @@
-{
-  "openapi": "3.1.0",
-  "info": {
-    "title": "Global resources management",
-    "description": "Manage users global data",
-    "contact": {
-      "name": "Tribo IAAS Cloud",
-      "url": "https://gitlab.luizalabs.com/",
-      "email": "leandro.poloni@luizalabs.com"
-    },
-    "version": "0.1.0"
-  },
-  "paths": {
-    "/v0/ssh-keys": {
-      "get": {
-        "tags": [
-          "ssh_keys"
-        ],
-        "summary": "List SSH keys",
-        "description": "List the SSH keys. It is possible sort this list with parameters id, name, key_type",
-        "operationId": "list_ssh_keys",
-        "parameters": [
-          {
-            "name": "_limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "title": " Limit",
-              "default": 50
-            }
-          },
-          {
-            "name": "_offset",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "title": " Offset",
-              "default": 0
-            }
-          },
-          {
-            "name": "_sort",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": " Sort",
-              "default": ""
-            }
-          },
-          {
-            "name": "X-Tenant-ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SSHPubKeyPublicOutputList"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "gdb:ssh-pkey-r"
-            ]
-          }
-        ]
-      },
-      "post": {
-        "tags": [
-          "ssh_keys"
-        ],
-        "summary": "Register new SSH key",
-        "description": "Register new SSH key by providing a name and the public SSH key\n\nThe supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519",
-        "operationId": "create_ssh_key",
-        "parameters": [
-          {
-            "name": "X-Tenant-ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SSHPubKeyPublicInput"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SSHPubKeyPublicOutput"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "gdb:ssh-pkey-w"
-            ]
-          }
-        ]
-      }
-    },
-    "/v0/ssh-keys/{key_id}": {
-      "get": {
-        "tags": [
-          "ssh_keys"
-        ],
-        "summary": "Retrieve a SSH key",
-        "description": "Retrieve an SSH key using its ID. If you do not know the ID, retrieve it by listing your keys.",
-        "operationId": "get_ssh_key",
-        "parameters": [
-          {
-            "name": "key_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Key Id",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "X-Tenant-ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SSHPubKeyPublicOutput"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "gdb:ssh-pkey-r"
-            ]
-          }
-        ]
-      },
-      "delete": {
-        "tags": [
-          "ssh_keys"
-        ],
-        "summary": "Delete SSH Key",
-        "description": "Delete an SSH key using its id.",
-        "operationId": "delete_ssh_key",
-        "parameters": [
-          {
-            "name": "key_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Key Id",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "X-Tenant-ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SSHPubKeyPublicOutput"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "gdb:ssh-pkey-w"
-            ]
-          }
-        ]
-      }
-    },
-    "/v0/availability-zones": {
-      "get": {
-        "tags": [
-          "availability_zones"
-        ],
-        "summary": "List all availability zones.",
-        "operationId": "list_availability_zones",
-        "parameters": [
-          {
-            "name": "show_is_blocked",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "title": "Show Is Blocked",
-              "default": false
-            }
-          },
-          {
-            "name": "X-Tenant-ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRegionsPublicOutput"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "gdb:azs-r"
-            ]
-          }
-        ]
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "HTTPValidationError": {
-        "type": "object",
-        "properties": {
-          "detail": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ValidationError"
-            },
-            "title": "Detail"
-          }
-        },
-        "title": "HTTPValidationError"
-      },
-      "PublicAZBlockType": {
-        "type": "string",
-        "title": "PublicAZBlockType",
-        "enum": [
-          "none",
-          "total",
-          "read-only"
-        ]
-      },
-      "SSHPubKeyPublicInput": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "The SSH Key name",
-            "maxLength": 45
-          },
-          "key": {
-            "type": "string",
-            "title": "The SSH public key. The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519",
-            "maxLength": 16384
-          }
-        },
-        "title": "SSHPubKeyPublicInput",
-        "required": [
-          "name",
-          "key"
-        ]
-      },
-      "SSHPubKeyPublicOutput": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id",
-            "format": "uuid",
-            "example": "d77c8402-ef4b-41b0-9cef-b116edf174ab"
-          },
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "example": "my-first-key"
-          },
-          "key": {
-            "type": "string",
-            "title": "Key",
-            "example": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCt742ntUIcrMpW7mUXXFgYOAaZC/M4zlEvv60niuXXUHDXr2sq4Uizs1WBdQ4aZrEJnAeHi4DFj5PkPpLdQug5DbpoPbMdaT1BwuaJLaIxBTeq0c2V8GNP/XebPiC1eB+G7L3pWPEbvjpdYnHBxYpSzuJAczh+DKmBs08sbleqUNDkD8f7RsTVSjwpSbpTTxBwn1l1BSs9zcyysxDdAU2r7NtZdVPq6SBCkuCW/dHu6NWWfXgiVCpUKWIHSEWkkFGOFXdB0pPeCgjUG5JLf/BAIfSq/DjJw6Ki7dtezcuz/64Ei8DI5S1ajKfWIWIm5Cb/6gQ2cy0Muh/w+9KsXfbv"
-          },
-          "key_type": {
-            "type": "string",
-            "title": "Key Type",
-            "example": "ssh-rsa"
-          }
-        },
-        "title": "SSHPubKeyPublicOutput",
-        "required": [
-          "id",
-          "name",
-          "key",
-          "key_type"
-        ]
-      },
-      "SSHPubKeyPublicOutputList": {
-        "type": "object",
-        "properties": {
-          "results": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SSHPubKeyPublicOutput"
-            },
-            "title": "Results"
-          }
-        },
-        "title": "SSHPubKeyPublicOutputList",
-        "required": [
-          "results"
-        ]
-      },
-      "UserAvailabilityZonePublicOutput": {
-        "type": "object",
-        "properties": {
-          "az_id": {
-            "type": "string",
-            "title": "Az Id",
-            "example": "br-se1-a"
-          },
-          "block_type": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PublicAZBlockType"
-              }
-            ],
-            "examples": [
-              "total",
-              "read-only"
-            ]
-          }
-        },
-        "title": "UserAvailabilityZonePublicOutput",
-        "required": [
-          "az_id",
-          "block_type"
-        ]
-      },
-      "UserRegionPublicOutput": {
-        "type": "object",
-        "properties": {
-          "region_id": {
-            "type": "string",
-            "title": "Region Id",
-            "example": "br-se1"
-          },
-          "availability_zones": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserAvailabilityZonePublicOutput"
-            },
-            "title": "Availability Zones"
-          }
-        },
-        "title": "UserRegionPublicOutput",
-        "required": [
-          "region_id",
-          "availability_zones"
-        ]
-      },
-      "UserRegionsPublicOutput": {
-        "type": "object",
-        "properties": {
-          "results": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserRegionPublicOutput"
-            },
-            "title": "Results"
-          }
-        },
-        "title": "UserRegionsPublicOutput",
-        "required": [
-          "results"
-        ]
-      },
-      "ValidationError": {
-        "type": "object",
-        "properties": {
-          "loc": {
-            "type": "array",
-            "items": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "title": "Location"
-          },
-          "msg": {
-            "type": "string",
-            "title": "Message"
-          },
-          "type": {
-            "type": "string",
-            "title": "Error Type"
-          }
-        },
-        "title": "ValidationError",
-        "required": [
-          "loc",
-          "msg",
-          "type"
-        ]
-      }
-    },
-    "securitySchemes": {
-      "OAuth2": {
-        "type": "oauth2",
-        "flows": {
-          "password": {
-            "tokenUrl": "https://autoseg-idp.luizalabs.com/oauth/token",
-            "scopes": {
-              "openid": "Default OpenID scope.",
-              "gdb:ssh-pkey-w": "This scope allow the caller to write (create, update, delete) SSH Public Keys for logged tenant, on public GlobalDB.",
-              "gdb:ssh-pkey-r": "This scope allow the caller to read SSH Public Keys of logged tenant, on public GlobalDB."
-            }
-          }
-        }
-      }
-    }
-  },
-  "tags": [
-    {
-      "name": "ssh_keys",
-      "description": "Manage SSH Keys"
-    },
-    {
-      "name": "availability_zones",
-      "description": "Manage Availability Zones"
-    }
-  ]
-}
+openapi: 3.0.2
+info:
+  title: Global resources management
+  description: Manage users global data
+  version: 0.1.0
+  contact:
+    name: Tribo IAAS Cloud
+    url: https://gitlab.luizalabs.com/
+    email: leandro.poloni@luizalabs.com
+paths:
+  "/v0/ssh-keys":
+    post:
+      tags:
+        - ssh_keys
+      summary: Register new SSH key
+      description: |-
+        Register new SSH key by providing a name and the public SSH key
+
+        The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519
+      operationId: create_ssh_key
+      security:
+        - OAuth2:
+            - gdb:ssh-pkey-w
+      parameters:
+        - name: X-Tenant-ID
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: X-Tenant-Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SSHPubKeyPublicInput"
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SSHPubKeyPublicOutput"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HTTPValidationError"
+    get:
+      tags:
+        - ssh_keys
+      summary: List SSH keys
+      description: List the SSH keys. It is possible sort this list with parameters id, name, key_type
+      operationId: list_ssh_keys
+      security:
+        - OAuth2:
+            - gdb:ssh-pkey-r
+      parameters:
+        - name: _limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+            title: " Limit"
+        - name: _offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            title: " Offset"
+        - name: _sort
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+            title: " Sort"
+        - name: X-Tenant-ID
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: X-Tenant-Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SSHPubKeyPublicOutputList"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HTTPValidationError"
+  "/v0/ssh-keys/{key_id}":
+    get:
+      tags:
+        - ssh_keys
+      summary: Retrieve a SSH key
+      description: Retrieve an SSH key using its ID. If you do not know the ID, retrieve it by listing your keys.
+      operationId: get_ssh_key
+      security:
+        - OAuth2:
+            - gdb:ssh-pkey-r
+      parameters:
+        - name: key_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: Key Id
+        - name: X-Tenant-ID
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: X-Tenant-Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SSHPubKeyPublicOutput"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HTTPValidationError"
+    delete:
+      tags:
+        - ssh_keys
+      summary: Delete SSH Key
+      description: Delete an SSH key using its id.
+      operationId: delete_ssh_key
+      security:
+        - OAuth2:
+            - gdb:ssh-pkey-w
+      parameters:
+        - name: key_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: Key Id
+        - name: X-Tenant-ID
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: X-Tenant-Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SSHPubKeyPublicOutput"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HTTPValidationError"
+  "/v0/availability-zones":
+    get:
+      tags:
+        - availability_zones
+      summary: List all availability zones.
+      description: List all the availability zones
+      operationId: list_availability_zones
+      security:
+        - OAuth2:
+            - gdb:azs-r
+      parameters:
+        - name: X-Tenant-ID
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: X-Tenant-Id
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserRegionsPublicOutput"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            "$ref": "#/components/schemas/ValidationError"
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PublicAZBlockType:
+      type: string
+      enum:
+        - none
+        - total
+        - read-only
+      title: PublicAZBlockType
+    SSHPubKeyPublicInput:
+      properties:
+        name:
+          type: string
+          maxLength: 45
+          title: The SSH Key name
+        key:
+          type: string
+          maxLength: 16384
+          title: 'The SSH public key. The supported key types are: ssh-rsa, ssh-dss, ecdsa-sha, ssh-ed25519, sk-ecdsa-sha, sk-ssh-ed25519'
+      type: object
+      required:
+        - name
+        - key
+      title: SSHPubKeyPublicInput
+    SSHPubKeyPublicOutput:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+          example: d77c8402-ef4b-41b0-9cef-b116edf174ab
+        name:
+          type: string
+          title: Name
+          example: my-first-key
+        key:
+          type: string
+          title: Key
+          example: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCt742ntUIcrMpW7mUXXFgYOAaZC/M4zlEvv60niuXXUHDXr2sq4Uizs1WBdQ4aZrEJnAeHi4DFj5PkPpLdQug5DbpoPbMdaT1BwuaJLaIxBTeq0c2V8GNP/XebPiC1eB+G7L3pWPEbvjpdYnHBxYpSzuJAczh+DKmBs08sbleqUNDkD8f7RsTVSjwpSbpTTxBwn1l1BSs9zcyysxDdAU2r7NtZdVPq6SBCkuCW/dHu6NWWfXgiVCpUKWIHSEWkkFGOFXdB0pPeCgjUG5JLf/BAIfSq/DjJw6Ki7dtezcuz/64Ei8DI5S1ajKfWIWIm5Cb/6gQ2cy0Muh/w+9KsXfbv
+        key_type:
+          type: string
+          title: Key Type
+          example: ssh-rsa
+      type: object
+      required:
+        - id
+        - name
+        - key
+        - key_type
+      title: SSHPubKeyPublicOutput
+    SSHPubKeyPublicOutputList:
+      properties:
+        results:
+          items:
+            "$ref": "#/components/schemas/SSHPubKeyPublicOutput"
+          type: array
+          title: Results
+      type: object
+      required:
+        - results
+      title: SSHPubKeyPublicOutputList
+    UserAvailabilityZonePublicOutput:
+      properties:
+        az_id:
+          type: string
+          title: Az Id
+          example: br-se1-a
+        block_type:
+          allOf:
+            - $ref: "#/components/schemas/PublicAZBlockType"
+      type: object
+      required:
+        - az_id
+        - block_type
+      title: UserAvailabilityZonePublicOutput
+    UserRegionPublicOutput:
+      properties:
+        region_id:
+          type: string
+          title: Region Id
+          example: br-se1
+        availability_zones:
+          items:
+            $ref: "#/components/schemas/UserAvailabilityZonePublicOutput"
+          type: array
+          title: Availability Zones
+      type: object
+      required:
+        - region_id
+        - availability_zones
+      title: UserRegionPublicOutput
+    UserRegionsPublicOutput:
+      properties:
+        results:
+          items:
+            $ref: "#/components/schemas/UserRegionPublicOutput"
+          type: array
+          title: Results
+      type: object
+      required:
+        - results
+      title: UserRegionsPublicOutput
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        password:
+          scopes:
+            openid: Default OpenID scope.
+            gdb:ssh-pkey-w: This scope allow the caller to write (create, update, delete) SSH Public Keys for logged tenant, on public GlobalDB
+            gdb:ssh-pkey-r: This scope allow the caller to read SSH Public Keys of logged tenant, on public GlobalDB
+          tokenUrl: https://autoseg-idp.luizalabs.com/oauth/token
+tags:
+  - name: ssh_keys
+    description: Manage SSH Keys
+  - name: availability_zones
+    description: Manage Availability Zones
+servers:
+  - url: https://globaldb-public-api.gcp-sa-east1-prod.jaxyendy.com

@@ -19,9 +19,9 @@ $BASEDIR/add_specs.sh network network specs/conv.network.jaxyendy.openapi.json h
 
 $BASEDIR/add_specs.sh container-registry container-registry specs/container-registry.openapi.yaml https://container-registry.jaxyendy.com/openapi.json
 
-$BASEDIR/add_specs.sh audit audit specs/conv.events-consult.openapi.yaml https://events-consult.jaxyendy.com/openapi-cli.json
+$BASEDIR/add_specs.sh audit audit specs/events-consult.openapi.yaml https://events-consult.jaxyendy.com/openapi-cli.json
 
-$BASEDIR/add_specs_without_region.sh profile profile specs/conv.globaldb.openapi.yaml https://globaldb.jaxyendy.com/openapi-cli.json
+$BASEDIR/add_specs_without_region.sh profile profile specs/globaldb.openapi.yaml https://globaldb.jaxyendy.com/openapi-cli.json
 
 $BASEDIR/add_specs.sh load-balancer load-balancer specs/lbaas.openapi.yaml https://lbaas.jaxyendy.com/openapi-cli.json
 

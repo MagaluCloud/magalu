@@ -10,25 +10,18 @@ Lists all events emitted by other products.
 mgc audit events list [flags]
 ```
 
-## Examples:
-```
-mgc audit events list --data='{"data.machine_type.name":"cloud-bs1.xsmall","data.tenant_id":"00000000-0000-0000-0000-000000000000"}'
-```
-
 ## Flags:
 ```
-    --authid string            Auth ID: Identification of the actor of the action
-    --control.limit integer    Limit: Number of items per page
-    --control.offset integer   Offset for pagination
-    --correlationid string     Correlation ID: Correlation between event chain
-    --data object              The raw data event
-                               Use --data=help for more details
+    --authid string            Authid
+    --control.limit integer     Limit: _limit (range: 0 - 2147483647)
+    --control.offset integer    Offset: _offset (range: 0 - 2147483647)
 -h, --help                     help for list
-    --id string                Identification of the event
-    --product-like string      In which producer product an event occurred ('like' operation)
-    --source-like string       Source: Context in which the event occurred ('like' operation)
-    --time date-time           Timestamp of when the occurrence happened
-    --type-like string         Type of event related to the originating occurrence ('like' operation)
+    --id string                Id
+    --product-like string      Product  Like: product__like
+    --source-like string       Source  Like: source__like
+    --tenantid string          Tenantid
+    --time date-time           Time
+    --type-like string         Type  Like: type__like
 ```
 
 ## Global Flags:

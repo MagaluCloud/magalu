@@ -2763,7 +2763,8 @@
           },
           "details": {
             "type": "object",
-            "title": "Details"
+            "title": "Details",
+            "additionalProperties": true
           }
         },
         "title": "ExceptionModel",
@@ -2825,7 +2826,8 @@
           "metadata": {
             "anyOf": [
               {
-                "type": "object"
+                "type": "object",
+                "additionalProperties": true
               },
               {
                 "type": "null"
@@ -5022,7 +5024,7 @@
               }
             ],
             "title": "Availability Zone",
-            "default": "br-mgl1-a"
+            "default": "br-se1-a"
           },
           "network": {
             "anyOf": [
