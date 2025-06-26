@@ -59,10 +59,12 @@ jobs:
 
       - name: Run tests
         id: mgccli-tests
-        uses: MagaluCloud/mgccli-tests@v0.0.23
+        uses: MagaluCloud/mgccli-tests@v0.0.24
         continue-on-error: true
         env:
           MGC_API_KEY: ${{ secrets.MGC_API_KEY || '' }}
+          MGC_OBJ_KEY_ID: ${{ secrets.MGC_OBJ_KEY_ID || ''}}
+          MGC_OBJ_KEY_SECRET: ${{ secrets.MGC_OBJ_KEY_SECRET || ''}}
           MGC_PATH: "mgc/cli/mgc"
 
       - name: Download pytest results artifact
