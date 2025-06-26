@@ -18,6 +18,7 @@ audit              Consult API
 block-storage      Block Storage API Product
 container-registry Magalu Container Registry product API.
 dbaas              DBaaS API Product.
+iam                The Magalu Cloud IAM API.
 kubernetes         APIs related to the Kubernetes product.
 load-balancer      Lbaas API: create and manage Load Balancers
 network            VPC Api Product

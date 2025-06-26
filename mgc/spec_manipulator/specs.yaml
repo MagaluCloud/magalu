@@ -17,7 +17,7 @@ jaxyendy:
       enabled: true
       to_remove:
         - path: /v0/clusters/{cluster_id}/node_pools
-          method: 
+          method:
             - get
     - url: http://virtual-machine.prod.se1.br.jaxyendy.com/v1/openapi.json
       file: virtual-machine.jaxyendy.openapi.json
@@ -39,15 +39,7 @@ jaxyendy:
       file: lbaas.openapi.yaml
       menu: lbaas
       enabled: true
-      # to_remove:
-      #   - path: /v0beta1/network-load-balancers
-      #   - path: /v0beta1/network-load-balancers/{load_balancer_id}/backends
-      #   - path: /v0beta1/network-load-balancers/{load_balancer_id}/backends/{backend_id}/targets
-      #   - path: /v0beta1/network-load-balancers/{load_balancer_id}
-      #     method: 
-      #       - get
-      #   - path: /v0beta1/network-load-balancers/{load_balancer_id}/backends/{backend_id}
-      #     method:
-      #       - get
-      #       - put
-          
+    - url: https://api.magalu.cloud/iam/openapi.json
+      file: iam.jaxyendy.openapi.json
+      menu: iam
+      enabled: true
