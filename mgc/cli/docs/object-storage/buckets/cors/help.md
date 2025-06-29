@@ -1,33 +1,23 @@
----
-sidebar_position: 0
----
-# Buckets
+# Cors
 
-Bucket operations for Object Storage API
+CORS-related commands
 
 ## Usage:
 ```
-mgc object-storage buckets [flags]
-mgc object-storage buckets [command]
+mgc object-storage buckets cors [flags]
+mgc object-storage buckets cors [command]
 ```
 
 ## Commands:
 ```
-acl         ACL-related commands
-cors        CORS-related commands
-create      Create a new Bucket
-delete      Delete an existing Bucket
-label       Label-related commands
-list        List all existing Buckets
-object-lock Object locking commands
-policy      Policy-related commands
-public-url  Get bucket public url
-versioning  Manage bucket versioning
+delete      Delete CORS document for the specified bucket
+get         Get the CORS document for the specified bucket
+set         Set CORS document for the specified bucket. The CORS can be provided as a direct JSON string or a file path using @./cors.json.
 ```
 
 ## Flags:
 ```
--h, --help   help for buckets
+-h, --help   help for cors
 ```
 
 ## Global Flags:
