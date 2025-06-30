@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
     title: Magalu Cloud IAM
-    description: The Magalu Cloud IAM API.
+    description: The Magalu Cloud IAM.
     version: 0.1.0
 paths:
     /api/v1/healthcheck:
@@ -71,7 +71,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
         post:
             tags:
             - Members
@@ -113,7 +115,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
     /api/v1/members/{uuid}:
         delete:
             tags:
@@ -148,7 +152,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
     /api/v1/members/{uuid}/grants:
         get:
             tags:
@@ -187,7 +193,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
         patch:
             tags:
             - Members
@@ -233,7 +241,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
     /api/v1/roles:
         get:
             tags:
@@ -275,7 +285,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
         post:
             tags:
             - Roles
@@ -322,7 +334,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
     /api/v1/roles/{role_name}:
         delete:
             tags:
@@ -356,7 +370,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
     /api/v1/roles/{role_name}/permissions:
         patch:
             tags:
@@ -415,7 +431,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
     /api/v1/roles/{role_name}/members:
         get:
             tags:
@@ -468,7 +486,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
     /api/v1/permissions:
         get:
             tags:
@@ -511,7 +531,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
     /api/v1/access-control:
         get:
             tags:
@@ -536,7 +558,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
         post:
             tags:
             - Access-Control
@@ -572,7 +596,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
         patch:
             tags:
             - Access-Control
@@ -608,7 +634,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
     /api/v1/service-accounts:
         get:
             tags:
@@ -636,7 +664,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
         post:
             tags:
             - Service-Accounts
@@ -672,7 +702,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
     /api/v1/service-accounts/{sa_uuid}:
         delete:
             tags:
@@ -707,7 +739,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
         patch:
             tags:
             - Service-Accounts
@@ -757,7 +791,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
     /api/v1/service-accounts/{sa_uuid}/api-keys:
         get:
             tags:
@@ -800,7 +836,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
         post:
             tags:
             - Service-Accounts
@@ -860,7 +898,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
     /api/v1/service-accounts/{sa_uuid}/api-keys/{apikey_uuid}:
         delete:
             tags:
@@ -902,7 +942,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
         patch:
             tags:
             - Service-Accounts
@@ -970,7 +1012,9 @@ paths:
                                 message: User action not authorized for permission
                                     turia_iam_editor
             security:
-            -   HTTPBearer: []
+            -   OAuth2:
+                - iam.read
+                - iam.write
 components:
     schemas:
         APIKeyServiceAccountCreate:
@@ -1401,20 +1445,25 @@ components:
         HTTPBearer:
             type: http
             scheme: bearer
+        OAuth2:
+            type: oauth2
+            description: 'OAuth2 by IDPA (Identity Provider Authentication)
+
+                '
 tags:
--   name: Access-Control
-    description: Access-Control
 -   name: Healthcheck
-    description: Healthcheck
+    description: Endpoints para verificação de status e saúde do serviço.
     x-mgc-hidden: true
 -   name: Members
-    description: Members
+    description: Members of Organization.
+-   name: Access-Control
+    description: Access control of permissions and roles.
 -   name: Permissions
-    description: Permissions
+    description: Permission action of resource.
 -   name: Roles
-    description: Roles
+    description: Roles of organization.
 -   name: Service-Accounts
-    description: Service-Accounts
+    description: Service Accounts of organization.
 $id: https://iam.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/iam

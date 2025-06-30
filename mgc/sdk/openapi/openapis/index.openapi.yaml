@@ -28,8 +28,8 @@ modules:
       url: https://iam.jaxyendy.com/openapi.json
       path: iam.openapi.yaml
       version: 0.1.0
-      description: The Magalu Cloud IAM API.
-      summary: The Magalu Cloud IAM API.
+      description: The Magalu Cloud IAM.
+      summary: The Magalu Cloud IAM.
     - name: kubernetes
       url: https://mke.br-ne-1.com/docs/openapi-with-snippets.json
       path: kubernetes.openapi.yaml

@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Access-Control
 
-Access-Control
+Access control of permissions and roles.
 
 ## Usage:
 ```

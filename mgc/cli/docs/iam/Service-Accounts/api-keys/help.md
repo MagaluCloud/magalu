@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Api-Keys
 
-Service-Accounts | api-keys
+Service Accounts of organization. | api-keys
 
 ## Usage:
 ```

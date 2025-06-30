@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Magalu Cloud IAM",
-    "description": "The Magalu Cloud IAM API.",
+    "description": "The Magalu Cloud IAM.",
     "version": "0.1.0"
   },
   "paths": {
@@ -103,7 +103,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       },
@@ -160,7 +163,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       }
@@ -214,7 +220,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       }
@@ -275,7 +284,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       },
@@ -337,7 +349,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       }
@@ -406,7 +421,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       },
@@ -483,7 +501,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       }
@@ -536,7 +557,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       }
@@ -610,7 +634,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       }
@@ -674,7 +701,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       }
@@ -743,7 +773,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       }
@@ -782,7 +815,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       },
@@ -839,7 +875,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       },
@@ -896,7 +935,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       }
@@ -939,7 +981,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       },
@@ -996,7 +1041,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       }
@@ -1050,7 +1098,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       },
@@ -1119,7 +1170,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       }
@@ -1184,7 +1238,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       },
@@ -1253,7 +1310,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       }
@@ -1317,7 +1377,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       },
@@ -1396,7 +1459,10 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2": [
+              "iam.read",
+              "iam.write"
+            ]
           }
         ]
       }
@@ -2203,5 +2269,32 @@
         ]
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "Healthcheck",
+      "description": "Endpoints para verificação de status e saúde do serviço.",
+      "x-mgc-hidden": true
+    },
+    {
+      "name": "Members",
+      "description": "Members of Organization."
+    },
+    {
+      "name": "Access-Control",
+      "description": "Access control of permissions and roles."
+    },
+    {
+      "name": "Permissions",
+      "description": "Permission action of resource."
+    },
+    {
+      "name": "Roles",
+      "description": "Roles of organization."
+    },
+    {
+      "name": "Service-Accounts",
+      "description": "Service Accounts of organization."
+    }
+  ]
 }

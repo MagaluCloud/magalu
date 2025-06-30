@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Healthcheck
 
-Healthcheck
+Endpoints para verificação de status e saúde do serviço.
 
 ## Usage:
 ```

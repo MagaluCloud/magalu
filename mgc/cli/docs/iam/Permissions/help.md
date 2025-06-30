@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Permissions
 
-Permissions
+Permission action of resource.
 
 ## Usage:
 ```

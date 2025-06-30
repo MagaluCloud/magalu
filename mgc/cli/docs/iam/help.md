@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Iam
 
-The Magalu Cloud IAM API.
+The Magalu Cloud IAM.
 
 ## Usage:
 ```
@@ -13,11 +13,11 @@ mgc iam [command]
 
 ## Commands:
 ```
-access-control   Access-Control
-members          Members
-permissions      Permissions
-roles            Roles
-service-accounts Service-Accounts
+access-control   Access control of permissions and roles.
+members          Members of Organization.
+permissions      Permission action of resource.
+roles            Roles of organization.
+service-accounts Service Accounts of organization.
 ```
 
 ## Flags:

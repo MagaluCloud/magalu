@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Grants
 
-Members | grants
+Members of Organization. | grants
 
 ## Usage:
 ```
