@@ -106,8 +106,7 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read"
             ]
           }
         ]
@@ -166,8 +165,7 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read"
             ]
           }
         ]
@@ -223,8 +221,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -287,8 +285,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -352,8 +350,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -426,8 +424,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -508,8 +506,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -564,8 +562,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -641,8 +639,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -708,8 +706,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -782,8 +780,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -824,8 +822,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -884,8 +882,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -944,8 +942,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -990,8 +988,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -1050,8 +1048,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -1107,8 +1105,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -1179,8 +1177,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -1247,8 +1245,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -1319,8 +1317,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -1386,8 +1384,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -1468,8 +1466,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam.read",
-              "iam.write"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -2248,13 +2246,11 @@
       }
     },
     "securitySchemes": {
-      "HTTPBearer": {
-        "type": "http",
-        "scheme": "bearer"
-      },
       "OAuth2": {
-        "type": "oauth2",
-        "description": "OAuth2 by IDPA (Identity Provider Authentication)\n"
+        "type": "http",
+        "description": "Insira o token JWT com o prefixo 'Bearer '.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   },

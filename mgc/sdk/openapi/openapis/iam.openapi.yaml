@@ -29,7 +29,7 @@ paths:
             x-mgc-hidden: true
             security:
             -   OAuth2:
-                - iam.read
+                - iam:read
     /api/v1/members:
         get:
             tags:
@@ -72,8 +72,7 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
         post:
             tags:
             - Members
@@ -116,8 +115,7 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
     /api/v1/members/{uuid}:
         delete:
             tags:
@@ -153,8 +151,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
     /api/v1/members/{uuid}/grants:
         get:
             tags:
@@ -194,8 +192,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
         patch:
             tags:
             - Members
@@ -242,8 +240,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
     /api/v1/roles:
         get:
             tags:
@@ -286,8 +284,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
         post:
             tags:
             - Roles
@@ -335,8 +333,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
     /api/v1/roles/{role_name}:
         delete:
             tags:
@@ -371,8 +369,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
     /api/v1/roles/{role_name}/permissions:
         patch:
             tags:
@@ -432,8 +430,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
     /api/v1/roles/{role_name}/members:
         get:
             tags:
@@ -487,8 +485,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
     /api/v1/permissions:
         get:
             tags:
@@ -532,8 +530,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
     /api/v1/access-control:
         get:
             tags:
@@ -559,8 +557,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
         post:
             tags:
             - Access-Control
@@ -597,8 +595,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
         patch:
             tags:
             - Access-Control
@@ -635,8 +633,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
     /api/v1/service-accounts:
         get:
             tags:
@@ -665,8 +663,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
         post:
             tags:
             - Service-Accounts
@@ -703,8 +701,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
     /api/v1/service-accounts/{sa_uuid}:
         delete:
             tags:
@@ -740,8 +738,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
         patch:
             tags:
             - Service-Accounts
@@ -792,8 +790,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
     /api/v1/service-accounts/{sa_uuid}/api-keys:
         get:
             tags:
@@ -837,8 +835,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
         post:
             tags:
             - Service-Accounts
@@ -899,8 +897,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
     /api/v1/service-accounts/{sa_uuid}/api-keys/{apikey_uuid}:
         delete:
             tags:
@@ -943,8 +941,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
         patch:
             tags:
             - Service-Accounts
@@ -1013,8 +1011,8 @@ paths:
                                     turia_iam_editor
             security:
             -   OAuth2:
-                - iam.read
-                - iam.write
+                - iam:read
+                - iam:write
 components:
     schemas:
         APIKeyServiceAccountCreate:
@@ -1442,14 +1440,11 @@ components:
                 message: Unauthorized
                 slug: Unauthorized
     securitySchemes:
-        HTTPBearer:
-            type: http
-            scheme: bearer
         OAuth2:
-            type: oauth2
-            description: 'OAuth2 by IDPA (Identity Provider Authentication)
-
-                '
+            type: http
+            description: Insira o token JWT com o prefixo 'Bearer '.
+            scheme: bearer
+            bearerFormat: JWT
 tags:
 -   name: Healthcheck
     description: Endpoints para verificação de status e saúde do serviço.
