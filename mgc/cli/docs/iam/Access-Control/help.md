@@ -13,9 +13,9 @@ mgc iam access-control [command]
 
 ## Commands:
 ```
-create      Post
-list        Get
-update      Update
+create      Post Access Control
+list        Get Access Control
+update      Update Access Control
 ```
 
 ## Flags:

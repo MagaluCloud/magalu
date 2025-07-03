@@ -3,7 +3,7 @@ sidebar_position: 1
 ---
 # List
 
-Get
+Get Access Control
 
 ## Usage:
 ```

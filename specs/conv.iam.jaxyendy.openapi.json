@@ -104,7 +104,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam:read"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -163,7 +164,8 @@
         "security": [
           {
             "OAuth2": [
-              "iam:read"
+              "iam:read",
+              "iam:write"
             ]
           }
         ]
@@ -364,6 +366,21 @@
         "operationId": "get_roles_api_v1_roles_get",
         "parameters": [
           {
+            "name": "hidden_permissions",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                }
+              ],
+              "title": "Hidden Permissions",
+              "default": true,
+              "nullable": true
+            }
+          },
+          {
             "name": "role_name",
             "in": "query",
             "required": false,
@@ -432,22 +449,6 @@
         ],
         "summary": "Create Role",
         "operationId": "create_role_api_v1_roles_post",
-        "parameters": [
-          {
-            "name": "based_role",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                }
-              ],
-              "title": "Based Role",
-              "nullable": true
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -784,8 +785,8 @@
         "tags": [
           "Access-Control"
         ],
-        "summary": "Get",
-        "operationId": "get_api_v1_access_control_get",
+        "summary": "Get Access Control",
+        "operationId": "get_access_control_api_v1_access_control_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -824,8 +825,8 @@
         "tags": [
           "Access-Control"
         ],
-        "summary": "Post",
-        "operationId": "post_api_v1_access_control_post",
+        "summary": "Post Access Control",
+        "operationId": "post_access_control_api_v1_access_control_post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -884,8 +885,8 @@
         "tags": [
           "Access-Control"
         ],
-        "summary": "Update",
-        "operationId": "update_api_v1_access_control_patch",
+        "summary": "Update Access Control",
+        "operationId": "update_access_control_api_v1_access_control_patch",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1771,21 +1772,39 @@
             "title": "Name"
           },
           "description": {
-            "type": "string",
-            "title": "Description"
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Description",
+            "nullable": true
           },
           "permissions": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "title": "Permissions"
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "title": "Permissions",
+            "nullable": true
+          },
+          "based_role": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Based Role",
+            "nullable": true
           }
         },
         "title": "CreateRole",
         "required": [
-          "name",
-          "description"
+          "name"
         ]
       },
       "EditGrant": {
@@ -1927,38 +1946,6 @@
             ],
             "title": "Profile",
             "nullable": true
-          },
-          "grants": {
-            "type": "object",
-            "properties": {
-              "roles": {
-                "anyOf": [
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                ],
-                "title": "Roles",
-                "default": [],
-                "nullable": true
-              },
-              "permissions": {
-                "anyOf": [
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                ],
-                "title": "Permissions",
-                "default": [],
-                "nullable": true
-              }
-            },
-            "title": "Privileges"
           }
         },
         "title": "Member"
@@ -2065,8 +2052,13 @@
             "title": "Name"
           },
           "description": {
-            "type": "string",
-            "title": "Description"
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Description",
+            "nullable": true
           },
           "origin": {
             "type": "string",
@@ -2087,8 +2079,7 @@
         },
         "title": "Role",
         "required": [
-          "name",
-          "description"
+          "name"
         ]
       },
       "RolesMember": {

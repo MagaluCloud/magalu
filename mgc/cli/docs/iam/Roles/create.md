@@ -13,7 +13,7 @@ mgc iam roles create [flags]
 ## Flags:
 ```
     --based-role string           Based Role
-    --description string          Description (required)
+    --description string          Description
 -h, --help                        help for create
     --name string                 Name (required)
     --permissions array(string)   Permissions

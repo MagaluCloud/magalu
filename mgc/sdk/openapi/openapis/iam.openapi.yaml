@@ -73,6 +73,7 @@ paths:
             security:
             -   OAuth2:
                 - iam:read
+                - iam:write
         post:
             tags:
             - Members
@@ -116,6 +117,7 @@ paths:
             security:
             -   OAuth2:
                 - iam:read
+                - iam:write
     /api/v1/members/{uuid}:
         delete:
             tags:
@@ -249,6 +251,14 @@ paths:
             summary: Get Roles
             operationId: get_roles_api_v1_roles_get
             parameters:
+            -   name: hidden_permissions
+                in: query
+                required: false
+                schema:
+                    title: Hidden Permissions
+                    default: true
+                    nullable: true
+                    type: boolean
             -   name: role_name
                 in: query
                 required: false
@@ -291,14 +301,6 @@ paths:
             - Roles
             summary: Create Role
             operationId: create_role_api_v1_roles_post
-            parameters:
-            -   name: based_role
-                in: query
-                required: false
-                schema:
-                    title: Based Role
-                    nullable: true
-                    type: string
             requestBody:
                 content:
                     application/json:
@@ -536,8 +538,8 @@ paths:
         get:
             tags:
             - Access-Control
-            summary: Get
-            operationId: get_api_v1_access_control_get
+            summary: Get Access Control
+            operationId: get_access_control_api_v1_access_control_get
             responses:
                 '200':
                     description: Successful Response
@@ -562,8 +564,8 @@ paths:
         post:
             tags:
             - Access-Control
-            summary: Post
-            operationId: post_api_v1_access_control_post
+            summary: Post Access Control
+            operationId: post_access_control_api_v1_access_control_post
             requestBody:
                 content:
                     application/json:
@@ -600,8 +602,8 @@ paths:
         patch:
             tags:
             - Access-Control
-            summary: Update
-            operationId: update_api_v1_access_control_patch
+            summary: Update Access Control
+            operationId: update_access_control_api_v1_access_control_patch
             requestBody:
                 content:
                     application/json:
@@ -1178,17 +1180,22 @@ components:
                     type: string
                     title: Name
                 description:
-                    type: string
                     title: Description
+                    nullable: true
+                    type: string
                 permissions:
+                    title: Permissions
+                    nullable: true
                     type: array
                     items:
                         type: string
-                    title: Permissions
+                based_role:
+                    title: Based Role
+                    nullable: true
+                    type: string
             title: CreateRole
             required:
             - name
-            - description
         EditGrant:
             type: object
             properties:
@@ -1263,8 +1270,6 @@ components:
                     title: Profile
                     nullable: true
                     type: string
-                grants:
-                    $ref: '#/components/schemas/Privileges'
             title: Member
         OperationType:
             type: string
@@ -1325,8 +1330,9 @@ components:
                     type: string
                     title: Name
                 description:
-                    type: string
                     title: Description
+                    nullable: true
+                    type: string
                 origin:
                     type: string
                     title: Origin
@@ -1339,7 +1345,6 @@ components:
             title: Role
             required:
             - name
-            - description
         RolesMember:
             type: object
             properties:

@@ -5,6 +5,7 @@ from typing import Dict, List
 # TODO: Add other operation methods?
 read_requirements = ["get"]
 write_requirements = ["post", "patch", "delete"]
+product_with_scope_dot = ["virtual-machine", "block-storage"]
 
 
 class AddSecurityTransformer(SpecTranformer):
@@ -27,7 +28,10 @@ class AddSecurityTransformer(SpecTranformer):
         else:
             return None
 
-        auth = [{"OAuth2": [self.product_name + "." + scope]}]
+        if self.product_name in product_with_scope_dot:
+            auth = [{"OAuth2": [self.product_name + "." + scope]}]
+        else:
+            auth = [{"OAuth2": [self.product_name + ":" + scope]}]
 
         if self.EndpointIsXaas(endpoint):
             XaasSchema = [{"XaasAuth": [self.product_name + "." + scope]}]
@@ -45,7 +49,7 @@ class AddSecurityTransformer(SpecTranformer):
         endpoints = list(paths.keys())
         for i, operations in enumerate(paths.values()):
             for http_method, op in operations.items():
-                if op.get("security") is not None:
+                if op.get("security") and len(op.get("security", [])) > 0:
                     continue
 
                 security = self._get_security_schema(endpoints[i], http_method)
