@@ -59,7 +59,7 @@ jobs:
 
       - name: Run tests
         id: mgccli-tests
-        uses: MagaluCloud/mgccli-tests@v0.0.25
+        uses: MagaluCloud/mgccli-tests@v0.0.26
         continue-on-error: true
         env:
           MGC_API_KEY: ${{ secrets.MGC_API_KEY || '' }}
