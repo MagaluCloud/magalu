@@ -458,7 +458,7 @@ func (o *Auth) InitTokensFromFile() {
 		o.secretAccessKey = authResult.SecretAccessKey
 	}
 
-	if envVal := os.Getenv("MGC_SDK_ACCESS_TOKEN"); envVal != "" {
+	if envVal := os.Getenv("MGC_ACCESS_TOKEN"); envVal != "" {
 		o.accessToken = envVal
 	}
 }

@@ -29,7 +29,7 @@ func getLogDebugFlag(cmd *cobra.Command) string {
 }
 
 func getDebugLevelFromOS() string {
-	if result := os.Getenv("MGC_SDK_LOG_DEBUG"); result != "" {
+	if result := os.Getenv("MGC_LOG_DEBUG"); result != "" {
 		return strings.ToLower(result)
 	}
 

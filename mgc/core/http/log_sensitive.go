@@ -8,7 +8,7 @@ import (
 
 type LogSensitive string
 
-const logSensitiveEnvVar = "MGC_SDK_LOG_SENSITIVE"
+const logSensitiveEnvVar = "MGC_LOG_SENSITIVE"
 
 var shouldLogSensitiveStatus *bool
 
