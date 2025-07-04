@@ -110,6 +110,10 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 			break
 		}
 
+		if strings.HasPrefix(err.Error(), "invalid argument") {
+			break
+		}
+
 		flag, found := strings.CutPrefix(err.Error(), "unknown flag: ")
 		if found && len(flag) > 0 {
 			skipTo := slices.IndexFunc(args, func(arg string) bool {
