@@ -1064,7 +1064,7 @@ secret_access_key: ""
 			}
 
 			// TODO: it's required to NewAuth test. Check how to handle it better
-			t.Setenv("MGC_SDK_ACCESS_TOKEN", tc.envAccessToken)
+			t.Setenv("MGC_ACCESS_TOKEN", tc.envAccessToken)
 
 			auth := New(dummyConfigMap, &http.Client{Transport: tc.transport}, m, config)
 
