@@ -390,3 +390,13 @@ func TestProfileManager(t *testing.T) {
 		})
 	}
 }
+
+func TestEnvWorkspaceVar(t *testing.T) {
+	const workspaceName = "__test_profile"
+	t.Setenv(envWorkspaceVar, workspaceName)
+	m := ProfileManager{}
+	p := m.Current()
+	if workspaceName != p.Name {
+		t.Errorf("expected name %q, got %q", workspaceName, p.Name)
+	}
+}
