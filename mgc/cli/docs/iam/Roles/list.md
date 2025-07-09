@@ -12,9 +12,8 @@ mgc iam roles list [flags]
 
 ## Flags:
 ```
--h, --help                 help for list
-    --hidden-permissions   Hidden Permissions
-    --role-name string     Role Name
+-h, --help               help for list
+    --role-name string   Role Name
 ```
 
 ## Global Flags:

@@ -251,14 +251,6 @@ paths:
             summary: Get Roles
             operationId: get_roles_api_v1_roles_get
             parameters:
-            -   name: hidden_permissions
-                in: query
-                required: false
-                schema:
-                    title: Hidden Permissions
-                    default: true
-                    nullable: true
-                    type: boolean
             -   name: role_name
                 in: query
                 required: false
@@ -374,11 +366,50 @@ paths:
                 - iam:read
                 - iam:write
     /api/v1/roles/{role_name}/permissions:
+        get:
+            tags:
+            - Roles
+            summary: Get Role Permissions
+            operationId: get_role_permissions_api_v1_roles__role_name__permissions_get
+            parameters:
+            -   name: role_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Role Name
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RolePermissions'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
         patch:
             tags:
             - Roles
-            summary: Edit Permissions
-            operationId: edit_permissions_api_v1_roles__role_name__permissions_patch
+            summary: Edit Role Permissions
+            operationId: edit_role_permissions_api_v1_roles__role_name__permissions_patch
             parameters:
             -   name: role_name
                 in: path
@@ -401,17 +432,12 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/Role'
-                                title: Response Edit Permissions Api V1 Roles  Role
+                                title: Response Edit Role Permissions Api V1 Roles  Role
                                     Name  Permissions Patch
                     links:
-                        delete:
-                            operationId: remove_role_api_v1_roles__role_name__delete
-                            description: Remove Role
-                            parameters:
-                                role_name: $request.path.role_name
-                        members:
-                            operationId: get_role_members_api_v1_roles__role_name__members_get
-                            description: Get Role Members
+                        list:
+                            operationId: get_role_permissions_api_v1_roles__role_name__permissions_get
+                            description: Get Role Permissions
                             parameters:
                                 role_name: $request.path.role_name
                 '422':
@@ -462,11 +488,6 @@ paths:
                         delete:
                             operationId: remove_role_api_v1_roles__role_name__delete
                             description: Remove Role
-                            parameters:
-                                role_name: $request.path.role_name
-                        permissions:
-                            operationId: edit_permissions_api_v1_roles__role_name__permissions_patch
-                            description: Edit Permissions
                             parameters:
                                 role_name: $request.path.role_name
                 '422':
@@ -1015,6 +1036,37 @@ paths:
             -   OAuth2:
                 - iam:read
                 - iam:write
+    /api/v1/scopes:
+        get:
+            tags:
+            - Scopes
+            summary: Get Groups And Products And Scopes
+            operationId: get_groups_and_products_and_scopes_api_v1_scopes_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ScopeGroup'
+                                title: Response Get Groups And Products And Scopes
+                                    Api V1 Scopes Get
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
 components:
     schemas:
         APIKeyServiceAccountCreate:
@@ -1152,6 +1204,25 @@ components:
             title: AccessControlStatus
             required:
             - status
+        ApiProducts:
+            type: object
+            properties:
+                uuid:
+                    type: string
+                    title: Uuid
+                name:
+                    type: string
+                    title: Name
+                scopes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Scope'
+                    title: Scopes
+            title: ApiProducts
+            required:
+            - uuid
+            - name
+            - scopes
         CreateMember:
             type: object
             properties:
@@ -1336,15 +1407,31 @@ components:
                 origin:
                     type: string
                     title: Origin
-                permissions:
-                    title: Permissions
-                    nullable: true
-                    type: array
-                    items:
-                        type: string
             title: Role
             required:
             - name
+        RolePermissions:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                origin:
+                    type: string
+                    title: Origin
+                permissions:
+                    type: array
+                    items:
+                        type: string
+                    title: Permissions
+            title: RolePermissions
+            required:
+            - name
+            - permissions
         RolesMember:
             type: object
             properties:
@@ -1361,6 +1448,42 @@ components:
             required:
             - member_uuid
             - roles
+        Scope:
+            type: object
+            properties:
+                uuid:
+                    type: string
+                    title: Uuid
+                name:
+                    type: string
+                    title: Name
+                title:
+                    type: string
+                    title: Title
+            title: Scope
+            required:
+            - uuid
+            - name
+            - title
+        ScopeGroup:
+            type: object
+            properties:
+                uuid:
+                    type: string
+                    title: Uuid
+                name:
+                    type: string
+                    title: Name
+                api_products:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ApiProducts'
+                    title: Api Products
+            title: ScopeGroup
+            required:
+            - uuid
+            - name
+            - api_products
         ServiceAccountCreate:
             type: object
             properties:
@@ -1464,6 +1587,8 @@ tags:
     description: Roles of organization.
 -   name: Service-Accounts
     description: Service Accounts of organization.
+-   name: Scopes
+    description: Scopes API Products of organization.
 $id: https://iam.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/iam

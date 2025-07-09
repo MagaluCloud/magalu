@@ -17,7 +17,7 @@ create      Create Role
 delete      Remove Role
 list        Get Roles
 members     Get Role Members
-permissions Edit Permissions
+permissions permissions
 ```
 
 ## Flags:

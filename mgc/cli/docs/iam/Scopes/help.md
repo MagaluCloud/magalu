@@ -1,29 +1,24 @@
 ---
 sidebar_position: 0
 ---
-# Iam
+# Scopes
 
-The Magalu Cloud IAM.
+Scopes API Products of organization.
 
 ## Usage:
 ```
-mgc iam [flags]
-mgc iam [command]
+mgc iam scopes [flags]
+mgc iam scopes [command]
 ```
 
 ## Commands:
 ```
-access-control   Access control of permissions and roles.
-members          Members of Organization.
-permissions      Permission action of resource.
-roles            Roles of organization.
-scopes           Scopes API Products of organization.
-service-accounts Service Accounts of organization.
+list        Get Groups And Products And Scopes
 ```
 
 ## Flags:
 ```
--h, --help   help for iam
+-h, --help   help for scopes
 ```
 
 ## Global Flags:

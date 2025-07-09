@@ -1,29 +1,22 @@
 ---
-sidebar_position: 0
+sidebar_position: 3
 ---
-# Iam
+# Update
 
-The Magalu Cloud IAM.
+Edit Role Permissions
 
 ## Usage:
 ```
-mgc iam [flags]
-mgc iam [command]
-```
-
-## Commands:
-```
-access-control   Access control of permissions and roles.
-members          Members of Organization.
-permissions      Permission action of resource.
-roles            Roles of organization.
-scopes           Scopes API Products of organization.
-service-accounts Service Accounts of organization.
+mgc iam roles permissions update [role-name] [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for iam
+    --add array(string)             Add
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+-h, --help                          help for update
+    --remove array(string)          Remove
+    --role-name string              Role Name (required)
 ```
 
 ## Global Flags:
@@ -35,8 +28,10 @@ service-accounts Service Accounts of organization.
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
+    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --server-url uri           Manually specify the server to use
 ```
 

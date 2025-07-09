@@ -1,29 +1,25 @@
 ---
 sidebar_position: 0
 ---
-# Iam
+# Permissions
 
-The Magalu Cloud IAM.
+Roles of organization. | permissions
 
 ## Usage:
 ```
-mgc iam [flags]
-mgc iam [command]
+mgc iam roles permissions [flags]
+mgc iam roles permissions [command]
 ```
 
 ## Commands:
 ```
-access-control   Access control of permissions and roles.
-members          Members of Organization.
-permissions      Permission action of resource.
-roles            Roles of organization.
-scopes           Scopes API Products of organization.
-service-accounts Service Accounts of organization.
+list        Get Role Permissions
+update      Edit Role Permissions
 ```
 
 ## Flags:
 ```
--h, --help   help for iam
+-h, --help   help for permissions
 ```
 
 ## Global Flags:

@@ -2,7 +2,7 @@
 name = "MGCCLI"
 version = "1.0.0"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
     "pyyaml>=6.0.1,<7.0.0",
     "jsonschema[format]>=4.19.0,<5.0.0",

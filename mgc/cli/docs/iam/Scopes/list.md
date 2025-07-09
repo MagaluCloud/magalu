@@ -1,22 +1,18 @@
 ---
-sidebar_position: 5
+sidebar_position: 1
 ---
-# Permissions
+# List
 
-Edit Permissions
+Get Groups And Products And Scopes
 
 ## Usage:
 ```
-mgc iam roles permissions [role-name] [flags]
+mgc iam scopes list [flags]
 ```
 
 ## Flags:
 ```
-    --add array(string)             Add
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for permissions
-    --remove array(string)          Remove
-    --role-name string              Role Name (required)
+-h, --help   help for list
 ```
 
 ## Global Flags:
