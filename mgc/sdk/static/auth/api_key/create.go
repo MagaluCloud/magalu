@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"slices"
+	"strings"
 	"time"
 
 	_ "embed"
@@ -21,6 +22,7 @@ import (
 
 type createParams struct {
 	ApiKeyName        string  `json:"name" jsonschema:"description=Name of new api key" mgc:"positional"`
+	ScopeName         *string `json:"scope,omitempty" jsonschema:"description=List of scopes to be used (separated by spaces)" mgc:"positional"`
 	ApiKeyDescription *string `json:"description,omitempty" jsonschema:"description=Description of new api key" mgc:"positional"`
 	ApiKeyExpiration  *string `json:"expiration,omitempty" jsonschema:"description=Date to expire new api,example=2024-11-07 (YYYY-MM-DD)" mgc:"positional"`
 }
@@ -70,49 +72,58 @@ func create(ctx context.Context, parameter createParams, _ struct{}) (*apiKeyRes
 		return nil, fmt.Errorf("programming error: unable to retrieve HTTP Client from context")
 	}
 
-	var scopesListFile ScopesFromIDMagalu
+	var scopesCreateList []scopesCreate
+	if parameter.ScopeName == nil {
 
-	err := json.Unmarshal(scopesFile, &scopesListFile)
-	if err != nil {
-		return nil, err
-	}
+		var scopesListFile ScopesFromIDMagalu
 
-	scopesList := make(map[string]string)
+		err := json.Unmarshal(scopesFile, &scopesListFile)
+		if err != nil {
+			return nil, err
+		}
 
-	for _, v := range scopesListFile {
-		if v.UUID == "c5457157-4359-44d7-a0ed-188362c91013" {
-			for _, v2 := range v.APIProducts {
-				for _, v3 := range v2.Scopes {
-					scopeName := "[" + v2.Name + "] " + v3.Title
-					scopesList[scopeName] = v3.UUID
+		scopesList := make(map[string]string)
+
+		for _, v := range scopesListFile {
+			if v.UUID == "c5457157-4359-44d7-a0ed-188362c91013" {
+				for _, v2 := range v.APIProducts {
+					for _, v3 := range v2.Scopes {
+						scopeName := "[" + v2.Name + "] " + v3.Title
+						scopesList[scopeName] = v3.UUID
+					}
 				}
 			}
 		}
+
+		input := maps.Keys(scopesList)
+		slices.Sort(input)
+		op, err := pterm.DefaultInteractiveMultiselect.
+			WithDefaultText("Select scopes").
+			WithMaxHeight(14).
+			WithOptions(input).
+			Show()
+		if err != nil {
+			return nil, err
+		}
+
+		if len(op) == 0 {
+			return nil, fmt.Errorf("no scopes selected")
+		}
+
+		for _, v := range op {
+			scopesCreateList = append(scopesCreateList, scopesCreate{
+				ID: scopesList[v],
+			})
+		}
 	}
-
-	input := maps.Keys(scopesList)
-	slices.Sort(input)
-	op, err := pterm.DefaultInteractiveMultiselect.
-		WithDefaultText("Select scopes").
-		WithMaxHeight(14).
-		WithOptions(input).
-		Show()
-	if err != nil {
-		return nil, err
+	if parameter.ScopeName != nil {
+		params := strings.Split(*parameter.ScopeName, " ")
+		for _, v := range params {
+			scopesCreateList = append(scopesCreateList, scopesCreate{
+				ID: v,
+			})
+		}
 	}
-
-	if len(op) == 0 {
-		return nil, fmt.Errorf("no scopes selected")
-	}
-
-	var scopesCreateList []scopesCreate
-
-	for _, v := range op {
-		scopesCreateList = append(scopesCreateList, scopesCreate{
-			ID: scopesList[v],
-		})
-	}
-
 	currentTenantID, err := auth.CurrentTenantID()
 	if err != nil {
 		return nil, err
