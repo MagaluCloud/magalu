@@ -103,13 +103,18 @@ func (m *ProfileManager) Get(name string) (p *Profile, err error) {
 }
 
 func (m *ProfileManager) Current() *Profile {
-	var name string
+	// First in priority of workspace set is env var
+	name := os.Getenv(envWorkspaceVar)
 
-	data, err := m.read(currentProfileNameFile)
-	if err != nil || len(data) == 0 {
-		name = defaultProfileName
-	} else {
-		name = string(data)
+	// Next is the current workspace file
+	if len(name) == 0 {
+		data, err := m.read(currentProfileNameFile)
+		if err != nil || len(data) == 0 {
+			// Last is default workspace. This should always exist
+			name = defaultProfileName
+		} else {
+			name = string(data)
+		}
 	}
 
 	p, err := m.Get(name)
