@@ -44,7 +44,7 @@ func HeadFile(ctx context.Context, cfg Config, dst mgcSchemaPkg.URI, version str
 		return
 	}
 
-	resp, err := SendRequest(ctx, req)
+	resp, err := SendRequest(ctx, req, cfg)
 	if err != nil {
 		return
 	}

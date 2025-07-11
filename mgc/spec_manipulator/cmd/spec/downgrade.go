@@ -7,6 +7,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/MagaluCloud/magalu/mgc/spec_manipulator/cmd/tui"
 	"github.com/pb33f/libopenapi"
 	"github.com/pb33f/libopenapi/datamodel/high/base"
 	"github.com/pb33f/libopenapi/orderedmap"
@@ -287,43 +288,56 @@ func PrepareSchema(xchema *base.Schema) *base.Schema {
 }
 func downgradeSpec() *cobra.Command {
 	var dir string
+	var menu string
+
 	cmd := &cobra.Command{
-		Use:    "downgrade",
-		Short:  "Downgrade specs from 3.1.x to 3.0.x",
+		Use:    "downgrade [menu]",
+		Short:  "Downgrade spec from 3.1.x to 3.0.x",
 		Hidden: true,
 		Run: func(cmd *cobra.Command, args []string) {
-			// runPrepare(cmd, args)
+
 			_ = verificarEAtualizarDiretorio(dir)
 
-			currentConfig, err := loadList()
+			var configToRun []specList
+			var err error
+
+			if menu != "" {
+				configToRun, err = loadList(menu)
+			} else {
+				configToRun, err = getConfigToRun()
+			}
 
 			if err != nil {
 				fmt.Println(err)
 				return
 			}
 
-			for _, v := range currentConfig {
+			spinner := tui.NewSpinner()
+			spinner.Start("Downgrading ...")
+			for _, v := range configToRun {
+				spinner.UpdateText("Downgrading " + v.File)
 				file := filepath.Join(dir, v.File)
 				fileBytes, err := os.ReadFile(file)
 				if err != nil {
-					fmt.Println(err)
+					spinner.Fail(err)
 					return
 				}
 
 				document, err := libopenapi.NewDocument(fileBytes)
 				if err != nil {
-					panic(fmt.Sprintf("cannot read document: %e", err))
+					spinner.Fail(fmt.Errorf("cannot read document: %e", err))
+					return
 				}
 				docModel, errors := document.BuildV3Model()
 				if len(errors) > 0 {
 					for i := range errors {
 						fmt.Printf("error: %e\n", errors[i])
 					}
-					panic(fmt.Sprintf("cannot create v3 model from document: %d errors reported", len(errors)))
+					spinner.Fail(fmt.Errorf("cannot create v3 model from document: %d errors reported", len(errors)))
+					return
 				}
 
 				if spl := strings.Split(docModel.Model.Version, "."); spl[0] == "3" && spl[1] == "0" {
-					fmt.Printf("Skipping %s. Already in 3.0.x format\n", v.File)
 					continue
 				}
 
@@ -337,9 +351,9 @@ func downgradeSpec() *cobra.Command {
 					for i := range errors {
 						fmt.Printf("error: %e\n", errors[i])
 					}
-					panic(fmt.Sprintf("cannot create v3 model from document: %d errors reported", len(errors)))
+					spinner.Fail(fmt.Errorf("cannot create v3 model from document: %d errors reported", len(errors)))
+					return
 				}
-				fmt.Println("Downgrading " + v.File)
 				// Schemas
 				for pair := docModel.Model.Components.Schemas.Oldest(); pair != nil; pair = pair.Next() {
 					xchema := pair.Value.Schema()
@@ -366,11 +380,13 @@ func downgradeSpec() *cobra.Command {
 
 				_, document, _, errs := document.RenderAndReload()
 				if len(errors) > 0 {
-					panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
+					spinner.Fail(fmt.Errorf("cannot re-render document: %d errors reported", len(errs)))
+					return
 				}
 				docValidator, validatorErrs := validator.NewValidator(document)
 				if len(validatorErrs) > 0 {
-					panic(fmt.Sprintf("cannot create validator: %d errors reported", len(validatorErrs)))
+					spinner.Fail(fmt.Errorf("cannot create validator: %d errors reported", len(validatorErrs)))
+					return
 				}
 
 				valid, validationErrs := docValidator.ValidateDocument()
@@ -385,15 +401,18 @@ func downgradeSpec() *cobra.Command {
 
 				fileBytes, _, _, errs = document.RenderAndReload()
 				if len(errors) > 0 {
-					panic(fmt.Sprintf("cannot re-render document: %d errors reported", len(errs)))
+					spinner.Fail(fmt.Errorf("cannot re-render document: %d errors reported", len(errs)))
+					return
 				}
 
 				_ = os.WriteFile(filepath.Join(dir, "conv."+v.File), fileBytes, 0644)
+
 			}
+			spinner.Success("Specs downgraded successfully")
 		},
 	}
 
 	cmd.Flags().StringVarP(&dir, "dir", "d", "", "Directory to save the converted specs")
-
+	cmd.Flags().StringVarP(&menu, "menu", "m", "", "Menu to downgrade")
 	return cmd
 }

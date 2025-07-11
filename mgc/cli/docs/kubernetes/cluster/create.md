@@ -1,3 +1,6 @@
+---
+sidebar_position: 2
+---
 # Create
 
 Creates a Kubernetes cluster in Magalu Cloud.
@@ -9,7 +12,7 @@ mgc kubernetes cluster create [flags]
 
 ## Examples:
 ```
-mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]' --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --version="v1.30.2" --zone="br-region-zone"
+mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]' --cluster-ipv4-cidr="10.128.0.0/12" --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"availability_zones":["a","b","c"],"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --services-ipv4-cidr="10.128.0.0/12" --version="v1.32.3" --zone="br-region-zone"
 ```
 
 ## Flags:
@@ -17,6 +20,11 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
     --allowed-cidrs array(string)   List of allowed CIDR blocks for API server access.
                                     
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --cluster-ipv4-cidr string      The IP address CIDR used by the Pods in the cluster.
+                                    The CIDR is always subdivided with a "/24" mask per node. If "192.168.0.0/16" is used, the first node PodCIDR will be "192.168.0.0/24", the second will be "192.168.1.0/24" and so forth.
+                                    This configuration can only be used during the cluster creation and can not be updated later.
+                                    If not specified, the "192.168.0.0/16" value is used by default.
+                                    
     --description string            A brief description of the Kubernetes cluster.
                                     
     --enabled-bastion               [Deprecated] This parameter is deprecated and its use won't create a bastion server
@@ -31,12 +39,16 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
                                       - must contain only lowercase alphanumeric characters or '-'
                                       - must start with an alphabetic character
                                       - must end with an alphanumeric character
-                                     (required)
+                                     (max character count: 63) (required)
     --node-pools array(object)      An array representing a set of nodes within a Kubernetes cluster.
                                     
                                     Use --node-pools=help for more details
-    --version string                The native Kubernetes version of the cluster.
-                                    Please specify the Kubernetes version using the standard "vX.Y.Z" format.
+    --services-ipv4-cidr string     The IPv4 subnet CIDR used by Kubernetes Services.
+                                    This parameter can only be set when creating a new cluster and can not be updated later.
+                                    If not specified, the value of "10.96.0.0/12" will be used by default.
+                                    
+    --version string                The Kubernetes version for the cluster, specified in the standard "vX.Y.Z" format.
+                                    If no version is provided, the latest available version will be used by default.
                                     
     --zone string                   [Deprecated] This parameter is deprecated and its use won't create a cluster at requested zone.
                                     Identifier of the zone where the Kubernetes cluster will be located.

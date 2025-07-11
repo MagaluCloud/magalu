@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Object-Lock
 
 Object locking commands

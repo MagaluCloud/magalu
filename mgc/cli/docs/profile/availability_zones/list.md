@@ -1,6 +1,9 @@
+---
+sidebar_position: 1
+---
 # List
 
-List all availability zones.
+List all the availability zones
 
 ## Usage:
 ```
@@ -9,8 +12,7 @@ mgc profile availability-zones list [flags]
 
 ## Flags:
 ```
--h, --help              help for list
-    --show-is-blocked   Show Is Blocked
+-h, --help   help for list
 ```
 
 ## Global Flags:

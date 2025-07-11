@@ -33,7 +33,7 @@ func getPolicy(ctx context.Context, params GetBucketPolicyParams, cfg common.Con
 		return
 	}
 
-	res, err := common.SendRequest(ctx, req)
+	res, err := common.SendRequest(ctx, req, cfg)
 	if err != nil {
 		return
 	}

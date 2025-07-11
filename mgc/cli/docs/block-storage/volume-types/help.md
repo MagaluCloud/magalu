@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Volume-Types
 
 Operations with volume types for volumes.

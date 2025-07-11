@@ -85,9 +85,9 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 }
 
 func processFile(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, basePath string, storageClass string, file string, progressBar *pterm.ProgressbarPrinter) error {
-	
+
 	relPath := common.GetRelativePath(basePath, file)
-	
+
 	dst := destination.JoinPath(relPath)
 
 	_, err := upload(

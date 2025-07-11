@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 Retrieves a list of machine types allowed for the current tenant which is logged in.
@@ -14,6 +17,7 @@ mgc virtual-machine machine-types list [flags]
     --control.offset integer      Offset: pagination for the results limited (max: 2147483647)
     --control.sort string         Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
 -h, --help                       help for list
+    --name string                name of the instance type
 ```
 
 ## Global Flags:

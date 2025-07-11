@@ -1,16 +1,19 @@
+---
+sidebar_position: 3
+---
 # Delete
 
 Delete a VPC from the provided tenant_id
 
 ## Usage:
 ```
-mgc network vpcs delete [vpc-id] [flags]
+mgc network vpcs delete [id] [flags]
 ```
 
 ## Flags:
 ```
--h, --help            help for delete
-    --vpc-id string   VPC Id: ID of the VPC to delete (required)
+-h, --help        help for delete
+    --id string   VPC Id: ID of the VPC to delete (required)
 ```
 
 ## Global Flags:

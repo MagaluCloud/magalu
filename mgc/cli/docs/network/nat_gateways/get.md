@@ -1,17 +1,20 @@
+---
+sidebar_position: 4
+---
 # Get
 
 Detail a NAT (Network Address Translation) Gateway from a VPC.
 
 ## Usage:
 ```
-mgc network nat-gateways get [nat-gateway-id] [flags]
+mgc network nat-gateways get [id] [flags]
 ```
 
 ## Flags:
 ```
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                          help for get
-    --nat-gateway-id string         Nat Gateway Id (required)
+    --id string                     Id (required)
 ```
 
 ## Global Flags:

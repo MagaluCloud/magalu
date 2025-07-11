@@ -24,8 +24,8 @@ func NewDefaultClientLogger(transport http.RoundTripper) *ClientLogger {
 }
 
 // 1 or "progressive" = log progressive;
-// 2 or "final" = accumulates it all and logs at the end.
-const logPayloadEnvVar = "MGC_SDK_LOG_HTTP_PAYLOAD"
+// default > 2 or "final" = accumulates it all and logs at the end.
+const logPayloadEnvVar = "MGC_LOG_HTTP_PAYLOAD"
 
 type payloadLoggerFn func(
 	parent io.Reader,
@@ -38,8 +38,9 @@ var payloadLogger *payloadLoggerFn
 func getPayloadLogger() payloadLoggerFn {
 	if payloadLogger == nil {
 		payloadLogger = new(payloadLoggerFn)
-		switch value := strings.ToLower(os.Getenv(logPayloadEnvVar)); value {
-		case "", "0":
+		value := os.Getenv(logPayloadEnvVar)
+		switch strings.ToLower(value) {
+		case "0":
 			break
 
 		case "1", "progressive":
@@ -49,7 +50,7 @@ func getPayloadLogger() payloadLoggerFn {
 				})
 			}
 
-		case "2", "final":
+		case "", "2", "final":
 			*payloadLogger = func(parent io.Reader, message string, logger *zap.SugaredLogger) io.ReadCloser {
 				return mgcLoggerPkg.NewFinalLoggerReader(parent, func(readData mgcLoggerPkg.LogReadData) {
 					logger.Infow(message, "body", readData)

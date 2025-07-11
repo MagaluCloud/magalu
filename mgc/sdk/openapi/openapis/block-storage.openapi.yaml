@@ -66,6 +66,7 @@ paths:
                                 title: Response 422 Create Attachment V1 V1 Attachments
                                     Post
             x-viveiro: true
+            x-permission-name: bs_volume_attach
             security:
             -   OAuth2:
                 - block-storage.write
@@ -131,6 +132,7 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Delete Attachment V1 V1 Attachments  Id  Delete
             x-viveiro: true
+            x-permission-name: bs_volume_detach
             security:
             -   OAuth2:
                 - block-storage.write
@@ -230,6 +232,7 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 List Snapshot V1 Snapshots Get
             x-viveiro: true
+            x-permission-name: bs_snapshot_list
             security:
             -   OAuth2:
                 - block-storage.read
@@ -310,6 +313,7 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Create Snapshot V1 Snapshots Post
             x-viveiro: true
+            x-permission-name: bs_snapshot_create
             security:
             -   OAuth2:
                 - block-storage.write
@@ -402,6 +406,7 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Get Snapshot V1 Snapshots  Id  Get
             x-viveiro: true
+            x-permission-name: bs_snapshot_get
             security:
             -   OAuth2:
                 - block-storage.read
@@ -459,6 +464,7 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Delete Snapshot V1 Snapshots  Id  Delete
             x-viveiro: true
+            x-permission-name: bs_snapshot_delete
             security:
             -   OAuth2:
                 - block-storage.write
@@ -540,6 +546,7 @@ paths:
                                 title: Response 422 Copy Snapshot Cross Region V1
                                     Snapshots  Id  Copy Post
             x-viveiro: true
+            x-permission-name: bs_snapshot_copy
             security:
             -   OAuth2:
                 - block-storage.write
@@ -622,6 +629,7 @@ paths:
                                 title: Response 422 Rename Snapshot V1 Snapshots  Id  Rename
                                     Patch
             x-viveiro: true
+            x-permission-name: bs_snapshot_rename
             security:
             -   OAuth2:
                 - block-storage.write
@@ -674,6 +682,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
+            x-permission-name: bs_volume_type_list
             security:
             -   OAuth2:
                 - block-storage.read
@@ -768,6 +777,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
+            x-permission-name: bs_volume_list
             security:
             -   OAuth2:
                 - block-storage.read
@@ -861,6 +871,7 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Create Volume V1 V1 Volumes Post
             x-viveiro: true
+            x-permission-name: bs_volume_create
             security:
             -   OAuth2:
                 - block-storage.write
@@ -977,6 +988,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
+            x-permission-name: bs_volume_get
             security:
             -   OAuth2:
                 - block-storage.read
@@ -1034,6 +1046,7 @@ paths:
                                     $ref: '#/components/schemas/ErrorResponse'
                                 title: Response 422 Delete Volume V1 V1 Volumes  Id  Delete
             x-viveiro: true
+            x-permission-name: bs_volume_delete
             security:
             -   OAuth2:
                 - block-storage.write
@@ -1135,6 +1148,7 @@ paths:
                                 title: Response 422 Attach Volume V1 V1 Volumes  Id  Attach  Virtual
                                     Machine Id  Post
             x-viveiro: true
+            x-permission-name: bs_volume_attach
             security:
             -   OAuth2:
                 - block-storage.write
@@ -1234,6 +1248,7 @@ paths:
                                 title: Response 422 Detach Volume V1 V1 Volumes  Id  Detach
                                     Post
             x-viveiro: true
+            x-permission-name: bs_volume_detach
             security:
             -   OAuth2:
                 - block-storage.write
@@ -1326,6 +1341,7 @@ paths:
                                 title: Response 422 Extend Volume V1 Volumes  Id  Extend
                                     Post
             x-viveiro: true
+            x-permission-name: bs_volume_extend
             security:
             -   OAuth2:
                 - block-storage.write
@@ -1423,6 +1439,7 @@ paths:
                                 title: Response 422 Rename Volume V1 V1 Volumes  Id  Rename
                                     Patch
             x-viveiro: true
+            x-permission-name: bs_volume_rename
             security:
             -   OAuth2:
                 - block-storage.write
@@ -1515,6 +1532,7 @@ paths:
                                 title: Response 422 Retype Volume V1 Volumes  Id  Retype
                                     Post
             x-viveiro: true
+            x-permission-name: bs_volume_retype
             security:
             -   OAuth2:
                 - block-storage.write
@@ -1851,6 +1869,37 @@ components:
             - deleting
             - deleting_error
             - deleted
+        Metadata:
+            type: object
+            properties:
+                page:
+                    type: object
+                    properties:
+                        offset:
+                            type: integer
+                            title: Offset
+                        limit:
+                            type: integer
+                            title: Limit
+                        count:
+                            type: integer
+                            title: Count
+                        total:
+                            type: integer
+                            title: Total
+                        max_limit:
+                            type: integer
+                            title: Max Limit
+                    title: PageMetadata
+                    required:
+                    - offset
+                    - limit
+                    - count
+                    - total
+                    - max_limit
+            title: Metadata
+            required:
+            - page
         Name:
             type: object
             properties:
@@ -1864,6 +1913,31 @@ components:
             - name
             example:
                 name: some_resource_name
+        PageMetadata:
+            type: object
+            properties:
+                offset:
+                    type: integer
+                    title: Offset
+                limit:
+                    type: integer
+                    title: Limit
+                count:
+                    type: integer
+                    title: Count
+                total:
+                    type: integer
+                    title: Total
+                max_limit:
+                    type: integer
+                    title: Max Limit
+            title: PageMetadata
+            required:
+            - offset
+            - limit
+            - count
+            - total
+            - max_limit
         Regions:
             type: string
             title: Regions
@@ -1930,6 +2004,37 @@ components:
         SnapshotListResponse:
             type: object
             properties:
+                meta:
+                    type: object
+                    properties:
+                        page:
+                            type: object
+                            properties:
+                                offset:
+                                    type: integer
+                                    title: Offset
+                                limit:
+                                    type: integer
+                                    title: Limit
+                                count:
+                                    type: integer
+                                    title: Count
+                                total:
+                                    type: integer
+                                    title: Total
+                                max_limit:
+                                    type: integer
+                                    title: Max Limit
+                            title: PageMetadata
+                            required:
+                            - offset
+                            - limit
+                            - count
+                            - total
+                            - max_limit
+                    title: Metadata
+                    required:
+                    - page
                 snapshots:
                     type: array
                     items:
@@ -1970,9 +2075,10 @@ components:
                                 - deleted_error
                                 - replicating
                                 - replicating_error
+                                - replicating_error_quota
                                 - restoring
                                 - restoring_error
-                                - reserved
+                                - copying
                             created_at:
                                 anyOf:
                                 -   type: string
@@ -2005,6 +2111,9 @@ components:
                             type:
                                 type: string
                                 title: Type
+                            encrypted:
+                                type: boolean
+                                title: Encrypted
                         title: SnapshotResponse
                         required:
                         - id
@@ -2018,11 +2127,13 @@ components:
                         - volume
                         - availability_zones
                         - type
+                        - encrypted
                         example:
                             availability_zones:
                             - br-ne1-a
                             created_at: '2022-01-01T00:00:10Z'
                             description: my snapshot for testing
+                            encrypted: false
                             error:
                                 message: You have reached the limit of allowed snapshots.
                                     Please, remove unused snapshots or contact support
@@ -2040,13 +2151,22 @@ components:
                     title: Snapshots
             title: SnapshotListResponse
             required:
+            - meta
             - snapshots
             example:
+                meta:
+                    page:
+                        count: 0
+                        limit: 20
+                        max_limit: 100
+                        offset: 0
+                        total: 0
                 snapshots:
                 -   availability_zones:
                     - br-ne1-a
                     created_at: '2022-01-01T00:00:10Z'
                     description: my snapshot for testing
+                    encrypted: false
                     error:
                         message: You have reached the limit of allowed snapshots.
                             Please, remove unused snapshots or contact support to
@@ -2112,9 +2232,10 @@ components:
                     - deleted_error
                     - replicating
                     - replicating_error
+                    - replicating_error_quota
                     - restoring
                     - restoring_error
-                    - reserved
+                    - copying
                 created_at:
                     anyOf:
                     -   type: string
@@ -2147,6 +2268,9 @@ components:
                 type:
                     type: string
                     title: Type
+                encrypted:
+                    type: boolean
+                    title: Encrypted
             title: SnapshotResponse
             required:
             - id
@@ -2160,11 +2284,13 @@ components:
             - volume
             - availability_zones
             - type
+            - encrypted
             example:
                 availability_zones:
                 - br-ne1-a
                 created_at: '2022-01-01T00:00:10Z'
                 description: my snapshot for testing
+                encrypted: false
                 error:
                     message: You have reached the limit of allowed snapshots. Please,
                         remove unused snapshots or contact support to increase your
@@ -2216,9 +2342,10 @@ components:
             - deleted_error
             - replicating
             - replicating_error
+            - replicating_error_quota
             - restoring
             - restoring_error
-            - reserved
+            - copying
         SnapshotType:
             type: string
             title: SnapshotType
@@ -2717,6 +2844,37 @@ components:
         VolumesResponseV1:
             type: object
             properties:
+                meta:
+                    type: object
+                    properties:
+                        page:
+                            type: object
+                            properties:
+                                offset:
+                                    type: integer
+                                    title: Offset
+                                limit:
+                                    type: integer
+                                    title: Limit
+                                count:
+                                    type: integer
+                                    title: Count
+                                total:
+                                    type: integer
+                                    title: Total
+                                max_limit:
+                                    type: integer
+                                    title: Max Limit
+                            title: PageMetadata
+                            required:
+                            - offset
+                            - limit
+                            - count
+                            - total
+                            - max_limit
+                    title: Metadata
+                    required:
+                    - page
                 volumes:
                     type: array
                     items:
@@ -2850,8 +3008,16 @@ components:
                     title: Volumes
             title: VolumesResponseV1
             required:
+            - meta
             - volumes
             example:
+                meta:
+                    page:
+                        count: 0
+                        limit: 20
+                        max_limit: 100
+                        offset: 0
+                        total: 0
                 volumes:
                 -   attachment:
                         attached_at: '2022-01-01T00:00:10Z'

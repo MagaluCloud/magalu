@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 Retrieve a list of images allowed for the current region.
@@ -14,6 +17,7 @@ mgc virtual-machine images list [flags]
     --control.offset integer      Offset (max: 2147483647)
     --control.sort string         Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
 -h, --help                       help for list
+    --name string                name of the image
 ```
 
 ## Global Flags:

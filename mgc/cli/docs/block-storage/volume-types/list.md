@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 List Volume Types allowed in the current region.

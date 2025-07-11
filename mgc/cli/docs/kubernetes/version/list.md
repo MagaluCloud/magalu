@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 Lists all available Kubernetes versions.

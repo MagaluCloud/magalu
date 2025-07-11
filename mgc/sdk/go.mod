@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/MagaluCloud/magalu/mgc/core v0.33.3
 	github.com/geffersonFerraz/brazilian-words-sorter v1.1.0
-	github.com/getkin/kin-openapi v0.130.0
+	github.com/getkin/kin-openapi v0.131.0
 	github.com/go-openapi/jsonpointer v0.21.1
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.13.0

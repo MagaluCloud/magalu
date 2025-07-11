@@ -15,7 +15,7 @@ func listSpecsCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			_ = verificarEAtualizarDiretorio(dir)
 
-			currentConfig, err := loadList()
+			currentConfig, err := loadList("")
 
 			if err != nil {
 				fmt.Println(err)

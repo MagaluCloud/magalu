@@ -3,7 +3,7 @@
   "info": {
     "title": "Cloud Events Consult API",
     "description": "Cloud Events API Product.",
-    "version": "0.17.0"
+    "version": "0.31.1"
   },
   "servers": [
     {
@@ -66,6 +66,21 @@
               ],
               "title": "ID",
               "description": "Identification of the event"
+            }
+          },
+          {
+            "name": "correlationid",
+            "in": "query",
+            "description": "Correlation between event chain",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                }
+              ],
+              "title": "Correlation ID",
+              "description": "Correlation between event chain"
             }
           },
           {
@@ -132,7 +147,7 @@
           {
             "name": "authid",
             "in": "query",
-            "description": "Identification of the principal that triggered the occurrence",
+            "description": "Identification of the actor of the action",
             "required": false,
             "schema": {
               "anyOf": [
@@ -141,7 +156,7 @@
                 }
               ],
               "title": "Auth ID",
-              "description": "Identification of the principal that triggered the occurrence"
+              "description": "Identification of the actor of the action"
             }
           },
           {
@@ -310,14 +325,15 @@
           "id": {
             "type": "string",
             "title": "Id",
-            "description": "Identifies the event.",
-            "example": "00000000-00000000-00000000-00000000"
+            "format": "uuid",
+            "description": "Identifies the event. Unique by source",
+            "example": "00000000-0000-0000-0000-000000000000"
           },
           "source": {
             "type": "string",
             "title": "Source",
             "description": "Identifies the context in which the event occurred.",
-            "example": "https://api.com/v1/instances/00000000-00000000-00000000-00000000"
+            "example": "https://api.com/v1/instances/00000000-0000-0000-0000-000000000000"
           },
           "type": {
             "type": "string",
@@ -335,20 +351,20 @@
             "type": "string",
             "title": "Subject",
             "description": "Identifies the subject of the event, in context of the event producer (identified by source)",
-            "example": "instance/00000000-00000000-00000000-00000000"
+            "example": "instance/00000000-0000-0000-0000-000000000000"
           },
           "time": {
             "type": "string",
             "title": "Time",
             "format": "date-time",
             "description": "Timestamp of when the occurrence happened.",
-            "example": "2024-07-16T22:50:00"
+            "example": "2024-07-16T22:50:00Z"
           },
           "authid": {
             "type": "string",
             "title": "Authid",
             "description": "A unique identifier of the principal that triggered the occurrence.",
-            "example": "00000000-00000000-00000000-00000000"
+            "example": "00000000-0000-0000-0000-000000000000"
           },
           "authtype": {
             "type": "string",
@@ -363,20 +379,26 @@
             "example": "default"
           },
           "region": {
-            "anyOf": [
-              {
-                "type": "string"
-              }
-            ],
+            "type": "string",
             "title": "Region",
-            "description": "The physical region of the event",
-            "nullable": true
+            "enum": [
+              "br-mgl1",
+              "br-ne1",
+              "br-se1",
+              "global"
+            ]
           },
           "tenantid": {
             "type": "string",
             "title": "Tenantid",
             "description": "ID of the tenant which requested the change",
-            "example": "00000000-00000000-00000000-00000000"
+            "example": "00000000-0000-0000-0000-000000000000"
+          },
+          "correlationid": {
+            "type": "string",
+            "title": "Correlationid",
+            "description": "Identifies the correlation between event chains.",
+            "example": "00000000-0000-0000-0000-000000000000"
           },
           "data": {
             "type": "object",
@@ -394,7 +416,9 @@
           "authid",
           "authtype",
           "product",
+          "region",
           "tenantid",
+          "correlationid",
           "data"
         ],
         "description": "Represent all the fields available in event output, following the Cloud Events Spec."
@@ -567,14 +591,15 @@
                 "id": {
                   "type": "string",
                   "title": "Id",
-                  "description": "Identifies the event.",
-                  "example": "00000000-00000000-00000000-00000000"
+                  "format": "uuid",
+                  "description": "Identifies the event. Unique by source",
+                  "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "source": {
                   "type": "string",
                   "title": "Source",
                   "description": "Identifies the context in which the event occurred.",
-                  "example": "https://api.com/v1/instances/00000000-00000000-00000000-00000000"
+                  "example": "https://api.com/v1/instances/00000000-0000-0000-0000-000000000000"
                 },
                 "type": {
                   "type": "string",
@@ -592,20 +617,20 @@
                   "type": "string",
                   "title": "Subject",
                   "description": "Identifies the subject of the event, in context of the event producer (identified by source)",
-                  "example": "instance/00000000-00000000-00000000-00000000"
+                  "example": "instance/00000000-0000-0000-0000-000000000000"
                 },
                 "time": {
                   "type": "string",
                   "title": "Time",
                   "format": "date-time",
                   "description": "Timestamp of when the occurrence happened.",
-                  "example": "2024-07-16T22:50:00"
+                  "example": "2024-07-16T22:50:00Z"
                 },
                 "authid": {
                   "type": "string",
                   "title": "Authid",
                   "description": "A unique identifier of the principal that triggered the occurrence.",
-                  "example": "00000000-00000000-00000000-00000000"
+                  "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "authtype": {
                   "type": "string",
@@ -620,20 +645,26 @@
                   "example": "default"
                 },
                 "region": {
-                  "anyOf": [
-                    {
-                      "type": "string"
-                    }
-                  ],
+                  "type": "string",
                   "title": "Region",
-                  "description": "The physical region of the event",
-                  "nullable": true
+                  "enum": [
+                    "br-mgl1",
+                    "br-ne1",
+                    "br-se1",
+                    "global"
+                  ]
                 },
                 "tenantid": {
                   "type": "string",
                   "title": "Tenantid",
                   "description": "ID of the tenant which requested the change",
-                  "example": "00000000-00000000-00000000-00000000"
+                  "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "correlationid": {
+                  "type": "string",
+                  "title": "Correlationid",
+                  "description": "Identifies the correlation between event chains.",
+                  "example": "00000000-0000-0000-0000-000000000000"
                 },
                 "data": {
                   "type": "object",
@@ -651,7 +682,9 @@
                 "authid",
                 "authtype",
                 "product",
+                "region",
                 "tenantid",
+                "correlationid",
                 "data"
               ],
               "description": "Represent all the fields available in event output, following the Cloud Events Spec."
@@ -691,6 +724,16 @@
         "required": [
           "count",
           "total"
+        ]
+      },
+      "Region": {
+        "type": "string",
+        "title": "Region",
+        "enum": [
+          "br-mgl1",
+          "br-ne1",
+          "br-se1",
+          "global"
         ]
       },
       "ValidationError": {

@@ -33,7 +33,7 @@ func SuspendBucketVersioning(ctx context.Context, params SuspendBucketVersioning
 		return nil, err
 	}
 
-	res, err := common.SendRequest(ctx, req)
+	res, err := common.SendRequest(ctx, req, cfg)
 	if err != nil {
 		return nil, err
 	}

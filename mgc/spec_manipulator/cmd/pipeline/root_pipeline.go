@@ -13,6 +13,7 @@ func PipelineCmd() *cobra.Command {
 	pipeMenu.AddCommand(CliDumpTreeCmd()) // download all
 	pipeMenu.AddCommand(CliDocOutputCmd())
 	pipeMenu.AddCommand(NewOAPIIndexCommand())
+	pipeMenu.AddCommand(GetGenDocsMagaluCmd())
 
 	return pipeMenu
 }

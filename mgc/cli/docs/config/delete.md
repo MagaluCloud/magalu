@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Delete
 
 Delete/unset a Config value that had been previously set. This does not

@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Event-Types
 
 Endpoints related to listing types of events emitted by other products.

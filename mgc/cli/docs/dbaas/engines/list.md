@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 Returns a list of available engines.
@@ -12,7 +15,7 @@ mgc dbaas engines list [flags]
     --control.limit integer    The maximum number of items per page. (range: 1 - 50)
     --control.offset integer   The number of items to skip before starting to collect the result set. (min: 0)
 -h, --help                     help for list
-    --status enum              EngineStatus: Value referring to engine status. (one of "ACTIVE" or "DEPRECATED")
+    --status enum              EngineStatus: Value referring to engine status. (one of "ACTIVE", "DEPRECATED" or "PREVIEW")
 ```
 
 ## Global Flags:

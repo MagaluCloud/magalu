@@ -1,3 +1,6 @@
+---
+sidebar_position: 2
+---
 # Create
 
 Create a Snapshot for the currently authenticated tenant.

@@ -1,3 +1,6 @@
+---
+sidebar_position: 2
+---
 # Create
 
 Creates a node pool in a Kubernetes cluster.
@@ -9,7 +12,7 @@ mgc kubernetes nodepool create [cluster-id] [flags]
 
 ## Examples:
 ```
-mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --flavor="cloud-k8s.gp1.small" --name="nodepool-example" --replicas=3 --tags='["tag-value1"]'
+mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --availability-zones='["a","b","c"]' --flavor="cloud-k8s.gp1.small" --max-pods-per-node=32 --name="nodepool-example" --replicas=3 --tags='["tag-value1"]'
 ```
 
 ## Flags:
@@ -23,6 +26,8 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
     --auto-scale.min-replicas integer   Object specifying properties for updating workload resources in the Kubernetes cluster: Minimum number of replicas for autoscaling. If not provided, the autoscale value will be assumed based on the "replicas" field.
                                          (min: 0)
                                         This is the same as '--auto-scale=min_replicas:integer'.
+    --availability-zones array(enum)    List of availability zones where the resource can be created.
+                                        
     --cli.list-links enum[=table]       List all available links for this command (one of "json", "table" or "yaml")
     --cluster-id uuid                   Cluster's UUID. (required)
     --flavor string                     Definition of the CPU, RAM, and storage capacity of the nodes.
@@ -47,13 +52,15 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
                                         | cloud-k8s.i1-c32-r128-d500 | 32    | 128      | 500            |
                                          (required)
 -h, --help                              help for create
+    --max-pods-per-node integer         Maximum number of Pods allowed per node.
+                                         (range: 8 - 110)
     --name string                       Name of the node pool. The name is primarily for idempotence and must be unique within a namespace. The name cannot be changed.
                                         The name must follow the following rules:
                                           - Must contain a maximum of 63 characters
                                           - Must contain only lowercase alphanumeric characters or '-'
                                           - Must start with an alphabetic character
                                           - Must end with an alphanumeric character
-                                         (required)
+                                         (max character count: 63) (required)
     --replicas integer                  Number of replicas of the nodes in the node pool. (required) (default 1)
     --tags array(string)                List of tags applied to the node pool.
     --taints array(object)              Property associating a set of nodes.

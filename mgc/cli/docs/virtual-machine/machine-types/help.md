@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Machine-Types
 
 Operations with machine types for instances.

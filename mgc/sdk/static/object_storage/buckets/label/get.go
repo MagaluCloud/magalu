@@ -55,7 +55,7 @@ func getTags(ctx context.Context, params GetBucketLabelParams, cfg common.Config
 		return
 	}
 
-	res, err := common.SendRequest(ctx, req)
+	res, err := common.SendRequest(ctx, req, cfg)
 	if err != nil {
 		return
 	}

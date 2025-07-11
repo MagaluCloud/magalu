@@ -1,3 +1,6 @@
+---
+sidebar_position: 2
+---
 # Create
 
 Creates a new parameter group for a tenant.

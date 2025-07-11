@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Instances-Snapshots
 
 Snapshots management. | instances-snapshots

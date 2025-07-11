@@ -1,3 +1,6 @@
+---
+sidebar_position: 6
+---
 # Extend
 
 Extend the size of an existing Volume for the currently

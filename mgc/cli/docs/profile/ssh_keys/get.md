@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Get
 
 Retrieve an SSH key using its ID. If you do not know the ID, retrieve it by listing your keys.

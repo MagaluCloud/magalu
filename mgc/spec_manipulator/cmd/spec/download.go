@@ -1,33 +1,61 @@
 package spec
 
 import (
-	"fmt"
 	"path/filepath"
+	"strings"
 
+	"github.com/MagaluCloud/magalu/mgc/spec_manipulator/cmd/tui"
 	"github.com/spf13/cobra"
 )
 
 func downloadSpecsCmd() *cobra.Command {
 	var dir string
+	var menu string
+
 	cmd := &cobra.Command{
-		Use:   "download",
-		Short: "Download all available specs",
+		Use:   "download [dir] [menu]",
+		Short: "Download available spec",
 		Run: func(cmd *cobra.Command, args []string) {
+
 			_ = verificarEAtualizarDiretorio(dir)
 
-			currentConfig, err := loadList()
+			var currentConfig []specList
+			var err error
 
+			if menu != "" {
+				currentConfig, err = loadList(menu)
+			} else {
+				currentConfig, err = getConfigToRun()
+			}
 			if err != nil {
-				fmt.Println(err)
 				return
 			}
-
+			spinner := tui.NewSpinner()
+			spinner.Start("Downloading ...")
 			for _, v := range currentConfig {
-				_ = getAndSaveFile(v.Url, filepath.Join(dir, v.File))
+				spinner.UpdateText("Downloading " + v.File)
+				if !strings.Contains(v.Url, "gitlab.luizalabs.com") {
+					err = getAndSaveFile(v.Url, filepath.Join(dir, v.File), v.Menu)
+					if err != nil {
+						spinner.Fail(err)
+						return
+					}
+				}
+
+				if strings.Contains(v.Url, "gitlab.luizalabs.com") {
+					err = downloadGitlab(v.Url, filepath.Join(dir, v.File))
+					if err != nil {
+						spinner.Fail(err)
+						return
+					}
+				}
+
+				justRunValidate(dir, v)
 			}
-			fmt.Println("Now, run '" + cmd.Root().Name() + " prepare'")
+			spinner.Success("Specs downloaded successfully")
 		},
 	}
 	cmd.Flags().StringVarP(&dir, "dir", "d", "", "Directory to save the converted specs")
+	cmd.Flags().StringVarP(&menu, "menu", "m", "", "Menu to download the specs")
 	return cmd
 }

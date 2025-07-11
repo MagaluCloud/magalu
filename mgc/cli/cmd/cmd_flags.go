@@ -120,9 +120,11 @@ func applyPositionalArgs(positionalArgs []*flag.Flag, args []string) (err error)
 
 	for i, value := range args {
 		f := positionalArgs[i]
-		if err = f.Value.Set(value); err != nil {
-			err = fmt.Errorf("invalid argument for %s: %s", f.Name, err.Error())
-			return
+		if f.Value.String() == "" && !f.Changed {
+			if err = f.Value.Set(value); err != nil {
+				err = fmt.Errorf("invalid argument for %s: %s", f.Name, err.Error())
+				return
+			}
 		}
 	}
 
@@ -185,6 +187,16 @@ func (cf *cmdFlags) positionalArgsFunction(cmd *cobra.Command, args []string) (e
 			return fmt.Errorf("this command does not accept positional arguments, %d given: %s", numArgs, strings.Join(args, ", "))
 		}
 		return fmt.Errorf("this command receives at most %d positional arguments, %d given", numPositionalArgs, numArgs)
+	}
+
+	positionalToPopulate := 0
+	for _, f := range cf.positionalArgs {
+		if f.Value.String() == "" && !f.Changed {
+			positionalToPopulate++
+		}
+	}
+	if numArgs > positionalToPopulate {
+		return fmt.Errorf("this command has one or more invalid positional arguments, given: %s", strings.Join(args, ", "))
 	}
 
 	return applyPositionalArgs(cf.positionalArgs[:len(args)], args)

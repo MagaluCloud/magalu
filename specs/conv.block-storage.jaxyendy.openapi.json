@@ -87,7 +87,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_attach"
       }
     },
     "/v1/attachments/{id}": {
@@ -166,7 +167,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_detach"
       }
     },
     "/v1/snapshots": {
@@ -319,7 +321,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_snapshot_list"
       },
       "post": {
         "tags": [
@@ -403,7 +406,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_snapshot_create"
       }
     },
     "/v1/snapshots/{id}": {
@@ -506,7 +510,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_snapshot_get"
       },
       "delete": {
         "tags": [
@@ -583,7 +588,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_snapshot_delete"
       }
     },
     "/v1/snapshots/{id}/copy": {
@@ -672,7 +678,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_snapshot_copy"
       }
     },
     "/v1/snapshots/{id}/rename": {
@@ -761,7 +768,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_snapshot_rename"
       }
     },
     "/v1/volume-types": {
@@ -847,7 +855,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_type_list"
       }
     },
     "/v1/volumes": {
@@ -980,7 +989,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_list"
       },
       "post": {
         "tags": [
@@ -1064,7 +1074,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_create"
       }
     },
     "/v1/volumes/{id}": {
@@ -1161,7 +1172,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_get"
       },
       "delete": {
         "tags": [
@@ -1238,7 +1250,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_delete"
       }
     },
     "/v1/volumes/{id}/attach/{virtual_machine_id}": {
@@ -1327,7 +1340,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_attach"
       }
     },
     "/v1/volumes/{id}/detach": {
@@ -1406,7 +1420,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_detach"
       }
     },
     "/v1/volumes/{id}/extend": {
@@ -1481,7 +1496,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_extend"
       }
     },
     "/v1/volumes/{id}/rename": {
@@ -1570,7 +1586,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_rename"
       }
     },
     "/v1/volumes/{id}/retype": {
@@ -1645,7 +1662,8 @@
             }
           }
         },
-        "x-viveiro": true
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_retype"
       }
     }
   },
@@ -2146,6 +2164,48 @@
           "deleted"
         ]
       },
+      "Metadata": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "object",
+            "properties": {
+              "offset": {
+                "type": "integer",
+                "title": "Offset"
+              },
+              "limit": {
+                "type": "integer",
+                "title": "Limit"
+              },
+              "count": {
+                "type": "integer",
+                "title": "Count"
+              },
+              "total": {
+                "type": "integer",
+                "title": "Total"
+              },
+              "max_limit": {
+                "type": "integer",
+                "title": "Max Limit"
+              }
+            },
+            "title": "PageMetadata",
+            "required": [
+              "offset",
+              "limit",
+              "count",
+              "total",
+              "max_limit"
+            ]
+          }
+        },
+        "title": "Metadata",
+        "required": [
+          "page"
+        ]
+      },
       "Name": {
         "type": "object",
         "properties": {
@@ -2163,6 +2223,39 @@
         "example": {
           "name": "some_resource_name"
         }
+      },
+      "PageMetadata": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "max_limit": {
+            "type": "integer",
+            "title": "Max Limit"
+          }
+        },
+        "title": "PageMetadata",
+        "required": [
+          "offset",
+          "limit",
+          "count",
+          "total",
+          "max_limit"
+        ]
       },
       "Regions": {
         "type": "string",
@@ -2262,6 +2355,48 @@
       "SnapshotListResponse": {
         "type": "object",
         "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "object",
+                "properties": {
+                  "offset": {
+                    "type": "integer",
+                    "title": "Offset"
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "title": "Limit"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "title": "Count"
+                  },
+                  "total": {
+                    "type": "integer",
+                    "title": "Total"
+                  },
+                  "max_limit": {
+                    "type": "integer",
+                    "title": "Max Limit"
+                  }
+                },
+                "title": "PageMetadata",
+                "required": [
+                  "offset",
+                  "limit",
+                  "count",
+                  "total",
+                  "max_limit"
+                ]
+              }
+            },
+            "title": "Metadata",
+            "required": [
+              "page"
+            ]
+          },
           "snapshots": {
             "type": "array",
             "items": {
@@ -2311,9 +2446,10 @@
                     "deleted_error",
                     "replicating",
                     "replicating_error",
+                    "replicating_error_quota",
                     "restoring",
                     "restoring_error",
-                    "reserved"
+                    "copying"
                   ]
                 },
                 "created_at": {
@@ -2372,6 +2508,10 @@
                 "type": {
                   "type": "string",
                   "title": "Type"
+                },
+                "encrypted": {
+                  "type": "boolean",
+                  "title": "Encrypted"
                 }
               },
               "title": "SnapshotResponse",
@@ -2386,7 +2526,8 @@
                 "updated_at",
                 "volume",
                 "availability_zones",
-                "type"
+                "type",
+                "encrypted"
               ],
               "example": {
                 "availability_zones": [
@@ -2394,6 +2535,7 @@
                 ],
                 "created_at": "2022-01-01T00:00:10Z",
                 "description": "my snapshot for testing",
+                "encrypted": false,
                 "error": {
                   "message": "You have reached the limit of allowed snapshots. Please, remove unused snapshots or contact support to increase your quota.",
                   "slug": "creating_error_quota"
@@ -2415,9 +2557,19 @@
         },
         "title": "SnapshotListResponse",
         "required": [
+          "meta",
           "snapshots"
         ],
         "example": {
+          "meta": {
+            "page": {
+              "count": 0,
+              "limit": 20,
+              "max_limit": 100,
+              "offset": 0,
+              "total": 0
+            }
+          },
           "snapshots": [
             {
               "availability_zones": [
@@ -2425,6 +2577,7 @@
               ],
               "created_at": "2022-01-01T00:00:10Z",
               "description": "my snapshot for testing",
+              "encrypted": false,
               "error": {
                 "message": "You have reached the limit of allowed snapshots. Please, remove unused snapshots or contact support to increase your quota.",
                 "slug": "creating_error_quota"
@@ -2508,9 +2661,10 @@
               "deleted_error",
               "replicating",
               "replicating_error",
+              "replicating_error_quota",
               "restoring",
               "restoring_error",
-              "reserved"
+              "copying"
             ]
           },
           "created_at": {
@@ -2569,6 +2723,10 @@
           "type": {
             "type": "string",
             "title": "Type"
+          },
+          "encrypted": {
+            "type": "boolean",
+            "title": "Encrypted"
           }
         },
         "title": "SnapshotResponse",
@@ -2583,7 +2741,8 @@
           "updated_at",
           "volume",
           "availability_zones",
-          "type"
+          "type",
+          "encrypted"
         ],
         "example": {
           "availability_zones": [
@@ -2591,6 +2750,7 @@
           ],
           "created_at": "2022-01-01T00:00:10Z",
           "description": "my snapshot for testing",
+          "encrypted": false,
           "error": {
             "message": "You have reached the limit of allowed snapshots. Please, remove unused snapshots or contact support to increase your quota.",
             "slug": "creating_error_quota"
@@ -2652,9 +2812,10 @@
           "deleted_error",
           "replicating",
           "replicating_error",
+          "replicating_error_quota",
           "restoring",
           "restoring_error",
-          "reserved"
+          "copying"
         ]
       },
       "SnapshotType": {
@@ -3337,6 +3498,48 @@
       "VolumesResponseV1": {
         "type": "object",
         "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "object",
+                "properties": {
+                  "offset": {
+                    "type": "integer",
+                    "title": "Offset"
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "title": "Limit"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "title": "Count"
+                  },
+                  "total": {
+                    "type": "integer",
+                    "title": "Total"
+                  },
+                  "max_limit": {
+                    "type": "integer",
+                    "title": "Max Limit"
+                  }
+                },
+                "title": "PageMetadata",
+                "required": [
+                  "offset",
+                  "limit",
+                  "count",
+                  "total",
+                  "max_limit"
+                ]
+              }
+            },
+            "title": "Metadata",
+            "required": [
+              "page"
+            ]
+          },
           "volumes": {
             "type": "array",
             "items": {
@@ -3516,9 +3719,19 @@
         },
         "title": "VolumesResponseV1",
         "required": [
+          "meta",
           "volumes"
         ],
         "example": {
+          "meta": {
+            "page": {
+              "count": 0,
+              "limit": 20,
+              "max_limit": 100,
+              "offset": 0,
+              "total": 0
+            }
+          },
           "volumes": [
             {
               "attachment": {

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"maps"
 	"math"
 	"os"
 	"strconv"
@@ -565,7 +564,18 @@ func parseObjectFlagValue(schema *core.Schema, rawValues []string) (items map[st
 			items = map[string]any{}
 		}
 
-		maps.Copy(items, value)
+		for k, v := range value {
+			if existing, hasExisting := items[k]; hasExisting {
+				mergedValue, err := mergeValue(existing, v)
+				if err != nil {
+					return items, &utils.ChainedError{Name: fmt.Sprintf("merge key %q", k), Err: err}
+				}
+				items[k] = mergedValue
+			} else {
+				items[k] = v
+			}
+		}
+
 	}
 
 	return

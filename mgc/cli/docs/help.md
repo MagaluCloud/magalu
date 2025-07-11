@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Commands-Reference
 
 Magalu Cloud CLI is a command-line interface for the Magalu Cloud.
@@ -11,7 +14,7 @@ mgc [command]
 
 ## Product catalog:
 ```
-audit              Cloud Events API Product.
+audit              Consult API
 block-storage      Block Storage API Product
 container-registry Magalu Container Registry product API.
 dbaas              DBaaS API Product.

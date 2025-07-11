@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Object-Storage
 
 Create and manage Buckets and Objects via the Object Storage API

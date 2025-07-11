@@ -1,3 +1,6 @@
+---
+sidebar_position: 3
+---
 # Delete
 
 Deletes a node pool in a Kubernetes cluster by nodepool_uuid.

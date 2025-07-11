@@ -1,3 +1,6 @@
+---
+sidebar_position: 6
+---
 # Update
 
 Updates nodes from a node pool by nodepool_uuid.

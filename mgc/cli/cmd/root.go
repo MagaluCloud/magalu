@@ -5,8 +5,6 @@ import (
 	"os"
 	"regexp"
 	"runtime"
-	"slices"
-	"strings"
 
 	"github.com/MagaluCloud/magalu/mgc/cli/ui/progress_bar"
 	mgcLoggerPkg "github.com/MagaluCloud/magalu/mgc/core/logger"
@@ -92,39 +90,6 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	addApiKeyFlag(rootCmd)
 
 	rootCmd.InitDefaultHelpFlag()
-
-	// Immediately parse flags for root command because we'll access the global flags prior
-	// to calling Execute (which is when Cobra parses the flags)
-	args := argParser.MainArgs()
-	// This loop will parse flags even if unknown flag error arises.
-	// A flag error means that ParseFlags will early return and not parse the rest of the args.
-	// This happens because some flags aren't available until further down the code.
-	for {
-		err = rootCmd.ParseFlags(args)
-		// Either we parsed all the flags or there are no more args to parse
-		if err == nil || len(args) == 0 {
-			break
-		}
-
-		if strings.HasPrefix(err.Error(), "flag needs an argument:") {
-			break
-		}
-
-		flag, found := strings.CutPrefix(err.Error(), "unknown flag: ")
-		if found && len(flag) > 0 {
-			skipTo := slices.IndexFunc(args, func(arg string) bool {
-				return strings.Split(arg, "=")[0] == flag
-			})
-			args = args[skipTo+1:]
-			continue
-		}
-		flag, found = strings.CutPrefix(err.Error(), "unknown shorthand flag: ")
-		if found && len(flag) > 0 {
-			flag = getLastFlag(flag)
-			skipTo := slices.Index(args, flag)
-			args = args[skipTo+1:]
-		}
-	}
 
 	if hasOutputFormatHelp(rootCmd) {
 		return nil

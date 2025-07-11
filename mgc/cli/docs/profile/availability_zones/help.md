@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Availability_zones
 
 Manage Availability Zones

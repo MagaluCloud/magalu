@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Instance_types
 
 Instance Types available for database instances.

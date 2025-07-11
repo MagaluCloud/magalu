@@ -151,6 +151,12 @@ func handleExecutor(
 	configs core.Configs,
 ) (core.Result, error) {
 	ctx = openapi.WithRawOutputFlag(ctx, getRawOutputFlag(cmd))
+
+	err := cmd.ParseFlags(argParser.MainArgs())
+	if err != nil {
+		return nil, err
+	}
+
 	result, err := handleExecutorPre(ctx, sdk, cmd, exec, parameters, configs)
 	err = handleExecutorResult(ctx, sdk, cmd, result, err)
 	if err != nil {

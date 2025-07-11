@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Cluster
 
 Endpoints related to the creation, listing, deletion, and retrieval of the kubeconfig for a Kubernetes cluster.

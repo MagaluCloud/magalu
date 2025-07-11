@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Buckets
 
 Bucket operations for Object Storage API

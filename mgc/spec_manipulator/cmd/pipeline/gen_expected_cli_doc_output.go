@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strings"
 	"sync"
@@ -69,7 +70,7 @@ func genHelpOutput(path []string) (string, error) {
 func prepareOutputString(inputText string, replaceString string, prepareLN bool) string {
 	inputText = strings.ReplaceAll(inputText, replaceString, "")
 
-	inputText = strings.ReplaceAll(inputText, "</br>", "")
+	inputText = stripHtmlTags(inputText)
 
 	if !prepareLN {
 		inputText += "\n\n"
@@ -379,4 +380,9 @@ func moveSingleFileFolders(rootDirectory string) error {
 	}
 
 	return nil
+}
+
+func stripHtmlTags(inputText string) string {
+	re := regexp.MustCompile(`<[^>]*>`)
+	return re.ReplaceAllString(inputText, "")
 }

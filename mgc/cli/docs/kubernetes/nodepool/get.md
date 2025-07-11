@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Get
 
 Gets nodes in a node pool by nodepool_uuid.

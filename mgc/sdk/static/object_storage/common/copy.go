@@ -158,7 +158,7 @@ func CopySingleFile(ctx context.Context, cfg Config, src mgcSchemaPkg.URI, dst m
 		req.Header.Set("X-Amz-Storage-Class", storageClass)
 	}
 
-	resp, err := SendRequest(ctx, req)
+	resp, err := SendRequest(ctx, req, cfg)
 	if err != nil {
 		return err
 	}

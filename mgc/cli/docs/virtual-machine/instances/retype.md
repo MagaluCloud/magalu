@@ -1,3 +1,6 @@
+---
+sidebar_position: 9
+---
 # Retype
 
 Changes a Virtual Machine instance machine type with the id provided in the current tenant

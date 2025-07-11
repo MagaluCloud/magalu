@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Repositories
 
 Routes related to listing and deletion of repositories.

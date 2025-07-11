@@ -1,3 +1,6 @@
+---
+sidebar_position: 4
+---
 # Get
 
 Get an instance details for the current tenant which is logged in.

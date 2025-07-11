@@ -1,3 +1,6 @@
+---
+sidebar_position: 1
+---
 # List
 
 Lists all types of events emitted by other products.
@@ -9,8 +12,8 @@ mgc audit event-types list [flags]
 
 ## Flags:
 ```
-    --control.limit integer    Limit: Number of items per page
-    --control.offset integer   Offset for pagination
+    --control.limit integer     Limit: _limit (range: 0 - 2147483647)
+    --control.offset integer    Offset: _offset (range: 0 - 2147483647)
 -h, --help                     help for list
 ```
 

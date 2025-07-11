@@ -1,3 +1,6 @@
+---
+sidebar_position: 2
+---
 # Create
 
 Create a new Virtual Private Cloud (VPC).
@@ -9,9 +12,9 @@ mgc network vpcs create [flags]
 
 ## Flags:
 ```
-    --description string   Description
+    --description string   Optional description for the VPC. Must not contain special characters, max 200 chars.
 -h, --help                 help for create
-    --name string          Name (required)
+    --name string          Name of the VPC. Must be alphanumeric or hyphens, max 50 chars. (required)
 ```
 
 ## Global Flags:

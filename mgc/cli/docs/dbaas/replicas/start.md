@@ -1,3 +1,6 @@
+---
+sidebar_position: 6
+---
 # Start
 
 Start an instance replica.

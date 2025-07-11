@@ -1,3 +1,6 @@
+---
+sidebar_position: 12
+---
 # Suspend
 
 Suspends a Virtual Machine instance with the id provided in the current tenant which is logged in.

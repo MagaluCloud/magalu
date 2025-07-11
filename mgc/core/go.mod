@@ -7,7 +7,7 @@ require (
 	github.com/PaesslerAG/gval v1.2.4
 	github.com/PaesslerAG/jsonpath v0.1.1
 	github.com/dustin/go-humanize v1.0.1
-	github.com/getkin/kin-openapi v0.130.0
+	github.com/getkin/kin-openapi v0.131.0
 	github.com/go-openapi/jsonpointer v0.21.1
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/iancoleman/orderedmap v0.3.0
