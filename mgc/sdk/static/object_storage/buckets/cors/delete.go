@@ -18,7 +18,7 @@ var getDelete = utils.NewLazyLoader(func() core.Executor {
 	var exec core.Executor = core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:        "delete",
-			Description: "Delete CORS document for the specified bucket",
+			Description: "Delete CORS rules for the specified bucket",
 		},
 		deleteCors,
 	)

@@ -14,30 +14,16 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/common"
 )
 
-type CORSConfiguration struct {
-	XMLName   xml.Name   `xml:"CORSConfiguration"`
-	XMLns    string     `xml:"xmlns,attr"`
-    CORSRules []CORSRule `xml:"CORSRule"`
-}
-
-type CORSRule struct {
-	AllowedOrigins []string `xml:"AllowedOrigin"`
-	AllowedMethods []string `xml:"AllowedMethod"`
-	AllowedHeaders []string `xml:"AllowedHeader,omitempty"`
-	ExposeHeaders  []string `xml:"ExposeHeader,omitempty"`
-	MaxAgeSeconds  int      `xml:"MaxAgeSeconds,omitempty"`
-}
-
 type setBucketCorsParams struct {
 	Bucket common.BucketName `json:"dst" jsonschema:"description=Name of the bucket to set permissions for,example=my-bucket" mgc:"positional"`
-	Cors   map[string]any    `json:"cors" jsonschema:"description=CORS file path to be uploaded,example=@./cors.json or ./cors.json" mgc:"positional"`
+	Cors   map[string]any    `json:"cors" jsonschema:"description=CORS config as file or inline JSON,example=@./cors.json or '{\"CORSRules\": [{\"AllowedOrigins\": [\"*\"], \"AllowedMethods\": [\"GET\"]}]}'" mgc:"positional"`
 }
 
 var getSet = utils.NewLazyLoader(func() core.Executor {
 	var exec core.Executor = core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:        "set",
-			Description: "Set CORS document for the specified bucket. The CORS can be provided as a direct JSON string or a file path using @./cors.json.",
+			Description: "Set CORS rules for the specified bucket.",
 		},
 		setCors,
 	)
@@ -104,9 +90,9 @@ func newSetBucketCorsRequest(ctx context.Context, p setBucketCorsParams, cfg com
 			return nil, fmt.Errorf("failed to convert to XML: %w", err)
 		}
 
-		//xmlWithHeader := append([]byte(xml.Header), xmlBytes...)
+		xmlWithHeader := append([]byte(xml.Header), xmlBytes...)
 
-		reader := bytes.NewReader(xmlBytes)
+		reader := bytes.NewReader(xmlWithHeader)
 		return io.NopCloser(reader), nil
 	}
 

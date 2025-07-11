@@ -10,9 +10,9 @@ mgc object-storage buckets cors [command]
 
 ## Commands:
 ```
-delete      Delete CORS document for the specified bucket
-get         Get the CORS document for the specified bucket
-set         Set CORS document for the specified bucket. The CORS can be provided as a direct JSON string or a file path using @./cors.json.
+delete      Delete CORS rules for the specified bucket
+get         Get the CORS rules for the specified bucket
+set         Set CORS rules for the specified bucket.
 ```
 
 ## Flags:

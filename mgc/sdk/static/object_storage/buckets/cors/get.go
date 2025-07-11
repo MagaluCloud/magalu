@@ -2,6 +2,9 @@ package cors
 
 import (
 	"context"
+	"encoding/xml"
+	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/MagaluCloud/magalu/mgc/core"
@@ -10,14 +13,14 @@ import (
 )
 
 type GetBucketCorsParams struct {
-	Bucket common.BucketName `json:"dst" jsonschema:"description=Specifies the bucket whose CORS document is being requested" mgc:"positional"`
+	Bucket common.BucketName `json:"dst" jsonschema:"description=Specifies the bucket whose CORS rules is being requested" mgc:"positional"`
 }
 
 var getGet = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	var exec core.Executor = core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:        "get",
-			Description: "Get the CORS document for the specified bucket",
+			Description: "Get the CORS rules for the specified bucket",
 		},
 		getCors,
 	)
@@ -30,15 +33,34 @@ var getGet = utils.NewLazyLoader[core.Executor](func() core.Executor {
 func getCors(ctx context.Context, params GetBucketCorsParams, cfg common.Config) (result map[string]any, err error) {
 	req, err := newGetCorsRequest(ctx, cfg, params.Bucket)
 	if err != nil {
-		return
+		return nil, err
 	}
 
 	res, err := common.SendRequest(ctx, req)
 	if err != nil {
-		return
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	bodyBytes, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
 	}
 
-	return common.UnwrapResponse[map[string]any](res, req)
+	if res.StatusCode != http.StatusOK {
+		bodyStr := string(bodyBytes)
+		return nil, fmt.Errorf("Status: %s\n\n%s", res.Status, bodyStr)
+	}
+
+	var corsConfig CORSConfiguration
+	if err = xml.Unmarshal(bodyBytes, &corsConfig); err != nil {
+		return nil, err
+	}
+
+	result = map[string]any{
+		"CORSRules": corsConfig.CORSRules,
+	}
+	return
 }
 
 func newGetCorsRequest(ctx context.Context, cfg common.Config, bucketName common.BucketName) (*http.Request, error) {
@@ -51,5 +73,11 @@ func newGetCorsRequest(ctx context.Context, cfg common.Config, bucketName common
 	query.Add("cors", "")
 	url.RawQuery = query.Encode()
 
-	return http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Accept", "application/json")
+	return req, nil
 }
