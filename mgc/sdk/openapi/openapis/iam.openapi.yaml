@@ -1141,6 +1141,10 @@ components:
                     title: Revoked By
                     nullable: true
                     type: string
+                api_key:
+                    title: Api Key
+                    nullable: true
+                    type: string
             title: APIKeyServiceAccountDetail
             required:
             - uuid

@@ -1700,6 +1700,15 @@
             ],
             "title": "Revoked By",
             "nullable": true
+          },
+          "api_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Api Key",
+            "nullable": true
           }
         },
         "title": "APIKeyServiceAccountDetail",

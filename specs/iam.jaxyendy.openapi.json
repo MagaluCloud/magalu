@@ -1730,6 +1730,17 @@
               }
             ],
             "title": "Revoked By"
+          },
+          "api_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Api Key"
           }
         },
         "title": "APIKeyServiceAccountDetail",
