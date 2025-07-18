@@ -20,6 +20,7 @@ mgc dbaas instances update --backup-retention-days=7 --backup-start-at="04:00:00
     --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion.
     --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process.
     --cli.list-links enum[=table]     List all available links for this command (one of "json", "table" or "yaml")
+    --deletion-protected              Deletion Protected
 -h, --help                            help for update
     --instance-id uuid                Value referring to instance Id. (required)
     --parameter-group-id uuid         Parameter group Id
