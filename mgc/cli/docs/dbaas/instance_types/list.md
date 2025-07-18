@@ -13,7 +13,7 @@ mgc dbaas instance-types list [flags]
 ## Flags:
 ```
     --compatible-product enum   Instance Type Compatible per product: Value referring to instance type compatible products. (one of "CLUSTER", "SINGLE_INSTANCE" or "SINGLE_INSTANCE_REPLICA")
-    --control.limit integer     The maximum number of items per page. (range: 1 - 50)
+    --control.limit integer     The maximum number of items per page. (range: 1 - 200)
     --control.offset integer    The number of items to skip before starting to collect the result set. (min: 0)
     --engine-id uuid            Value referring to engine Id.
 -h, --help                      help for list

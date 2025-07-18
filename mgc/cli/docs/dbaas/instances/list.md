@@ -20,6 +20,7 @@ mgc dbaas instances list --status="ACTIVE"
     --control.expand enum       Instance extra attributes or relations to show with the main query. When available, more than one value can be informed using commas. e.g: '--control.expand="replicas"' (must be "replicas")
     --control.limit integer     The maximum number of items per page. (range: 1 - 25)
     --control.offset integer    The number of items to skip before starting to collect the result set. (min: 0)
+    --deletion-protected        Deletion Protected
     --engine-id uuid            Value referring to engine Id.
 -h, --help                      help for list
     --parameter-group-id uuid   Value referring to parameter group Id.
