@@ -157,6 +157,15 @@ func handleExecutor(
 		return nil, err
 	}
 
+	if !getRawOutputFlag(cmd) {
+		core.NewVersionChecker(
+			sdk.HttpClient().Get,
+			sdk.Config().Get,
+			sdk.Config().Set,
+		).
+			CheckVersion(sdk.GetVersion(), argParser.MainArgs()...)
+	}
+
 	result, err := handleExecutorPre(ctx, sdk, cmd, exec, parameters, configs)
 	err = handleExecutorResult(ctx, sdk, cmd, result, err)
 	if err != nil {
