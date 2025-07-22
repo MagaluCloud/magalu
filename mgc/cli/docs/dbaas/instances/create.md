@@ -21,6 +21,7 @@ mgc dbaas instances create --availability-zone="br-ne1-a" --volume.size=30
     --backup-retention-days integer   Backup Retention Days: The number of days that a particular backup is kept until its deletion.
     --backup-start-at time            Backup Start At: Start time (UTC timezone) which is allowed to start the automated backup process.
     --cli.list-links enum[=table]     List all available links for this command (one of "json", "table" or "yaml")
+    --deletion-protected              Deletion Protected
     --engine-id uuid                  Engine Id (required)
 -h, --help                            help for create
     --instance-type-id uuid           Instance Type Id (required)
