@@ -19,10 +19,11 @@ mgc dbaas clusters list --status="ACTIVE"
 ```
     --control.limit integer     The maximum number of items per page. (range: 1 - 25)
     --control.offset integer    The number of items to skip before starting to collect the result set. (min: 0)
+    --deletion-protected        Deletion Protected
     --engine-id uuid            Value referring to engine Id.
 -h, --help                      help for list
     --parameter-group-id uuid   Value referring to parameter group Id.
-    --status enum               Instance Status: Value referring to cluster status. (one of "ACTIVE", "BACKING_UP", "BALANCING", "CREATING", "DELETED", "DELETING", "ERROR", "ERROR_DELETING", "PENDING", "STARTING", "STOPPED" or "STOPPING")
+    --status enum               Value referring to cluster status. (one of "ACTIVE", "BACKING_UP", "BALANCING", "CREATING", "DELETED", "DELETING", "ERROR", "ERROR_DELETING", "PENDING", "STARTING", "STOPPED" or "STOPPING")
     --volume.size integer       Volume.Size: Value referring to volume size.
     --volume.size-gt integer    Volume.Size Gt: Value referring to volume size greater than.
     --volume.size-gte integer   Volume.Size Gte: Value referring to volume size greater than or equal to.

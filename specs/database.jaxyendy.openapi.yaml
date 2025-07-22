@@ -6,7 +6,7 @@ info:
     name: Tribo IAAS Cloud
     url: https://gitlab.luizalabs.com/cloud/dbaas/docs
     email: cloud-iaas-dbaas@luizalabs.com
-  version: 2.15.2
+  version: 2.17.3
 tags:
   - name: engines
     description: Engines available for database instances.
@@ -512,7 +512,7 @@ paths:
         product-name: database
       parameters:
         - $ref: "#/components/parameters/offset"
-        - $ref: "#/components/parameters/limit_medium"
+        - $ref: "#/components/parameters/limit_large"
         - $ref: "#/components/parameters/instance_type_status"
         - $ref: "#/components/parameters/instance_type_compatible_product"
         - $ref: "#/components/parameters/engine_id_query"
@@ -607,6 +607,7 @@ paths:
         - $ref: "#/components/parameters/volume_size_lt"
         - $ref: "#/components/parameters/volume_size_lte"
         - $ref: "#/components/parameters/parameter_group_id_query"
+        - $ref: "#/components/parameters/deletion_protected"
       responses:
         "200":
           content:
@@ -662,6 +663,7 @@ paths:
         - $ref: "#/components/parameters/volume_size_lt"
         - $ref: "#/components/parameters/volume_size_lte"
         - $ref: "#/components/parameters/parameter_group_id_query"
+        - $ref: "#/components/parameters/deletion_protected"
       responses:
         "200":
           description: Successful Response.
@@ -984,6 +986,7 @@ paths:
         - $ref: "#/components/parameters/volume_size_lt"
         - $ref: "#/components/parameters/volume_size_lte"
         - $ref: "#/components/parameters/parameter_group_id_query"
+        - $ref: "#/components/parameters/deletion_protected"
       responses:
         "200":
           content:
@@ -1025,6 +1028,7 @@ paths:
         - $ref: "#/components/parameters/volume_size_lt"
         - $ref: "#/components/parameters/volume_size_lte"
         - $ref: "#/components/parameters/parameter_group_id_query"
+        - $ref: "#/components/parameters/deletion_protected"
       responses:
         '200':
           content:
@@ -1225,11 +1229,11 @@ paths:
           $ref: "#/components/responses/InternalServerError"
       security:
         - bearerAuth:
-            - dbaas.read
+            - dbaas.write
         - OAuth2PreProd:
-            - dbaas.read
+            - dbaas.write
         - OAuth2Prod:
-            - dbaas.read
+            - dbaas.write
   /v2/clusters/{cluster_id}/start:
     post:
       tags:
@@ -2169,6 +2173,13 @@ components:
         format: uuid
       example: f21999cb-302f-48f7-b584-6a84748e112c
       description: Value referring to parameter group Id.
+    deletion_protected:
+      in: query
+      name: deletion_protected
+      required: false
+      schema:
+        title: Deletion Protected
+        type: boolean
     instance_id_query:
       name: instance_id
       in: query
@@ -2208,7 +2219,6 @@ components:
         format: uuid
         title: Engine Id
         type: string
-        default: 063f3994-b6c2-4c37-96c9-bab8d82d36f7
       description: Value referring to engine Id.
     engine_id_query_without_default:
       name: engine_id
@@ -2302,6 +2312,16 @@ components:
         type: integer
         minimum: 1
         maximum: 50
+        default: 10
+      description: The maximum number of items per page.
+    limit_large:
+      name: _limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
         default: 10
       description: The maximum number of items per page.
     limit_optional:
@@ -2499,6 +2519,10 @@ components:
           title: Parameter group Id
           type: string
           format: uuid
+        deletion_protected:
+          title: Deletion Pprotected
+          type: boolean
+          default: false
       required:
         - name
         - engine_id
@@ -2525,6 +2549,9 @@ components:
           type: string
           format: time
           example: "04:00:00"
+        deletion_protected:
+          title: Deletion Protected
+          type: boolean
       title: ClusterUpdateRequest
       type: object
     ClusterDetailResponse:
@@ -2588,6 +2615,9 @@ components:
           title: ClusterIpAddress
           type: string
           example: "172.53.10.82"
+        deletion_protected:
+          title: Deletion Protected
+          type: boolean
       required:
         - id
         - name
@@ -2601,6 +2631,7 @@ components:
         - parameter_group_id
         - apply_parameters_pending
         - addresses
+        - deletion_protected
       title: ClusterDetailResponse
       type: object
     ClusterStatusResponse:
@@ -2629,9 +2660,12 @@ components:
           type: integer
         type:
           $ref: "#/components/schemas/VolumeTypeResponse"
+        encrypted:
+          type: boolean
       required:
         - size
         - type
+        - encrypted
       title: ClusterVolumeResponse
       type: object
     ClustersResponse:
@@ -2672,6 +2706,13 @@ components:
           example: 30
         type:
           $ref: "#/components/schemas/VolumeTypeRequest"
+    SnapshotTypeResponse:
+      description: An enumeration.
+      enum:
+        - ON_DEMAND
+        - AUTOMATED
+      title: SnapshotTypeResponse
+      type: string
     SnapshotDetailResponse:
       title: Snapshot Detail Response
       required:
@@ -2699,7 +2740,7 @@ components:
           title: Description
           type: string
         type:
-          $ref: "#/components/schemas/SnapshotType"
+          $ref: "#/components/schemas/SnapshotTypeResponse"
         status:
           $ref: "#/components/schemas/SnapshotStatus"
         allocated_size:
@@ -2760,7 +2801,7 @@ components:
           title: Description
           type: string
         type:
-          $ref: "#/components/schemas/SnapshotType"
+          $ref: "#/components/schemas/SnapshotTypeResponse"
         status:
           $ref: "#/components/schemas/SnapshotStatus"
         allocated_size:
@@ -2796,7 +2837,7 @@ components:
         - DELETING
         - DELETED
     SnapshotType:
-      title: Backup Type
+      title: Snapshot Type Filter
       description: An enumeration.
       type: string
       enum:
@@ -3061,7 +3102,7 @@ components:
         - br-ne1-b
       example: br-ne1-a
     ClusterStatus:
-      title: Instance Status
+      title: Cluster Status
       type: string
       enum:
         - ACTIVE
@@ -3097,7 +3138,9 @@ components:
         - G2
         - G3
         - G4
-      example: G4
+        - G5
+        - G6
+      example: G6
     InstanceCreateRequest:
       title: Instance Create Request
       required:
@@ -3121,6 +3164,10 @@ components:
           title: Instance Type Id
           type: string
           format: uuid
+        deletion_protected:
+          title: Deletion Protected
+          type: boolean
+          default: false
         user:
           title: User
           maxLength: 25
@@ -3253,8 +3300,10 @@ components:
     ParameterCreateRequest:
       properties:
         name:
-          $ref: '#/components/schemas/EngineParametersMysql8'
-          $ref: '#/components/schemas/EngineParametersMysql84'
+          anyOf:
+            - $ref: '#/components/schemas/EngineParametersMysql8'
+            - $ref: '#/components/schemas/EngineParametersMysql84'
+          title: Name
         value:
           anyOf:
             - type: number
@@ -3316,6 +3365,7 @@ components:
         - backup_start_at
         - backup_retention_days
         - apply_parameters_pending
+        - deletion_protected
       type: object
       properties:
         id:
@@ -3345,12 +3395,15 @@ components:
           description: Flag that defines whether an instance should be restarted to apply parameters.
           title: Parameter Apply Pending
           type: boolean
+        deletion_protected:
+          title: Deletion Protected
+          type: boolean
         instance_type_id:
           description: Instance Type unique identifier.
           type: string
           format: uuid
         volume:
-          $ref: "#/components/schemas/VolumeResponse"
+          $ref: "#/components/schemas/InstanceVolumeResponse"
         addresses:
           title: Addresses
           type: array
@@ -3418,6 +3471,9 @@ components:
           type: string
           format: uuid
           example: 44ae8773-a21e-4d5e-a38f-b677ccfeb7f8
+        deletion_protected:
+          title: Deletion Protected
+          type: boolean
     EngineStatus:
       title: EngineStatus
       description: An enumeration.
@@ -3656,8 +3712,10 @@ components:
           type: boolean
           example: false
         name:
-          $ref: "#/components/schemas/EngineParametersMysql8"
-          $ref: "#/components/schemas/EngineParametersMysql84"
+          anyOf:
+            - $ref: '#/components/schemas/EngineParametersMysql8'
+            - $ref: '#/components/schemas/EngineParametersMysql84'
+          title: Name
         parameter_name:
           title: Parameter Name
           type: string
@@ -3728,8 +3786,10 @@ components:
           type: string
           example: 44ae8773-a21e-4d5e-a38f-b677ccfeb7f8
         name:
-          $ref: '#/components/schemas/EngineParametersMysql8'
-          $ref: '#/components/schemas/EngineParametersMysql84'
+          anyOf:
+            - $ref: '#/components/schemas/EngineParametersMysql8'
+            - $ref: '#/components/schemas/EngineParametersMysql84'
+          title: Name
         value:
           anyOf:
             - type: number
@@ -3986,20 +4046,6 @@ components:
           title: Id
           type: string
           format: uuid
-    Volume:
-      type: object
-      properties:
-        size:
-          description: The size of the volume (in GiB).
-          type: integer
-          minimum: 10
-          maximum: 50000
-          example: 30
-        type:
-          $ref: "#/components/schemas/VolumeTypeResponse"
-      required:
-        - size
-        - type
     VolumeResponse:
       type: object
       properties:
@@ -4014,6 +4060,23 @@ components:
       required:
         - size
         - type
+    InstanceVolumeResponse:
+      type: object
+      properties:
+        size:
+          description: The size of the volume (in GiB).
+          type: integer
+          minimum: 10
+          maximum: 50000
+          example: 30
+        type:
+          $ref: "#/components/schemas/VolumeTypeResponse"
+        encrypted:
+          type: boolean
+      required:
+        - size
+        - type
+        - encrypted
     InstanceAddress:
       required:
         - access
@@ -4071,60 +4134,7 @@ components:
             - READ_WRITE
             - READONLY
             - METRICS
-    Flavor:
-      type: object
-      required:
-        - id
-        - name
-        - label
-        - vcpu
-        - ram
-        - family_description
-        - family_slug
-        - size
-        - sku_source
-        - sku_replica
-      properties:
-        id:
-          description: Flavor unique identifier.
-          type: string
-          format: uuid
-        name:
-          description: Flavor name.
-          type: string
-          example: i0-c1-r4-d10
-        label:
-          description: Flavor label.
-          type: string
-          example: cloud-dbaas-bs1.small
-        vcpu:
-          description: Number of vCPUs.
-          type: string
-          example: "1"
-        ram:
-          description: RAM Amount.
-          type: string
-          example: "4 GB"
-        family_description:
-          description: Flavor Family Description.
-          type: string
-          example: Basic
-        family_slug:
-          description: Flavor Family SLUG.
-          type: string
-          example: bs1
-        size:
-          description: Flavor Size Description.
-          type: string
-          example: Small
-        sku_source:
-          description: SKU Database Instance Source.
-          type: string
-          example: BRNE10600101sm
-        sku_replica:
-          description: SKU Database Instance Replica.
-          type: string
-          example: BRNE10610101sm
+            - LOGS
     InstanceType:
       type: object
       required:
@@ -4307,15 +4317,13 @@ components:
             slug: "internal_server_error"
             message: "Internal server error"
 servers:
-  - url: https://api-dbaas.dev-qa.br-se-1.jaxyendy.com
-  - url: https://api-dbaas.team-integration.br-se-1.jaxyendy.com
-  - url: https://api-dbaas.pre-prod.br-se-1.jaxyendy.com
-  - url: https://api-dbaas.br-se-1.jaxyendy.com
   - url: https://api-dbaas.dev-qa.br-ne-1.jaxyendy.com
   - url: https://api-dbaas.team-integration.br-ne-1.jaxyendy.com
   - url: https://api-dbaas.pre-prod.br-ne-1.jaxyendy.com
+  - url: https://api-dbaas.br-ne-1.jaxyendy.com
   - url: https://api.magalu.cloud/br-ne-1/database
-  - url: https://dbaas.dev-qa.se1.br.jaxyendy.com
-  - url: https://dbaas.team-integration.se1.br.jaxyendy.com
-  - url: https://dbaas.pre-prod.se1.br.jaxyendy.com
+  - url: https://api-dbaas.dev-qa.br-se-1.jaxyendy.com
+  - url: https://api-dbaas.team-integration.br-se-1.jaxyendy.com
+  - url: https://api-dbaas.pre-prod.se1.br.jaxyendy.com
+  - url: https://api-dbaas.prod.se1.br.jaxyendy.com
   - url: https://api.magalu.cloud/br-se1/database
