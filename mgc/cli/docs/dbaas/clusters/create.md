@@ -20,6 +20,7 @@ mgc dbaas clusters create --volume.size=30
     --backup-retention-days integer   Backup Retention Days
     --backup-start-at time            Backup Start At
     --cli.list-links enum[=table]     List all available links for this command (one of "json", "table" or "yaml")
+    --deletion-protected              Deletion Pprotected
     --engine-id uuid                  Engine Id (required)
 -h, --help                            help for create
     --instance-type-id uuid           Machine Type Id (required)
