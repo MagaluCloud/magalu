@@ -1,3 +1,6 @@
+---
+sidebar_position: 0
+---
 # Cors
 
 CORS-related commands

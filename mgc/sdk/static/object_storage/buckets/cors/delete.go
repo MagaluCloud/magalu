@@ -36,7 +36,7 @@ func deleteCors(ctx context.Context, params deleteBucketCorsParams, cfg common.C
 		return
 	}
 
-	resp, err := common.SendRequest(ctx, req)
+	resp, err := common.SendRequest(ctx, req, cfg)
 	if err != nil {
 		return
 	}

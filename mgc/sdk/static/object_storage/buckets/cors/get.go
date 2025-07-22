@@ -36,7 +36,7 @@ func getCors(ctx context.Context, params GetBucketCorsParams, cfg common.Config)
 		return nil, err
 	}
 
-	res, err := common.SendRequest(ctx, req)
+	res, err := common.SendRequest(ctx, req, cfg)
 	if err != nil {
 		return nil, err
 	}
