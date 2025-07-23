@@ -39,7 +39,13 @@ oapi-index-gen:
 	@cd $(CICD_DIR) && go build -o cicd
 	@cd $(MGCDIR) && go build -tags \"embed\" -o mgc
 	$(CICD_DIR)cicd pipeline oapi-index $(OAPIDIR)
-# specs
+
+add-spec:
+	@cd $(CICD_DIR) && go build -o cicd
+	@./mgc/spec_manipulator/cicd specs add -u $(SPEC_URL) -m $(SPEC_NAME)
+	@echo "\nNow, run 'make download-specs' to download the specs"
+
+
 download-specs:
 	@cd $(CICD_DIR) && go build -o cicd
 	@./mgc/spec_manipulator/cicd specs download -d $(SPECS_DIR)
