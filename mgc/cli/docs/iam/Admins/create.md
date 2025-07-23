@@ -1,20 +1,18 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 ---
-# Update
+# Create
 
-Update Access Control
+Sync Admins
 
 ## Usage:
 ```
-mgc iam access-control update [flags]
+mgc iam admins create [flags]
 ```
 
 ## Flags:
 ```
-    --enforce-mfa   Enforce Mfa
--h, --help          help for update
-    --status        Status
+-h, --help   help for create
 ```
 
 ## Global Flags:

@@ -1,20 +1,22 @@
 ---
 sidebar_position: 3
 ---
-# Update
+# Batch
 
-Update Access Control
+Batch Update Members
 
 ## Usage:
 ```
-mgc iam access-control update [flags]
+mgc iam members grants batch [flags]
 ```
 
 ## Flags:
 ```
-    --enforce-mfa   Enforce Mfa
--h, --help          help for update
-    --status        Status
+-h, --help                             help for batch
+    --member-ids array(string)         Member Ids (required)
+    --operation enum                   OperationType (one of "add" or "remove") (required)
+    --permission-names array(string)   Permission Names
+    --role-names array(string)         Role Names
 ```
 
 ## Global Flags:

@@ -357,6 +357,61 @@
         ]
       }
     },
+    "/api/v1/members/grants/batch": {
+      "patch": {
+        "tags": [
+          "Members"
+        ],
+        "summary": "Batch Update Members",
+        "operationId": "batch_update_members_api_v1_members_grants_batch_patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchUpdateMembers"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/roles": {
       "get": {
         "tags": [
@@ -1557,6 +1612,44 @@
           }
         ]
       }
+    },
+    "/api/v1/admins/sync": {
+      "post": {
+        "tags": [
+          "Admins"
+        ],
+        "summary": "Sync Admins",
+        "operationId": "sync_admins_api_v1_admins_sync_post",
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "x-mgc-hidden": true
+      }
     }
   },
   "components": {
@@ -1787,6 +1880,11 @@
             "type": "boolean",
             "title": "Enabled",
             "default": false
+          },
+          "enforce_mfa": {
+            "type": "boolean",
+            "title": "Enforce Mfa",
+            "default": false
           }
         },
         "title": "AccessControl"
@@ -1819,14 +1917,25 @@
         "type": "object",
         "properties": {
           "status": {
-            "type": "boolean",
-            "title": "Status"
+            "anyOf": [
+              {
+                "type": "boolean"
+              }
+            ],
+            "title": "Status",
+            "nullable": true
+          },
+          "enforce_mfa": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              }
+            ],
+            "title": "Enforce Mfa",
+            "nullable": true
           }
         },
-        "title": "AccessControlStatus",
-        "required": [
-          "status"
-        ]
+        "title": "AccessControlStatus"
       },
       "ApiProducts": {
         "type": "object",
@@ -1872,6 +1981,47 @@
           "uuid",
           "name",
           "scopes"
+        ]
+      },
+      "BatchUpdateMembers": {
+        "type": "object",
+        "properties": {
+          "member_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "Member Ids"
+          },
+          "operation": {
+            "type": "string",
+            "title": "OperationType",
+            "enum": [
+              "add",
+              "remove"
+            ]
+          },
+          "role_names": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "Role Names",
+            "default": []
+          },
+          "permission_names": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "Permission Names",
+            "default": []
+          }
+        },
+        "title": "BatchUpdateMembers",
+        "required": [
+          "member_ids",
+          "operation"
         ]
       },
       "CreateMember": {
@@ -2549,6 +2699,11 @@
     {
       "name": "Scopes",
       "description": "Scopes API Products of organization."
+    },
+    {
+      "name": "Admins",
+      "description": "Admins of organization.",
+      "x-mgc-hidden": true
     }
   ]
 }

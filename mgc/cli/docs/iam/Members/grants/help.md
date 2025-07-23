@@ -13,6 +13,7 @@ mgc iam members grants [command]
 
 ## Commands:
 ```
+batch       Batch Update Members
 list        Get Grants
 update      Add Grants
 ```
