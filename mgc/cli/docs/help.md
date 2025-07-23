@@ -14,7 +14,7 @@ mgc [command]
 
 ## Product catalog:
 ```
-audit              Consult API
+audit              Cloud Events API Product.
 block-storage      Block Storage API Product
 container-registry Magalu Container Registry product API.
 dbaas              DBaaS API Product.
