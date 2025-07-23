@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Audit
 
-Consult API
+Cloud Events API Product.
 
 ## Usage:
 ```
