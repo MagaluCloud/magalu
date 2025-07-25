@@ -124,16 +124,6 @@ var keepLoadingCommands = []string{
 
 func loadSdkCommandTree(sdk *mgcSdk.Sdk, cmd *cobra.Command, args []string) error {
 	root := sdk.Group()
-
-	if !getRawOutputFlag(cmd) {
-		core.NewVersionChecker(
-			sdk.HttpClient().Get,
-			sdk.Config().Get,
-			sdk.Config().Set,
-		).
-			CheckVersion(sdk.GetVersion(), args...)
-	}
-
 	if len(args) > 0 && slices.Contains(builtInCommands, args[0]) {
 		return loadAllChildren(sdk, cmd, root)
 	}
