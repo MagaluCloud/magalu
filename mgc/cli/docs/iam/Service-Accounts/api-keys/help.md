@@ -1,33 +1,27 @@
 ---
 sidebar_position: 0
 ---
-# Buckets
+# Api-Keys
 
-Bucket operations for Object Storage API
+Service Accounts of organization. | api-keys
 
 ## Usage:
 ```
-mgc object-storage buckets [flags]
-mgc object-storage buckets [command]
+mgc iam service-accounts api-keys [flags]
+mgc iam service-accounts api-keys [command]
 ```
 
 ## Commands:
 ```
-acl         ACL-related commands
-cors        CORS-related commands
-create      Create a new Bucket
-delete      Delete an existing Bucket
-label       Label-related commands
-list        List all existing Buckets
-object-lock Object locking commands
-policy      Policy-related commands
-public-url  Get bucket public url
-versioning  Manage bucket versioning
+create      Create Apikey
+delete      Revoke Apikey
+list        Get Apikeys
+update      Edit Apikey
 ```
 
 ## Flags:
 ```
--h, --help   help for buckets
+-h, --help   help for api-keys
 ```
 
 ## Global Flags:

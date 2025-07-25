@@ -1,33 +1,18 @@
 ---
 sidebar_position: 0
 ---
-# Buckets
+# Healthcheck
 
-Bucket operations for Object Storage API
+Endpoints para verificação de status e saúde do serviço.
 
 ## Usage:
 ```
-mgc object-storage buckets [flags]
-mgc object-storage buckets [command]
-```
-
-## Commands:
-```
-acl         ACL-related commands
-cors        CORS-related commands
-create      Create a new Bucket
-delete      Delete an existing Bucket
-label       Label-related commands
-list        List all existing Buckets
-object-lock Object locking commands
-policy      Policy-related commands
-public-url  Get bucket public url
-versioning  Manage bucket versioning
+mgc iam healthcheck [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for buckets
+-h, --help   help for healthcheck
 ```
 
 ## Global Flags:

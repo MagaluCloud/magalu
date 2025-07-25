@@ -1,33 +1,26 @@
 ---
 sidebar_position: 0
 ---
-# Buckets
+# Grants
 
-Bucket operations for Object Storage API
+Members of Organization. | grants
 
 ## Usage:
 ```
-mgc object-storage buckets [flags]
-mgc object-storage buckets [command]
+mgc iam members grants [flags]
+mgc iam members grants [command]
 ```
 
 ## Commands:
 ```
-acl         ACL-related commands
-cors        CORS-related commands
-create      Create a new Bucket
-delete      Delete an existing Bucket
-label       Label-related commands
-list        List all existing Buckets
-object-lock Object locking commands
-policy      Policy-related commands
-public-url  Get bucket public url
-versioning  Manage bucket versioning
+batch       Batch Update Members
+list        Get Grants
+update      Add Grants
 ```
 
 ## Flags:
 ```
--h, --help   help for buckets
+-h, --help   help for grants
 ```
 
 ## Global Flags:

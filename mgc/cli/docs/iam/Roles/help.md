@@ -1,33 +1,28 @@
 ---
 sidebar_position: 0
 ---
-# Buckets
+# Roles
 
-Bucket operations for Object Storage API
+Roles of organization.
 
 ## Usage:
 ```
-mgc object-storage buckets [flags]
-mgc object-storage buckets [command]
+mgc iam roles [flags]
+mgc iam roles [command]
 ```
 
 ## Commands:
 ```
-acl         ACL-related commands
-cors        CORS-related commands
-create      Create a new Bucket
-delete      Delete an existing Bucket
-label       Label-related commands
-list        List all existing Buckets
-object-lock Object locking commands
-policy      Policy-related commands
-public-url  Get bucket public url
-versioning  Manage bucket versioning
+create      Create Role
+delete      Remove Role
+list        Get Roles
+members     Get Role Members
+permissions permissions
 ```
 
 ## Flags:
 ```
--h, --help   help for buckets
+-h, --help   help for roles
 ```
 
 ## Global Flags:

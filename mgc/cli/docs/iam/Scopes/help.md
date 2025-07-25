@@ -1,33 +1,24 @@
 ---
 sidebar_position: 0
 ---
-# Buckets
+# Scopes
 
-Bucket operations for Object Storage API
+Scopes API Products of organization.
 
 ## Usage:
 ```
-mgc object-storage buckets [flags]
-mgc object-storage buckets [command]
+mgc iam scopes [flags]
+mgc iam scopes [command]
 ```
 
 ## Commands:
 ```
-acl         ACL-related commands
-cors        CORS-related commands
-create      Create a new Bucket
-delete      Delete an existing Bucket
-label       Label-related commands
-list        List all existing Buckets
-object-lock Object locking commands
-policy      Policy-related commands
-public-url  Get bucket public url
-versioning  Manage bucket versioning
+list        Get Groups And Products And Scopes
 ```
 
 ## Flags:
 ```
--h, --help   help for buckets
+-h, --help   help for scopes
 ```
 
 ## Global Flags:

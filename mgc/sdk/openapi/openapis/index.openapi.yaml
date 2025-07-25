@@ -3,9 +3,9 @@ modules:
     - name: audit
       url: https://events-consult.jaxyendy.com/openapi-cli.json
       path: audit.openapi.yaml
-      version: 0.1.0
-      description: Consult API
-      summary: Consult API
+      version: 0.33.1
+      description: Cloud Events API Product.
+      summary: Cloud Events API Product.
     - name: block-storage
       url: https://block-storage.jaxyendy.com/openapi.json
       path: block-storage.openapi.yaml
@@ -24,6 +24,12 @@ modules:
       version: 2.17.3
       description: DBaaS API Product.
       summary: DBaaS API Product.
+    - name: iam
+      url: https://iam.jaxyendy.com/openapi.json
+      path: iam.openapi.yaml
+      version: 0.1.0
+      description: The Magalu Cloud IAM.
+      summary: The Magalu Cloud IAM.
     - name: kubernetes
       url: https://mke.br-ne-1.com/docs/openapi-with-snippets.json
       path: kubernetes.openapi.yaml

@@ -1,33 +1,25 @@
 ---
 sidebar_position: 0
 ---
-# Buckets
+# Permissions
 
-Bucket operations for Object Storage API
+Roles of organization. | permissions
 
 ## Usage:
 ```
-mgc object-storage buckets [flags]
-mgc object-storage buckets [command]
+mgc iam roles permissions [flags]
+mgc iam roles permissions [command]
 ```
 
 ## Commands:
 ```
-acl         ACL-related commands
-cors        CORS-related commands
-create      Create a new Bucket
-delete      Delete an existing Bucket
-label       Label-related commands
-list        List all existing Buckets
-object-lock Object locking commands
-policy      Policy-related commands
-public-url  Get bucket public url
-versioning  Manage bucket versioning
+list        Get Role Permissions
+update      Edit Role Permissions
 ```
 
 ## Flags:
 ```
--h, --help   help for buckets
+-h, --help   help for permissions
 ```
 
 ## Global Flags:

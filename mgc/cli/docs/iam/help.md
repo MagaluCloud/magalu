@@ -1,33 +1,29 @@
 ---
 sidebar_position: 0
 ---
-# Buckets
+# Iam
 
-Bucket operations for Object Storage API
+The Magalu Cloud IAM.
 
 ## Usage:
 ```
-mgc object-storage buckets [flags]
-mgc object-storage buckets [command]
+mgc iam [flags]
+mgc iam [command]
 ```
 
 ## Commands:
 ```
-acl         ACL-related commands
-cors        CORS-related commands
-create      Create a new Bucket
-delete      Delete an existing Bucket
-label       Label-related commands
-list        List all existing Buckets
-object-lock Object locking commands
-policy      Policy-related commands
-public-url  Get bucket public url
-versioning  Manage bucket versioning
+access-control   Access control of permissions and roles.
+members          Members of Organization.
+permissions      Permission action of resource.
+roles            Roles of organization.
+scopes           Scopes API Products of organization.
+service-accounts Service Accounts of organization.
 ```
 
 ## Flags:
 ```
--h, --help   help for buckets
+-h, --help   help for iam
 ```
 
 ## Global Flags:

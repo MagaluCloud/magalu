@@ -1,33 +1,27 @@
 ---
 sidebar_position: 0
 ---
-# Buckets
+# Members
 
-Bucket operations for Object Storage API
+Members of Organization.
 
 ## Usage:
 ```
-mgc object-storage buckets [flags]
-mgc object-storage buckets [command]
+mgc iam members [flags]
+mgc iam members [command]
 ```
 
 ## Commands:
 ```
-acl         ACL-related commands
-cors        CORS-related commands
-create      Create a new Bucket
-delete      Delete an existing Bucket
-label       Label-related commands
-list        List all existing Buckets
-object-lock Object locking commands
-policy      Policy-related commands
-public-url  Get bucket public url
-versioning  Manage bucket versioning
+create      Add Member
+delete      Remove Member
+grants      grants
+list        Get Members
 ```
 
 ## Flags:
 ```
--h, --help   help for buckets
+-h, --help   help for members
 ```
 
 ## Global Flags:

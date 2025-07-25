@@ -1,33 +1,28 @@
 ---
 sidebar_position: 0
 ---
-# Buckets
+# Service-Accounts
 
-Bucket operations for Object Storage API
+Service Accounts of organization.
 
 ## Usage:
 ```
-mgc object-storage buckets [flags]
-mgc object-storage buckets [command]
+mgc iam service-accounts [flags]
+mgc iam service-accounts [command]
 ```
 
 ## Commands:
 ```
-acl         ACL-related commands
-cors        CORS-related commands
-create      Create a new Bucket
-delete      Delete an existing Bucket
-label       Label-related commands
-list        List all existing Buckets
-object-lock Object locking commands
-policy      Policy-related commands
-public-url  Get bucket public url
-versioning  Manage bucket versioning
+api-keys    api-keys
+create      Create
+delete      Remove
+list        Get
+update      Edit
 ```
 
 ## Flags:
 ```
--h, --help   help for buckets
+-h, --help   help for service-accounts
 ```
 
 ## Global Flags:

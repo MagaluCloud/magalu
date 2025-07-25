@@ -1,33 +1,26 @@
 ---
 sidebar_position: 0
 ---
-# Buckets
+# Access-Control
 
-Bucket operations for Object Storage API
+Access control of permissions and roles.
 
 ## Usage:
 ```
-mgc object-storage buckets [flags]
-mgc object-storage buckets [command]
+mgc iam access-control [flags]
+mgc iam access-control [command]
 ```
 
 ## Commands:
 ```
-acl         ACL-related commands
-cors        CORS-related commands
-create      Create a new Bucket
-delete      Delete an existing Bucket
-label       Label-related commands
-list        List all existing Buckets
-object-lock Object locking commands
-policy      Policy-related commands
-public-url  Get bucket public url
-versioning  Manage bucket versioning
+create      Post Access Control
+list        Get Access Control
+update      Update Access Control
 ```
 
 ## Flags:
 ```
--h, --help   help for buckets
+-h, --help   help for access-control
 ```
 
 ## Global Flags:

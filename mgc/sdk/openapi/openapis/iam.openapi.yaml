@@ -1,0 +1,1708 @@
+openapi: 3.0.3
+info:
+    title: Magalu Cloud IAM
+    description: The Magalu Cloud IAM.
+    version: 0.1.0
+paths:
+    /api/v1/healthcheck:
+        get:
+            tags:
+            - Healthcheck
+            summary: Healthcheck
+            operationId: healthcheck_api_v1_healthcheck_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - iam.read
+    /api/v1/members:
+        get:
+            tags:
+            - Members
+            summary: Get Members
+            operationId: get_members_api_v1_members_get
+            parameters:
+            -   name: email
+                in: query
+                required: false
+                schema:
+                    title: Email
+                    nullable: true
+                    type: string
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Member'
+                                title: Response Get Members Api V1 Members Get
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+        post:
+            tags:
+            - Members
+            summary: Add Member
+            operationId: add_member_api_v1_members_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateMember'
+                required: true
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Member'
+                    links:
+                        delete:
+                            operationId: remove_member_api_v1_members__uuid__delete
+                            description: Remove Member
+                            parameters:
+                                uuid: $response.body#/uuid
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/members/{uuid}:
+        delete:
+            tags:
+            - Members
+            summary: Remove Member
+            operationId: remove_member_api_v1_members__uuid__delete
+            parameters:
+            -   name: uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Uuid
+                    format: uuid
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/members/{uuid}/grants:
+        get:
+            tags:
+            - Members
+            summary: Get Grants
+            operationId: get_grants_api_v1_members__uuid__grants_get
+            parameters:
+            -   name: uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Uuid
+                    format: uuid
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Privileges'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+        patch:
+            tags:
+            - Members
+            summary: Add Grants
+            operationId: add_grants_api_v1_members__uuid__grants_patch
+            parameters:
+            -   name: uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Uuid
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/EditGrant'
+                required: true
+            responses:
+                '204':
+                    description: Successful Response
+                    links:
+                        list:
+                            operationId: get_grants_api_v1_members__uuid__grants_get
+                            description: Get Grants
+                            parameters:
+                                uuid: $request.path.uuid
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/members/grants/batch:
+        patch:
+            tags:
+            - Members
+            summary: Batch Update Members
+            operationId: batch_update_members_api_v1_members_grants_batch_patch
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BatchUpdateMembers'
+                required: true
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/roles:
+        get:
+            tags:
+            - Roles
+            summary: Get Roles
+            operationId: get_roles_api_v1_roles_get
+            parameters:
+            -   name: role_name
+                in: query
+                required: false
+                schema:
+                    title: Role Name
+                    nullable: true
+                    type: string
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Role'
+                                title: Response Get Roles Api V1 Roles Get
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+        post:
+            tags:
+            - Roles
+            summary: Create Role
+            operationId: create_role_api_v1_roles_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateRole'
+                required: true
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Role'
+                                title: Response Create Role Api V1 Roles Post
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/roles/{role_name}:
+        delete:
+            tags:
+            - Roles
+            summary: Remove Role
+            operationId: remove_role_api_v1_roles__role_name__delete
+            parameters:
+            -   name: role_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Role Name
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/roles/{role_name}/permissions:
+        get:
+            tags:
+            - Roles
+            summary: Get Role Permissions
+            operationId: get_role_permissions_api_v1_roles__role_name__permissions_get
+            parameters:
+            -   name: role_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Role Name
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RolePermissions'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+        patch:
+            tags:
+            - Roles
+            summary: Edit Role Permissions
+            operationId: edit_role_permissions_api_v1_roles__role_name__permissions_patch
+            parameters:
+            -   name: role_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Role Name
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/EditPermissions'
+                required: true
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Role'
+                                title: Response Edit Role Permissions Api V1 Roles  Role
+                                    Name  Permissions Patch
+                    links:
+                        list:
+                            operationId: get_role_permissions_api_v1_roles__role_name__permissions_get
+                            description: Get Role Permissions
+                            parameters:
+                                role_name: $request.path.role_name
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/roles/{role_name}/members:
+        get:
+            tags:
+            - Roles
+            summary: Get Role Members
+            operationId: get_role_members_api_v1_roles__role_name__members_get
+            parameters:
+            -   name: role_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Role Name
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/RolesMember'
+                                title: Response Get Role Members Api V1 Roles  Role
+                                    Name  Members Get
+                    links:
+                        delete:
+                            operationId: remove_role_api_v1_roles__role_name__delete
+                            description: Remove Role
+                            parameters:
+                                role_name: $request.path.role_name
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/permissions:
+        get:
+            tags:
+            - Permissions
+            summary: Get Products And Permissions
+            operationId: get_products_and_permissions_api_v1_permissions_get
+            parameters:
+            -   name: product_name
+                in: query
+                required: false
+                schema:
+                    title: Product Name
+                    nullable: true
+                    type: string
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Product'
+                                title: Response Get Products And Permissions Api V1
+                                    Permissions Get
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/access-control:
+        get:
+            tags:
+            - Access-Control
+            summary: Get Access Control
+            operationId: get_access_control_api_v1_access_control_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AccessControl'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+        post:
+            tags:
+            - Access-Control
+            summary: Post Access Control
+            operationId: post_access_control_api_v1_access_control_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AccessControlCreate'
+                required: true
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AccessControl'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+        patch:
+            tags:
+            - Access-Control
+            summary: Update Access Control
+            operationId: update_access_control_api_v1_access_control_patch
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AccessControlStatus'
+                required: true
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AccessControl'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/service-accounts:
+        get:
+            tags:
+            - Service-Accounts
+            summary: Get
+            operationId: get_api_v1_service_accounts_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ServiceAccountDetail'
+                                title: Response Get Api V1 Service Accounts Get
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+        post:
+            tags:
+            - Service-Accounts
+            summary: Create
+            operationId: create_api_v1_service_accounts_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ServiceAccountCreate'
+                required: true
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ServiceAccountDetail'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/service-accounts/{sa_uuid}:
+        delete:
+            tags:
+            - Service-Accounts
+            summary: Remove
+            operationId: remove_api_v1_service_accounts__sa_uuid__delete
+            parameters:
+            -   name: sa_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Sa Uuid
+                    format: uuid
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+        patch:
+            tags:
+            - Service-Accounts
+            summary: Edit
+            operationId: edit_api_v1_service_accounts__sa_uuid__patch
+            parameters:
+            -   name: sa_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Sa Uuid
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ServiceAccountEdit'
+                required: true
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ServiceAccountDetail'
+                    links:
+                        delete:
+                            operationId: remove_api_v1_service_accounts__sa_uuid__delete
+                            description: Remove
+                            parameters:
+                                sa_uuid: $request.path.sa_uuid
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/service-accounts/{sa_uuid}/api-keys:
+        get:
+            tags:
+            - Service-Accounts
+            summary: Get Apikeys
+            operationId: get_apikeys_api_v1_service_accounts__sa_uuid__api_keys_get
+            parameters:
+            -   name: sa_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Sa Uuid
+                    format: uuid
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/APIKeyServiceAccountDetail'
+                                title: Response Get Apikeys Api V1 Service Accounts  Sa
+                                    Uuid  Api Keys Get
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+        post:
+            tags:
+            - Service-Accounts
+            summary: Create Apikey
+            operationId: create_apikey_api_v1_service_accounts__sa_uuid__api_keys_post
+            parameters:
+            -   name: sa_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Sa Uuid
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/APIKeyServiceAccountCreate'
+                required: true
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/APIKeyServiceAccountDetail'
+                    links:
+                        list:
+                            operationId: get_apikeys_api_v1_service_accounts__sa_uuid__api_keys_get
+                            description: Get Apikeys
+                            parameters:
+                                sa_uuid: $request.path.sa_uuid
+                        update:
+                            operationId: edit_apikey_api_v1_service_accounts__sa_uuid__api_keys__apikey_uuid__patch
+                            description: Edit Apikey
+                            parameters:
+                                sa_uuid: $request.path.sa_uuid
+                        delete:
+                            operationId: revoke_apikey_api_v1_service_accounts__sa_uuid__api_keys__apikey_uuid__delete
+                            description: Revoke Apikey
+                            parameters:
+                                sa_uuid: $request.path.sa_uuid
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/service-accounts/{sa_uuid}/api-keys/{apikey_uuid}:
+        delete:
+            tags:
+            - Service-Accounts
+            summary: Revoke Apikey
+            operationId: revoke_apikey_api_v1_service_accounts__sa_uuid__api_keys__apikey_uuid__delete
+            parameters:
+            -   name: sa_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Sa Uuid
+                    format: uuid
+            -   name: apikey_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Apikey Uuid
+                    format: uuid
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+        patch:
+            tags:
+            - Service-Accounts
+            summary: Edit Apikey
+            operationId: edit_apikey_api_v1_service_accounts__sa_uuid__api_keys__apikey_uuid__patch
+            parameters:
+            -   name: sa_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Sa Uuid
+                    format: uuid
+            -   name: apikey_uuid
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Apikey Uuid
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/APIKeyServiceAccountEditInput'
+                required: true
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/APIKeyServiceAccountDetail'
+                    links:
+                        list:
+                            operationId: get_apikeys_api_v1_service_accounts__sa_uuid__api_keys_get
+                            description: Get Apikeys
+                            parameters:
+                                sa_uuid: $request.path.sa_uuid
+                        create:
+                            operationId: create_apikey_api_v1_service_accounts__sa_uuid__api_keys_post
+                            description: Create Apikey
+                            parameters:
+                                sa_uuid: $request.path.sa_uuid
+                        delete:
+                            operationId: revoke_apikey_api_v1_service_accounts__sa_uuid__api_keys__apikey_uuid__delete
+                            description: Revoke Apikey
+                            parameters:
+                                sa_uuid: $request.path.sa_uuid
+                                apikey_uuid: $request.path.apikey_uuid
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/scopes:
+        get:
+            tags:
+            - Scopes
+            summary: Get Groups And Products And Scopes
+            operationId: get_groups_and_products_and_scopes_api_v1_scopes_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ScopeGroup'
+                                title: Response Get Groups And Products And Scopes
+                                    Api V1 Scopes Get
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/admins/sync:
+        post:
+            tags:
+            - Admins
+            summary: Sync Admins
+            operationId: sync_admins_api_v1_admins_sync_post
+            responses:
+                '202':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   HTTPBearer: []
+            x-mgc-hidden: true
+components:
+    schemas:
+        APIKeyServiceAccountCreate:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                scopes:
+                    title: Scopes
+                    default: []
+                    nullable: true
+                    type: array
+                    items:
+                        type: string
+            title: APIKeyServiceAccountCreate
+            required:
+            - name
+        APIKeyServiceAccountDetail:
+            type: object
+            properties:
+                uuid:
+                    type: string
+                    title: Uuid
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                key_pair_id:
+                    title: Key Pair Id
+                    nullable: true
+                    type: string
+                key_pair_secret:
+                    title: Key Pair Secret
+                    nullable: true
+                    type: string
+                scopes:
+                    title: Scopes
+                    default: []
+                    nullable: true
+                    type: array
+                    items:
+                        type: string
+                scopes_pending_approval:
+                    title: Scopes Pending Approval
+                    default: []
+                    nullable: true
+                    type: array
+                    items:
+                        type: string
+                start_validity:
+                    title: Start Validity
+                    nullable: true
+                    type: string
+                end_validity:
+                    title: End Validity
+                    nullable: true
+                    type: string
+                revoked_at:
+                    title: Revoked At
+                    nullable: true
+                    type: string
+                revoked_by:
+                    title: Revoked By
+                    nullable: true
+                    type: string
+                api_key:
+                    title: Api Key
+                    nullable: true
+                    type: string
+            title: APIKeyServiceAccountDetail
+            required:
+            - uuid
+        APIKeyServiceAccountEditInput:
+            type: object
+            properties:
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                scopes:
+                    title: Scopes
+                    default: []
+                    nullable: true
+                    type: array
+                    items:
+                        type: string
+            title: APIKeyServiceAccountEditInput
+        AccessControl:
+            type: object
+            properties:
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                tenant_id:
+                    title: Tenant Id
+                    nullable: true
+                    type: string
+                enabled:
+                    type: boolean
+                    title: Enabled
+                    default: false
+                enforce_mfa:
+                    type: boolean
+                    title: Enforce Mfa
+                    default: false
+            title: AccessControl
+        AccessControlCreate:
+            type: object
+            properties:
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+            title: AccessControlCreate
+        AccessControlStatus:
+            type: object
+            properties:
+                status:
+                    title: Status
+                    nullable: true
+                    type: boolean
+                enforce_mfa:
+                    title: Enforce Mfa
+                    nullable: true
+                    type: boolean
+            title: AccessControlStatus
+        ApiProducts:
+            type: object
+            properties:
+                uuid:
+                    type: string
+                    title: Uuid
+                name:
+                    type: string
+                    title: Name
+                scopes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Scope'
+                    title: Scopes
+            title: ApiProducts
+            required:
+            - uuid
+            - name
+            - scopes
+        BatchUpdateMembers:
+            type: object
+            properties:
+                member_ids:
+                    type: array
+                    items:
+                        type: string
+                    title: Member Ids
+                operation:
+                    $ref: '#/components/schemas/OperationType'
+                role_names:
+                    type: array
+                    items:
+                        type: string
+                    title: Role Names
+                    default: []
+                permission_names:
+                    type: array
+                    items:
+                        type: string
+                    title: Permission Names
+                    default: []
+            title: BatchUpdateMembers
+            required:
+            - member_ids
+            - operation
+        CreateMember:
+            type: object
+            properties:
+                email:
+                    type: string
+                    title: Email
+                roles:
+                    title: Roles
+                    nullable: true
+                    type: array
+                    items:
+                        type: string
+                permissions:
+                    title: Permissions
+                    nullable: true
+                    type: array
+                    items:
+                        type: string
+            title: CreateMember
+            required:
+            - email
+        CreateRole:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                permissions:
+                    title: Permissions
+                    nullable: true
+                    type: array
+                    items:
+                        type: string
+                based_role:
+                    title: Based Role
+                    nullable: true
+                    type: string
+            title: CreateRole
+            required:
+            - name
+        EditGrant:
+            type: object
+            properties:
+                operation:
+                    $ref: '#/components/schemas/OperationType'
+                roles:
+                    title: Roles
+                    default: []
+                    nullable: true
+                    type: array
+                    items:
+                        type: string
+                permissions:
+                    title: Permissions
+                    default: []
+                    nullable: true
+                    type: array
+                    items:
+                        type: string
+            title: EditGrant
+            required:
+            - operation
+        EditPermissions:
+            type: object
+            properties:
+                add:
+                    type: array
+                    items:
+                        type: string
+                    title: Add
+                    default: []
+                remove:
+                    type: array
+                    items:
+                        type: string
+                    title: Remove
+                    default: []
+            title: EditPermissions
+        HTTPValidationError:
+            type: object
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            title: HTTPValidationError
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        Member:
+            type: object
+            properties:
+                uuid:
+                    type: string
+                    title: Uuid
+                    default: ''
+                email:
+                    type: string
+                    title: Email
+                    default: ''
+                name:
+                    type: string
+                    title: Name
+                    default: ''
+                tenant_id:
+                    type: string
+                    title: Tenant Id
+                    default: ''
+                profile:
+                    title: Profile
+                    nullable: true
+                    type: string
+            title: Member
+        OperationType:
+            type: string
+            title: OperationType
+            enum:
+            - add
+            - remove
+        Permission:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                description:
+                    type: string
+                    title: Description
+            title: Permission
+            required:
+            - name
+            - description
+        Privileges:
+            type: object
+            properties:
+                roles:
+                    title: Roles
+                    default: []
+                    nullable: true
+                    type: array
+                    items:
+                        type: string
+                permissions:
+                    title: Permissions
+                    default: []
+                    nullable: true
+                    type: array
+                    items:
+                        type: string
+            title: Privileges
+        Product:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                permissions:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Permission'
+                    title: Permissions
+            title: Product
+            required:
+            - name
+            - permissions
+        Role:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                origin:
+                    type: string
+                    title: Origin
+            title: Role
+            required:
+            - name
+        RolePermissions:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                origin:
+                    type: string
+                    title: Origin
+                permissions:
+                    type: array
+                    items:
+                        type: string
+                    title: Permissions
+            title: RolePermissions
+            required:
+            - name
+            - permissions
+        RolesMember:
+            type: object
+            properties:
+                member_uuid:
+                    type: string
+                    title: Member Uuid
+                roles:
+                    title: Roles
+                    nullable: true
+                    type: array
+                    items:
+                        type: string
+            title: RolesMember
+            required:
+            - member_uuid
+            - roles
+        Scope:
+            type: object
+            properties:
+                uuid:
+                    type: string
+                    title: Uuid
+                name:
+                    type: string
+                    title: Name
+                title:
+                    type: string
+                    title: Title
+            title: Scope
+            required:
+            - uuid
+            - name
+            - title
+        ScopeGroup:
+            type: object
+            properties:
+                uuid:
+                    type: string
+                    title: Uuid
+                name:
+                    type: string
+                    title: Name
+                api_products:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ApiProducts'
+                    title: Api Products
+            title: ScopeGroup
+            required:
+            - uuid
+            - name
+            - api_products
+        ServiceAccountCreate:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                description:
+                    type: string
+                    title: Description
+                email:
+                    type: string
+                    title: Email
+            title: ServiceAccountCreate
+            required:
+            - name
+            - description
+            - email
+        ServiceAccountDetail:
+            type: object
+            properties:
+                uuid:
+                    type: string
+                    title: Uuid
+                name:
+                    type: string
+                    title: Name
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                email:
+                    type: string
+                    title: Email
+                tenant:
+                    $ref: '#/components/schemas/Tentant'
+            title: ServiceAccountDetail
+            required:
+            - uuid
+            - name
+            - email
+            - tenant
+        ServiceAccountEdit:
+            type: object
+            properties:
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+            title: ServiceAccountEdit
+        Tentant:
+            type: object
+            properties:
+                uuid:
+                    type: string
+                    title: Uuid
+                legal_name:
+                    type: string
+                    title: Legal Name
+            title: Tentant
+            required:
+            - uuid
+            - legal_name
+        ValidationError:
+            type: object
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            title: ValidationError
+            required:
+            - loc
+            - msg
+            - type
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+    securitySchemes:
+        OAuth2:
+            type: http
+            description: Insira o token JWT com o prefixo 'Bearer '.
+            scheme: bearer
+            bearerFormat: JWT
+tags:
+-   name: Healthcheck
+    description: Endpoints para verificação de status e saúde do serviço.
+    x-mgc-hidden: true
+-   name: Members
+    description: Members of Organization.
+-   name: Access-Control
+    description: Access control of permissions and roles.
+-   name: Permissions
+    description: Permission action of resource.
+-   name: Roles
+    description: Roles of organization.
+-   name: Service-Accounts
+    description: Service Accounts of organization.
+-   name: Scopes
+    description: Scopes API Products of organization.
+-   name: Admins
+    description: Admins of organization.
+    x-mgc-hidden: true
+$id: https://iam.jaxyendy.com/openapi.json
+servers:
+-   url: https://{env}/iam
+    variables:
+        env:
+            description: Environment to use
+            default: api.magalu.cloud
+            enum:
+            - api.magalu.cloud
+            - api.pre-prod.jaxyendy.com
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: api.magalu.cloud
+                -   from: pre-prod
+                    to: api.pre-prod.jaxyendy.com

@@ -1,33 +1,22 @@
 ---
-sidebar_position: 0
+sidebar_position: 4
 ---
-# Buckets
+# Update
 
-Bucket operations for Object Storage API
+Edit
 
 ## Usage:
 ```
-mgc object-storage buckets [flags]
-mgc object-storage buckets [command]
-```
-
-## Commands:
-```
-acl         ACL-related commands
-cors        CORS-related commands
-create      Create a new Bucket
-delete      Delete an existing Bucket
-label       Label-related commands
-list        List all existing Buckets
-object-lock Object locking commands
-policy      Policy-related commands
-public-url  Get bucket public url
-versioning  Manage bucket versioning
+mgc iam service-accounts update [sa-uuid] [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for buckets
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --description string            Description
+-h, --help                          help for update
+    --name string                   Name
+    --sa-uuid uuid                  Sa Uuid (required)
 ```
 
 ## Global Flags:
@@ -39,8 +28,10 @@ versioning  Manage bucket versioning
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
+    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. Use '--output=help' to know more details.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --server-url uri           Manually specify the server to use
 ```
 
