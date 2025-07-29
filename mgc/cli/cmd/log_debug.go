@@ -20,7 +20,7 @@ func addLogDebugFlag(cmd *cobra.Command) {
 
 func getLogDebugFlag(cmd *cobra.Command) string {
 	if result, ok := cmd.Root().PersistentFlags().GetBool(logDebugFlag); ok == nil {
-		if result {
+		if result || os.Getenv("MGC_LOG_DEBUG") != "" {
 			return getDebugLevelFromOS()
 		}
 	}

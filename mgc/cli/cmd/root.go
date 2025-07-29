@@ -113,22 +113,11 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	}()
 
 	rootCmd.SetArgs(mainArgs)
-
-	if !getRawOutputFlag(rootCmd) {
-		pb = progress_bar.New()
-		go pb.Render()
-		defer pb.Finalize()
-	}
-
-	setDefaultRegion(sdk)
-	setApiKey(rootCmd, sdk)
-	setKeyPair(sdk)
-
 	err = rootCmd.Execute()
 	if err == nil && loadErr != nil {
 		err = loadErr
 	}
-
+	// looking for flags like raw, debug, api-key, etc... ? see: mgc/cli/cmd/handle_executor.go - tip: there is a nice point to put an breakpoint
 	err = showHelpForError(rootCmd, mainArgs, err) // since we SilenceUsage and SilenceErrors
 	return err
 }

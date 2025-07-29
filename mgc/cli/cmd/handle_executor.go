@@ -7,6 +7,7 @@ import (
 	"slices"
 
 	"github.com/MagaluCloud/magalu/mgc/cli/ui"
+	"github.com/MagaluCloud/magalu/mgc/cli/ui/progress_bar"
 	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/MagaluCloud/magalu/mgc/core/auth"
 	"github.com/MagaluCloud/magalu/mgc/core/progress_report"
@@ -156,6 +157,20 @@ func handleExecutor(
 	if err != nil {
 		return nil, err
 	}
+
+	if err = initLogger(sdk, getLogFilterFlag(cmd)); err != nil {
+		return nil, err
+	}
+
+	if !getRawOutputFlag(cmd) {
+		pb = progress_bar.New()
+		go pb.Render()
+		defer pb.Finalize()
+	}
+
+	setDefaultRegion(sdk)
+	setApiKey(cmd, sdk)
+	setKeyPair(sdk)
 
 	result, err := handleExecutorPre(ctx, sdk, cmd, exec, parameters, configs)
 	err = handleExecutorResult(ctx, sdk, cmd, result, err)
