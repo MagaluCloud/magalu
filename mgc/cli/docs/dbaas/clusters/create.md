@@ -32,7 +32,9 @@ mgc dbaas clusters create --volume.size=30
                                       Use --volume=help for more details (required)
     --volume.size integer             Cluster Volume Request: The size of the volume (in GiB). (range: 20 - 50000)
                                       This is the same as '--volume=size:integer'.
-    --volume.type enum                Cluster Volume Request: Volume Type: The type of the volume. (one of "CLOUD_NVME15K" or "CLOUD_NVME20K")
+    --volume.type enum                Cluster Volume Request: The type of the volume.
+                                      Note: Preview volume types CLOUD_NVME30K, CLOUD_NVME40K, and CLOUD_NVME50K require tenant permission.
+                                       (one of "CLOUD_NVME15K", "CLOUD_NVME20K", "CLOUD_NVME30K", "CLOUD_NVME40K" or "CLOUD_NVME50K")
                                       This is the same as '--volume=type:enum'.
 ```
 
