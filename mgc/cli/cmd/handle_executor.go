@@ -163,6 +163,15 @@ func handleExecutor(
 	}
 
 	if !getRawOutputFlag(cmd) {
+		core.NewVersionChecker(
+			sdk.HttpClient().Get,
+			sdk.Config().Get,
+			sdk.Config().Set,
+		).
+			CheckVersion(sdk.GetVersion(), argParser.MainArgs()...)
+	}
+
+	if !getRawOutputFlag(cmd) {
 		pb = progress_bar.New()
 		go pb.Render()
 		defer pb.Finalize()
