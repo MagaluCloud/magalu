@@ -6,7 +6,7 @@ info:
         name: Tribo IAAS Cloud
         url: https://gitlab.luizalabs.com/cloud/dbaas/docs
         email: cloud-iaas-dbaas@luizalabs.com
-    version: 2.17.3
+    version: 2.18.0
 tags:
 -   name: engines
     description: Engines available for database instances.
@@ -4339,15 +4339,24 @@ components:
             - replicas
         VolumeTypeRequest:
             title: Volume Type
-            description: The type of the volume.
+            description: 'The type of the volume.
+
+                Note: Preview volume types CLOUD_NVME30K, CLOUD_NVME40K, and CLOUD_NVME50K
+                require tenant permission.
+
+                '
             type: string
             enum:
             - CLOUD_NVME15K
             - CLOUD_NVME20K
+            - CLOUD_NVME30K
+            - CLOUD_NVME40K
+            - CLOUD_NVME50K
             default: CLOUD_NVME15K
         VolumeTypeResponse:
             title: Volume Type
-            description: The type of the volume.
+            description: "The type of the volume. \nNote: Preview volume types CLOUD_NVME30K,\
+                \ CLOUD_NVME40K, and CLOUD_NVME50K require tenant permission.\n"
             type: string
             enum:
             - CLOUD_HDD
@@ -4355,6 +4364,9 @@ components:
             - CLOUD_NVME_15K
             - CLOUD_NVME15K
             - CLOUD_NVME20K
+            - CLOUD_NVME30K
+            - CLOUD_NVME40K
+            - CLOUD_NVME50K
         ReplicasResponse:
             title: Replicas Response
             required:

@@ -28,7 +28,9 @@ mgc dbaas snapshots instances-snapshots restore --volume.size=30
                                       Use --volume=help for more details
     --volume.size integer             Instance Volume Request: The size of the volume (in GiB). (range: 10 - 50000)
                                       This is the same as '--volume=size:integer'.
-    --volume.type enum                Instance Volume Request: Volume Type: The type of the volume. (one of "CLOUD_NVME15K" or "CLOUD_NVME20K")
+    --volume.type enum                Instance Volume Request: The type of the volume.
+                                      Note: Preview volume types CLOUD_NVME30K, CLOUD_NVME40K, and CLOUD_NVME50K require tenant permission.
+                                       (one of "CLOUD_NVME15K", "CLOUD_NVME20K", "CLOUD_NVME30K", "CLOUD_NVME40K" or "CLOUD_NVME50K")
                                       This is the same as '--volume=type:enum'.
 ```
 
