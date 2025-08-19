@@ -17,6 +17,7 @@ create      Creates a new database high availability cluster.
 delete      Deletes a database cluster.
 get         Database cluster details.
 list        List all database clusters.
+resize      Resizes a cluster database.
 start       Starts a database cluster.
 stop        Stops a database cluster.
 update      Database cluster update.

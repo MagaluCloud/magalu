@@ -13,9 +13,9 @@ mgc dbaas snapshots clusters-snapshots create [cluster-id] [flags]
 ## Flags:
 ```
     --cluster-id uuid      Value referring to cluster Id. (required)
-    --description string   Description (max character count: 255)
+    --description string   The description of the snapshot.
 -h, --help                 help for create
-    --name string          Name (max character count: 100) (required)
+    --name string          The name of the snapshot. (required)
 ```
 
 ## Global Flags:
