@@ -3,28 +3,20 @@ sidebar_position: 5
 ---
 # Resize
 
-Resize an instance replica.
+Resizes a cluster database.
 
 ## Usage:
 ```
-mgc dbaas replicas resize [replica-id] [flags]
-```
-
-## Examples:
-```
-mgc dbaas replicas resize --volume.size=30
+mgc dbaas clusters resize [cluster-id] [flags]
 ```
 
 ## Flags:
 ```
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --cluster-id uuid               Value referring to cluster Id. (required)
 -h, --help                          help for resize
-    --instance-type-id uuid         Instance Type Id
-    --replica-id uuid               Value referring to replica Id. (required)
-    --volume object                 Replica Volume Request (single property: size)
-                                    Use --volume=help for more details
-    --volume.size integer           Replica Volume Request: The size of the volume (in GiB). (range: 10 - 50000)
-                                    This is the same as '--volume=size:integer'.
+    --instance-type-id uuid         The new instance type ID for the cluster.
+    --volume-size integer           The new volume size for the cluster.
 ```
 
 ## Global Flags:

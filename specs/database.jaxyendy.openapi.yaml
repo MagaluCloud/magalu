@@ -6,7 +6,7 @@ info:
     name: Tribo IAAS Cloud
     url: https://gitlab.luizalabs.com/cloud/dbaas/docs
     email: cloud-iaas-dbaas@luizalabs.com
-  version: 2.18.0
+  version: 2.21.1
 tags:
   - name: engines
     description: Engines available for database instances.
@@ -878,6 +878,8 @@ paths:
           $ref: "#/components/responses/Forbidden"
         "404":
           $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
         "422":
           $ref: "#/components/responses/UnprocessableEntity"
         "500":
@@ -1234,6 +1236,50 @@ paths:
             - dbaas.write
         - OAuth2Prod:
             - dbaas.write
+  /v2/clusters/{cluster_id}/resize:
+    post:
+      tags:
+        - clusters
+      summary: Resizes a cluster database.
+      description: Resizes a cluster database.
+      x-permission:
+        permission-name: db_cluster_resize
+        product-name: database
+      operationId: clusters_v2_resize
+      parameters:
+        - $ref: "#/components/parameters/cluster_id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClusterResizeRequest"
+        required: true
+      responses:
+        "200":
+          description: Successful Response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClusterDetailResponse"
+        "400":
+          $ref: "#/components/responses/RequiredField"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security:
+        - bearerAuth:
+            - dbaas.write
+        - OAuth2PreProd:
+            - dbaas.write
+        - OAuth2Prod:
+            - dbaas.write
   /v2/clusters/{cluster_id}/start:
     post:
       tags:
@@ -1502,6 +1548,8 @@ paths:
           $ref: "#/components/responses/Forbidden"
         "404":
           $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
         "422":
           $ref: "#/components/responses/UnprocessableEntity"
         "500":
@@ -2597,6 +2645,8 @@ components:
           type: string
         status:
           $ref: "#/components/schemas/ClusterStatusResponse"
+        generation:
+          $ref: "#/components/schemas/InstanceGeneration"
         updated_at:
           format: date-time
           title: Updated At
@@ -2625,6 +2675,7 @@ components:
         - instance_type_id
         - volume
         - status
+        - generation
         - created_at
         - backup_retention_days
         - backup_start_at
@@ -2913,20 +2964,34 @@ components:
           type: string
           maxLength: 100
           example: "my-db-cluster"
-    ClusterSnapshotCreateRequest:
+    ClusterResizeRequest:
+      type: object
       properties:
-        description:
-          title: Description
-          maxLength: 255
+        instance_type_id:
+          title: Instance Type ID
           type: string
-        name:
-          maxLength: 100
-          title: Name
-          type: string
+          format: uuid
+          description: The new instance type ID for the cluster.
+        volume_size:
+          title: Volume Size
+          type: integer
+          description: The new volume size for the cluster.
+      anyOf:
+        - required:
+            - instance_type_id
+        - required:
+            - volume_size
+    ClusterSnapshotCreateRequest:
+      type: object
       required:
         - name
-      title: ClusterSnapshotCreateRequest
-      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the snapshot.
+        description:
+          type: string
+          description: The description of the snapshot.
     SnapshotCreateRequest:
       required:
         - name
@@ -4044,6 +4109,8 @@ components:
           title: Instance Type Id
           type: string
           format: uuid
+        volume:
+          $ref: "#/components/schemas/ReplicaVolumeResizeRequest"
     ReplicaResponse:
       title: Replica Response
       required:
@@ -4054,6 +4121,18 @@ components:
           title: Id
           type: string
           format: uuid
+    ReplicaVolumeResizeRequest:
+      title: Replica Volume Request
+      type: object
+      properties:
+        size:
+          description: The size of the volume (in GiB).
+          type: integer
+          minimum: 10
+          maximum: 50000
+          example: 30
+      required:
+        - size
     VolumeResponse:
       type: object
       properties:
@@ -4297,6 +4376,15 @@ components:
           example:
             slug: "forbidden"
             message: "Access Forbidden"
+    Conflict:
+      description: Conflict.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            slug: "conflict"
+            message: "Conflict resource state conflict."
     UnprocessableEntity:
       description: Unprocessable Entity.
       content:
