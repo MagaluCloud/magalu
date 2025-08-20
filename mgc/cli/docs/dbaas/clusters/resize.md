@@ -10,13 +10,21 @@ Resizes a cluster database.
 mgc dbaas clusters resize [cluster-id] [flags]
 ```
 
+## Examples:
+```
+mgc dbaas clusters resize --volume.size=30
+```
+
 ## Flags:
 ```
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
     --cluster-id uuid               Value referring to cluster Id. (required)
 -h, --help                          help for resize
     --instance-type-id uuid         The new instance type ID for the cluster.
-    --volume-size integer           The new volume size for the cluster.
+    --volume object                 Cluster Volume Request (single property: size)
+                                    Use --volume=help for more details
+    --volume.size integer           Cluster Volume Request: The size of the volume (in GiB). (range: 20 - 50000)
+                                    This is the same as '--volume=size:integer'.
 ```
 
 ## Global Flags:
