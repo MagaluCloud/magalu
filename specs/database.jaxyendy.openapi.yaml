@@ -6,7 +6,7 @@ info:
     name: Tribo IAAS Cloud
     url: https://gitlab.luizalabs.com/cloud/dbaas/docs
     email: cloud-iaas-dbaas@luizalabs.com
-  version: 2.21.1
+  version: 2.21.2
 tags:
   - name: engines
     description: Engines available for database instances.
@@ -2972,10 +2972,8 @@ components:
           type: string
           format: uuid
           description: The new instance type ID for the cluster.
-        volume_size:
-          title: Volume Size
-          type: integer
-          description: The new volume size for the cluster.
+        volume:
+          $ref: "#/components/schemas/ClusterVolumeResizeRequest"
       anyOf:
         - required:
             - instance_type_id
@@ -3401,6 +3399,18 @@ components:
           description: The size of the volume (in GiB).
           type: integer
           minimum: 10
+          maximum: 50000
+          example: 30
+    ClusterVolumeResizeRequest:
+      title: Cluster Volume Request
+      type: object
+      required:
+        - size
+      properties:
+        size:
+          description: The size of the volume (in GiB).
+          type: integer
+          minimum: 20
           maximum: 50000
           example: 30
     InstanceResponse:
