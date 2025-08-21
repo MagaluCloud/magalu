@@ -12,7 +12,7 @@ mgc kubernetes cluster create [flags]
 
 ## Examples:
 ```
-mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]' --cluster-ipv4-cidr="10.128.0.0/12" --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"availability_zones":["a","b","c"],"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --services-ipv4-cidr="10.128.0.0/12" --version="v1.32.3" --zone="br-region-zone"
+mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]' --cluster-ipv4-cidr="10.128.0.0/12" --cni="calico" --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"availability_zones":["a","b","c"],"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --services-ipv4-cidr="10.128.0.0/12" --version="v1.32.3" --zone="br-region-zone"
 ```
 
 ## Flags:
@@ -24,6 +24,9 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
                                     The CIDR is always subdivided with a "/24" mask per node. If "192.168.0.0/16" is used, the first node PodCIDR will be "192.168.0.0/24", the second will be "192.168.1.0/24" and so forth.
                                     This configuration can only be used during the cluster creation and can not be updated later.
                                     If not specified, the "192.168.0.0/16" value is used by default.
+                                    
+    --cni string                    The CNI by the Kubernetes Cluster.
+                                    This parameter can only be set when creating a new cluster and can not be updated later.
                                     
     --description string            A brief description of the Kubernetes cluster.
                                     
