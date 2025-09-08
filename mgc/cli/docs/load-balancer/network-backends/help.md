@@ -14,9 +14,13 @@ mgc load-balancer network-backends [command]
 ## Commands:
 ```
 create      Create Backend
+create      Create Backend
 delete      Delete Backend by ID
 get         Get Backend by ID
+get         Get Backend by ID
 list        List Backends
+list        List Backends
+replace     Update Backend by ID
 replace     Update Backend by ID
 targets     targets
 ```

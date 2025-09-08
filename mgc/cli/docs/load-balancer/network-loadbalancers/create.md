@@ -12,7 +12,7 @@ mgc load-balancer network-loadbalancers create [flags]
 
 ## Examples:
 ```
-mgc load-balancer network-loadbalancers create --acls='[{"action":"ALLOW","ethertype":"IPv4","name":"acl for load balancer #1","protocol":"tcp","remote_ip_prefix":"192.168.67.0/24"}]' --backends='[{"balance_algorithm":"round_robin","description":"Some optional backend description 1","health_check_name":"nlb-health-check-1","name":"nlb-backend-1","targets":[{"nic_id":"00000000-0000-0000-0000-000000000000","port":80},{"nic_id":"00000000-0000-0000-0000-000000000001","port":443}],"targets_type":"instance"}]' --health-checks='[{"healthy_status_code":200,"name":"nlb-health-check-1","path":"/health-check","port":5000,"protocol":"tcp"}]' --listeners='[{"backend_name":"nlb-backend-1","name":"nlb-listener-1","port":80,"protocol":"tcp","tls_certificate_name":"nlb-tls-certificate-1"}]' --tls-certificates='[{"certificate":"SGVsbG8sIFdvcmxkIQ==","name":"nlb-tls-certificate-1","private_key":"SGVsbG8sIFdvcmxkIQ=="}]'
+mgc load-balancer network-loadbalancers create --acls='[{"action":"ALLOW","ethertype":"IPv4","name":"acl for load balancer #1","protocol":"tcp","remote_ip_prefix":"192.0.2.0/24"}]' --backends='[{"balance_algorithm":"round_robin","description":"Some optional backend description 1","health_check_name":"nlb-health-check-1","name":"nlb-backend-1","panic_threshold":50,"targets":[{"nic_id":"00000000-0000-0000-0000-000000000000","port":80},{"nic_id":"00000000-0000-0000-0000-000000000001","port":443}],"targets_type":"instance"}]' --health-checks='[{"healthy_status_code":200,"name":"nlb-health-check-1","path":"/health-check","port":5000,"protocol":"tcp"}]' --listeners='[{"backend_name":"nlb-backend-1","name":"nlb-listener-1","port":80,"protocol":"tcp","tls_certificate_name":"nlb-tls-certificate-1"}]' --tls-certificates='[{"certificate":"SGVsbG8sIFdvcmxkIQ==","name":"nlb-tls-certificate-1","private_key":"SGVsbG8sIFdvcmxkIQ=="}]'
 ```
 
 ## Flags:
@@ -21,16 +21,15 @@ mgc load-balancer network-loadbalancers create --acls='[{"action":"ALLOW","ether
                                        Use --acls=help for more details
     --backends array(object)           Backends: The list of backend configurations for the load balancer
                                        Use --backends=help for more details (required)
-    --description string               A brief description of the load balancer
+    --description string               A brief description of the load balancer (max character count: 128)
     --health-checks array(object)      Health Checks: The list of health check configurations for the load balancer
                                        Use --health-checks=help for more details
 -h, --help                             help for create
     --listeners array(object)          Listeners: The list of listener configurations for the load balancer
                                        Use --listeners=help for more details (required)
     --name string                      The unique name of the load balancer (max character count: 64) (required)
-    --panic-threshold integer          Panic Threshold: Minimum percentage of failed upstreams that load balancer will consider to give an alert (range: 0 - 100)
-    --public-ip-id string              The public IP ID associated with the load balancer
-    --subnet-pool-id string            The subnet pool ID associated with the load balancer
+    --public-ip-id string              The public IP ID associated with the load balancer, a new one will be created if not provided
+    --subnet-pool-id string            The subnet pool ID associated with the load balancer, the default will be used if not provided
     --tls-certificates array(object)   The list of TLS certificates for the load balancer
                                        Use --tls-certificates=help for more details
     --type string                      The type of the load balancer (e.g., proxy)

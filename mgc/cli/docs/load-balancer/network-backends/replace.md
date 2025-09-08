@@ -12,16 +12,14 @@ mgc load-balancer network-backends replace [load-balancer-id] [backend-id] [flag
 
 ## Flags:
 ```
-    --backend-id anyValue           Backend Id
-                                    Use --backend-id=help for more details (required)
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --health-check-id string        Health Check Id: The unique identifier of the associated health check, if applicable (at least one of: uuid)
--h, --help                          help for replace
-    --id uuid                       Id (required)
-    --load-balancer-id uuid         load_balancer_id: ID of the attached Load Balancer (required)
-    --targets array                 Targets: The list of updated target configurations for the backend (at least one of: array or array)
-                                    Use --targets=help for more details
-    --targets-type enum             Targets Type: The type of targets used by the backend (e.g., instance, raw) (one of "instance" or "raw") (required)
+    --backend-id anyValue                        Backend Id
+                                                 Use --backend-id=help for more details (required)
+    --cli.list-links enum[=table]                List all available links for this command (one of "json", "table" or "yaml")
+    --close-connections-on-host-health-failure   Close Connections On Host Health Failure: Indicates wheter the connections to a unhealthy host should be closed or not (at least one of: boolean)
+    --health-check-id string                     Health Check Id: The unique identifier of the associated health check, if applicable (at least one of: uuid)
+-h, --help                                       help for replace
+    --load-balancer-id uuid                      load_balancer_id: ID of the attached Load Balancer (required)
+    --panic-threshold number                     Panic Threshold: Minimum percentage of failed upstreams that load balancer will consider to give an alert (range: 0 - 100)
 ```
 
 ## Global Flags:

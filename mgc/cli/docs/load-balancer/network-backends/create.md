@@ -12,16 +12,19 @@ mgc load-balancer network-backends create [load-balancer-id] [flags]
 
 ## Flags:
 ```
-    --balance-algorithm string      Balance Algorithm: The load balancing algorithm used by the backend (e.g., round_robin) (required)
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            A brief description of the backend
-    --health-check-id string        Health Check Id (at least one of: uuid)
--h, --help                          help for create
-    --load-balancer-id uuid         load_balancer_id: ID of the attached Load Balancer (required)
-    --name string                   The unique name of the backend (max character count: 64) (required)
-    --targets array                 Targets: The list of target configurations for the backend (at least one of: array or array)
-                                    Use --targets=help for more details
-    --targets-type enum             Targets Type: The type of targets used by the backend (e.g., instance, raw) (one of "instance" or "raw") (required)
+    --balance-algorithm string                   Balance Algorithm: The load balancing algorithm used by the backend (e.g., round_robin) (required)
+    --cli.list-links enum[=table]                List all available links for this command (one of "json", "table" or "yaml")
+    --close-connections-on-host-health-failure   Close Connections On Host Health Failure: Indicates wheter the connections to a unhealthy host should be closed or not
+    --description string                         A brief description of the backend (max character count: 128)
+    --health-check-id string                     Health Check Id (at least one of: uuid)
+    --health-check-name string                   Health Check Name: The name of the associated health check (max character count: 64)
+-h, --help                                       help for create
+    --load-balancer-id uuid                      load_balancer_id: ID of the attached Load Balancer (required)
+    --name string                                The unique name of the backend (max character count: 64) (required)
+    --panic-threshold number                     Panic Threshold: Minimum percentage of failed upstreams that load balancer will consider to give an alert (range: 0 - 100)
+    --targets array                              Targets: The list of target configurations for the backend (at least one of: array or array)
+                                                 Use --targets=help for more details
+    --targets-type enum                          Targets Type: The type of targets used by the backend (e.g., instance, raw) (one of "instance" or "raw") (required)
 ```
 
 ## Global Flags:

@@ -1,23 +1,27 @@
 ---
-sidebar_position: 5
+sidebar_position: 4
 ---
 # Replace
 
-Update Listener by ID
+This route will replace the entire load balancer acls set by the acls inputed in request body
 
 ## Usage:
 ```
-mgc load-balancer network-listeners replace [load-balancer-id] [listener-id] [flags]
+mgc load-balancer network-acls replace [load-balancer-id] [flags]
+```
+
+## Examples:
+```
+mgc load-balancer network-acls replace --acls='[{"action":"ALLOW","ethertype":"IPv4","name":"acl for load balancer #1","protocol":"tcp","remote_ip_prefix":"192.0.2.0/24"}]'
 ```
 
 ## Flags:
 ```
+    --acls array(object)            Acls
+                                    Use --acls=help for more details (required)
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                          help for replace
-    --listener-id uuid              listener_id: ID of the listener you wanna update (required)
     --load-balancer-id uuid         load_balancer_id: ID of the attached Load Balancer (required)
-    --name string                   The unique name of the listener (max character count: 64)
-    --tls-certificate-id uuid       Tls Certificate Id: The unique identifier of the associated tls certificate
 ```
 
 ## Global Flags:

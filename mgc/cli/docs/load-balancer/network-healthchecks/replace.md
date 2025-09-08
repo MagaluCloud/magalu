@@ -17,7 +17,6 @@ mgc load-balancer network-healthchecks replace [load-balancer-id] [health-check-
     --healthy-status-code integer         Healthy Status Code: The HTTP status code indicating a healthy response. By default the status is set to 200
     --healthy-threshold-count integer     Healthy Threshold Count: The number of consecutive successful checks before considering the target healthy
 -h, --help                                help for replace
-    --id uuid                             Id (required)
     --initial-delay-seconds integer       Initial Delay Seconds: The initial delay in seconds before starting Health Checks
     --interval-seconds integer            Interval Seconds: The interval in seconds between Health Checks
     --load-balancer-id uuid               load_balancer_id: ID of the attached Load Balancer (required)
