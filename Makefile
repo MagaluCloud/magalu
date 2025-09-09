@@ -7,6 +7,7 @@ DUMP_TREE = mgc/cli/cli-dump-tree.json
 OUT_DIR = mgc/cli/docs
 OAPIDIR=mgc/sdk/openapi/openapis
 
+
 build-local:
 	@goreleaser build --clean --snapshot --single-target -f internal.yaml
 
