@@ -31,21 +31,20 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateAttachmentRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "204": {
             "description": "Successful Response"
           },
           "404": {
-            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -56,10 +55,10 @@
                   "title": "Response 404 Create Attachment V1 V1 Attachments Post"
                 }
               }
-            }
+            },
+            "description": "Not Found"
           },
           "409": {
-            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -70,10 +69,10 @@
                   "title": "Response 409 Create Attachment V1 V1 Attachments Post"
                 }
               }
-            }
+            },
+            "description": "Conflict"
           },
           "422": {
-            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -84,7 +83,8 @@
                   "title": "Response 422 Create Attachment V1 V1 Attachments Post"
                 }
               }
-            }
+            },
+            "description": "Unprocessable Entity"
           }
         },
         "x-viveiro": true,
@@ -125,7 +125,6 @@
             "description": "Successful Response"
           },
           "404": {
-            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -136,10 +135,10 @@
                   "title": "Response 404 Delete Attachment V1 V1 Attachments  Id  Delete"
                 }
               }
-            }
+            },
+            "description": "Not Found"
           },
           "409": {
-            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -150,10 +149,10 @@
                   "title": "Response 409 Delete Attachment V1 V1 Attachments  Id  Delete"
                 }
               }
-            }
+            },
+            "description": "Conflict"
           },
           "422": {
-            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -164,11 +163,585 @@
                   "title": "Response 422 Delete Attachment V1 V1 Attachments  Id  Delete"
                 }
               }
-            }
+            },
+            "description": "Unprocessable Entity"
           }
         },
         "x-viveiro": true,
         "x-permission-name": "bs_volume_detach"
+      }
+    },
+    "/v1/schedulers": {
+      "get": {
+        "tags": [
+          "schedulers"
+        ],
+        "summary": "List all schedulers.",
+        "description": "Retrieve a list of Schedulers for the currently authenticated tenant.\n\n#### Notes\n- Use the expand argument to obtain additional details about the Volume.",
+        "operationId": "get_list_schedulers_v1_schedulers_get",
+        "parameters": [
+          {
+            "name": "expand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "title": "ExpandSchedulers",
+                "enum": [
+                  "volume"
+                ]
+              },
+              "title": "Expand",
+              "default": []
+            }
+          },
+          {
+            "name": "_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "exclusiveMinimum": false,
+              "type": "integer",
+              "title": " Limit",
+              "default": 50
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": " Offset",
+              "default": 0
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": " Sort",
+              "pattern": "^(^[\\w-]+:(asc|desc)(,[\\w-]+:(asc|desc))*)?$",
+              "default": "created_at:asc"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchedulerListResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Get List Schedulers V1 Schedulers Get"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Get List Schedulers V1 Schedulers Get"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Get List Schedulers V1 Schedulers Get"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "x-viveiro": true,
+        "x-permission-name": "bs_scheduler_list"
+      },
+      "post": {
+        "tags": [
+          "schedulers"
+        ],
+        "summary": "Create a scheduler.",
+        "description": "Creates a schedule for snapshot creation.",
+        "operationId": "create_scheduler_v1_schedulers_post",
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SchedulerPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Create Scheduler V1 Schedulers Post"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Create Scheduler V1 Schedulers Post"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Create Scheduler V1 Schedulers Post"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "x-viveiro": true,
+        "x-permission-name": "bs_scheduler_create"
+      }
+    },
+    "/v1/schedulers/{id}": {
+      "delete": {
+        "tags": [
+          "schedulers"
+        ],
+        "summary": "Delete a scheduler.",
+        "description": "Delete a scheduler for the currently authenticated tenant.\n\n#### Notes\n- Utilize the **block-storage schedulers** list command to retrieve a list of\n all schedulers and obtain the ID of the scheduler you wish to delete.",
+        "operationId": "delete_scheduler_v1_schedulers__id__delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Delete Scheduler V1 Schedulers  Id  Delete"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Delete Scheduler V1 Schedulers  Id  Delete"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Delete Scheduler V1 Schedulers  Id  Delete"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "x-viveiro": true,
+        "x-permission-name": "bs_scheduler_delete"
+      },
+      "get": {
+        "tags": [
+          "schedulers"
+        ],
+        "summary": "Retrieve the details of a specific scheduler.",
+        "description": "Retrieve details of a Scheduler for the currently authenticated tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional details about the Volume.\n- Utilize the **block-storage schedulers list** command to retrieve a list of\n all Schedulers and obtain the ID of the Scheduler for which you want to\n retrieve details.",
+        "operationId": "get_scheduler_by_id_v1_schedulers__id__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "title": "ExpandSchedulers",
+                "enum": [
+                  "volume"
+                ]
+              },
+              "title": "Expand",
+              "default": []
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchedulerResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Get Scheduler By Id V1 Schedulers  Id  Get"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Get Scheduler By Id V1 Schedulers  Id  Get"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Get Scheduler By Id V1 Schedulers  Id  Get"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "x-viveiro": true,
+        "x-permission-name": "bs_scheduler_get"
+      }
+    },
+    "/v1/schedulers/{id}/attach": {
+      "post": {
+        "tags": [
+          "schedulers"
+        ],
+        "summary": "Attach volume on scheduler",
+        "description": "Attach volume on scheduler.",
+        "operationId": "scheduler_attach_volume_v1_schedulers__id__attach_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SchedulerVolumeIdentifierPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Scheduler Attach Volume V1 Schedulers  Id  Attach Post"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Scheduler Attach Volume V1 Schedulers  Id  Attach Post"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Scheduler Attach Volume V1 Schedulers  Id  Attach Post"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "x-viveiro": true,
+        "x-permission-name": "bs_scheduler_attach"
+      }
+    },
+    "/v1/schedulers/{id}/detach": {
+      "post": {
+        "tags": [
+          "schedulers"
+        ],
+        "summary": "Detach volume on scheduler",
+        "description": "Detach volume on scheduler.",
+        "operationId": "scheduler_detach_volume_v1_schedulers__id__detach_post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SchedulerVolumeIdentifierPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Scheduler Detach Volume V1 Schedulers  Id  Detach Post"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Scheduler Detach Volume V1 Schedulers  Id  Detach Post"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Scheduler Detach Volume V1 Schedulers  Id  Detach Post"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "x-viveiro": true,
+        "x-permission-name": "bs_scheduler_detach"
       }
     },
     "/v1/snapshots": {
@@ -279,7 +852,6 @@
             }
           },
           "404": {
-            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -290,10 +862,10 @@
                   "title": "Response 404 List Snapshot V1 Snapshots Get"
                 }
               }
-            }
+            },
+            "description": "Not Found"
           },
           "409": {
-            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -304,10 +876,10 @@
                   "title": "Response 409 List Snapshot V1 Snapshots Get"
                 }
               }
-            }
+            },
+            "description": "Conflict"
           },
           "422": {
-            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -318,7 +890,8 @@
                   "title": "Response 422 List Snapshot V1 Snapshots Get"
                 }
               }
-            }
+            },
+            "description": "Unprocessable Entity"
           }
         },
         "x-viveiro": true,
@@ -343,14 +916,14 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/SnapshotCreationRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "202": {
@@ -364,7 +937,6 @@
             }
           },
           "404": {
-            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -375,10 +947,10 @@
                   "title": "Response 404 Create Snapshot V1 Snapshots Post"
                 }
               }
-            }
+            },
+            "description": "Not Found"
           },
           "409": {
-            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -389,10 +961,10 @@
                   "title": "Response 409 Create Snapshot V1 Snapshots Post"
                 }
               }
-            }
+            },
+            "description": "Conflict"
           },
           "422": {
-            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -403,7 +975,8 @@
                   "title": "Response 422 Create Snapshot V1 Snapshots Post"
                 }
               }
-            }
+            },
+            "description": "Unprocessable Entity"
           }
         },
         "x-viveiro": true,
@@ -411,6 +984,84 @@
       }
     },
     "/v1/snapshots/{id}": {
+      "delete": {
+        "tags": [
+          "snapshots"
+        ],
+        "summary": "Delete a snapshot.",
+        "description": "Delete a Snapshot for the currently authenticated tenant.\n\n#### Rules\n- The Snapshot's status must be \"completed\".\n- The Snapshot's state must be \"available\".\n- Deleting a Snapshot that has been restored is not possible. If necessary,\n delete the restored Volume first and then proceed to delete the Snapshot.\n\n#### Notes\n- Utilize the **block-storage snapshots** list command to retrieve a list of\n all Snapshots and obtain the ID of the Snapshot you wish to delete.\n- If needed, you can use the **block-storage volume list** command to retrieve\n a list of all Volumes and obtain the ID of the restored Volume.",
+        "operationId": "delete_snapshot_v1_snapshots__id__delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Delete Snapshot V1 Snapshots  Id  Delete"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Delete Snapshot V1 Snapshots  Id  Delete"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 422 Delete Snapshot V1 Snapshots  Id  Delete"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        },
+        "x-viveiro": true,
+        "x-permission-name": "bs_snapshot_delete"
+      },
       "get": {
         "tags": [
           "snapshots"
@@ -468,7 +1119,6 @@
             }
           },
           "404": {
-            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -479,10 +1129,10 @@
                   "title": "Response 404 Get Snapshot V1 Snapshots  Id  Get"
                 }
               }
-            }
+            },
+            "description": "Not Found"
           },
           "409": {
-            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -493,10 +1143,10 @@
                   "title": "Response 409 Get Snapshot V1 Snapshots  Id  Get"
                 }
               }
-            }
+            },
+            "description": "Conflict"
           },
           "422": {
-            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -507,89 +1157,12 @@
                   "title": "Response 422 Get Snapshot V1 Snapshots  Id  Get"
                 }
               }
-            }
+            },
+            "description": "Unprocessable Entity"
           }
         },
         "x-viveiro": true,
         "x-permission-name": "bs_snapshot_get"
-      },
-      "delete": {
-        "tags": [
-          "snapshots"
-        ],
-        "summary": "Delete a snapshot.",
-        "description": "Delete a Snapshot for the currently authenticated tenant.\n\n#### Rules\n- The Snapshot's status must be \"completed\".\n- The Snapshot's state must be \"available\".\n- Deleting a Snapshot that has been restored is not possible. If necessary,\n delete the restored Volume first and then proceed to delete the Snapshot.\n\n#### Notes\n- Utilize the **block-storage snapshots** list command to retrieve a list of\n all Snapshots and obtain the ID of the Snapshot you wish to delete.\n- If needed, you can use the **block-storage volume list** command to retrieve\n a list of all Volumes and obtain the ID of the restored Volume.",
-        "operationId": "delete_snapshot_v1_snapshots__id__delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Id",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorResponse"
-                  },
-                  "title": "Response 404 Delete Snapshot V1 Snapshots  Id  Delete"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorResponse"
-                  },
-                  "title": "Response 409 Delete Snapshot V1 Snapshots  Id  Delete"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Unprocessable Entity",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorResponse"
-                  },
-                  "title": "Response 422 Delete Snapshot V1 Snapshots  Id  Delete"
-                }
-              }
-            }
-          }
-        },
-        "x-viveiro": true,
-        "x-permission-name": "bs_snapshot_delete"
       }
     },
     "/v1/snapshots/{id}/copy": {
@@ -622,21 +1195,20 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CopyCrossRegionRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "204": {
             "description": "Successful Response"
           },
           "404": {
-            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -647,10 +1219,10 @@
                   "title": "Response 404 Copy Snapshot Cross Region V1 Snapshots  Id  Copy Post"
                 }
               }
-            }
+            },
+            "description": "Not Found"
           },
           "409": {
-            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -661,10 +1233,10 @@
                   "title": "Response 409 Copy Snapshot Cross Region V1 Snapshots  Id  Copy Post"
                 }
               }
-            }
+            },
+            "description": "Conflict"
           },
           "422": {
-            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -675,7 +1247,8 @@
                   "title": "Response 422 Copy Snapshot Cross Region V1 Snapshots  Id  Copy Post"
                 }
               }
-            }
+            },
+            "description": "Unprocessable Entity"
           }
         },
         "x-viveiro": true,
@@ -712,21 +1285,20 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/SnapshotRenameRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "204": {
             "description": "Successful Response"
           },
           "404": {
-            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -737,10 +1309,10 @@
                   "title": "Response 404 Rename Snapshot V1 Snapshots  Id  Rename Patch"
                 }
               }
-            }
+            },
+            "description": "Not Found"
           },
           "409": {
-            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -751,10 +1323,10 @@
                   "title": "Response 409 Rename Snapshot V1 Snapshots  Id  Rename Patch"
                 }
               }
-            }
+            },
+            "description": "Conflict"
           },
           "422": {
-            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -765,7 +1337,8 @@
                   "title": "Response 422 Rename Snapshot V1 Snapshots  Id  Rename Patch"
                 }
               }
-            }
+            },
+            "description": "Unprocessable Entity"
           }
         },
         "x-viveiro": true,
@@ -871,7 +1444,6 @@
           {
             "name": "expand",
             "in": "query",
-            "description": "You can get more detailed info about: ['volume_type', 'attachment']",
             "required": false,
             "schema": {
               "type": "array",
@@ -881,7 +1453,8 @@
               "title": "Expand",
               "description": "You can get more detailed info about: ['volume_type', 'attachment']",
               "default": []
-            }
+            },
+            "description": "You can get more detailed info about: ['volume_type', 'attachment']"
           },
           {
             "name": "_limit",
@@ -951,7 +1524,6 @@
             }
           },
           "404": {
-            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -962,10 +1534,10 @@
                   "title": "Response 404 List Volume V1 V1 Volumes Get"
                 }
               }
-            }
+            },
+            "description": "Not Found"
           },
           "409": {
-            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -976,7 +1548,8 @@
                   "title": "Response 409 List Volume V1 V1 Volumes Get"
                 }
               }
-            }
+            },
+            "description": "Conflict"
           },
           "422": {
             "description": "Validation Error",
@@ -1011,14 +1584,14 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/VolumeCreateRequestV1"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "202": {
@@ -1032,7 +1605,6 @@
             }
           },
           "404": {
-            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1043,10 +1615,10 @@
                   "title": "Response 404 Create Volume V1 V1 Volumes Post"
                 }
               }
-            }
+            },
+            "description": "Not Found"
           },
           "409": {
-            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -1057,10 +1629,10 @@
                   "title": "Response 409 Create Volume V1 V1 Volumes Post"
                 }
               }
-            }
+            },
+            "description": "Conflict"
           },
           "422": {
-            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -1071,7 +1643,8 @@
                   "title": "Response 422 Create Volume V1 V1 Volumes Post"
                 }
               }
-            }
+            },
+            "description": "Unprocessable Entity"
           }
         },
         "x-viveiro": true,
@@ -1079,102 +1652,6 @@
       }
     },
     "/v1/volumes/{id}": {
-      "get": {
-        "tags": [
-          "volumes"
-        ],
-        "summary": "Retrieve the details of a specific volume.",
-        "description": "Retrieve details of a Volume for the currently authenticated tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional details about the Volume\n Type.\n- Utilize the **block-storage volume list** command to retrieve a list of all\n Volumes and obtain the ID of the Volume for which you want to retrieve\n details.",
-        "operationId": "get_volume_v1_v1_volumes__id__get",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Id",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "expand",
-            "in": "query",
-            "description": "You can get more detailed info about: ['volume_type', 'attachment']",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "title": "Expand",
-              "description": "You can get more detailed info about: ['volume_type', 'attachment']",
-              "default": []
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VolumeResponseV1"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorResponse"
-                  },
-                  "title": "Response 404 Get Volume V1 V1 Volumes  Id  Get"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorResponse"
-                  },
-                  "title": "Response 409 Get Volume V1 V1 Volumes  Id  Get"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "x-viveiro": true,
-        "x-permission-name": "bs_volume_get"
-      },
       "delete": {
         "tags": [
           "volumes"
@@ -1208,7 +1685,6 @@
             "description": "Successful Response"
           },
           "404": {
-            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1219,10 +1695,10 @@
                   "title": "Response 404 Delete Volume V1 V1 Volumes  Id  Delete"
                 }
               }
-            }
+            },
+            "description": "Not Found"
           },
           "409": {
-            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -1233,10 +1709,10 @@
                   "title": "Response 409 Delete Volume V1 V1 Volumes  Id  Delete"
                 }
               }
-            }
+            },
+            "description": "Conflict"
           },
           "422": {
-            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -1247,11 +1723,108 @@
                   "title": "Response 422 Delete Volume V1 V1 Volumes  Id  Delete"
                 }
               }
-            }
+            },
+            "description": "Unprocessable Entity"
           }
         },
         "x-viveiro": true,
         "x-permission-name": "bs_volume_delete"
+      },
+      "get": {
+        "tags": [
+          "volumes"
+        ],
+        "summary": "Retrieve the details of a specific volume.",
+        "description": "Retrieve details of a Volume for the currently authenticated tenant.\n\n#### Notes\n- Use the **expand** argument to obtain additional details about the Volume\n Type.\n- Utilize the **block-storage volume list** command to retrieve a list of all\n Volumes and obtain the ID of the Volume for which you want to retrieve\n details.",
+        "operationId": "get_volume_v1_v1_volumes__id__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Expand",
+              "description": "You can get more detailed info about: ['volume_type', 'attachment']",
+              "default": []
+            },
+            "description": "You can get more detailed info about: ['volume_type', 'attachment']"
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VolumeResponseV1"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 404 Get Volume V1 V1 Volumes  Id  Get"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  },
+                  "title": "Response 409 Get Volume V1 V1 Volumes  Id  Get"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-viveiro": true,
+        "x-permission-name": "bs_volume_get"
       }
     },
     "/v1/volumes/{id}/attach/{virtual_machine_id}": {
@@ -1298,7 +1871,6 @@
             "description": "Successful Response"
           },
           "404": {
-            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1309,10 +1881,10 @@
                   "title": "Response 404 Attach Volume V1 V1 Volumes  Id  Attach  Virtual Machine Id  Post"
                 }
               }
-            }
+            },
+            "description": "Not Found"
           },
           "409": {
-            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -1323,10 +1895,10 @@
                   "title": "Response 409 Attach Volume V1 V1 Volumes  Id  Attach  Virtual Machine Id  Post"
                 }
               }
-            }
+            },
+            "description": "Conflict"
           },
           "422": {
-            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -1337,7 +1909,8 @@
                   "title": "Response 422 Attach Volume V1 V1 Volumes  Id  Attach  Virtual Machine Id  Post"
                 }
               }
-            }
+            },
+            "description": "Unprocessable Entity"
           }
         },
         "x-viveiro": true,
@@ -1378,7 +1951,6 @@
             "description": "Successful Response"
           },
           "404": {
-            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1389,10 +1961,10 @@
                   "title": "Response 404 Detach Volume V1 V1 Volumes  Id  Detach Post"
                 }
               }
-            }
+            },
+            "description": "Not Found"
           },
           "409": {
-            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -1403,10 +1975,10 @@
                   "title": "Response 409 Detach Volume V1 V1 Volumes  Id  Detach Post"
                 }
               }
-            }
+            },
+            "description": "Conflict"
           },
           "422": {
-            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -1417,7 +1989,8 @@
                   "title": "Response 422 Detach Volume V1 V1 Volumes  Id  Detach Post"
                 }
               }
-            }
+            },
+            "description": "Unprocessable Entity"
           }
         },
         "x-viveiro": true,
@@ -1454,21 +2027,20 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/VolumeExtendRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "204": {
             "description": "Successful Response"
           },
           "404": {
-            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1479,10 +2051,10 @@
                   "title": "Response 404 Extend Volume V1 Volumes  Id  Extend Post"
                 }
               }
-            }
+            },
+            "description": "Not Found"
           },
           "422": {
-            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -1493,7 +2065,8 @@
                   "title": "Response 422 Extend Volume V1 Volumes  Id  Extend Post"
                 }
               }
-            }
+            },
+            "description": "Unprocessable Entity"
           }
         },
         "x-viveiro": true,
@@ -1530,21 +2103,20 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/RenameVolumeRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "204": {
             "description": "Successful Response"
           },
           "404": {
-            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1555,10 +2127,10 @@
                   "title": "Response 404 Rename Volume V1 V1 Volumes  Id  Rename Patch"
                 }
               }
-            }
+            },
+            "description": "Not Found"
           },
           "409": {
-            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -1569,10 +2141,10 @@
                   "title": "Response 409 Rename Volume V1 V1 Volumes  Id  Rename Patch"
                 }
               }
-            }
+            },
+            "description": "Conflict"
           },
           "422": {
-            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -1583,7 +2155,8 @@
                   "title": "Response 422 Rename Volume V1 V1 Volumes  Id  Rename Patch"
                 }
               }
-            }
+            },
+            "description": "Unprocessable Entity"
           }
         },
         "x-viveiro": true,
@@ -1620,21 +2193,20 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/VolumeRetypeRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "204": {
             "description": "Successful Response"
           },
           "404": {
-            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1645,10 +2217,10 @@
                   "title": "Response 404 Retype Volume V1 Volumes  Id  Retype Post"
                 }
               }
-            }
+            },
+            "description": "Not Found"
           },
           "422": {
-            "description": "Unprocessable Entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -1659,7 +2231,8 @@
                   "title": "Response 422 Retype Volume V1 Volumes  Id  Retype Post"
                 }
               }
-            }
+            },
+            "description": "Unprocessable Entity"
           }
         },
         "x-viveiro": true,
@@ -1879,6 +2452,20 @@
           }
         }
       },
+      "DailyFrequency": {
+        "type": "object",
+        "properties": {
+          "start_time": {
+            "type": "string",
+            "title": "Start Time",
+            "format": "time"
+          }
+        },
+        "title": "DailyFrequency",
+        "required": [
+          "start_time"
+        ]
+      },
       "DiskType": {
         "type": "string",
         "title": "DiskType",
@@ -1915,11 +2502,41 @@
           "slug": "generic"
         }
       },
+      "ExpandSchedulers": {
+        "type": "string",
+        "title": "ExpandSchedulers",
+        "enum": [
+          "volume"
+        ]
+      },
       "ExpandSnapshots": {
         "type": "string",
         "title": "ExpandSnapshots",
         "enum": [
           "volume"
+        ]
+      },
+      "Frequency": {
+        "type": "object",
+        "properties": {
+          "daily": {
+            "type": "object",
+            "properties": {
+              "start_time": {
+                "type": "string",
+                "title": "Start Time",
+                "format": "time"
+              }
+            },
+            "title": "DailyFrequency",
+            "required": [
+              "start_time"
+            ]
+          }
+        },
+        "title": "Frequency",
+        "required": [
+          "daily"
         ]
       },
       "GenericVolumeTypeList_VolumeTypeResponseWithAzs_": {
@@ -2257,6 +2874,82 @@
           "max_limit"
         ]
       },
+      "Policy-Input": {
+        "type": "object",
+        "properties": {
+          "retention_in_days": {
+            "type": "integer",
+            "title": "Retention In Days",
+            "minimum": 1
+          },
+          "frequency": {
+            "type": "object",
+            "properties": {
+              "daily": {
+                "type": "object",
+                "properties": {
+                  "start_time": {
+                    "type": "string",
+                    "title": "Start Time",
+                    "format": "time"
+                  }
+                },
+                "title": "DailyFrequency",
+                "required": [
+                  "start_time"
+                ]
+              }
+            },
+            "title": "Frequency",
+            "required": [
+              "daily"
+            ]
+          }
+        },
+        "title": "Policy",
+        "required": [
+          "retention_in_days",
+          "frequency"
+        ]
+      },
+      "Policy-Output": {
+        "type": "object",
+        "properties": {
+          "retention_in_days": {
+            "type": "integer",
+            "title": "Retention In Days",
+            "minimum": 1
+          },
+          "frequency": {
+            "type": "object",
+            "properties": {
+              "daily": {
+                "type": "object",
+                "properties": {
+                  "start_time": {
+                    "type": "string",
+                    "title": "Start Time",
+                    "format": "time"
+                  }
+                },
+                "title": "DailyFrequency",
+                "required": [
+                  "start_time"
+                ]
+              }
+            },
+            "title": "Frequency",
+            "required": [
+              "daily"
+            ]
+          }
+        },
+        "title": "Policy",
+        "required": [
+          "retention_in_days",
+          "frequency"
+        ]
+      },
       "Regions": {
         "type": "string",
         "title": "Regions",
@@ -2283,6 +2976,531 @@
         "example": {
           "name": "volume-name"
         }
+      },
+      "SchedulerListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "object",
+                "properties": {
+                  "offset": {
+                    "type": "integer",
+                    "title": "Offset"
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "title": "Limit"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "title": "Count"
+                  },
+                  "total": {
+                    "type": "integer",
+                    "title": "Total"
+                  },
+                  "max_limit": {
+                    "type": "integer",
+                    "title": "Max Limit"
+                  }
+                },
+                "title": "PageMetadata",
+                "required": [
+                  "offset",
+                  "limit",
+                  "count",
+                  "total",
+                  "max_limit"
+                ]
+              }
+            },
+            "title": "Metadata",
+            "required": [
+              "page"
+            ]
+          },
+          "schedulers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "Id"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "description": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "title": "Description",
+                  "nullable": true
+                },
+                "volumes": {
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ],
+                  "title": "Volumes",
+                  "nullable": true
+                },
+                "snapshot": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/Snapshot"
+                    }
+                  ],
+                  "nullable": true
+                },
+                "state": {
+                  "type": "string",
+                  "title": "SchedulerState",
+                  "enum": [
+                    "available",
+                    "deleted"
+                  ]
+                },
+                "policy": {
+                  "type": "object",
+                  "properties": {
+                    "retention_in_days": {
+                      "type": "integer",
+                      "title": "Retention In Days",
+                      "minimum": 1
+                    },
+                    "frequency": {
+                      "type": "object",
+                      "properties": {
+                        "daily": {
+                          "type": "object",
+                          "properties": {
+                            "start_time": {
+                              "type": "string",
+                              "title": "Start Time",
+                              "format": "time"
+                            }
+                          },
+                          "title": "DailyFrequency",
+                          "required": [
+                            "start_time"
+                          ]
+                        }
+                      },
+                      "title": "Frequency",
+                      "required": [
+                        "daily"
+                      ]
+                    }
+                  },
+                  "title": "Policy",
+                  "required": [
+                    "retention_in_days",
+                    "frequency"
+                  ]
+                },
+                "created_at": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  ],
+                  "title": "Created At",
+                  "example": "2022-01-01T00:00:10Z"
+                },
+                "updated_at": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  ],
+                  "title": "Updated At",
+                  "example": "2022-01-01T00:00:10Z"
+                }
+              },
+              "title": "SchedulerResponse",
+              "required": [
+                "id",
+                "name",
+                "state",
+                "policy",
+                "created_at",
+                "updated_at"
+              ],
+              "example": {
+                "created_at": "2024-10-14T19:56:13Z",
+                "description": "some value",
+                "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "name": "scheduler-name",
+                "policy": {
+                  "frequency": {
+                    "daily": {
+                      "start_time": "14:10:00"
+                    }
+                  },
+                  "retention_in_days": 1
+                },
+                "snapshot": {
+                  "type": "instant"
+                },
+                "state": "available",
+                "updated_at": "2024-10-14T19:56:14Z",
+                "volumes": [
+                  "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz"
+                ]
+              }
+            },
+            "title": "Schedulers"
+          }
+        },
+        "title": "SchedulerListResponse",
+        "required": [
+          "meta",
+          "schedulers"
+        ],
+        "example": {
+          "meta": {
+            "page": {
+              "count": 0,
+              "limit": 20,
+              "max_limit": 100,
+              "offset": 0,
+              "total": 0
+            }
+          },
+          "schedulers": [
+            {
+              "created_at": "2024-10-14T19:56:13Z",
+              "description": "some description",
+              "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+              "name": "scheduler-name",
+              "policy": {
+                "frequency": {
+                  "daily": {
+                    "start_time": "14:10:00"
+                  }
+                },
+                "retention_in_days": 1
+              },
+              "snapshot": {
+                "type": "instant"
+              },
+              "state": "available",
+              "updated_at": "2024-10-14T19:56:14Z",
+              "volumes": [
+                "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz"
+              ]
+            }
+          ]
+        }
+      },
+      "SchedulerPayload": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Description",
+            "nullable": true
+          },
+          "snapshot": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "title": "SnapshotType",
+                "enum": [
+                  "instant",
+                  "object"
+                ]
+              }
+            },
+            "title": "Snapshot",
+            "required": [
+              "type"
+            ]
+          },
+          "policy": {
+            "type": "object",
+            "properties": {
+              "retention_in_days": {
+                "type": "integer",
+                "title": "Retention In Days",
+                "minimum": 1
+              },
+              "frequency": {
+                "type": "object",
+                "properties": {
+                  "daily": {
+                    "type": "object",
+                    "properties": {
+                      "start_time": {
+                        "type": "string",
+                        "title": "Start Time",
+                        "format": "time"
+                      }
+                    },
+                    "title": "DailyFrequency",
+                    "required": [
+                      "start_time"
+                    ]
+                  }
+                },
+                "title": "Frequency",
+                "required": [
+                  "daily"
+                ]
+              }
+            },
+            "title": "Policy",
+            "required": [
+              "retention_in_days",
+              "frequency"
+            ]
+          }
+        },
+        "title": "SchedulerPayload",
+        "required": [
+          "name",
+          "snapshot",
+          "policy"
+        ],
+        "example": {
+          "description": "example",
+          "name": "scheduler-name",
+          "policy": {
+            "frequency": {
+              "daily": {
+                "start_time": "14:10:00"
+              }
+            },
+            "retention_in_days": 1
+          },
+          "snapshot": {
+            "type": "instant"
+          }
+        }
+      },
+      "SchedulerResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Description",
+            "nullable": true
+          },
+          "volumes": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "title": "Volumes",
+            "nullable": true
+          },
+          "snapshot": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Snapshot"
+              }
+            ],
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "title": "SchedulerState",
+            "enum": [
+              "available",
+              "deleted"
+            ]
+          },
+          "policy": {
+            "type": "object",
+            "properties": {
+              "retention_in_days": {
+                "type": "integer",
+                "title": "Retention In Days",
+                "minimum": 1
+              },
+              "frequency": {
+                "type": "object",
+                "properties": {
+                  "daily": {
+                    "type": "object",
+                    "properties": {
+                      "start_time": {
+                        "type": "string",
+                        "title": "Start Time",
+                        "format": "time"
+                      }
+                    },
+                    "title": "DailyFrequency",
+                    "required": [
+                      "start_time"
+                    ]
+                  }
+                },
+                "title": "Frequency",
+                "required": [
+                  "daily"
+                ]
+              }
+            },
+            "title": "Policy",
+            "required": [
+              "retention_in_days",
+              "frequency"
+            ]
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Created At",
+            "example": "2022-01-01T00:00:10Z"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "Updated At",
+            "example": "2022-01-01T00:00:10Z"
+          }
+        },
+        "title": "SchedulerResponse",
+        "required": [
+          "id",
+          "name",
+          "state",
+          "policy",
+          "created_at",
+          "updated_at"
+        ],
+        "example": {
+          "created_at": "2024-10-14T19:56:13Z",
+          "description": "some value",
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "name": "scheduler-name",
+          "policy": {
+            "frequency": {
+              "daily": {
+                "start_time": "14:10:00"
+              }
+            },
+            "retention_in_days": 1
+          },
+          "snapshot": {
+            "type": "instant"
+          },
+          "state": "available",
+          "updated_at": "2024-10-14T19:56:14Z",
+          "volumes": [
+            "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz"
+          ]
+        }
+      },
+      "SchedulerState": {
+        "type": "string",
+        "title": "SchedulerState",
+        "enum": [
+          "available",
+          "deleted"
+        ]
+      },
+      "SchedulerVolumeIdentifierPayload": {
+        "type": "object",
+        "properties": {
+          "volume": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IdRequest"
+              },
+              {
+                "$ref": "#/components/schemas/Name"
+              }
+            ],
+            "title": "Volume"
+          }
+        },
+        "title": "SchedulerVolumeIdentifierPayload",
+        "required": [
+          "volume"
+        ],
+        "example": {
+          "volume": {
+            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          }
+        }
+      },
+      "Snapshot": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "SnapshotType",
+            "enum": [
+              "instant",
+              "object"
+            ]
+          }
+        },
+        "title": "Snapshot",
+        "required": [
+          "type"
+        ]
       },
       "SnapshotCreationRequest": {
         "type": "object",
@@ -2351,6 +3569,14 @@
             "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
           }
         }
+      },
+      "SnapshotCreationType": {
+        "type": "string",
+        "title": "SnapshotCreationType",
+        "enum": [
+          "manual",
+          "scheduled"
+        ]
       },
       "SnapshotListResponse": {
         "type": "object",
@@ -2512,6 +3738,14 @@
                 "encrypted": {
                   "type": "boolean",
                   "title": "Encrypted"
+                },
+                "creation_type": {
+                  "type": "string",
+                  "title": "SnapshotCreationType",
+                  "enum": [
+                    "manual",
+                    "scheduled"
+                  ]
                 }
               },
               "title": "SnapshotResponse",
@@ -2527,13 +3761,15 @@
                 "volume",
                 "availability_zones",
                 "type",
-                "encrypted"
+                "encrypted",
+                "creation_type"
               ],
               "example": {
                 "availability_zones": [
                   "br-ne1-a"
                 ],
                 "created_at": "2022-01-01T00:00:10Z",
+                "creation_type": "manual",
                 "description": "my snapshot for testing",
                 "encrypted": false,
                 "error": {
@@ -2576,6 +3812,7 @@
                 "br-ne1-a"
               ],
               "created_at": "2022-01-01T00:00:10Z",
+              "creation_type": "manual",
               "description": "my snapshot for testing",
               "encrypted": false,
               "error": {
@@ -2727,6 +3964,14 @@
           "encrypted": {
             "type": "boolean",
             "title": "Encrypted"
+          },
+          "creation_type": {
+            "type": "string",
+            "title": "SnapshotCreationType",
+            "enum": [
+              "manual",
+              "scheduled"
+            ]
           }
         },
         "title": "SnapshotResponse",
@@ -2742,13 +3987,15 @@
           "volume",
           "availability_zones",
           "type",
-          "encrypted"
+          "encrypted",
+          "creation_type"
         ],
         "example": {
           "availability_zones": [
             "br-ne1-a"
           ],
           "created_at": "2022-01-01T00:00:10Z",
+          "creation_type": "manual",
           "description": "my snapshot for testing",
           "encrypted": false,
           "error": {
@@ -3162,13 +4409,6 @@
             "type": "string",
             "title": "Availability Zone"
           },
-          "availability_zones": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "title": "Availability Zones"
-          },
           "encrypted": {
             "type": "boolean",
             "title": "Encrypted",
@@ -3185,8 +4425,7 @@
           "created_at",
           "updated_at",
           "type",
-          "availability_zone",
-          "availability_zones"
+          "availability_zone"
         ],
         "example": {
           "attachment": {
@@ -3202,9 +4441,6 @@
             }
           },
           "availability_zone": "br-ne1-a",
-          "availability_zones": [
-            "br-ne1-a"
-          ],
           "created_at": "2022-01-01T00:00:10Z",
           "encrypted": false,
           "error": {
@@ -3654,13 +4890,6 @@
                   "type": "string",
                   "title": "Availability Zone"
                 },
-                "availability_zones": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  },
-                  "title": "Availability Zones"
-                },
                 "encrypted": {
                   "type": "boolean",
                   "title": "Encrypted",
@@ -3677,8 +4906,7 @@
                 "created_at",
                 "updated_at",
                 "type",
-                "availability_zone",
-                "availability_zones"
+                "availability_zone"
               ],
               "example": {
                 "attachment": {
@@ -3694,9 +4922,6 @@
                   }
                 },
                 "availability_zone": "br-ne1-a",
-                "availability_zones": [
-                  "br-ne1-a"
-                ],
                 "created_at": "2022-01-01T00:00:10Z",
                 "encrypted": false,
                 "error": {
@@ -3747,9 +4972,6 @@
                 }
               },
               "availability_zone": "br-ne1-a",
-              "availability_zones": [
-                "br-ne1-a"
-              ],
               "created_at": "2022-01-01T00:00:10Z",
               "encrypted": false,
               "error": {
@@ -3783,6 +5005,10 @@
     {
       "name": "snapshots",
       "description": "Operations with snapshots for volumes."
+    },
+    {
+      "name": "schedulers",
+      "description": "Operations with schedulers for snapshot creation and retention."
     }
   ]
 }
