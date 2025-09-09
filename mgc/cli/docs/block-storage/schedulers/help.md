@@ -1,27 +1,29 @@
 ---
 sidebar_position: 0
 ---
-# Block-Storage
+# Schedulers
 
-Block Storage API Product
+Operations with schedulers for snapshot creation and retention.
 
 ## Usage:
 ```
-mgc block-storage [flags]
-mgc block-storage [command]
+mgc block-storage schedulers [flags]
+mgc block-storage schedulers [command]
 ```
 
 ## Commands:
 ```
-schedulers   Operations with schedulers for snapshot creation and retention.
-snapshots    Operations with snapshots for volumes.
-volume-types Operations with volume types for volumes.
-volumes      Operations with volumes, including create, delete, extend, retype, list and other actions.
+attach      Attach volume on scheduler
+create      Create a scheduler.
+delete      Delete a scheduler.
+detach      Detach volume on scheduler
+get         Retrieve the details of a specific scheduler.
+list        List all schedulers.
 ```
 
 ## Flags:
 ```
--h, --help   help for block-storage
+-h, --help   help for schedulers
 ```
 
 ## Global Flags:
