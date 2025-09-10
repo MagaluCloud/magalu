@@ -1,23 +1,25 @@
 ---
-sidebar_position: 5
+sidebar_position: 4
 ---
 # Replace
 
-Update Listener by ID
+Replace targets on specific backend
 
 ## Usage:
 ```
-mgc load-balancer network-listeners replace [load-balancer-id] [listener-id] [flags]
+mgc load-balancer network-backends targets replace [load-balancer-id] [backend-id] [flags]
 ```
 
 ## Flags:
 ```
+    --backend-id uuid               backend_id: ID of the backend you wanna replace targets (required)
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --health-check-id string        Health Check Id (at least one of: uuid)
 -h, --help                          help for replace
-    --listener-id uuid              listener_id: ID of the listener you wanna update (required)
     --load-balancer-id uuid         load_balancer_id: ID of the attached Load Balancer (required)
-    --name string                   The unique name of the listener (max character count: 64)
-    --tls-certificate-id uuid       Tls Certificate Id: The unique identifier of the associated tls certificate
+    --targets array                 The list of targets to be created (at least one of: array or array)
+                                    Use --targets=help for more details (required)
+    --targets-type enum             Targets Type: The type of targets to be created, must be the same as the other targets of the referenced backend (one of "instance" or "raw") (required)
 ```
 
 ## Global Flags:

@@ -13,8 +13,8 @@ mgc load-balancer network-healthchecks create [load-balancer-id] [flags]
 ## Flags:
 ```
     --cli.list-links enum[=table]         List all available links for this command (one of "json", "table" or "yaml")
-    --description string                  A brief description of the Health Check
-    --healthy-status-code integer         Healthy Status Code: The HTTP status code indicating a healthy response. By default the status is set to 200
+    --description string                  A brief description of the Health Check (max character count: 128)
+    --healthy-status-code integer         Healthy Status Code: The HTTP status code indicating a healthy response. By default the status is set to 200 for HTTP (at least one of: integer)
     --healthy-threshold-count integer     Healthy Threshold Count: The number of consecutive successful checks before considering the target healthy
 -h, --help                                help for create
     --initial-delay-seconds integer       Initial Delay Seconds: The initial delay in seconds before starting Health Checks

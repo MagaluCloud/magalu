@@ -17,7 +17,7 @@ mgc load-balancer network-acls create [load-balancer-id] [flags]
     --ethertype enum                   AclEtherType (one of "IPv4" or "IPv6") (required)
 -h, --help                             help for create
     --load-balancer-id uuid            load_balancer_id: ID of the attached Load Balancer (required)
-    --name string                      Name
+    --name string                      acl name field (max character count: 64)
     --protocol enum                    Protocol (one of "tcp" or "tls") (required)
     --remote-ip-prefix ipvanynetwork   Remote Ip Prefix (required)
 ```

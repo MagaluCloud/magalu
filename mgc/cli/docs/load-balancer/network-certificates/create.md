@@ -14,7 +14,7 @@ mgc load-balancer network-certificates create [load-balancer-id] [flags]
 ```
     --certificate base64            The content of the TLS Certificate (required)
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            A brief description of the TLS Certificate
+    --description string            A brief description of the TLS Certificate (max character count: 128)
 -h, --help                          help for create
     --load-balancer-id uuid         load_balancer_id: ID of the Load Balancer to create the TLS certificate (required)
     --name string                   The unique name of the TLS Certificate (max character count: 64) (required)

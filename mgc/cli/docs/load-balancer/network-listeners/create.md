@@ -14,7 +14,7 @@ mgc load-balancer network-listeners create [load-balancer-id] [flags]
 ```
     --backend-id uuid               backend_id: ID of the backend that will be the upstream (required)
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            A brief description of the listener
+    --description string            A brief description of the listener (max character count: 128)
 -h, --help                          help for create
     --load-balancer-id uuid         load_balancer_id: ID of the attached Load Balancer (required)
     --name string                   The unique name of the listener (max character count: 64) (required)

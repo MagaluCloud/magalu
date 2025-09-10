@@ -15,6 +15,7 @@ mgc load-balancer network-acls [command]
 ```
 create      Create Load Balancer ACL
 delete      Delete Load Balancer ACL
+replace     Replace Load Balancer ACLs
 ```
 
 ## Flags:
