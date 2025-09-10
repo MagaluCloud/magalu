@@ -14,9 +14,7 @@ mgc load-balancer network-backends targets [command]
 ## Commands:
 ```
 create      Create a new target on specific backend
-create      Create a new target on specific backend
 delete      Delete a target on specific backend
-replace     Replace targets on specific backend
 replace     Replace targets on specific backend
 ```
 

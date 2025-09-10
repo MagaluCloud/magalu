@@ -14,11 +14,8 @@ mgc load-balancer network-loadbalancers [command]
 ## Commands:
 ```
 create      Create Load Balancer
-create      Create Load Balancer
 delete      Delete Load Balancer by ID
 get         Get Load Balancer by ID
-get         Get Load Balancer by ID
-list        List Load Balancers
 list        List Load Balancers
 replace     Update Load Balancer by ID
 ```
