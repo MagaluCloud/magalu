@@ -69,7 +69,7 @@ See [sdk/openapi/README.md](./mgc/sdk/openapi/README.md)
 
 ### OpenAPIs
 
-To add a new API spec, see `ADD_NEW_API.md`.
+To add a new API spec, see [instructions](ADD_NEW_API.md).
 
 ### Static APIs
 
