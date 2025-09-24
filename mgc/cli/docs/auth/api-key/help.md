@@ -13,7 +13,7 @@ mgc auth api-key [command]
 
 ## Commands:
 ```
-create      Create a new API Key
+create      Create a new API Key for your tenant
 get         Get a specific API key by its ID
 list        List your account API keys
 revoke      Revoke an API key by its ID
