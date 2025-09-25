@@ -7,20 +7,21 @@ Select the scopes that the new API Key will have access to and set an expiration
 
 ## Usage:
 ```
-mgc auth api-key create [name] [description] [expiration] [flags]
+mgc auth api-key create [name] [flags]
 ```
 
 ## Examples:
 ```
-mgc auth api-key create --expiration="2024-11-07 (YYYY-MM-DD)"
+mgc auth api-key create --description="created from MGC CLI" --expiration="2024-11-07" --name="My MGC Key" --scopes='["dbaas.read"]'
 ```
 
 ## Flags:
 ```
-    --description string   Description of new api key
-    --expiration string    Date to expire new api
--h, --help                 help for create
-    --name string          Name of new api key (required)
+    --description string     Description of new api key
+    --expiration string      Date to expire new api (YYYY-MM-DD)
+-h, --help                   help for create
+    --name string            Name of new api key (required)
+    --scopes array(string)   List of scopes to assign to new api key
 ```
 
 ## Global Flags:

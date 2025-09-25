@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"slices"
+	"strings"
 	"time"
 
 	_ "embed"
@@ -19,36 +20,41 @@ import (
 	"golang.org/x/exp/maps"
 )
 
+const scopesURL = "https://api.magalu.cloud/iam/api/v1/scopes"
+
 type createParams struct {
-	ApiKeyName        string  `json:"name" jsonschema:"description=Name of new api key" mgc:"positional"`
-	ApiKeyDescription *string `json:"description,omitempty" jsonschema:"description=Description of new api key" mgc:"positional"`
-	ApiKeyExpiration  *string `json:"expiration,omitempty" jsonschema:"description=Date to expire new api,example=2024-11-07 (YYYY-MM-DD)" mgc:"positional"`
+	ApiKeyName        string   `json:"name" jsonschema:"description=Name of new api key,required,example=My MGC Key" mgc:"positional"`
+	ApiKeyDescription string   `json:"description,omitempty" jsonschema:"description=Description of new api key,example=created from MGC CLI,default=Created from CLI"`
+	ApiKeyExpiration  string   `json:"expiration,omitempty" jsonschema:"description=Date to expire new api (YYYY-MM-DD),example=2024-11-07"`
+	Scopes            []string `json:"scopes,omitempty" jsonschema:"description=List of scopes to assign to new api key,example=dbaas.read"`
 }
 
-type ScopesFromIDMagalu []struct {
-	UUID        string `json:"uuid"`
-	Name        string `json:"name"`
-	Icon        string `json:"icon"`
-	APIProducts []struct {
-		UUID   string `json:"uuid"`
-		Name   string `json:"name"`
-		Icon   string `json:"icon"`
-		Scopes []struct {
-			UUID  string `json:"uuid"`
-			Title string `json:"title"`
-		} `json:"scopes"`
-	} `json:"api_products"`
+type Scope struct {
+	Name  string `json:"name"`
+	Title string `json:"title"`
+	UUID  string `json:"uuid"`
 }
 
-//go:embed scopes.json
-var scopesFile []byte
+type APIProduct struct {
+	Name   string  `json:"name"`
+	Scopes []Scope `json:"scopes"`
+	UUID   string  `json:"uuid"`
+}
 
-var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
+type Platform struct {
+	APIProducts []APIProduct `json:"api_products"`
+	Name        string       `json:"name"`
+	UUID        string       `json:"uuid"`
+}
+
+type PlatformsResponse []Platform
+
+var getCreate = utils.NewLazyLoader(func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
 			Scopes:      core.Scopes{scope_PA},
 			Name:        "create",
-			Summary:     "Create a new API Key",
+			Summary:     "Create a new API Key for your tenant",
 			Description: "Select the scopes that the new API Key will have access to and set an expiration date",
 		},
 		create,
@@ -70,47 +76,74 @@ func create(ctx context.Context, parameter createParams, _ struct{}) (*apiKeyRes
 		return nil, fmt.Errorf("programming error: unable to retrieve HTTP Client from context")
 	}
 
-	var scopesListFile ScopesFromIDMagalu
-
-	err := json.Unmarshal(scopesFile, &scopesListFile)
+	scopesRequest, err := http.NewRequestWithContext(ctx, http.MethodGet, scopesURL, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	scopesList := make(map[string]string)
+	scopesResponse, err := httpClient.Do(scopesRequest)
+	if err != nil {
+		return nil, err
+	}
 
-	for _, v := range scopesListFile {
-		if v.UUID == "c5457157-4359-44d7-a0ed-188362c91013" {
-			for _, v2 := range v.APIProducts {
-				for _, v3 := range v2.Scopes {
-					scopeName := "[" + v2.Name + "] " + v3.Title
-					scopesList[scopeName] = v3.UUID
+	var scopesListFile PlatformsResponse
+
+	defer scopesResponse.Body.Close()
+	if err = json.NewDecoder(scopesResponse.Body).Decode(&scopesListFile); err != nil {
+		return nil, err
+	}
+
+	scopesTitleMap := make(map[string]string)
+	scopeNameMap := make(map[string]string)
+
+	for _, company := range scopesListFile {
+		if company.Name == "Magalu Cloud" {
+			for _, product := range company.APIProducts {
+				for _, scope := range product.Scopes {
+					scopeName := product.Name + " [" + scope.Name + "]" + " - " + scope.Title
+					scopesTitleMap[scopeName] = scope.UUID
+					scopeNameMap[strings.ToLower(scope.Name)] = scope.UUID
 				}
 			}
 		}
 	}
 
-	input := maps.Keys(scopesList)
-	slices.Sort(input)
-	op, err := pterm.DefaultInteractiveMultiselect.
-		WithDefaultText("Select scopes").
-		WithMaxHeight(14).
-		WithOptions(input).
-		Show()
-	if err != nil {
-		return nil, err
-	}
-
-	if len(op) == 0 {
-		return nil, fmt.Errorf("no scopes selected")
-	}
-
 	var scopesCreateList []scopesCreate
+	var invalidScopes []string
+	if len(parameter.Scopes) > 0 {
+		for _, v := range parameter.Scopes {
+			if id, ok := scopeNameMap[strings.ToLower(v)]; ok {
+				scopesCreateList = append(scopesCreateList, scopesCreate{
+					ID: id,
+				})
+			} else {
+				invalidScopes = append(invalidScopes, v)
+			}
+		}
+		if len(invalidScopes) > 0 {
+			return nil, fmt.Errorf("invalid scopes: %s", strings.Join(invalidScopes, ", "))
+		}
+	} else {
+		input := maps.Keys(scopesTitleMap)
+		slices.Sort(input)
+		op, err := pterm.DefaultInteractiveMultiselect.
+			WithDefaultText("Select scopes").
+			WithMaxHeight(14).
+			WithOptions(input).
+			Show()
+		if err != nil {
+			return nil, err
+		}
 
-	for _, v := range op {
-		scopesCreateList = append(scopesCreateList, scopesCreate{
-			ID: scopesList[v],
-		})
+		if len(op) == 0 {
+			return nil, fmt.Errorf("no scopes selected")
+		}
+
+		for _, v := range op {
+			scopesCreateList = append(scopesCreateList, scopesCreate{
+				ID: scopesTitleMap[v],
+			})
+		}
 	}
 
 	currentTenantID, err := auth.CurrentTenantID()
@@ -118,43 +151,33 @@ func create(ctx context.Context, parameter createParams, _ struct{}) (*apiKeyRes
 		return nil, err
 	}
 
-	if parameter.ApiKeyDescription == nil {
-		parameter.ApiKeyDescription = new(string)
-		*parameter.ApiKeyDescription = "created from CLI"
-	}
-
-	if parameter.ApiKeyExpiration == nil {
-		parameter.ApiKeyExpiration = new(string)
-		*parameter.ApiKeyExpiration = ""
-	} else {
-		if _, err = time.Parse(time.DateOnly, *parameter.ApiKeyExpiration); err != nil {
-			*parameter.ApiKeyExpiration = ""
-		}
-	}
-
-	config := auth.GetConfig()
-
 	newApi := &createApiKey{
 		Name:          parameter.ApiKeyName,
-		Description:   *parameter.ApiKeyDescription,
 		TenantID:      currentTenantID,
 		ScopesList:    scopesCreateList,
 		StartValidity: time.Now().Format(time.DateOnly),
-		EndValidity:   *parameter.ApiKeyExpiration,
+		Description:   parameter.ApiKeyDescription,
 	}
+
+	if parameter.ApiKeyExpiration != "" {
+		if _, err = time.Parse(time.DateOnly, parameter.ApiKeyExpiration); err != nil {
+			return nil, fmt.Errorf("invalid date format for expiration, use YYYY-MM-DD")
+		}
+		newApi.EndValidity = parameter.ApiKeyExpiration
+	}
+
 	var buf bytes.Buffer
 	err = json.NewEncoder(&buf).Encode(newApi)
 	if err != nil {
 		return nil, err
 	}
 
+	config := auth.GetConfig()
 	r, err := http.NewRequestWithContext(ctx, http.MethodPost, config.ApiKeysUrlV2, &buf)
 	if err != nil {
 		return nil, err
 	}
-
 	r.Header.Set("Content-Type", "application/json")
-
 	resp, err := httpClient.Do(r)
 	if err != nil {
 		return nil, err
