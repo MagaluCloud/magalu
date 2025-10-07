@@ -1,20 +1,25 @@
 ---
-sidebar_position: 4
+sidebar_position: 7
 ---
-# Delete
+# List-Repository-Name
 
-Delete a repository by id.
+List all images in container registry repository
 
 ## Usage:
 ```
-mgc container-registry repositories delete [registry-id] [repository-id] [flags]
+mgc container-registry images list-repository-name [registry-id] [repository-name] [flags]
 ```
 
 ## Flags:
 ```
--h, --help                 help for delete
-    --registry-id uuid     Container Registry's UUID. (required)
-    --repository-id uuid   Repository's UUID. (required)
+    --control.limit integer    Limit (min: 1)
+    --control.offset integer   Offset (min: 0)
+    --control.sort string      Fields to use as reference to sort. (pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
+    --expand array(string)     You can get more detailed info about: ['tags_details', 'extra_attr', 'manifest_media_type', 'media_type']
+-h, --help                     help for list-repository-name
+    --name string              Used to filter images in response
+    --registry-id uuid         Container Registry's UUID. (required)
+    --repository-name string   Repository's name. (required)
 ```
 
 ## Global Flags:

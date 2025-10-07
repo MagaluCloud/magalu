@@ -1,20 +1,22 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 ---
-# Delete
+# Get-Repository-Name
 
-Delete a repository by id.
+Show detailed information about the image.
 
 ## Usage:
 ```
-mgc container-registry repositories delete [registry-id] [repository-id] [flags]
+mgc container-registry images get-repository-name [registry-id] [repository-name] [digest-or-tag] [flags]
 ```
 
 ## Flags:
 ```
--h, --help                 help for delete
-    --registry-id uuid     Container Registry's UUID. (required)
-    --repository-id uuid   Repository's UUID. (required)
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --digest-or-tag string          Digest or tag of an image. (required)
+-h, --help                          help for get-repository-name
+    --registry-id uuid              Container Registry's UUID. (required)
+    --repository-name string        Repository's name. (required)
 ```
 
 ## Global Flags:

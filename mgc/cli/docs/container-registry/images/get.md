@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 6
 ---
 # Get
 
@@ -7,7 +7,7 @@ Show detailed information about the image.
 
 ## Usage:
 ```
-mgc container-registry images get [registry-id] [repository-name] [digest-or-tag] [flags]
+mgc container-registry images get [registry-id] [repository-id] [digest-or-tag] [flags]
 ```
 
 ## Flags:
@@ -16,7 +16,7 @@ mgc container-registry images get [registry-id] [repository-name] [digest-or-tag
     --digest-or-tag string          Digest or tag of an image. (required)
 -h, --help                          help for get
     --registry-id uuid              Container Registry's UUID. (required)
-    --repository-name string        Repository's name. (required)
+    --repository-id uuid            Repository's UUID. (required)
 ```
 
 ## Global Flags:

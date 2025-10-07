@@ -1,20 +1,20 @@
 ---
-sidebar_position: 4
+sidebar_position: 3
 ---
-# Delete
+# Delete-Repository-Name
 
-Delete a repository by id.
+Delete a repository by name.
 
 ## Usage:
 ```
-mgc container-registry repositories delete [registry-id] [repository-id] [flags]
+mgc container-registry repositories delete-repository-name [registry-id] [repository-name] [flags]
 ```
 
 ## Flags:
 ```
--h, --help                 help for delete
-    --registry-id uuid     Container Registry's UUID. (required)
-    --repository-id uuid   Repository's UUID. (required)
+-h, --help                     help for delete-repository-name
+    --registry-id uuid         Container Registry's UUID. (required)
+    --repository-name string   Repository's name. (required)
 ```
 
 ## Global Flags:
