@@ -3,6 +3,7 @@ package openapi
 import (
 	"math"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"slices"
@@ -174,6 +175,20 @@ func (t *operationTable) add(name, variables []string, desc *operationDesc) {
 
 	// Otherwise, just add the entry normally to the current table
 	entry := &operationTableEntry{name: name, variables: variables, desc: desc}
+
+	for i, childOperation := range t.childOperations {
+		if childOperation.desc.method == entry.desc.method {
+			if slices.Equal(childOperation.name, entry.name) {
+				existingVersion, existingPath := getPathVersionKey(childOperation.desc.pathKey)
+				entryVersion, entryPath := getPathVersionKey(entry.desc.pathKey)
+				if entryVersion > existingVersion && existingPath == entryPath {
+					t.childOperations = append(t.childOperations[:i], t.childOperations[i+1:]...)
+					continue
+				}
+			}
+		}
+	}
+
 	t.childOperations = append(t.childOperations, entry)
 }
 
@@ -326,4 +341,53 @@ func newOperationTable(name string, descs []*operationDesc) *operationTable {
 	table.simplify()
 	table.finalizeEntryKeys()
 	return table
+}
+
+// transformPathToPlaceholders converte um path com parâmetros nomeados para um path com placeholders vazios
+// Exemplo: "/registries/{registry_id}/repositories/{repository_id}" -> "/registries/{}/repositories/{}"
+func transformPathToPlaceholders(pathKey string) string {
+	parts := strings.Split(pathKey, "/")
+	newParts := []string{}
+	for _, part := range parts {
+		if part != "" {
+			newParts = append(newParts, part)
+		}
+	}
+
+	if len(newParts) == 0 || !isVersion(newParts[0]) {
+		return transformPathParams(pathKey)
+	}
+
+	pathWithoutVersion := "/" + strings.Join(newParts[1:], "/")
+	return transformPathParams(pathWithoutVersion)
+}
+
+func transformPathParams(path string) string {
+	transformedPath := openAPIPathArgRegex.ReplaceAllString(path, "{}")
+	return transformedPath
+}
+
+func getPathVersionKey(pathKey string) (int, string) {
+	parts := strings.Split(pathKey, "/")
+	newParts := []string{}
+	for _, part := range parts {
+		if part != "" {
+			newParts = append(newParts, part)
+		}
+	}
+
+	if !isVersion(newParts[0]) {
+		return 0, transformPathToPlaceholders(pathKey)
+	}
+	version := newParts[0]
+	version = regexp.MustCompile(`\d+`).FindString(version)
+	versionInt, err := strconv.Atoi(version)
+	if err != nil {
+		return 0, transformPathToPlaceholders(pathKey)
+	}
+
+	pathWithoutVersion := "/" + strings.Join(newParts[1:], "/")
+	transformedPath := transformPathToPlaceholders(pathWithoutVersion)
+
+	return versionInt, transformedPath
 }
