@@ -293,374 +293,6 @@ paths:
                     $ref: '#/components/responses/TooManyRequestsError'
                 '500':
                     $ref: '#/components/responses/InternalServerError'
-    /v0/registries/{registry_id}/repositories:
-        get:
-            tags:
-            - repositories
-            summary: List all container registry repositories
-            description: List all user's repositories in the container registry.
-            operationId: getRepositories
-            security:
-            -   BearerAuth:
-                - mcr.read
-            -   OAuth2:
-                - mcr.read
-            parameters:
-            -   name: registry_id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    format: uuid
-                description: Container Registry's UUID.
-            -   name: _limit
-                in: query
-                required: false
-                schema:
-                    minimum: 1
-                    title: Limit
-                    type: integer
-                description: Limit
-            -   name: _offset
-                in: query
-                required: false
-                schema:
-                    minimum: 0
-                    type: integer
-                description: Offset
-            -   name: _sort
-                in: query
-                required: false
-                schema:
-                    default: created_at:desc
-                    pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
-                    type: string
-                description: Fields to use as reference to sort.
-            -   name: name
-                in: query
-                required: false
-                schema:
-                    type: string
-                description: Used to filter repositories in response
-            responses:
-                '200':
-                    description: Successful operation
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/RepositoriesResponse'
-                '400':
-                    $ref: '#/components/responses/BadRequestError'
-                '401':
-                    $ref: '#/components/responses/UnauthorizedError'
-                '403':
-                    $ref: '#/components/responses/ForbiddenError'
-                '404':
-                    $ref: '#/components/responses/NotFoundError'
-                '429':
-                    $ref: '#/components/responses/TooManyRequestsError'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            x-mgc-hidden: true
-    /v0/registries/{registry_id}/repositories/{repository_name}:
-        get:
-            tags:
-            - repositories
-            summary: Get a container registry repository by repository_name
-            description: Return detailed repository's information filtered by name.
-            operationId: getRepository
-            security:
-            -   BearerAuth:
-                - mcr.read
-            -   OAuth2:
-                - mcr.read
-            parameters:
-            -   name: registry_id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    format: uuid
-                description: Container Registry's UUID.
-            -   required: true
-                name: repository_name
-                in: path
-                schema:
-                    type: string
-                description: Repository's name.
-            responses:
-                '201':
-                    description: Successful operation
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/RepositoryResponse'
-                    links:
-                        list:
-                            operationId: getRepositories
-                            description: List all container registry repositories
-                            parameters:
-                                registry_id: $request.path.registry_id
-                        delete:
-                            operationId: deleteRepository
-                            description: Delete a container registry repository by
-                                repository_name.
-                            parameters:
-                                registry_id: $request.path.registry_id
-                                repository_name: $request.path.repository_name
-                '400':
-                    $ref: '#/components/responses/BadRequestError'
-                '401':
-                    $ref: '#/components/responses/UnauthorizedError'
-                '403':
-                    $ref: '#/components/responses/ForbiddenError'
-                '404':
-                    $ref: '#/components/responses/NotFoundError'
-                '429':
-                    $ref: '#/components/responses/TooManyRequestsError'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            x-mgc-hidden: true
-        delete:
-            tags:
-            - repositories
-            summary: Delete a container registry repository by repository_name.
-            description: Delete a repository by name.
-            operationId: deleteRepository
-            security:
-            -   BearerAuth:
-                - mcr.write
-            -   OAuth2:
-                - mcr.write
-            parameters:
-            -   name: registry_id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    format: uuid
-                description: Container Registry's UUID.
-            -   required: true
-                name: repository_name
-                in: path
-                schema:
-                    type: string
-                description: Repository's name.
-            responses:
-                '204':
-                    description: Successful operation
-                '400':
-                    $ref: '#/components/responses/BadRequestError'
-                '401':
-                    $ref: '#/components/responses/UnauthorizedError'
-                '403':
-                    $ref: '#/components/responses/ForbiddenError'
-                '404':
-                    $ref: '#/components/responses/NotFoundError'
-                '429':
-                    $ref: '#/components/responses/TooManyRequestsError'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            x-mgc-hidden: true
-    /v0/registries/{registry_id}/repositories/{repository_name}/images:
-        get:
-            tags:
-            - images
-            summary: List images in container registry repository
-            description: List all images in container registry repository
-            operationId: getImages
-            security:
-            -   BearerAuth:
-                - mcr.read
-            -   OAuth2:
-                - mcr.read
-            parameters:
-            -   name: registry_id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    format: uuid
-                description: Container Registry's UUID.
-            -   required: true
-                name: repository_name
-                in: path
-                schema:
-                    type: string
-                description: Repository's name.
-            -   name: _limit
-                in: query
-                required: false
-                schema:
-                    minimum: 1
-                    title: Limit
-                    type: integer
-                description: Limit
-            -   name: _offset
-                in: query
-                required: false
-                schema:
-                    minimum: 0
-                    type: integer
-                description: Offset
-            -   name: _sort
-                in: query
-                required: false
-                schema:
-                    default: pushed_at:desc
-                    pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
-                    type: string
-                description: Fields to use as reference to sort.
-            -   name: expand
-                in: query
-                required: false
-                schema:
-                    type: array
-                    items:
-                        type: string
-                description: 'You can get more detailed info about: [''tags_details'',
-                    ''extra_attr'', ''manifest_media_type'', ''media_type'']'
-            -   name: name
-                in: query
-                required: false
-                schema:
-                    type: string
-                description: Used to filter images in response
-            responses:
-                '200':
-                    description: Successful operation
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ImagesResponse'
-                '400':
-                    $ref: '#/components/responses/BadRequestError'
-                '401':
-                    $ref: '#/components/responses/UnauthorizedError'
-                '403':
-                    $ref: '#/components/responses/ForbiddenError'
-                '404':
-                    $ref: '#/components/responses/NotFoundError'
-                '429':
-                    $ref: '#/components/responses/TooManyRequestsError'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            x-mgc-hidden: true
-    /v0/registries/{registry_id}/repositories/{repository_name}/images/{digest_or_tag}:
-        delete:
-            tags:
-            - images
-            summary: Delete image by digest or tag
-            description: Delete repository image by digest or tag
-            operationId: deleteImage
-            security:
-            -   BearerAuth:
-                - mcr.write
-                - mcr.read
-            -   OAuth2:
-                - mcr.write
-                - mcr.read
-            parameters:
-            -   name: registry_id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    format: uuid
-                description: Container Registry's UUID.
-            -   required: true
-                name: repository_name
-                in: path
-                schema:
-                    type: string
-                description: Repository's name.
-            -   name: digest_or_tag
-                in: path
-                required: true
-                schema:
-                    type: string
-                description: Digest or tag of an image
-            responses:
-                '204':
-                    description: Successful operation
-                '400':
-                    $ref: '#/components/responses/BadRequestError'
-                '401':
-                    $ref: '#/components/responses/UnauthorizedError'
-                '403':
-                    $ref: '#/components/responses/ForbiddenError'
-                '404':
-                    $ref: '#/components/responses/NotFoundError'
-                '429':
-                    $ref: '#/components/responses/TooManyRequestsError'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            x-mgc-hidden: true
-        get:
-            tags:
-            - images
-            summary: Get image details
-            description: Show detailed information about the image.
-            operationId: getImage
-            security:
-            -   BearerAuth:
-                - mcr.read
-            -   OAuth2:
-                - mcr.read
-            parameters:
-            -   name: registry_id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    format: uuid
-                description: Container Registry's UUID.
-            -   name: repository_name
-                in: path
-                required: true
-                schema:
-                    type: string
-                description: Repository's name.
-            -   name: digest_or_tag
-                in: path
-                required: true
-                schema:
-                    type: string
-                description: Digest or tag of an image.
-            responses:
-                '200':
-                    description: Successful operation
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ImageResponse'
-                    links:
-                        list:
-                            operationId: getImages
-                            description: List images in container registry repository
-                            parameters:
-                                registry_id: $request.path.registry_id
-                                repository_name: $request.path.repository_name
-                        delete:
-                            operationId: deleteImage
-                            description: Delete image by digest or tag
-                            parameters:
-                                registry_id: $request.path.registry_id
-                                repository_name: $request.path.repository_name
-                                digest_or_tag: $request.path.digest_or_tag
-                '400':
-                    $ref: '#/components/responses/BadRequestError'
-                '401':
-                    $ref: '#/components/responses/UnauthorizedError'
-                '403':
-                    $ref: '#/components/responses/ForbiddenError'
-                '404':
-                    $ref: '#/components/responses/NotFoundError'
-                '429':
-                    $ref: '#/components/responses/TooManyRequestsError'
-                '500':
-                    $ref: '#/components/responses/InternalServerError'
-            x-mgc-hidden: true
     /v0/proxy-caches:
         post:
             tags:
@@ -978,7 +610,6 @@ paths:
                     $ref: '#/components/responses/InternalServerError'
     /v1/registries/{registry_id}/repositories:
         get:
-            x-mgc-name: list
             tags:
             - repositories
             summary: List all container registry repositories
@@ -1047,7 +678,6 @@ paths:
                     $ref: '#/components/responses/InternalServerError'
     /v1/registries/{registry_id}/repositories/{repository_id}:
         get:
-            x-mgc-name: get
             tags:
             - repositories
             summary: Get a container registry repository by repository_id
@@ -1092,7 +722,7 @@ paths:
                                 repository_id.
                             parameters:
                                 registry_id: $request.path.registry_id
-                                repository_id: $request.path.repository_id
+                                repository_id: $response.body#/id
                 '400':
                     $ref: '#/components/responses/BadRequestError'
                 '401':
@@ -1106,7 +736,6 @@ paths:
                 '500':
                     $ref: '#/components/responses/InternalServerError'
         delete:
-            x-mgc-name: delete
             tags:
             - repositories
             summary: Delete a container registry repository by repository_id.
@@ -1149,7 +778,6 @@ paths:
                     $ref: '#/components/responses/InternalServerError'
     /v1/registries/{registry_id}/repositories/{repository_id}/images:
         get:
-            x-mgc-name: list
             tags:
             - images
             summary: List images in container registry repository
@@ -1234,7 +862,6 @@ paths:
                     $ref: '#/components/responses/InternalServerError'
     /v1/registries/{registry_id}/repositories/{repository_id}/images/{digest_or_tag}:
         delete:
-            x-mgc-name: delete
             tags:
             - images
             summary: Delete image by digest or tag
@@ -1284,7 +911,6 @@ paths:
                 '500':
                     $ref: '#/components/responses/InternalServerError'
         get:
-            x-mgc-name: get
             tags:
             - images
             summary: Get image details
