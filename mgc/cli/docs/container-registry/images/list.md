@@ -7,7 +7,7 @@ List all images in container registry repository
 
 ## Usage:
 ```
-mgc container-registry images list [registry-id] [repository-name] [flags]
+mgc container-registry images list [registry-id] [repository-id] [flags]
 ```
 
 ## Flags:
@@ -17,8 +17,9 @@ mgc container-registry images list [registry-id] [repository-name] [flags]
     --control.sort string      Fields to use as reference to sort. (pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
     --expand array(string)     You can get more detailed info about: ['tags_details', 'extra_attr', 'manifest_media_type', 'media_type']
 -h, --help                     help for list
+    --name string              Used to filter images in response
     --registry-id uuid         Container Registry's UUID. (required)
-    --repository-name string   Repository's name. (required)
+    --repository-id uuid       Repository's UUID. (required)
 ```
 
 ## Global Flags:

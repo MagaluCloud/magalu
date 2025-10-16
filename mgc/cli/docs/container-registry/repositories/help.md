@@ -13,8 +13,8 @@ mgc container-registry repositories [command]
 
 ## Commands:
 ```
-delete      Delete a container registry repository by repository_name.
-get         Get a container registry repository by repository_name
+delete      Delete a container registry repository by repository_id.
+get         Get a container registry repository by repository_id
 list        List all container registry repositories
 ```
 

@@ -7,15 +7,15 @@ Delete repository image by digest or tag
 
 ## Usage:
 ```
-mgc container-registry images delete [registry-id] [repository-name] [digest-or-tag] [flags]
+mgc container-registry images delete [registry-id] [repository-id] [digest-or-tag] [flags]
 ```
 
 ## Flags:
 ```
-    --digest-or-tag string     Digest or tag of an image (required)
--h, --help                     help for delete
-    --registry-id uuid         Container Registry's UUID. (required)
-    --repository-name string   Repository's name. (required)
+    --digest-or-tag string   Digest or tag of an image (required)
+-h, --help                   help for delete
+    --registry-id uuid       Container Registry's UUID. (required)
+    --repository-id uuid     Repository's UUID. (required)
 ```
 
 ## Global Flags:

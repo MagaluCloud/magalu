@@ -26,7 +26,12 @@ jaxyendy:
     - url: https://gitlab.luizalabs.com/open-platform/pcx/u0/-/blob/main/api_products/mcr-api/br-ne1-prod-yel-1/openapi.yaml?plain=1
       file: container-registry.openapi.yaml
       menu: container-registry
-      enabled: true
+      enabled: true 
+      to_remove:
+        - path: /v0/registries/{registry_id}/repositories
+        - path: /v0/registries/{registry_id}/repositories/{repository_name}
+        - path: /v0/registries/{registry_id}/repositories/{repository_name}/images
+        - path: /v0/registries/{registry_id}/repositories/{repository_name}/images/{digest_or_tag}
     - url: https://gitlab.luizalabs.com/open-platform/pcx/u0/-/blob/main/api_products/events/br-se1-prod-blu1/openapi.yaml?ref_type=heads
       file: events-consult.openapi.yaml
       menu: audit

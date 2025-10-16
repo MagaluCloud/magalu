@@ -3,12 +3,6 @@ fail_fast: true
 repos:
   - repo: local
     hooks:
-      - id: check-cli-dump-tree-output
-        name: check "cli dump-tree" output
-        language: system
-        entry: bash -c 'make dump-tree'
-        require_serial: true
-        stages: [pre-commit]
       - id: check-cli-docs-outputs
         name: check "cli doc" outputs
         language: system

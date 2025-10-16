@@ -16,6 +16,7 @@ mgc container-registry repositories list [registry-id] [flags]
     --control.offset integer   Offset (min: 0)
     --control.sort string      Fields to use as reference to sort. (pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
 -h, --help                     help for list
+    --name string              Used to filter repositories in response
     --registry-id uuid         Container Registry's UUID. (required)
 ```
 

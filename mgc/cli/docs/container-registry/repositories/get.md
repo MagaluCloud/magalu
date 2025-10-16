@@ -3,11 +3,11 @@ sidebar_position: 4
 ---
 # Get
 
-Return detailed repository's information filtered by name.
+Return detailed repository's information filtered by id.
 
 ## Usage:
 ```
-mgc container-registry repositories get [registry-id] [repository-name] [flags]
+mgc container-registry repositories get [registry-id] [repository-id] [flags]
 ```
 
 ## Flags:
@@ -15,7 +15,7 @@ mgc container-registry repositories get [registry-id] [repository-name] [flags]
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                          help for get
     --registry-id uuid              Container Registry's UUID. (required)
-    --repository-name string        Repository's name. (required)
+    --repository-id uuid            Repository's UUID. (required)
 ```
 
 ## Global Flags:
