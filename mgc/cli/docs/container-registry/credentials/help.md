@@ -13,7 +13,7 @@ mgc container-registry credentials [command]
 
 ## Commands:
 ```
-list        Get credentials for container registry
+get         Get credentials for container registry
 password    Reset password
 ```
 
