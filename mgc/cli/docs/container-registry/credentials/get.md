@@ -1,18 +1,18 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 ---
-# List
+# Get
 
 Return container registry user's authentication credentials.
 
 ## Usage:
 ```
-mgc container-registry credentials list [flags]
+mgc container-registry credentials get [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for list
+-h, --help   help for get
 ```
 
 ## Global Flags:
