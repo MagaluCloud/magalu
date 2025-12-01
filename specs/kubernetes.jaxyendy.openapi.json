@@ -59,16 +59,24 @@
   "paths": {
     "/v0/clusters": {
       "post": {
-        "tags": ["cluster"],
+        "tags": [
+          "cluster"
+        ],
         "summary": "Create a cluster",
         "description": "Creates a Kubernetes cluster in Magalu Cloud.",
         "operationId": "createCluster",
         "security": [
           {
-            "BearerAuth": ["mke.write", "pa:sa:manage"]
+            "BearerAuth": [
+              "mke.write",
+              "pa:sa:manage"
+            ]
           },
           {
-            "OAuth2": ["mke.write", "pa:sa:manage"]
+            "OAuth2": [
+              "mke.write",
+              "pa:sa:manage"
+            ]
           }
         ],
         "x-permission": {
@@ -196,16 +204,22 @@
         }
       },
       "get": {
-        "tags": ["cluster"],
+        "tags": [
+          "cluster"
+        ],
         "summary": "List all clusters",
         "description": "Lists all clusters for a user.",
         "operationId": "getClusters",
         "security": [
           {
-            "BearerAuth": ["mke.read"]
+            "BearerAuth": [
+              "mke.read"
+            ]
           },
           {
-            "OAuth2": ["mke.read"]
+            "OAuth2": [
+              "mke.read"
+            ]
           }
         ],
         "x-permission": {
@@ -326,16 +340,22 @@
     },
     "/v0/clusters/{cluster_id}": {
       "get": {
-        "tags": ["cluster"],
+        "tags": [
+          "cluster"
+        ],
         "summary": "List a cluster by uuid",
         "description": "Lists detailed cluster information by cluster_uuid.",
         "operationId": "getClusterById",
         "security": [
           {
-            "BearerAuth": ["mke.read"]
+            "BearerAuth": [
+              "mke.read"
+            ]
           },
           {
-            "OAuth2": ["mke.read"]
+            "OAuth2": [
+              "mke.read"
+            ]
           }
         ],
         "x-permission": {
@@ -464,16 +484,22 @@
         }
       },
       "delete": {
-        "tags": ["cluster"],
+        "tags": [
+          "cluster"
+        ],
         "summary": "Delete a cluster",
         "description": "Deletes a cluster by cluster_uuid.",
         "operationId": "deleteCluster",
         "security": [
           {
-            "BearerAuth": ["mke.write"]
+            "BearerAuth": [
+              "mke.write"
+            ]
           },
           {
-            "OAuth2": ["mke.write"]
+            "OAuth2": [
+              "mke.write"
+            ]
           }
         ],
         "x-permission": {
@@ -605,16 +631,24 @@
         }
       },
       "patch": {
-        "tags": ["cluster"],
+        "tags": [
+          "cluster"
+        ],
         "summary": "Patches a cluster",
         "description": "Patches the mutable fields of a cluster",
         "operationId": "patchCluster",
         "security": [
           {
-            "BearerAuth": ["mke.read", "mke.write"]
+            "BearerAuth": [
+              "mke.read",
+              "mke.write"
+            ]
           },
           {
-            "OAuth2": ["mke.read", "mke.write"]
+            "OAuth2": [
+              "mke.read",
+              "mke.write"
+            ]
           }
         ],
         "x-permission": {
@@ -754,16 +788,22 @@
     },
     "/v0/clusters/{cluster_id}/kubeconfig": {
       "get": {
-        "tags": ["cluster"],
+        "tags": [
+          "cluster"
+        ],
         "summary": "Get kubeconfig cluster",
         "operationId": "getKubeConfigCluster",
         "description": "Retrieves the kubeconfig of a Kubernetes cluster by cluster_uuid.",
         "security": [
           {
-            "BearerAuth": ["mke.read"]
+            "BearerAuth": [
+              "mke.read"
+            ]
           },
           {
-            "OAuth2": ["mke.read"]
+            "OAuth2": [
+              "mke.read"
+            ]
           }
         ],
         "x-permission": {
@@ -894,16 +934,22 @@
     },
     "/v0/clusters/{cluster_id}/node_pools": {
       "post": {
-        "tags": ["nodepool"],
+        "tags": [
+          "nodepool"
+        ],
         "summary": "Create a node pool",
         "description": "Creates a node pool in a Kubernetes cluster.",
         "operationId": "createNodePool",
         "security": [
           {
-            "BearerAuth": ["mke.write"]
+            "BearerAuth": [
+              "mke.write"
+            ]
           },
           {
-            "OAuth2": ["mke.write"]
+            "OAuth2": [
+              "mke.write"
+            ]
           }
         ],
         "x-permission": {
@@ -1043,16 +1089,22 @@
     },
     "/v0/clusters/{cluster_id}/node_pools/{node_pool_id}": {
       "get": {
-        "tags": ["nodepool"],
+        "tags": [
+          "nodepool"
+        ],
         "summary": "Get node pool by node_pool_id",
         "description": "Gets nodes in a node pool by nodepool_uuid.",
         "operationId": "getNodePool",
         "security": [
           {
-            "BearerAuth": ["mke.read"]
+            "BearerAuth": [
+              "mke.read"
+            ]
           },
           {
-            "OAuth2": ["mke.read"]
+            "OAuth2": [
+              "mke.read"
+            ]
           }
         ],
         "x-permission": {
@@ -1191,16 +1243,22 @@
         }
       },
       "patch": {
-        "tags": ["nodepool"],
+        "tags": [
+          "nodepool"
+        ],
         "summary": "Patch node pool replicas by node_pool_id",
         "description": "Updates nodes from a node pool by nodepool_uuid.",
         "operationId": "patchNodePool",
         "security": [
           {
-            "BearerAuth": ["mke.write"]
+            "BearerAuth": [
+              "mke.write"
+            ]
           },
           {
-            "OAuth2": ["mke.write"]
+            "OAuth2": [
+              "mke.write"
+            ]
           }
         ],
         "x-permission": {
@@ -1348,16 +1406,22 @@
         }
       },
       "delete": {
-        "tags": ["nodepool"],
+        "tags": [
+          "nodepool"
+        ],
         "summary": "Delete node pool by node_pool_id",
         "description": "Deletes a node pool in a Kubernetes cluster by nodepool_uuid.",
         "operationId": "deleteNodePool",
         "security": [
           {
-            "BearerAuth": ["mke.write"]
+            "BearerAuth": [
+              "mke.write"
+            ]
           },
           {
-            "OAuth2": ["mke.write"]
+            "OAuth2": [
+              "mke.write"
+            ]
           }
         ],
         "x-permission": {
@@ -1491,17 +1555,23 @@
     },
     "/v0/clusters/{cluster_id}/node_pools/{node_pool_id}/nodes": {
       "get": {
-        "tags": ["nodepool"],
+        "tags": [
+          "nodepool"
+        ],
         "summary": "List nodes from a node pool by node_pool_id",
         "description": "Lists nodes in a node pool by nodepool_uuid.",
         "operationId": "getNodes",
         "deprecated": true,
         "security": [
           {
-            "BearerAuth": ["mke.read"]
+            "BearerAuth": [
+              "mke.read"
+            ]
           },
           {
-            "OAuth2": ["mke.read"]
+            "OAuth2": [
+              "mke.read"
+            ]
           }
         ],
         "x-permission": {
@@ -1642,16 +1712,22 @@
     },
     "/v1alpha0/clusters/{cluster_id}/node-pools": {
       "get": {
-        "tags": ["nodepool"],
+        "tags": [
+          "nodepool"
+        ],
         "summary": "V1alpha0 List node pools by cluster_id",
         "description": "V1alpha0 Gets a node pool from a Kubernetes cluster by cluster_uuid.",
         "operationId": "listNodePoolsV1alpha0",
         "security": [
           {
-            "BearerAuth": ["mke.read"]
+            "BearerAuth": [
+              "mke.read"
+            ]
           },
           {
-            "OAuth2": ["mke.read"]
+            "OAuth2": [
+              "mke.read"
+            ]
           }
         ],
         "x-permission": {
@@ -1782,16 +1858,22 @@
     },
     "/v1/flavors": {
       "get": {
-        "tags": ["flavor"],
+        "tags": [
+          "flavor"
+        ],
         "summary": "Lists all available flavors",
         "description": "Lists all available flavors.",
         "operationId": "getFlavorsV1",
         "security": [
           {
-            "BearerAuth": ["mke.read"]
+            "BearerAuth": [
+              "mke.read"
+            ]
           },
           {
-            "OAuth2": ["mke.read"]
+            "OAuth2": [
+              "mke.read"
+            ]
           }
         ],
         "x-permission": {
@@ -1890,16 +1972,22 @@
     },
     "/v1/versions": {
       "get": {
-        "tags": ["version"],
+        "tags": [
+          "version"
+        ],
         "summary": "Lists all available versions",
         "description": "Lists all available Kubernetes versions.",
         "operationId": "getVersionsV1",
         "security": [
           {
-            "BearerAuth": ["mke.read"]
+            "BearerAuth": [
+              "mke.read"
+            ]
           },
           {
-            "OAuth2": ["mke.read"]
+            "OAuth2": [
+              "mke.read"
+            ]
           }
         ],
         "x-permission": {
@@ -2050,7 +2138,9 @@
                 "name": "nodepool-example",
                 "flavor": "cloud-k8s.gp1.small",
                 "replicas": 3,
-                "tags": ["tag-value1"],
+                "tags": [
+                  "tag-value1"
+                ],
                 "taints": [
                   {
                     "key": "example-key",
@@ -2062,7 +2152,11 @@
                   "min_replicas": 2,
                   "max_replicas": 5
                 },
-                "availability_zones": ["a", "b", "c"]
+                "availability_zones": [
+                  "a",
+                  "b",
+                  "c"
+                ]
               }
             ],
             "x-oapi-codegen-extra-tags": {
@@ -2075,7 +2169,10 @@
             "items": {
               "type": "string"
             },
-            "example": ["192.168.1.0/24", "10.0.0.0/16"]
+            "example": [
+              "192.168.1.0/24",
+              "10.0.0.0/16"
+            ]
           },
           "cluster_ipv4_cidr": {
             "$ref": "#/components/schemas/ClusterIpv4Cidr"
@@ -2084,12 +2181,18 @@
             "$ref": "#/components/schemas/ServicesIpv4Cidr"
           }
         },
-        "required": ["name"]
+        "required": [
+          "name"
+        ]
       },
       "CreateClusterResponse": {
         "type": "object",
         "description": "Object of the cluster response request.",
-        "required": ["name", "id", "status"],
+        "required": [
+          "name",
+          "id",
+          "status"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -2111,7 +2214,10 @@
             "items": {
               "type": "string"
             },
-            "example": ["192.168.1.0/24", "10.0.0.0/16"]
+            "example": [
+              "192.168.1.0/24",
+              "10.0.0.0/16"
+            ]
           },
           "cluster_ipv4_cidr": {
             "$ref": "#/components/schemas/ClusterIpv4Cidr"
@@ -2124,7 +2230,9 @@
       "ClustersResponse": {
         "type": "object",
         "description": "Object of the clusters response request.",
-        "required": ["results"],
+        "required": [
+          "results"
+        ],
         "properties": {
           "results": {
             "type": "array",
@@ -2285,7 +2393,10 @@
             "items": {
               "type": "string"
             },
-            "example": ["192.168.1.0/24", "10.0.0.0/16"]
+            "example": [
+              "192.168.1.0/24",
+              "10.0.0.0/16"
+            ]
           },
           "machine_types_source": {
             "$ref": "#/components/schemas/MachineTypesSource"
@@ -2360,7 +2471,11 @@
             "$ref": "#/components/schemas/AvailabilityZones"
           }
         },
-        "required": ["name", "flavor", "replicas"]
+        "required": [
+          "name",
+          "flavor",
+          "replicas"
+        ]
       },
       "PatchNodePoolRequest": {
         "type": "object",
@@ -2566,12 +2681,21 @@
             "$ref": "#/components/schemas/Status"
           }
         },
-        "required": ["id", "name", "flavor", "replicas", "auto_scale", "status"]
+        "required": [
+          "id",
+          "name",
+          "flavor",
+          "replicas",
+          "auto_scale",
+          "status"
+        ]
       },
       "ListNodePoolsResponseV0": {
         "type": "object",
         "description": "Object of the node pool response in the cluster.",
-        "required": ["results"],
+        "required": [
+          "results"
+        ],
         "properties": {
           "results": {
             "type": "array",
@@ -2585,7 +2709,9 @@
       "ListNodePoolsResponseV1alpha0": {
         "type": "object",
         "description": "Object of the node pool response in the cluster.",
-        "required": ["results"],
+        "required": [
+          "results"
+        ],
         "properties": {
           "results": {
             "type": "array",
@@ -2599,7 +2725,9 @@
       "NodesResponse": {
         "type": "object",
         "description": "Object of the node response.",
-        "required": ["results"],
+        "required": [
+          "results"
+        ],
         "properties": {
           "results": {
             "type": "array",
@@ -2723,7 +2851,10 @@
             "example": "Hostname"
           }
         },
-        "required": ["type", "address"]
+        "required": [
+          "type",
+          "address"
+        ]
       },
       "NodeInfrastructure": {
         "type": "object",
@@ -2828,7 +2959,10 @@
       "Status": {
         "type": "object",
         "description": "Details about the status of the node pool or control plane.\n",
-        "required": ["state", "messages"],
+        "required": [
+          "state",
+          "messages"
+        ],
         "properties": {
           "state": {
             "type": "string",
@@ -2849,7 +2983,10 @@
       "SingleStatus": {
         "type": "object",
         "description": "Details about the status of the Kubernetes cluster or node.\n",
-        "required": ["state", "message"],
+        "required": [
+          "state",
+          "message"
+        ],
         "properties": {
           "state": {
             "type": "string",
@@ -2865,7 +3002,10 @@
       },
       "Error": {
         "type": "object",
-        "required": ["id", "message"],
+        "required": [
+          "id",
+          "message"
+        ],
         "description": "Details about the error in the Kubernetes cluster and/or node pool.\n",
         "properties": {
           "id": {
@@ -2903,7 +3043,12 @@
             "example": "c5f750a0-a032-477e-a23a-bcffab8b0707"
           }
         },
-        "required": ["uuid", "cidr", "name", "subnet_id"]
+        "required": [
+          "uuid",
+          "cidr",
+          "name",
+          "subnet_id"
+        ]
       },
       "Addons": {
         "type": "object",
@@ -2922,7 +3067,11 @@
             "description": "Native Kubernetes secret to be included in the cluster during provisioning.\n"
           }
         },
-        "required": ["loadbalance", "volume", "secrets"]
+        "required": [
+          "loadbalance",
+          "volume",
+          "secrets"
+        ]
       },
       "AutoScale": {
         "type": "object",
@@ -2943,7 +3092,10 @@
             "nullable": true
           }
         },
-        "required": ["min_replicas", "max_replicas"]
+        "required": [
+          "min_replicas",
+          "max_replicas"
+        ]
       },
       "AutoScaleResponse": {
         "type": "object",
@@ -2964,7 +3116,10 @@
             "default": 1
           }
         },
-        "required": ["min_replicas", "max_replicas"]
+        "required": [
+          "min_replicas",
+          "max_replicas"
+        ]
       },
       "Taint": {
         "type": "object",
@@ -2983,10 +3138,18 @@
             "type": "string",
             "description": "The effect of the taint on pods that do not tolerate the taint.\n- **NoSchedule**: Prevents new pods from being scheduled on the node, unless they tolerate the taint. Allows all existing pods to continue running.\n- **PreferNoSchedule**: Similar to NoSchedule, but attempts not to schedule new pods on the node, rather than completely prohibiting new pod scheduling on the node.\n- **NoExecute**: Removes all already running pods that do not tolerate the taint.\n",
             "example": "NoSchedule",
-            "enum": ["NoSchedule", "PreferNoSchedule", "NoExecute"]
+            "enum": [
+              "NoSchedule",
+              "PreferNoSchedule",
+              "NoExecute"
+            ]
           }
         },
-        "required": ["key", "value", "effect"]
+        "required": [
+          "key",
+          "value",
+          "effect"
+        ]
       },
       "InstanceTemplate": {
         "type": "object",
@@ -3009,7 +3172,12 @@
             "description": "Type of disk attached to each node."
           }
         },
-        "required": ["flavor", "node_image", "disk_size", "disk_type"]
+        "required": [
+          "flavor",
+          "node_image",
+          "disk_size",
+          "disk_type"
+        ]
       },
       "Flavor": {
         "type": "object",
@@ -3046,7 +3214,13 @@
             "default": 0
           }
         },
-        "required": ["name", "id", "vcpu", "ram", "size"]
+        "required": [
+          "name",
+          "id",
+          "vcpu",
+          "ram",
+          "size"
+        ]
       },
       "FlavorWithSku": {
         "type": "object",
@@ -3087,12 +3261,21 @@
             "example": "sku-1234"
           }
         },
-        "required": ["name", "id", "vcpu", "ram", "size", "sku"]
+        "required": [
+          "name",
+          "id",
+          "vcpu",
+          "ram",
+          "size",
+          "sku"
+        ]
       },
       "FlavorsResponse": {
         "type": "object",
         "description": "Response object for the Flavor request.",
-        "required": ["results"],
+        "required": [
+          "results"
+        ],
         "properties": {
           "results": {
             "type": "array",
@@ -3121,12 +3304,17 @@
             }
           }
         },
-        "required": ["nodepool", "controlplane"]
+        "required": [
+          "nodepool",
+          "controlplane"
+        ]
       },
       "VersionsResponse": {
         "type": "object",
         "description": "Response object for the Version request.",
-        "required": ["results"],
+        "required": [
+          "results"
+        ],
         "properties": {
           "results": {
             "type": "array",
@@ -3155,7 +3343,11 @@
             "$ref": "#/components/schemas/MinimumRequirements"
           }
         },
-        "required": ["version", "deprecated", "minimumRequirements"]
+        "required": [
+          "version",
+          "deprecated",
+          "minimumRequirements"
+        ]
       },
       "MinimumRequirements": {
         "type": "object",
@@ -3177,7 +3369,11 @@
             "example": 4
           }
         },
-        "required": ["disk", "ram", "vcpu"]
+        "required": [
+          "disk",
+          "ram",
+          "vcpu"
+        ]
       },
       "CreatedAt": {
         "type": "string",
@@ -3189,7 +3385,10 @@
         "type": "string",
         "description": "Source of machine types used on node pools creation.\nExternal: Must use machine types of virtual machine product\nInternal: Must use machine types listed by flavors list endpoint of Kubernetes product\n",
         "example": "external",
-        "enum": ["external", "internal"]
+        "enum": [
+          "external",
+          "internal"
+        ]
       },
       "MaxPodsPerNode": {
         "type": "integer",
@@ -3204,10 +3403,18 @@
         "description": "List of availability zones where the resource can be created.\n",
         "items": {
           "type": "string",
-          "enum": ["a", "b", "c"],
+          "enum": [
+            "a",
+            "b",
+            "c"
+          ],
           "description": "Availability zone identifier.\nExample: \"a\"\n"
         },
-        "example": ["a", "b", "c"]
+        "example": [
+          "a",
+          "b",
+          "c"
+        ]
       },
       "ClusterIpv4Cidr": {
         "type": "string",
@@ -3231,7 +3438,9 @@
             "example": "v0.1.0"
           }
         },
-        "required": ["version"]
+        "required": [
+          "version"
+        ]
       }
     },
     "securitySchemes": {
@@ -3265,10 +3474,6 @@
     {
       "name": "nodepool",
       "description": "Endpoints related to the creation, listing of nodepools and nodes, updating, and deletion of nodepools for a Kubernetes cluster."
-    },
-    {
-      "name": "info",
-      "description": "Endpoints related to listing available flavors (resource configurations) and Kubernetes versions for a Kubernetes cluster."
     },
     {
       "name": "flavor",
