@@ -1,20 +1,17 @@
 ---
 sidebar_position: 0
 ---
-
 # Kubernetes
 
 APIs related to the Kubernetes product.
 
 ## Usage:
-
 ```
 mgc kubernetes [flags]
 mgc kubernetes [command]
 ```
 
 ## Commands:
-
 ```
 cluster     Endpoints related to the creation, listing, deletion, and retrieval of the kubeconfig for a Kubernetes cluster.
 flavor      Endpoints related to listing available flavors for a Kubernetes cluster.
@@ -23,13 +20,11 @@ version     Endpoints related to listing available Kubernetes versions for a Kub
 ```
 
 ## Flags:
-
 ```
 -h, --help   help for kubernetes
 ```
 
 ## Global Flags:
-
 ```
     --api-key string           Use your API key to authenticate with the API
 -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
@@ -42,3 +37,4 @@ version     Endpoints related to listing available Kubernetes versions for a Kub
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
 ```
+
