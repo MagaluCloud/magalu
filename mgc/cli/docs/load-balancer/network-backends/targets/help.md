@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Targets
 
-Network Load Balancer Backends (Target Pools) | targets
+[EXPERIMENTAL] Network Load Balancer Backends (Target Pools) | targets
 
 ## Usage:
 ```
@@ -13,9 +13,9 @@ mgc load-balancer network-backends targets [command]
 
 ## Commands:
 ```
-create      Create a new target on specific backend
-delete      Delete a target on specific backend
-replace     Replace targets on specific backend
+create      [EXPERIMENTAL] Create a new target on specific backend
+delete      [EXPERIMENTAL] Delete a target on specific backend
+replace     [EXPERIMENTAL] Replace targets on specific backend
 ```
 
 ## Flags:

@@ -3,7 +3,7 @@ sidebar_position: 3
 ---
 # Delete
 
-Delete Load Balancer by ID
+[EXPERIMENTAL] Delete Load Balancer by ID
 
 ## Usage:
 ```

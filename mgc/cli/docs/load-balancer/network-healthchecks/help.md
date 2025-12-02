@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Network-Healthchecks
 
-Network Load Balancer Health Checks
+[EXPERIMENTAL] Network Load Balancer Health Checks
 
 ## Usage:
 ```
@@ -13,11 +13,11 @@ mgc load-balancer network-healthchecks [command]
 
 ## Commands:
 ```
-create      Create Health Check
-delete      Delete Health Check by ID
-get         Get Health Check by ID
-list        List Health Checks
-replace     Update Health Check by ID
+create      [EXPERIMENTAL] Create Health Check
+delete      [EXPERIMENTAL] Delete Health Check by ID
+get         [EXPERIMENTAL] Get Health Check by ID
+list        [EXPERIMENTAL] List Health Checks
+replace     [EXPERIMENTAL] Update Health Check by ID
 ```
 
 ## Flags:

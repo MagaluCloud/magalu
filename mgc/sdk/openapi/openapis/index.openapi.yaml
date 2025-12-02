@@ -40,8 +40,8 @@ modules:
       url: https://lbaas.jaxyendy.com/openapi-cli.json
       path: load-balancer.openapi.yaml
       version: 1.87.0
-      description: 'Lbaas API: create and manage Load Balancers'
-      summary: 'Lbaas API: create and manage Load Balancers'
+      description: '[EXPERIMENTAL] Lbaas API: create and manage Load Balancers'
+      summary: '[EXPERIMENTAL] Lbaas API: create and manage Load Balancers'
     - name: network
       url: https://network.jaxyendy.com/openapi.json
       path: network.openapi.yaml
