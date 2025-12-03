@@ -20,7 +20,7 @@ container-registry Magalu Container Registry product API.
 dbaas              DBaaS API Product.
 iam                The Magalu Cloud IAM.
 kubernetes         APIs related to the Kubernetes product.
-load-balancer      Lbaas API: create and manage Load Balancers
+load-balancer      [EXPERIMENTAL] Lbaas API: create and manage Load Balancers
 network            VPC Api Product
 object-storage     Operations for Object Storage
 virtual-machine    Virtual Machine Api Product
