@@ -24,6 +24,11 @@ modules:
       version: 2.21.2
       description: DBaaS API Product.
       summary: DBaaS API Product.
+    - name: federation
+      url: http://127.0.0.1:8000/openapi.json
+      path: federation.openapi.yaml
+      version: 1.0.0
+      description: ""
     - name: iam
       url: https://iam.jaxyendy.com/openapi.json
       path: iam.openapi.yaml

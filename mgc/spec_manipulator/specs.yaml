@@ -48,3 +48,7 @@ jaxyendy:
       file: iam.jaxyendy.openapi.json
       menu: iam
       enabled: true
+    - url: http://127.0.0.1:8000/openapi.json
+      file: federation.local.openapi.json
+      menu: federation
+      enabled: true

@@ -1,0 +1,8 @@
+# This file is to be merged on top of mgc/sdk/openapi/openapis/federation.openapi.yaml
+# using yaml_merge.py
+# NOTE: Lists are merged by their indexes, be careful with parameters, tags and such!
+# to keep it sane, keep some list item identifier (ex: "name") and add extra properties,
+# such as "x-mgc-name" or "x-mgc-description"
+
+servers:
+-   url: http://127.0.0.1:8000
