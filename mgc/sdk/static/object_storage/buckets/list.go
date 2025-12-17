@@ -19,7 +19,6 @@ type BucketResponse struct {
 type SizeResponse struct {
 	Standard    string `xml:"Standard"`
 	ColdInstant string `xml:"ColdInstant"`
-	Versions    string `xml:"Versions"`
 	UpdatedAt   string `xml:"UpdatedAt"`
 }
 
@@ -96,10 +95,9 @@ func list(ctx context.Context, _ struct{}, cfg common.Config) (*ListResponse, er
 			CreationDate: bucket.CreationDate,
 			Name:         bucket.Name,
 			Size: SizeResponse{
+				UpdatedAt:   bucket.Size.UpdatedAt,
 				Standard:    FormatSize(bucket.Size.Standard),
 				ColdInstant: FormatSize(bucket.Size.ColdInstant),
-				Versions:    FormatSize(bucket.Size.Versions),
-				UpdatedAt:   bucket.Size.UpdatedAt,
 			},
 		})
 	}
