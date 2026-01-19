@@ -16,6 +16,7 @@ mgc network vpcs ports create [vpc-id] [flags]
     --has-pip                            Has Pip
     --has-sg                             Has Sg
 -h, --help                               help for create
+    --ip-address string                  IP Address
     --name string                        Name (between 5 and 100 characters) (required)
     --security-groups-id array(string)   Security Groups Id
     --subnets array(string)              Subnets
