@@ -43,27 +43,33 @@ func checkProfileName(name string) error {
 }
 
 func buildMGCPath() (string, error) {
-	dir := ""
-	switch runtime.GOOS {
-	case "windows":
-		dir = os.Getenv("AppData")
-		if dir == "" {
-			return "", errors.New("%AppData% is not defined")
-		}
+	mgcDir := os.Getenv("MGC_CONFIG_DIR")
 
-	default: // Unix
-		dir = os.Getenv("XDG_CONFIG_HOME")
-		if dir == "" {
-			home := os.Getenv("HOME")
-			if home != "" {
-				dir = path.Join(home, ".config")
+	if mgcDir == "" {
+		dir := ""
+
+		switch runtime.GOOS {
+		case "windows":
+			dir = os.Getenv("AppData")
+			if dir == "" {
+				return "", errors.New("%AppData% is not defined")
+			}
+
+		default: // Unix
+			dir = os.Getenv("XDG_CONFIG_HOME")
+			if dir == "" {
+				home := os.Getenv("HOME")
+				if home != "" {
+					dir = path.Join(home, ".config")
+				}
+			}
+			if dir == "" {
+				return "", errors.New("neither $XDG_CONFIG_HOME nor $HOME are defined")
 			}
 		}
-		if dir == "" {
-			return "", errors.New("neither $XDG_CONFIG_HOME nor $HOME are defined")
-		}
+		mgcDir = path.Join(dir, "mgc")
 	}
-	mgcDir := path.Join(dir, "mgc")
+
 	if err := os.MkdirAll(mgcDir, utils.DIR_PERMISSION); err != nil {
 		return "", fmt.Errorf("Error creating mgc dir at %s: %w", mgcDir, err)
 	}

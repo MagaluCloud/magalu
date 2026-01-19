@@ -25,7 +25,7 @@ func addOutputFlag(cmd *cobra.Command) {
 		outputFlag,
 		"o",
 		"",
-		`Change the output format. Use '--output=help' to know more details.`)
+		`Change the output format. You can use 'yaml', 'json' or 'table'.`)
 }
 
 func getOutputFlag(cmd *cobra.Command) string {

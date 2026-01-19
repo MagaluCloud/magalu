@@ -20,7 +20,7 @@ container-registry Magalu Container Registry product API.
 dbaas              DBaaS API Product.
 iam                The Magalu Cloud IAM.
 kubernetes         APIs related to the Kubernetes product.
-load-balancer      Lbaas API: create and manage Load Balancers
+load-balancer      [EXPERIMENTAL] Lbaas API: create and manage Load Balancers
 network            VPC Api Product
 object-storage     Operations for Object Storage
 virtual-machine    Virtual Machine Api Product
@@ -43,7 +43,7 @@ help               Help about any command
     --debug                    Display detailed log information at the debug level
 -h, --help                     help for mgc
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
--o, --output string            Change the output format. Use '--output=help' to know more details.
+-o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
 -v, --version                  version for mgc
 ```

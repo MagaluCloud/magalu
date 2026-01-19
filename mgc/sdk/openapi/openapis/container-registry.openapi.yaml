@@ -54,6 +54,7 @@ paths:
             summary: Get credentials for container registry
             description: Return container registry user's authentication credentials.
             operationId: getCredentials
+            x-mgc-name: get
             security:
             -   BearerAuth:
                 - mcr.read
@@ -85,6 +86,8 @@ paths:
             summary: Reset password
             description: Reset container registry user's password.
             operationId: resetPassword
+            x-mgc-confirmable:
+                message: Are you sure you want to reset the container registry's password?
             security:
             -   BearerAuth:
                 - mcr.write

@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "LBaaS API Product",
-    "description": "Lbaas API: create and manage Load Balancers",
+    "title": "[EXPERIMENTAL] LBaaS API Product",
+    "description": "[EXPERIMENTAL] Lbaas API: create and manage Load Balancers",
     "contact": {
       "name": "Tribo IAAS Cloud",
       "url": "https://help.magalu.cloud/",
@@ -21,7 +21,7 @@
         "tags": [
           "network-loadbalancers"
         ],
-        "summary": "Create Load Balancer",
+        "summary": "[EXPERIMENTAL] Create Load Balancer",
         "operationId": "create_load_balancer_v0beta1_network_load_balancers_post",
         "parameters": [
           {
@@ -68,7 +68,7 @@
             }
           }
         },
-        "description": "Create Load Balancer",
+        "description": "[EXPERIMENTAL] Create Load Balancer",
         "x-permission": {
           "permission-name": "lb_loadbalancer_create",
           "product-name": "loadbalancer"
@@ -90,7 +90,7 @@
         "tags": [
           "network-loadbalancers"
         ],
-        "summary": "List Load Balancers",
+        "summary": "[EXPERIMENTAL] List Load Balancers",
         "operationId": "list_load_balancers_v0beta1_network_load_balancers_get",
         "parameters": [
           {
@@ -189,7 +189,7 @@
         "tags": [
           "network-loadbalancers"
         ],
-        "summary": "Get Load Balancer by ID",
+        "summary": "[EXPERIMENTAL] Get Load Balancer by ID",
         "operationId": "get_load_balancer_v0beta1_network_load_balancers__load_balancer_id__get",
         "parameters": [
           {
@@ -238,7 +238,7 @@
             }
           }
         },
-        "description": "Get Load Balancer by ID",
+        "description": "[EXPERIMENTAL] Get Load Balancer by ID",
         "x-permission": {
           "permission-name": "lb_loadbalancer_get",
           "product-name": "loadbalancer"
@@ -260,7 +260,7 @@
         "tags": [
           "network-loadbalancers"
         ],
-        "summary": "Update Load Balancer by ID",
+        "summary": "[EXPERIMENTAL] Update Load Balancer by ID",
         "operationId": "update_load_balancer_v0beta1_network_load_balancers__load_balancer_id__put",
         "parameters": [
           {
@@ -319,7 +319,7 @@
             }
           }
         },
-        "description": "Update Load Balancer by ID",
+        "description": "[EXPERIMENTAL] Update Load Balancer by ID",
         "x-permission": {
           "permission-name": "lb_loadbalancer_update",
           "product-name": "loadbalancer"
@@ -341,7 +341,7 @@
         "tags": [
           "network-loadbalancers"
         ],
-        "summary": "Delete Load Balancer by ID",
+        "summary": "[EXPERIMENTAL] Delete Load Balancer by ID",
         "operationId": "delete_load_balancer_v0beta1_network_load_balancers__load_balancer_id__delete",
         "parameters": [
           {
@@ -400,7 +400,7 @@
             }
           }
         },
-        "description": "Delete Load Balancer by ID",
+        "description": "[EXPERIMENTAL] Delete Load Balancer by ID",
         "x-permission": {
           "permission-name": "lb_loadbalancer_delete",
           "product-name": "loadbalancer"
@@ -424,7 +424,7 @@
         "tags": [
           "network-certificates"
         ],
-        "summary": "Create TLS Certificate",
+        "summary": "[EXPERIMENTAL] Create TLS Certificate",
         "operationId": "create_tls_certificate_v0beta1_network_load_balancers__load_balancer_id__tls_certificates_post",
         "parameters": [
           {
@@ -505,7 +505,7 @@
         "tags": [
           "network-certificates"
         ],
-        "summary": "List TLS Certificates",
+        "summary": "[EXPERIMENTAL] List TLS Certificates",
         "operationId": "list_tls_certificates_v0beta1_network_load_balancers__load_balancer_id__tls_certificates_get",
         "parameters": [
           {
@@ -616,7 +616,7 @@
         "tags": [
           "network-certificates"
         ],
-        "summary": "Get TLS Certificate by ID",
+        "summary": "[EXPERIMENTAL] Get TLS Certificate by ID",
         "operationId": "get_tls_certificate_v0beta1_network_load_balancers__load_balancer_id__tls_certificates__tls_certificate_id__get",
         "parameters": [
           {
@@ -699,7 +699,7 @@
         "tags": [
           "network-certificates"
         ],
-        "summary": "Update TLS Certificate by ID",
+        "summary": "[EXPERIMENTAL] Update TLS Certificate by ID",
         "operationId": "update_tls_certificate_v0beta1_network_load_balancers__load_balancer_id__tls_certificates__tls_certificate_id__put",
         "parameters": [
           {
@@ -790,7 +790,7 @@
         "tags": [
           "network-certificates"
         ],
-        "summary": "Delete TLS Certificate by ID",
+        "summary": "[EXPERIMENTAL] Delete TLS Certificate by ID",
         "operationId": "delete_tls_certificate_v0beta1_network_load_balancers__load_balancer_id__tls_certificates__tls_certificate_id__delete",
         "parameters": [
           {
@@ -873,7 +873,7 @@
         "tags": [
           "network-healthchecks"
         ],
-        "summary": "Create Health Check",
+        "summary": "[EXPERIMENTAL] Create Health Check",
         "operationId": "create_health_check_v0beta1_network_load_balancers__load_balancer_id__health_checks_post",
         "parameters": [
           {
@@ -954,7 +954,7 @@
         "tags": [
           "network-healthchecks"
         ],
-        "summary": "List Health Checks",
+        "summary": "[EXPERIMENTAL] List Health Checks",
         "operationId": "list_health_checks_v0beta1_network_load_balancers__load_balancer_id__health_checks_get",
         "parameters": [
           {
@@ -1065,7 +1065,7 @@
         "tags": [
           "network-healthchecks"
         ],
-        "summary": "Get Health Check by ID",
+        "summary": "[EXPERIMENTAL] Get Health Check by ID",
         "operationId": "get_health_check_v0beta1_network_load_balancers__load_balancer_id__health_checks__health_check_id__get",
         "parameters": [
           {
@@ -1148,7 +1148,7 @@
         "tags": [
           "network-healthchecks"
         ],
-        "summary": "Update Health Check by ID",
+        "summary": "[EXPERIMENTAL] Update Health Check by ID",
         "operationId": "update_health_check_v0beta1_network_load_balancers__load_balancer_id__health_checks__health_check_id__put",
         "parameters": [
           {
@@ -1241,7 +1241,7 @@
         "tags": [
           "network-healthchecks"
         ],
-        "summary": "Delete Health Check by ID",
+        "summary": "[EXPERIMENTAL] Delete Health Check by ID",
         "operationId": "delete_health_check_v0beta1_network_load_balancers__load_balancer_id__health_checks__health_check_id__delete",
         "parameters": [
           {
@@ -1319,7 +1319,7 @@
         "tags": [
           "network-backends"
         ],
-        "summary": "Create Backend",
+        "summary": "[EXPERIMENTAL] Create Backend",
         "operationId": "create_backend_v0beta1_network_load_balancers__load_balancer_id__backends_post",
         "parameters": [
           {
@@ -1400,7 +1400,7 @@
         "tags": [
           "network-backends"
         ],
-        "summary": "List Backends",
+        "summary": "[EXPERIMENTAL] List Backends",
         "operationId": "list_backends_v0beta1_network_load_balancers__load_balancer_id__backends_get",
         "parameters": [
           {
@@ -1511,7 +1511,7 @@
         "tags": [
           "network-backends"
         ],
-        "summary": "Get Backend by ID",
+        "summary": "[EXPERIMENTAL] Get Backend by ID",
         "operationId": "get_backend_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__get",
         "parameters": [
           {
@@ -1590,7 +1590,7 @@
         "tags": [
           "network-backends"
         ],
-        "summary": "Update Backend by ID",
+        "summary": "[EXPERIMENTAL] Update Backend by ID",
         "operationId": "update_backend_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__put",
         "parameters": [
           {
@@ -1679,7 +1679,7 @@
         "tags": [
           "network-backends"
         ],
-        "summary": "Delete Backend by ID",
+        "summary": "[EXPERIMENTAL] Delete Backend by ID",
         "operationId": "delete_backend_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__delete",
         "parameters": [
           {
@@ -1762,7 +1762,7 @@
         "tags": [
           "network-backends"
         ],
-        "summary": "Create a new target on specific backend",
+        "summary": "[EXPERIMENTAL] Create a new target on specific backend",
         "operationId": "create_target_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__targets_post",
         "parameters": [
           {
@@ -1858,7 +1858,7 @@
         "tags": [
           "network-backends"
         ],
-        "summary": "Replace targets on specific backend",
+        "summary": "[EXPERIMENTAL] Replace targets on specific backend",
         "operationId": "replace_targets_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__targets_put",
         "parameters": [
           {
@@ -1956,7 +1956,7 @@
         "tags": [
           "network-backends"
         ],
-        "summary": "Delete a target on specific backend",
+        "summary": "[EXPERIMENTAL] Delete a target on specific backend",
         "operationId": "delete_target_v0beta1_network_load_balancers__load_balancer_id__backends__backend_id__targets__target_id__delete",
         "parameters": [
           {
@@ -2054,7 +2054,7 @@
         "tags": [
           "network-listeners"
         ],
-        "summary": "Create Listener",
+        "summary": "[EXPERIMENTAL] Create Listener",
         "operationId": "create_listener_v0beta1_network_load_balancers__load_balancer_id__listeners_post",
         "parameters": [
           {
@@ -2147,7 +2147,7 @@
         "tags": [
           "network-listeners"
         ],
-        "summary": "List Listeners",
+        "summary": "[EXPERIMENTAL] List Listeners",
         "operationId": "list_listeners_v0beta1_network_load_balancers__load_balancer_id__listeners_get",
         "parameters": [
           {
@@ -2258,7 +2258,7 @@
         "tags": [
           "network-listeners"
         ],
-        "summary": "Get Listener by ID",
+        "summary": "[EXPERIMENTAL] Get Listener by ID",
         "operationId": "get_listener_v0beta1_network_load_balancers__load_balancer_id__listeners__listener_id__get",
         "parameters": [
           {
@@ -2341,7 +2341,7 @@
         "tags": [
           "network-listeners"
         ],
-        "summary": "Update Listener by ID",
+        "summary": "[EXPERIMENTAL] Update Listener by ID",
         "operationId": "update_listener_v0beta1_network_load_balancers__load_balancer_id__listeners__listener_id__put",
         "parameters": [
           {
@@ -2434,7 +2434,7 @@
         "tags": [
           "network-listeners"
         ],
-        "summary": "Delete Listener by ID",
+        "summary": "[EXPERIMENTAL] Delete Listener by ID",
         "operationId": "delete_listener_v0beta1_network_load_balancers__load_balancer_id__listeners__listener_id__delete",
         "parameters": [
           {
@@ -2517,7 +2517,7 @@
         "tags": [
           "network-acls"
         ],
-        "summary": "Create Load Balancer ACL",
+        "summary": "[EXPERIMENTAL] Create Load Balancer ACL",
         "operationId": "create_acl_v0beta1_network_load_balancers__load_balancer_id__acls_post",
         "parameters": [
           {
@@ -2596,7 +2596,7 @@
         "tags": [
           "network-acls"
         ],
-        "summary": "Replace Load Balancer ACLs",
+        "summary": "[EXPERIMENTAL] Replace Load Balancer ACLs",
         "description": "This route will replace the entire load balancer acls set by the acls inputed in request body",
         "operationId": "replace_acls_v0beta1_network_load_balancers__load_balancer_id__acls_put",
         "parameters": [
@@ -2677,7 +2677,7 @@
         "tags": [
           "network-acls"
         ],
-        "summary": "Delete Load Balancer ACL",
+        "summary": "[EXPERIMENTAL] Delete Load Balancer ACL",
         "operationId": "delete_acl_v0beta1_network_load_balancers__load_balancer_id__acls__acl_id__delete",
         "parameters": [
           {
@@ -5995,27 +5995,27 @@
   "tags": [
     {
       "name": "network-loadbalancers",
-      "description": "Network Load Balancer"
+      "description": "[EXPERIMENTAL] Network Load Balancer"
     },
     {
       "name": "network-listeners",
-      "description": "Network Load Balancer Listeners"
+      "description": "[EXPERIMENTAL] Network Load Balancer Listeners"
     },
     {
       "name": "network-healthchecks",
-      "description": "Network Load Balancer Health Checks"
+      "description": "[EXPERIMENTAL] Network Load Balancer Health Checks"
     },
     {
       "name": "network-certificates",
-      "description": "Network Load Balancer TLS Certificates"
+      "description": "[EXPERIMENTAL] Network Load Balancer TLS Certificates"
     },
     {
       "name": "network-backends",
-      "description": "Network Load Balancer Backends (Target Pools)"
+      "description": "[EXPERIMENTAL] Network Load Balancer Backends (Target Pools)"
     },
     {
       "name": "network-acls",
-      "description": "Network Load Balancer ACLs"
+      "description": "[EXPERIMENTAL] Network Load Balancer ACLs"
     }
   ]
 }

@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Network-Loadbalancers
 
-Network Load Balancer
+[EXPERIMENTAL] Network Load Balancer
 
 ## Usage:
 ```
@@ -13,11 +13,11 @@ mgc load-balancer network-loadbalancers [command]
 
 ## Commands:
 ```
-create      Create Load Balancer
-delete      Delete Load Balancer by ID
-get         Get Load Balancer by ID
-list        List Load Balancers
-replace     Update Load Balancer by ID
+create      [EXPERIMENTAL] Create Load Balancer
+delete      [EXPERIMENTAL] Delete Load Balancer by ID
+get         [EXPERIMENTAL] Get Load Balancer by ID
+list        [EXPERIMENTAL] List Load Balancers
+replace     [EXPERIMENTAL] Update Load Balancer by ID
 ```
 
 ## Flags:
@@ -35,7 +35,7 @@ replace     Update Load Balancer by ID
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
--o, --output string            Change the output format. Use '--output=help' to know more details.
+-o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
 ```
 

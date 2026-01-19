@@ -11,9 +11,10 @@ repos:
         stages: [pre-commit]
       - id: apply-oapi-customizations
         name: apply-oapi-customizations
-        language: system
+        language: python
         types_or: [yaml]
         entry: bash -c './scripts/oapi_apply_customizations.sh'
+        additional_dependencies: [PyYAML]
         stages: [pre-commit]
       - id: oapi-index-gen
         name: oapi-index-gen
@@ -23,8 +24,9 @@ repos:
         stages: [pre-commit]
       - id: check-openapi-links
         name: check openapi links
-        language: system
+        language: python
         entry: bash -c './scripts/oapi_check_links.sh'
+        additional_dependencies: [PyYAML]
         stages: [pre-commit]
         require_serial: true
 

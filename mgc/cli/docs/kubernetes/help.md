@@ -15,7 +15,6 @@ mgc kubernetes [command]
 ```
 cluster     Endpoints related to the creation, listing, deletion, and retrieval of the kubeconfig for a Kubernetes cluster.
 flavor      Endpoints related to listing available flavors for a Kubernetes cluster.
-info        Endpoints related to listing available flavors (resource configurations) and Kubernetes versions for a Kubernetes cluster.
 nodepool    Endpoints related to the creation, listing of nodepools and nodes, updating, and deletion of nodepools for a Kubernetes cluster.
 version     Endpoints related to listing available Kubernetes versions for a Kubernetes cluster.
 ```
@@ -35,7 +34,7 @@ version     Endpoints related to listing available Kubernetes versions for a Kub
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
--o, --output string            Change the output format. Use '--output=help' to know more details.
+-o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
 ```
 

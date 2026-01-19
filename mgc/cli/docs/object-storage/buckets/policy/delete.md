@@ -32,7 +32,7 @@ mgc object-storage buckets policy delete --dst="my-bucket"
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
--o, --output string            Change the output format. Use '--output=help' to know more details.
+-o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
     --region string            Region to reach the service (default "br-se1")
     --server-url uri           Manually specify the server to use

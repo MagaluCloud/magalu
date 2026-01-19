@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Network-Certificates
 
-Network Load Balancer TLS Certificates
+[EXPERIMENTAL] Network Load Balancer TLS Certificates
 
 ## Usage:
 ```
@@ -13,11 +13,11 @@ mgc load-balancer network-certificates [command]
 
 ## Commands:
 ```
-create      Create TLS Certificate
-delete      Delete TLS Certificate by ID
-get         Get TLS Certificate by ID
-list        List TLS Certificates
-replace     Update TLS Certificate by ID
+create      [EXPERIMENTAL] Create TLS Certificate
+delete      [EXPERIMENTAL] Delete TLS Certificate by ID
+get         [EXPERIMENTAL] Get TLS Certificate by ID
+list        [EXPERIMENTAL] List TLS Certificates
+replace     [EXPERIMENTAL] Update TLS Certificate by ID
 ```
 
 ## Flags:
@@ -35,7 +35,7 @@ replace     Update TLS Certificate by ID
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
--o, --output string            Change the output format. Use '--output=help' to know more details.
+-o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
 ```
 

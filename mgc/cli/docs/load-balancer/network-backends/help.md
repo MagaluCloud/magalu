@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Network-Backends
 
-Network Load Balancer Backends (Target Pools)
+[EXPERIMENTAL] Network Load Balancer Backends (Target Pools)
 
 ## Usage:
 ```
@@ -13,11 +13,11 @@ mgc load-balancer network-backends [command]
 
 ## Commands:
 ```
-create      Create Backend
-delete      Delete Backend by ID
-get         Get Backend by ID
-list        List Backends
-replace     Update Backend by ID
+create      [EXPERIMENTAL] Create Backend
+delete      [EXPERIMENTAL] Delete Backend by ID
+get         [EXPERIMENTAL] Get Backend by ID
+list        [EXPERIMENTAL] List Backends
+replace     [EXPERIMENTAL] Update Backend by ID
 targets     targets
 ```
 
@@ -36,7 +36,7 @@ targets     targets
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
--o, --output string            Change the output format. Use '--output=help' to know more details.
+-o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
 ```
 

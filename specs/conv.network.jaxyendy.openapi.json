@@ -4224,6 +4224,15 @@
                         "title": "Subnets",
                         "default": []
                     },
+                    "ip_address": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {}
+                        ],
+                        "title": "IP Address"
+                    },
                     "security_groups_id": {
                         "anyOf": [
                             {
@@ -4245,6 +4254,7 @@
                     "has_pip": true,
                     "has_sg": true,
                     "name": "port_name",
+                    "ip_address": "192.168.0.1",
                     "security_groups_id": [
                         "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                     ],

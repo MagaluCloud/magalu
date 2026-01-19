@@ -1,18 +1,18 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 ---
-# List
+# Get
 
 Return container registry user's authentication credentials.
 
 ## Usage:
 ```
-mgc container-registry credentials list [flags]
+mgc container-registry credentials get [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for list
+-h, --help   help for get
 ```
 
 ## Global Flags:
@@ -26,7 +26,7 @@ mgc container-registry credentials list [flags]
     --debug                    Display detailed log information at the debug level
     --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
--o, --output string            Change the output format. Use '--output=help' to know more details.
+-o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use

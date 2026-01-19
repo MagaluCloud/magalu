@@ -16,6 +16,7 @@ mgc network vpcs ports create [vpc-id] [flags]
     --has-pip                            Has Pip
     --has-sg                             Has Sg
 -h, --help                               help for create
+    --ip-address string                  IP Address
     --name string                        Name (between 5 and 100 characters) (required)
     --security-groups-id array(string)   Security Groups Id
     --subnets array(string)              Subnets
@@ -33,7 +34,7 @@ mgc network vpcs ports create [vpc-id] [flags]
     --debug                    Display detailed log information at the debug level
     --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
--o, --output string            Change the output format. Use '--output=help' to know more details.
+-o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use

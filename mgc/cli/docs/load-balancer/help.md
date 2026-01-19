@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Load-Balancer
 
-Lbaas API: create and manage Load Balancers
+[EXPERIMENTAL] Lbaas API: create and manage Load Balancers
 
 ## Usage:
 ```
@@ -13,12 +13,12 @@ mgc load-balancer [command]
 
 ## Commands:
 ```
-network-acls          Network Load Balancer ACLs
-network-backends      Network Load Balancer Backends (Target Pools)
-network-certificates  Network Load Balancer TLS Certificates
-network-healthchecks  Network Load Balancer Health Checks
-network-listeners     Network Load Balancer Listeners
-network-loadbalancers Network Load Balancer
+network-acls          [EXPERIMENTAL] Network Load Balancer ACLs
+network-backends      [EXPERIMENTAL] Network Load Balancer Backends (Target Pools)
+network-certificates  [EXPERIMENTAL] Network Load Balancer TLS Certificates
+network-healthchecks  [EXPERIMENTAL] Network Load Balancer Health Checks
+network-listeners     [EXPERIMENTAL] Network Load Balancer Listeners
+network-loadbalancers [EXPERIMENTAL] Network Load Balancer
 ```
 
 ## Flags:
@@ -36,7 +36,7 @@ network-loadbalancers Network Load Balancer
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
--o, --output string            Change the output format. Use '--output=help' to know more details.
+-o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
 ```
 
