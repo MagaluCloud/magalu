@@ -45,6 +45,9 @@ type operationDesc struct {
 // parts it returns that. Otherwise, it returns the immediately preceding name part, which is the last
 // path entry
 func (e *operationTableEntry) simpleNameKey() string {
+	if e.desc.op != nil && e.desc.op.Extensions["x-cli-name"] != nil {
+		return e.desc.op.Extensions["x-cli-name"].(string)
+	}
 	return getSecondToLastOrLastElem(e.name)
 }
 
@@ -162,14 +165,16 @@ func (t *operationTable) add(name, variables []string, desc *operationDesc) {
 	// If a sibling is present (another entry that starts with the same first name entry), create a
 	// subtable for them and add it to that one
 	if siblingIdx, sibling := t.findSibling(name); sibling != nil {
-		childTable := &operationTable{name: name[0]}
-		childTable.add(sibling.name[1:], sibling.variables, sibling.desc)
-		childTable.add(name[1:], variables, desc)
-		t.childTables = append(t.childTables, childTable)
+		if (sibling.desc.op.Extensions["x-cli-name"] == nil && desc.op.Extensions["x-cli-name"] == nil) || (name[0] != "start" && name[0] != "stop") {
+			childTable := &operationTable{name: name[0]}
+			childTable.add(sibling.name[1:], sibling.variables, sibling.desc)
+			childTable.add(name[1:], variables, desc)
+			t.childTables = append(t.childTables, childTable)
 
-		// Remove sibiling from child operations, as it's now in subtable
-		t.childOperations = append(t.childOperations[:siblingIdx], t.childOperations[siblingIdx+1:]...)
-		return
+			// Remove sibiling from child operations, as it's now in subtable
+			t.childOperations = append(t.childOperations[:siblingIdx], t.childOperations[siblingIdx+1:]...)
+			return
+		}
 	}
 
 	// Otherwise, just add the entry normally to the current table

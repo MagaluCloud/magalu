@@ -6,6 +6,8 @@ import (
 	"testing"
 
 	"slices"
+
+	"github.com/getkin/kin-openapi/openapi3"
 )
 
 func operationTableToStrings(t *operationTable, prefix string) (lines []string) {
@@ -499,6 +501,50 @@ func Test_operationTree_virtual_machine_usage(t *testing.T) {
 	}
 	expected := []string{
 		"list - get /v0/usage",
+	}
+	checkOperationTable(t, operations, expected)
+}
+
+func Test_operationTree_dbaas_clusters_import_mode(t *testing.T) {
+	operations := []*operationDesc{
+		{
+			pathKey: "/v2/clusters/{cluster_id}/start",
+			method:  "post",
+			op: &openapi3.Operation{
+				Extensions: map[string]any{},
+			},
+		},
+		{
+			pathKey: "/v2/clusters/{cluster_id}/stop",
+			method:  "post",
+			op: &openapi3.Operation{
+				Extensions: map[string]any{},
+			},
+		},
+		{
+			pathKey: "/v2/clusters/{cluster_id}/start-import-mode",
+			method:  "post",
+			op: &openapi3.Operation{
+				Extensions: map[string]any{
+					"x-cli-name": "start-import-mode",
+				},
+			},
+		},
+		{
+			pathKey: "/v2/clusters/{cluster_id}/stop-import-mode",
+			method:  "post",
+			op: &openapi3.Operation{
+				Extensions: map[string]any{
+					"x-cli-name": "stop-import-mode",
+				},
+			},
+		},
+	}
+	expected := []string{
+		"start - post /v2/clusters/{cluster_id}/start",
+		"stop - post /v2/clusters/{cluster_id}/stop",
+		"start-import-mode - post /v2/clusters/{cluster_id}/start-import-mode",
+		"stop-import-mode - post /v2/clusters/{cluster_id}/stop-import-mode",
 	}
 	checkOperationTable(t, operations, expected)
 }

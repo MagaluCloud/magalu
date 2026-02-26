@@ -1312,16 +1312,6 @@ paths:
                             description: Resizes a cluster database.
                             parameters:
                                 cluster_id: $response.body#/id
-                        start:
-                            operationId: clusters_v2_start
-                            description: Starts a database cluster.
-                            parameters:
-                                cluster_id: $response.body#/id
-                        stop:
-                            operationId: clusters_v2_stop
-                            description: Stops a database cluster.
-                            parameters:
-                                cluster_id: $response.body#/id
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -1412,16 +1402,6 @@ paths:
                             description: Resizes a cluster database.
                             parameters:
                                 cluster_id: $response.body#/id
-                        start:
-                            operationId: clusters_v2_start
-                            description: Starts a database cluster.
-                            parameters:
-                                cluster_id: $response.body#/id
-                        stop:
-                            operationId: clusters_v2_stop
-                            description: Stops a database cluster.
-                            parameters:
-                                cluster_id: $response.body#/id
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -1479,16 +1459,6 @@ paths:
                         resize:
                             operationId: clusters_v2_resize
                             description: Resizes a cluster database.
-                            parameters:
-                                cluster_id: $response.body#/id
-                        start:
-                            operationId: clusters_v2_start
-                            description: Starts a database cluster.
-                            parameters:
-                                cluster_id: $response.body#/id
-                        stop:
-                            operationId: clusters_v2_stop
-                            description: Stops a database cluster.
                             parameters:
                                 cluster_id: $response.body#/id
                 '400':
@@ -1551,16 +1521,6 @@ paths:
                             description: Deletes a database cluster.
                             parameters:
                                 cluster_id: $response.body#/id
-                        start:
-                            operationId: clusters_v2_start
-                            description: Starts a database cluster.
-                            parameters:
-                                cluster_id: $response.body#/id
-                        stop:
-                            operationId: clusters_v2_stop
-                            description: Stops a database cluster.
-                            parameters:
-                                cluster_id: $response.body#/id
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -1586,6 +1546,7 @@ paths:
             - clusters
             summary: Starts a database cluster.
             description: Starts a database cluster.
+            x-cli-name: start
             x-permission:
                 permission-name: db_cluster_start
                 product-name: database
@@ -1599,32 +1560,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ClusterDetailResponse'
-                    links:
-                        get:
-                            operationId: clusters_v2_get_by_id
-                            description: Database cluster details.
-                            parameters:
-                                cluster_id: $response.body#/id
-                        update:
-                            operationId: clusters_v2_patch
-                            description: Database cluster update.
-                            parameters:
-                                cluster_id: $response.body#/id
-                        delete:
-                            operationId: clusters_v2_delete
-                            description: Deletes a database cluster.
-                            parameters:
-                                cluster_id: $response.body#/id
-                        resize:
-                            operationId: clusters_v2_resize
-                            description: Resizes a cluster database.
-                            parameters:
-                                cluster_id: $response.body#/id
-                        stop:
-                            operationId: clusters_v2_stop
-                            description: Stops a database cluster.
-                            parameters:
-                                cluster_id: $response.body#/id
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -1650,6 +1585,7 @@ paths:
             - clusters
             summary: Stops a database cluster.
             description: Stops a database cluster.
+            x-cli-name: stop
             x-permission:
                 permission-name: db_cluster_stop
                 product-name: database
@@ -1663,32 +1599,84 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ClusterDetailResponse'
-                    links:
-                        get:
-                            operationId: clusters_v2_get_by_id
-                            description: Database cluster details.
-                            parameters:
-                                cluster_id: $response.body#/id
-                        update:
-                            operationId: clusters_v2_patch
-                            description: Database cluster update.
-                            parameters:
-                                cluster_id: $response.body#/id
-                        delete:
-                            operationId: clusters_v2_delete
-                            description: Deletes a database cluster.
-                            parameters:
-                                cluster_id: $response.body#/id
-                        resize:
-                            operationId: clusters_v2_resize
-                            description: Resizes a cluster database.
-                            parameters:
-                                cluster_id: $response.body#/id
-                        start:
-                            operationId: clusters_v2_start
-                            description: Starts a database cluster.
-                            parameters:
-                                cluster_id: $response.body#/id
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
+                - dbaas.write
+    /v2/clusters/{cluster_id}/start-import-mode:
+        post:
+            tags:
+            - clusters
+            summary: Starts a import mode database cluster.
+            description: Starts a import mode database cluster.
+            x-cli-name: start-import-mode
+            x-permission:
+                permission-name: db_cluster_start_import_mode
+                product-name: database
+            operationId: clusters_v2_start_import_mode
+            parameters:
+            -   $ref: '#/components/parameters/cluster_id'
+            responses:
+                '200':
+                    description: Successful Response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClusterDetailResponse'
+                '400':
+                    $ref: '#/components/responses/RequiredField'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '422':
+                    $ref: '#/components/responses/UnprocessableEntity'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+            security:
+            -   bearerAuth:
+                - dbaas.write
+            -   OAuth2PreProd:
+                - dbaas.write
+            -   OAuth2Prod:
+                - dbaas.write
+    /v2/clusters/{cluster_id}/stop-import-mode:
+        post:
+            tags:
+            - clusters
+            summary: Stops a import mode database cluster.
+            description: Stops a import mode database cluster.
+            x-cli-name: stop-import-mode
+            x-permission:
+                permission-name: db_cluster_stop_import_mode
+                product-name: database
+            operationId: clusters_v2_stop_import_mode
+            parameters:
+            -   $ref: '#/components/parameters/cluster_id'
+            responses:
+                '200':
+                    description: Successful Response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClusterDetailResponse'
                 '400':
                     $ref: '#/components/responses/RequiredField'
                 '401':
@@ -3174,6 +3162,8 @@ components:
             - STOPPED
             - BACKING_UP
             - BALANCING
+            - STARTING_IMPORT_MODE
+            - STOPPING_IMPORT_MODE
             title: ClusterStatusResponse
             type: string
         ClusterVolumeResponse:
@@ -3683,6 +3673,7 @@ components:
             - G4
             - G5
             - G6
+            - G10
             example: G6
         InstanceCreateRequest:
             title: Instance Create Request
