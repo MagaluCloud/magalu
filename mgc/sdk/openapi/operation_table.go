@@ -165,7 +165,10 @@ func (t *operationTable) add(name, variables []string, desc *operationDesc) {
 	// If a sibling is present (another entry that starts with the same first name entry), create a
 	// subtable for them and add it to that one
 	if siblingIdx, sibling := t.findSibling(name); sibling != nil {
-		if (sibling.desc.op.Extensions["x-cli-name"] == nil && desc.op.Extensions["x-cli-name"] == nil) || (name[0] != "start" && name[0] != "stop") {
+		siblingWithoutCliNameExtension := sibling.desc.op == nil || sibling.desc.op.Extensions == nil || sibling.desc.op.Extensions["x-cli-name"] == nil
+		descWithoutCliNameExtension := desc == nil || desc.op == nil || desc.op.Extensions == nil || desc.op.Extensions["x-cli-name"] == nil
+
+		if (siblingWithoutCliNameExtension && descWithoutCliNameExtension) || (name[0] != "start" && name[0] != "stop") {
 			childTable := &operationTable{name: name[0]}
 			childTable.add(sibling.name[1:], sibling.variables, sibling.desc)
 			childTable.add(name[1:], variables, desc)
