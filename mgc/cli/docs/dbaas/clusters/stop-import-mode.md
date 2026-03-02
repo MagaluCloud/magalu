@@ -1,33 +1,19 @@
 ---
-sidebar_position: 0
+sidebar_position: 8
 ---
-# Clusters
+# Stop-Import-Mode
 
-Clusters management.
+Stops a import mode database cluster.
 
 ## Usage:
 ```
-mgc dbaas clusters [flags]
-mgc dbaas clusters [command]
-```
-
-## Commands:
-```
-create            Creates a new database high availability cluster.
-delete            Deletes a database cluster.
-get               Database cluster details.
-list              List all database clusters.
-resize            Resizes a cluster database.
-start             Starts a database cluster.
-start-import-mode Starts a import mode database cluster.
-stop              Stops a database cluster.
-stop-import-mode  Stops a import mode database cluster.
-update            Database cluster update.
+mgc dbaas clusters stop-import-mode [cluster-id] [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for clusters
+    --cluster-id uuid   Value referring to cluster Id. (required)
+-h, --help              help for stop-import-mode
 ```
 
 ## Global Flags:
@@ -39,8 +25,11 @@ update            Database cluster update.
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
+    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+    --server-url uri           Manually specify the server to use
 ```
 

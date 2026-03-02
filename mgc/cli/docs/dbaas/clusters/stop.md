@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 9
 ---
 # Stop
 
@@ -12,9 +12,8 @@ mgc dbaas clusters stop [cluster-id] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --cluster-id uuid               Value referring to cluster Id. (required)
--h, --help                          help for stop
+    --cluster-id uuid   Value referring to cluster Id. (required)
+-h, --help              help for stop
 ```
 
 ## Global Flags:
