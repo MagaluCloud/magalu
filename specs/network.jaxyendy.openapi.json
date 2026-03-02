@@ -2789,6 +2789,962 @@
                 }
             }
         },
+        "/v1/vpcs/{vpc_id}/route_table/routes": {
+            "get": {
+                "tags": [
+                    "vpcs"
+                ],
+                "summary": "List routes.",
+                "description": "List routes.",
+                "operationId": "list_routes_v1_vpcs__vpc_id__route_table_routes_get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "vpc_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Vpc Id"
+                        }
+                    },
+                    {
+                        "name": "zone",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "description": "Filter routes by availability zone.",
+                            "title": "Zone"
+                        },
+                        "description": "Filter routes by availability zone."
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "default": "description:asc",
+                            "title": "Sort"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "default": 1,
+                            "title": "Page"
+                        }
+                    },
+                    {
+                        "name": "items_per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1,
+                            "default": 10,
+                            "title": "Items Per Page"
+                        }
+                    },
+                    {
+                        "name": "x-tenant-id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Tenant id of the project",
+                            "title": "X-Tenant-Id"
+                        },
+                        "description": "Tenant id of the project"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RouteListResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request / Validation Error",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "https://problems-registry.smartbear.com/missing-body-property",
+                                    "status": 400,
+                                    "title": "Missing body property",
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Unauthorized",
+                                    "status": 401,
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Forbidden",
+                                    "status": 403,
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Not Found",
+                                    "status": 404,
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Resource Conflict",
+                                    "status": 409,
+                                    "detail": "Detail",
+                                    "instance": "/v1/path",
+                                    "code": "400-09",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Internal Server Error",
+                                    "status": 500,
+                                    "detail": "Detail",
+                                    "instance": "/v1/path",
+                                    "code": "500-09",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-viveiro": true,
+                "x-mgc-hidden": false
+            },
+            "post": {
+                "tags": [
+                    "vpcs"
+                ],
+                "summary": "Create a new route.",
+                "description": "Create a new route.",
+                "operationId": "create_route_v1_vpcs__vpc_id__route_table_routes_post",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "vpc_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Vpc Id"
+                        }
+                    },
+                    {
+                        "name": "x-tenant-id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Tenant id of the project",
+                            "title": "X-Tenant-Id"
+                        },
+                        "description": "Tenant id of the project"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RouteCreatePayload"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RouteCreateResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request / Validation Error",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "https://problems-registry.smartbear.com/missing-body-property",
+                                    "status": 400,
+                                    "title": "Missing body property",
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Unauthorized",
+                                    "status": 401,
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Forbidden",
+                                    "status": 403,
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Not Found",
+                                    "status": 404,
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Resource Conflict",
+                                    "status": 409,
+                                    "detail": "Detail",
+                                    "instance": "/v1/path",
+                                    "code": "400-09",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Internal Server Error",
+                                    "status": 500,
+                                    "detail": "Detail",
+                                    "instance": "/v1/path",
+                                    "code": "500-09",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-viveiro": true,
+                "x-mgc-hidden": false
+            }
+        },
+        "/v1/vpcs/{vpc_id}/route_table/routes/{route_id}": {
+            "delete": {
+                "tags": [
+                    "vpcs"
+                ],
+                "summary": "Delete route.",
+                "description": "Delete a route.",
+                "operationId": "delete_route_v1_vpcs__vpc_id__route_table_routes__route_id__delete",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "route_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Route Id"
+                        }
+                    },
+                    {
+                        "name": "vpc_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Vpc Id"
+                        }
+                    },
+                    {
+                        "name": "x-tenant-id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Tenant id of the project",
+                            "title": "X-Tenant-Id"
+                        },
+                        "description": "Tenant id of the project"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request / Validation Error",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "https://problems-registry.smartbear.com/missing-body-property",
+                                    "status": 400,
+                                    "title": "Missing body property",
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Unauthorized",
+                                    "status": 401,
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Forbidden",
+                                    "status": 403,
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Not Found",
+                                    "status": 404,
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Resource Conflict",
+                                    "status": 409,
+                                    "detail": "Detail",
+                                    "instance": "/v1/path",
+                                    "code": "400-09",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Internal Server Error",
+                                    "status": 500,
+                                    "detail": "Detail",
+                                    "instance": "/v1/path",
+                                    "code": "500-09",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-viveiro": true,
+                "x-mgc-hidden": false
+            },
+            "get": {
+                "tags": [
+                    "vpcs"
+                ],
+                "summary": "Detail a route.",
+                "description": "Detail a route.",
+                "operationId": "detail_route_v1_vpcs__vpc_id__route_table_routes__route_id__get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "route_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Route Id"
+                        }
+                    },
+                    {
+                        "name": "vpc_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Vpc Id"
+                        }
+                    },
+                    {
+                        "name": "x-tenant-id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Tenant id of the project",
+                            "title": "X-Tenant-Id"
+                        },
+                        "description": "Tenant id of the project"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RouteDetailsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request / Validation Error",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "https://problems-registry.smartbear.com/missing-body-property",
+                                    "status": 400,
+                                    "title": "Missing body property",
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Unauthorized",
+                                    "status": 401,
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Forbidden",
+                                    "status": 403,
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Not Found",
+                                    "status": 404,
+                                    "detail": "Detail",
+                                    "code": "400-09",
+                                    "instance": "/v1/path",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Resource Conflict",
+                                    "status": 409,
+                                    "detail": "Detail",
+                                    "instance": "/v1/path",
+                                    "code": "400-09",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/problem+json": {
+                                "example": {
+                                    "type": "about:blank",
+                                    "title": "Internal Server Error",
+                                    "status": 500,
+                                    "detail": "Detail",
+                                    "instance": "/v1/path",
+                                    "code": "500-09",
+                                    "errors": [
+                                        {
+                                            "detail": "Detail",
+                                            "pointer": "/name"
+                                        }
+                                    ]
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailsSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-viveiro": true,
+                "x-mgc-hidden": false
+            }
+        },
         "/v1/nat_gateways": {
             "get": {
                 "tags": [
@@ -3421,6 +4377,26 @@
                 ],
                 "title": "DhcpPoolStr"
             },
+            "ErrorDetailItemSchema": {
+                "properties": {
+                    "detail": {
+                        "type": "string",
+                        "title": "Detail",
+                        "description": "Description."
+                    },
+                    "pointer": {
+                        "type": "string",
+                        "title": "Pointer",
+                        "description": "Description."
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "detail",
+                    "pointer"
+                ],
+                "title": "ErrorDetailItemSchema"
+            },
             "HTTPValidationError": {
                 "properties": {
                     "detail": {
@@ -3814,6 +4790,122 @@
                     "total"
                 ],
                 "title": "PageModel"
+            },
+            "ProblemDetailsSchema": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "Type",
+                        "description": "Description.",
+                        "default": "about:blank",
+                        "examples": [
+                            "about:blank"
+                        ]
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title",
+                        "description": "Description."
+                    },
+                    "status": {
+                        "type": "integer",
+                        "title": "Status",
+                        "description": "Description."
+                    },
+                    "detail": {
+                        "type": "string",
+                        "title": "Detail",
+                        "description": "Description."
+                    },
+                    "instance": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Instance",
+                        "description": "Description."
+                    },
+                    "code": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Code",
+                        "description": "Description."
+                    },
+                    "errors": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/components/schemas/ErrorDetailItemSchema"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Errors",
+                        "description": "Description."
+                    },
+                    "resource_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Resource Id",
+                        "description": "Description."
+                    },
+                    "required_scopes": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Required Scopes",
+                        "description": "Description."
+                    }
+                },
+                "additionalProperties": true,
+                "type": "object",
+                "required": [
+                    "title",
+                    "status",
+                    "detail"
+                ],
+                "title": "ProblemDetailsSchema",
+                "example": {
+                    "code": "error-code",
+                    "detail": "Readable error detail",
+                    "errors": [
+                        {
+                            "detail": "Error detail",
+                            "pointer": "/field"
+                        }
+                    ],
+                    "instance": "/url/instance",
+                    "status": 400,
+                    "title": "Error Title",
+                    "type": "about:blank"
+                }
             },
             "PortCreateRequest": {
                 "properties": {
@@ -4222,6 +5314,237 @@
                             "status": "created",
                             "updated": "2022-01-01 00:00:00",
                             "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                        }
+                    ]
+                }
+            },
+            "RouteCreatePayload": {
+                "properties": {
+                    "cidr_destination": {
+                        "type": "string",
+                        "title": "Cidr Destination"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Description"
+                    },
+                    "port_id": {
+                        "type": "string",
+                        "format": "uuid4",
+                        "title": "Port Id"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "cidr_destination",
+                    "port_id"
+                ],
+                "title": "RouteCreatePayload",
+                "example": {
+                    "cidr_destination": "xxx.xxx.xxx.xxx/xx",
+                    "description": "Description text",
+                    "port_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                }
+            },
+            "RouteCreateResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid4",
+                        "title": "Id"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/Status"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "status"
+                ],
+                "title": "RouteCreateResponse",
+                "example": {
+                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "status": "pending"
+                }
+            },
+            "RouteDetailsResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid4",
+                        "title": "Id"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Description"
+                    },
+                    "cidr_destination": {
+                        "type": "string",
+                        "title": "Cidr Destination"
+                    },
+                    "next_hop": {
+                        "type": "string",
+                        "title": "Next Hop"
+                    },
+                    "vpc_id": {
+                        "type": "string",
+                        "format": "uuid4",
+                        "title": "Vpc Id"
+                    },
+                    "port_id": {
+                        "type": "string",
+                        "format": "uuid4",
+                        "title": "Port Id"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "cidr_destination",
+                    "next_hop",
+                    "vpc_id",
+                    "port_id",
+                    "status",
+                    "type"
+                ],
+                "title": "RouteDetailsResponse",
+                "example": {
+                    "cidr_destination": "192.168.1.1",
+                    "description": "description",
+                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "next_hop": "192.168.1.1",
+                    "port_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "status": "PROCESSING",
+                    "type": "default",
+                    "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                }
+            },
+            "RouteListItem": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid4",
+                        "title": "Id"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Description"
+                    },
+                    "cidr_destination": {
+                        "type": "string",
+                        "title": "Cidr Destination"
+                    },
+                    "port_id": {
+                        "type": "string",
+                        "format": "uuid4",
+                        "title": "Port Id"
+                    },
+                    "next_hop": {
+                        "type": "string",
+                        "title": "Next Hop"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "cidr_destination",
+                    "port_id",
+                    "next_hop",
+                    "status",
+                    "type"
+                ],
+                "title": "RouteListItem",
+                "example": {
+                    "cidr_destination": "192.168.1.1",
+                    "description": "description",
+                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "next_hop": "192.168.1.1",
+                    "port_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "status": "PROCESSING",
+                    "type": "default"
+                }
+            },
+            "RouteListResponse": {
+                "properties": {
+                    "meta": {
+                        "$ref": "#/components/schemas/Meta"
+                    },
+                    "result": {
+                        "items": {
+                            "$ref": "#/components/schemas/RouteListItem"
+                        },
+                        "type": "array",
+                        "title": "Result"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "meta",
+                    "result"
+                ],
+                "title": "RouteListResponse",
+                "example": {
+                    "meta": {
+                        "links": {
+                            "next": "?_offset=30\u0026_limit=10",
+                            "previous": "?_offset=10\u0026_limit=10",
+                            "self": "?_offset=20\u0026_limit=10"
+                        },
+                        "page": {
+                            "count": 10,
+                            "limit": 10,
+                            "max_items_per_page": 100,
+                            "offset": 20,
+                            "total": 112
+                        }
+                    },
+                    "result": [
+                        {
+                            "cidr_destination": "192.168.1.1",
+                            "description": "description",
+                            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                            "next_hop": "192.168.1.1",
+                            "port_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                            "status": "PROCESSING",
+                            "type": "default"
                         }
                     ]
                 }

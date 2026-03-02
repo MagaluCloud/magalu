@@ -1,31 +1,27 @@
 ---
 sidebar_position: 0
 ---
-# Vpcs
+# Routes
 
-Operations related to VPCs
+Operations related to VPCs | routes
 
 ## Usage:
 ```
-mgc network vpcs [flags]
-mgc network vpcs [command]
+mgc network vpcs route-table routes [flags]
+mgc network vpcs route-table routes [command]
 ```
 
 ## Commands:
 ```
-create      Create a new Virtual Private Cloud (VPC)
-delete      Delete VPC
-get         VPC Details
-list        List VPC
-ports       ports
-public-ips  public-ips
-route-table route-table
-subnets     subnets
+create      Create a new route.
+delete      Delete route.
+get         Detail a route.
+list        List routes.
 ```
 
 ## Flags:
 ```
--h, --help   help for vpcs
+-h, --help   help for routes
 ```
 
 ## Global Flags:
