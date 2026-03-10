@@ -48,7 +48,7 @@ jaxyendy:
       file: iam.jaxyendy.openapi.json
       menu: iam
       enabled: true
-    - url: http://127.0.0.1:8000/openapi.json
-      file: federation.local.openapi.json
+    - url: https://api.magalu.cloud/federation/openapi.json
+      file: federation.jaxyendy.openapi.json
       menu: federation
       enabled: true

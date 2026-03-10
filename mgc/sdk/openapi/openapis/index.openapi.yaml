@@ -25,7 +25,7 @@ modules:
       description: DBaaS API Product.
       summary: DBaaS API Product.
     - name: federation
-      url: http://127.0.0.1:8000/openapi.json
+      url: https://federation.jaxyendy.com/openapi.json
       path: federation.openapi.yaml
       version: 1.0.0
       description: ""

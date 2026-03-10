@@ -1,7 +1,9 @@
 openapi: 3.0.3
 info:
-    title: TRIA Federation - Local
+    title: TRIA Federation
     version: 1.0.0
+servers:
+-   url: http://127.0.0.1:8000
 paths:
     /api/v1/domains:
         get:
@@ -151,7 +153,6 @@ paths:
             tags:
             - Federations
             summary: Create Federation
-            description: Create a new Federation
             operationId: create_federation_api_v1_domains__domain_id__federations_post
             parameters:
             -   name: domain_id
@@ -286,7 +287,6 @@ paths:
             tags:
             - Federations
             summary: Create Federation
-            description: Create a new OIDC Federation
             operationId: create_federation_api_v1_domains__domain_id__federations_oidc_post
             parameters:
             -   name: domain_id
@@ -343,7 +343,6 @@ paths:
             tags:
             - Federations
             summary: Create Federation
-            description: Create a new SAML Federation
             operationId: create_federation_api_v1_domains__domain_id__federations_saml_post
             parameters:
             -   name: domain_id
@@ -435,6 +434,35 @@ paths:
             security:
             -   OAuth2:
                 - federation.read
+    /api/v1/authflow/validate:
+        post:
+            tags:
+            - Authentication Flow
+            summary: Validate Auth Flow Email
+            operationId: validate_auth_flow_email_api_v1_authflow_validate_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AuthFlowValidateDM'
+                required: true
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AuthFlowValidateResponseDM'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - federation.write
     /api/v1/authflow/oidc/callback:
         get:
             tags:
@@ -478,13 +506,8 @@ paths:
                     nullable: true
                     type: string
             responses:
-                '200':
+                '307':
                     description: Successful Response
-                    content:
-                        application/json:
-                            schema:
-                                title: Response Auth Flow Callback Api V1 Authflow
-                                    Oidc Callback Get
                 '422':
                     description: Validation Error
                     content:
@@ -495,6 +518,30 @@ paths:
             security:
             -   OAuth2:
                 - federation.read
+    /api/v1/authflow/saml/callback:
+        post:
+            tags:
+            - Authentication Flow
+            summary: Saml Callback
+            operationId: saml_callback_api_v1_authflow_saml_callback_post
+            requestBody:
+                content:
+                    application/x-www-form-urlencoded:
+                        schema:
+                            $ref: '#/components/schemas/Body_saml_callback_api_v1_authflow_saml_callback_post'
+            responses:
+                '307':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - federation.write
     /api/v1/authflow/pkey:
         get:
             tags:
@@ -507,22 +554,22 @@ paths:
                     content:
                         application/json:
                             schema:
-                                title: Response Public Key Api V1 Authflow Pkey Get
+                                $ref: '#/components/schemas/PKeyResponseDM'
             x-mgc-hidden: true
             security:
             -   OAuth2:
                 - federation.read
-    /api/v1/authflow/users/by-token:
+    /api/v1/authflow/users/by-code:
         post:
             tags:
             - Authentication Flow
-            summary: Get User By Token
-            operationId: get_user_by_token_api_v1_authflow_users_by_token_post
+            summary: Get User By Code
+            operationId: get_user_by_code_api_v1_authflow_users_by_code_post
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/LoggedUserTokenDM'
+                            $ref: '#/components/schemas/LoggedUserCodeDM'
                 required: true
             responses:
                 '200':
@@ -530,7 +577,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/LoggedUserDM'
+                                $ref: '#/components/schemas/LoggedUserJWTDM'
                 '422':
                     description: Validation Error
                     content:
@@ -541,8 +588,58 @@ paths:
             security:
             -   OAuth2:
                 - federation.write
+    /api/v1/healthcheck:
+        get:
+            tags:
+            - Healthcheck
+            summary: Healthcheck
+            operationId: healthcheck_api_v1_healthcheck_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - federation.read
 components:
     schemas:
+        AuthFlowValidateDM:
+            type: object
+            properties:
+                email:
+                    title: Email
+                    nullable: true
+                    type: string
+                    format: email
+                domain:
+                    title: Domain
+                    nullable: true
+                    type: string
+            title: AuthFlowValidateDM
+        AuthFlowValidateResponseDM:
+            type: object
+            properties:
+                federated:
+                    type: boolean
+                    title: Federated
+            title: AuthFlowValidateResponseDM
+            required:
+            - federated
+        Body_saml_callback_api_v1_authflow_saml_callback_post:
+            type: object
+            properties:
+                SAMLResponse:
+                    title: Samlresponse
+                    nullable: true
+                    type: string
+                RelayState:
+                    title: Relaystate
+                    nullable: true
+                    type: string
+            title: Body_saml_callback_api_v1_authflow_saml_callback_post
         DomainCollection:
             type: object
             properties:
@@ -651,61 +748,28 @@ components:
             example:
                 message: Unauthorized
                 slug: Unauthorized
-        LoggedUserDM:
+        LoggedUserCodeDM:
             type: object
             properties:
-                name:
+                code:
                     type: string
-                    title: Name
-                given_name:
-                    type: string
-                    title: Given Name
-                family_name:
-                    type: string
-                    title: Family Name
-                picture:
-                    type: string
-                    title: Picture
-                email:
-                    type: string
-                    title: Email
-                    format: email
-                external_sub:
-                    type: string
-                    title: External Sub
-                domain:
-                    type: string
-                    title: Domain
-                federation_name:
-                    type: string
-                    title: Federation Name
-                federation_id:
-                    type: string
-                    title: Federation Id
-            title: LoggedUserDM
-            required:
-            - name
-            - given_name
-            - family_name
-            - picture
-            - email
-            - external_sub
-            - domain
-            - federation_name
-            - federation_id
-        LoggedUserTokenDM:
-            type: object
-            properties:
-                token:
-                    type: string
-                    title: Token
+                    title: Code
                 seed:
                     type: string
                     title: Seed
-            title: LoggedUserTokenDM
+            title: LoggedUserCodeDM
             required:
-            - token
+            - code
             - seed
+        LoggedUserJWTDM:
+            type: object
+            properties:
+                jwt:
+                    type: string
+                    title: Jwt
+            title: LoggedUserJWTDM
+            required:
+            - jwt
         OIDCFederationResource:
             type: object
             properties:
@@ -830,15 +894,41 @@ components:
                     nullable: true
                     type: string
             title: OIDCFederationResourceEdit
+        PKeyResponseDM:
+            type: object
+            properties:
+                kty:
+                    type: string
+                    title: Kty
+                use:
+                    type: string
+                    title: Use
+                alg:
+                    type: string
+                    title: Alg
+                kid:
+                    type: string
+                    title: Kid
+                n:
+                    type: string
+                    title: N
+                e:
+                    type: string
+                    title: E
+            title: PKeyResponseDM
+            required:
+            - kty
+            - use
+            - alg
+            - kid
+            - n
+            - e
         SAMLFederationResource:
             type: object
             properties:
                 name:
                     type: string
                     title: Name
-                idp_sha1_fingerprint:
-                    type: string
-                    title: Idp Sha1 Fingerprint
                 id:
                     type: string
                     title: Id
@@ -854,27 +944,46 @@ components:
                 type:
                     type: string
                     title: Type
+                idp_certificate:
+                    type: string
+                    title: Idp Certificate
+                idp_sha1_fingerprint:
+                    type: string
+                    title: Idp Sha1 Fingerprint
+                entity_id:
+                    type: string
+                    title: Entity Id
+                sso_url:
+                    type: string
+                    title: Sso Url
             title: SAMLFederationResource
             required:
             - name
-            - idp_sha1_fingerprint
             - type
+            - idp_certificate
+            - idp_sha1_fingerprint
+            - entity_id
+            - sso_url
         SAMLFederationResourceCreate:
             type: object
             properties:
                 name:
                     type: string
                     title: Name
-                idp_sha1_fingerprint:
+                entity_id:
                     type: string
-                    title: Idp Sha1 Fingerprint
+                    title: Entity Id
+                sso_url:
+                    type: string
+                    title: Sso Url
                 idp_certificate:
                     type: string
                     title: Idp Certificate
             title: SAMLFederationResourceCreate
             required:
             - name
-            - idp_sha1_fingerprint
+            - entity_id
+            - sso_url
             - idp_certificate
         SAMLFederationResourceEdit:
             type: object
@@ -883,12 +992,16 @@ components:
                     title: Name
                     nullable: true
                     type: string
-                idp_sha1_fingerprint:
-                    title: Idp Sha1 Fingerprint
-                    nullable: true
-                    type: string
                 idp_certificate:
                     title: Idp Certificate
+                    nullable: true
+                    type: string
+                entity_id:
+                    title: Entity Id
+                    nullable: true
+                    type: string
+                sso_url:
+                    title: Sso Url
                     nullable: true
                     type: string
             title: SAMLFederationResourceEdit
@@ -920,6 +1033,4 @@ tags:
     description: Manage domains.
 -   name: Federations
     description: Manage federations.
-$id: http://127.0.0.1:8000/openapi.json
-servers:
--   url: http://127.0.0.1:8000
+$id: https://federation.jaxyendy.com/openapi.json
