@@ -24,6 +24,12 @@ modules:
       version: 2.21.2
       description: DBaaS API Product.
       summary: DBaaS API Product.
+    - name: domains
+      url: https://federation.jaxyendy.com/openapi.json
+      path: domains.openapi.yaml
+      version: 1.0.0
+      description: Domains API Product.
+      summary: Domains API Product.
     - name: iam
       url: https://iam.jaxyendy.com/openapi.json
       path: iam.openapi.yaml

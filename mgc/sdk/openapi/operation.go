@@ -1,7 +1,9 @@
 package openapi
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -478,7 +480,48 @@ func (o *operation) buildRequestFromParams(
 	}
 
 	o.configureRequest(req, configs)
+
+	requestBody = updateBody(o, req, requestBody)
+
 	return
+}
+
+func updateBody(o *operation, req *http.Request, requestBody any) any {
+	optionsToUpdate := map[string]string{
+		"/api/v1/domains/{domain_id}/federations/{federation_id}": http.MethodPatch,
+		"/api/v1/domains/{domain_id}/federations":                 http.MethodPost,
+	}
+
+	shouldUpdateBody := false
+
+	for key, method := range optionsToUpdate {
+		if o.key == key && method == o.method {
+			shouldUpdateBody = true
+			break
+		}
+	}
+
+	if shouldUpdateBody {
+		if bodyMap, ok := requestBody.(map[string]any); ok {
+			var newBody any
+			if oidc, ok := bodyMap["oidc"]; ok && oidc != nil {
+				newBody = oidc
+			} else if saml, ok := bodyMap["saml"]; ok && saml != nil {
+				newBody = saml
+			}
+
+			if newBody != nil {
+				bodyBuf := new(bytes.Buffer)
+				if err := json.NewEncoder(bodyBuf).Encode(newBody); err == nil {
+					req.Body = io.NopCloser(bodyBuf)
+					req.ContentLength = int64(bodyBuf.Len())
+					requestBody = newBody
+				}
+			}
+		}
+	}
+
+	return requestBody
 }
 
 func (o *operation) forEachSecurityRequirement(cb func(scheme string, scopes []string) (run bool, err error)) (finished bool, err error) {

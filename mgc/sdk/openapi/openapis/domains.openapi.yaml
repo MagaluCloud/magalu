@@ -1,0 +1,1048 @@
+openapi: 3.0.3
+info:
+    title: Domains
+    description: Domains API Product.
+    version: 1.0.0
+servers:
+-   url: https://{env}/domains
+    variables:
+        env:
+            description: Environment to use
+            default: api.magalu.cloud
+            enum:
+            - api.magalu.cloud
+            - api.pre-prod.jaxyendy.com
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: api.magalu.cloud
+                -   from: pre-prod
+                    to: api.pre-prod.jaxyendy.com
+paths:
+    /api/v1/domains:
+        get:
+            summary: List domains
+            operationId: read_domain_collection_api_v1_domains_get
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: verified
+                in: query
+                required: false
+                schema:
+                    title: Verified
+                    nullable: true
+                    type: boolean
+            -   name: offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    default: 0
+                    title: Offset
+            -   name: limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 100
+                    default: 50
+                    title: Limit
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DomainCollection'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        post:
+            summary: Create domain
+            description: Add new domain
+            operationId: create_domain_api_v1_domains_post
+            security:
+            -   HTTPBearer: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/DomainDM'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DomainResource'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /api/v1/domains/{domain_id}:
+        put:
+            summary: Verify domain
+            operationId: edit_federation_resource_api_v1_domains__domain_id__put
+            x-cli-name: verify
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: domain_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Domain Id
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DomainResource'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /api/v1/domains/{domain_id}/federations:
+        get:
+            tags:
+            - Federations
+            summary: List federations
+            operationId: read_federation_collection_api_v1_domains__domain_id__federations_get
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: domain_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Domain Id
+            -   name: offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    default: 0
+                    title: Offset
+            -   name: limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 100
+                    default: 50
+                    title: Limit
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FederationCollection'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        post:
+            tags:
+            - Federations
+            summary: Create federation
+            operationId: create_federation_api_v1_domains__domain_id__federations_post
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: domain_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Domain Id
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                oidc:
+                                    $ref: '#/components/schemas/OIDCFederationResourceEdit'
+                                saml:
+                                    $ref: '#/components/schemas/SAMLFederationResourceEdit'
+                            title: Fed In
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                anyOf:
+                                -   $ref: '#/components/schemas/OIDCFederationResource'
+                                -   $ref: '#/components/schemas/SAMLFederationResource'
+                                title: Response Create Federation Api V1 Domains  Domain
+                                    Id  Federations Post
+                    links:
+                        list:
+                            operationId: read_federation_collection_api_v1_domains__domain_id__federations_get
+                            description: List federations
+                            parameters:
+                                domain_id: $request.path.domain_id
+                        update:
+                            operationId: edit_federation_resource_api_v1_domains__domain_id__federations__federation_id__patch
+                            description: Edit federation resource
+                            parameters:
+                                domain_id: $request.path.domain_id
+                        oidc:
+                            operationId: create_federation_api_v1_domains__domain_id__federations_oidc_post
+                            description: Create federation
+                            parameters:
+                                domain_id: $request.path.domain_id
+                        saml:
+                            operationId: create_federation_api_v1_domains__domain_id__federations_saml_post
+                            description: Create federation
+                            parameters:
+                                domain_id: $request.path.domain_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-mgc-hidden: true
+    /api/v1/domains/{domain_id}/federations/{federation_id}:
+        patch:
+            tags:
+            - Federations
+            summary: Edit federation resource
+            operationId: edit_federation_resource_api_v1_domains__domain_id__federations__federation_id__patch
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: domain_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Domain Id
+            -   name: federation_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Federation Id
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                oidc:
+                                    $ref: '#/components/schemas/OIDCFederationResourceEdit'
+                                saml:
+                                    $ref: '#/components/schemas/SAMLFederationResourceEdit'
+                            title: Fed In
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                anyOf:
+                                -   $ref: '#/components/schemas/OIDCFederationResource'
+                                -   $ref: '#/components/schemas/SAMLFederationResource'
+                                title: Response Edit Federation Resource Api V1 Domains  Domain
+                                    Id  Federations  Federation Id  Patch
+                    links:
+                        list:
+                            operationId: read_federation_collection_api_v1_domains__domain_id__federations_get
+                            description: List federations
+                            parameters:
+                                domain_id: $request.path.domain_id
+                        create:
+                            operationId: create_federation_api_v1_domains__domain_id__federations_post
+                            description: Create federation
+                            parameters:
+                                domain_id: $request.path.domain_id
+                        oidc:
+                            operationId: create_federation_api_v1_domains__domain_id__federations_oidc_post
+                            description: Create federation
+                            parameters:
+                                domain_id: $request.path.domain_id
+                        saml:
+                            operationId: create_federation_api_v1_domains__domain_id__federations_saml_post
+                            description: Create federation
+                            parameters:
+                                domain_id: $request.path.domain_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /api/v1/domains/{domain_id}/federations/oidc:
+        post:
+            tags:
+            - Federations
+            summary: Create federation
+            operationId: create_federation_api_v1_domains__domain_id__federations_oidc_post
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: domain_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Domain Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/OIDCFederationResourceCreate'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/OIDCFederationResource'
+                    links:
+                        list:
+                            operationId: read_federation_collection_api_v1_domains__domain_id__federations_get
+                            description: List federations
+                            parameters:
+                                domain_id: $request.path.domain_id
+                        create:
+                            operationId: create_federation_api_v1_domains__domain_id__federations_post
+                            description: Create federation
+                            parameters:
+                                domain_id: $request.path.domain_id
+                        update:
+                            operationId: edit_federation_resource_api_v1_domains__domain_id__federations__federation_id__patch
+                            description: Edit federation resource
+                            parameters:
+                                domain_id: $request.path.domain_id
+                        saml:
+                            operationId: create_federation_api_v1_domains__domain_id__federations_saml_post
+                            description: Create federation
+                            parameters:
+                                domain_id: $request.path.domain_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /api/v1/domains/{domain_id}/federations/saml:
+        post:
+            tags:
+            - Federations
+            summary: Create federation
+            operationId: create_federation_api_v1_domains__domain_id__federations_saml_post
+            security:
+            -   HTTPBearer: []
+            parameters:
+            -   name: domain_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Domain Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SAMLFederationResourceCreate'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SAMLFederationResource'
+                    links:
+                        list:
+                            operationId: read_federation_collection_api_v1_domains__domain_id__federations_get
+                            description: List federations
+                            parameters:
+                                domain_id: $request.path.domain_id
+                        create:
+                            operationId: create_federation_api_v1_domains__domain_id__federations_post
+                            description: Create federation
+                            parameters:
+                                domain_id: $request.path.domain_id
+                        update:
+                            operationId: edit_federation_resource_api_v1_domains__domain_id__federations__federation_id__patch
+                            description: Edit federation resource
+                            parameters:
+                                domain_id: $request.path.domain_id
+                        oidc:
+                            operationId: create_federation_api_v1_domains__domain_id__federations_oidc_post
+                            description: Create federation
+                            parameters:
+                                domain_id: $request.path.domain_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /api/v1/authflow:
+        get:
+            tags:
+            - Authentication-Flow
+            summary: Start Auth Flow
+            operationId: start_auth_flow_api_v1_authflow_get
+            parameters:
+            -   name: email
+                in: query
+                required: true
+                schema:
+                    type: string
+                    format: email
+                    title: Email
+            -   name: verifier
+                in: query
+                required: true
+                schema:
+                    type: string
+                    title: Verifier
+            -   name: federation_id
+                in: query
+                required: false
+                schema:
+                    title: Federation Id
+                    nullable: true
+                    type: string
+            responses:
+                '307':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - domains.read
+    /api/v1/authflow/validate:
+        post:
+            tags:
+            - Authentication-Flow
+            summary: Validate Auth Flow Email
+            operationId: validate_auth_flow_email_api_v1_authflow_validate_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AuthFlowValidateDM'
+                required: true
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AuthFlowValidateResponseDM'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - domains.write
+    /api/v1/authflow/oidc/callback:
+        get:
+            tags:
+            - Authentication-Flow
+            summary: Auth Flow Callback
+            operationId: auth_flow_callback_api_v1_authflow_oidc_callback_get
+            parameters:
+            -   name: state
+                in: query
+                required: false
+                schema:
+                    title: State
+                    nullable: true
+                    type: string
+            -   name: code
+                in: query
+                required: false
+                schema:
+                    title: Code
+                    nullable: true
+                    type: string
+            -   name: scope
+                in: query
+                required: false
+                schema:
+                    title: Scope
+                    nullable: true
+                    type: string
+            -   name: authuser
+                in: query
+                required: false
+                schema:
+                    title: Authuser
+                    nullable: true
+                    type: string
+            -   name: prompt
+                in: query
+                required: false
+                schema:
+                    title: Prompt
+                    nullable: true
+                    type: string
+            responses:
+                '307':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - domains.read
+    /api/v1/authflow/saml/callback:
+        post:
+            tags:
+            - Authentication-Flow
+            summary: Saml Callback
+            operationId: saml_callback_api_v1_authflow_saml_callback_post
+            requestBody:
+                content:
+                    application/x-www-form-urlencoded:
+                        schema:
+                            $ref: '#/components/schemas/Body_saml_callback_api_v1_authflow_saml_callback_post'
+            responses:
+                '307':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - domains.write
+    /api/v1/authflow/pkey:
+        get:
+            tags:
+            - Authentication-Flow
+            summary: Public Key
+            operationId: public_key_api_v1_authflow_pkey_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/PKeyResponseDM'
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - domains.read
+    /api/v1/authflow/users/by-code:
+        post:
+            tags:
+            - Authentication-Flow
+            summary: Get User By Code
+            operationId: get_user_by_code_api_v1_authflow_users_by_code_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LoggedUserCodeDM'
+                required: true
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LoggedUserJWTDM'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - domains.write
+    /api/v1/healthcheck:
+        get:
+            tags:
+            - Healthcheck
+            summary: Healthcheck
+            operationId: healthcheck_api_v1_healthcheck_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+            x-mgc-hidden: true
+            security:
+            -   OAuth2:
+                - domains.read
+components:
+    schemas:
+        AuthFlowValidateDM:
+            properties:
+                email:
+                    title: Email
+                    nullable: true
+                    type: string
+                    format: email
+                domain:
+                    title: Domain
+                    nullable: true
+                    type: string
+            type: object
+            title: AuthFlowValidateDM
+        AuthFlowValidateResponseDM:
+            properties:
+                federated:
+                    type: boolean
+                    title: Federated
+            type: object
+            required:
+            - federated
+            title: AuthFlowValidateResponseDM
+        Body_saml_callback_api_v1_authflow_saml_callback_post:
+            properties:
+                SAMLResponse:
+                    title: Samlresponse
+                    nullable: true
+                    type: string
+                RelayState:
+                    title: Relaystate
+                    nullable: true
+                    type: string
+            type: object
+            title: Body_saml_callback_api_v1_authflow_saml_callback_post
+        DomainCollection:
+            properties:
+                data:
+                    items:
+                        $ref: '#/components/schemas/DomainResource'
+                    type: array
+                    title: Data
+                offset:
+                    type: integer
+                    title: Offset
+                limit:
+                    type: integer
+                    title: Limit
+                count:
+                    type: integer
+                    title: Count
+            type: object
+            required:
+            - data
+            - offset
+            - limit
+            - count
+            title: DomainCollection
+        DomainDM:
+            properties:
+                domain:
+                    type: string
+                    title: Domain
+            type: object
+            required:
+            - domain
+            title: DomainDM
+        DomainResource:
+            properties:
+                domain:
+                    type: string
+                    title: Domain
+                id:
+                    type: string
+                    format: uuid
+                    title: Id
+                created_at:
+                    type: string
+                    format: date-time
+                    title: Created At
+                updated_at:
+                    type: string
+                    format: date-time
+                    title: Updated At
+                txt_name:
+                    type: string
+                    title: Txt Name
+                txt_value:
+                    type: string
+                    title: Txt Value
+                verified:
+                    type: boolean
+                    title: Verified
+                    default: false
+                verified_at:
+                    title: Verified At
+                    nullable: true
+                    type: string
+                    format: date-time
+            type: object
+            required:
+            - domain
+            - txt_name
+            - txt_value
+            title: DomainResource
+        FederationCollection:
+            properties:
+                data:
+                    items:
+                        anyOf:
+                        -   $ref: '#/components/schemas/OIDCFederationResource'
+                        -   $ref: '#/components/schemas/SAMLFederationResource'
+                    type: array
+                    title: Data
+                offset:
+                    type: integer
+                    title: Offset
+                limit:
+                    type: integer
+                    title: Limit
+                count:
+                    type: integer
+                    title: Count
+            type: object
+            required:
+            - data
+            - offset
+            - limit
+            - count
+            title: FederationCollection
+        HTTPValidationError:
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            type: object
+            title: HTTPValidationError
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        LoggedUserCodeDM:
+            properties:
+                code:
+                    type: string
+                    title: Code
+                seed:
+                    type: string
+                    title: Seed
+            type: object
+            required:
+            - code
+            - seed
+            title: LoggedUserCodeDM
+        LoggedUserJWTDM:
+            properties:
+                jwt:
+                    type: string
+                    title: Jwt
+            type: object
+            required:
+            - jwt
+            title: LoggedUserJWTDM
+        OIDCFederationResource:
+            properties:
+                name:
+                    type: string
+                    title: Name
+                client_id:
+                    type: string
+                    title: Client Id
+                scopes:
+                    items:
+                        type: string
+                    type: array
+                    title: Scopes
+                authorization_endpoint:
+                    type: string
+                    title: Authorization Endpoint
+                token_endpoint:
+                    type: string
+                    title: Token Endpoint
+                userinfo_endpoint:
+                    type: string
+                    title: Userinfo Endpoint
+                jwks_uri:
+                    type: string
+                    title: Jwks Uri
+                id:
+                    type: string
+                    format: uuid
+                    title: Id
+                created_at:
+                    type: string
+                    format: date-time
+                    title: Created At
+                updated_at:
+                    type: string
+                    format: date-time
+                    title: Updated At
+                type:
+                    type: string
+                    title: Type
+            type: object
+            required:
+            - name
+            - client_id
+            - scopes
+            - authorization_endpoint
+            - token_endpoint
+            - userinfo_endpoint
+            - jwks_uri
+            - type
+            title: OIDCFederationResource
+        OIDCFederationResourceCreate:
+            properties:
+                name:
+                    type: string
+                    title: Name
+                client_id:
+                    type: string
+                    title: Client Id
+                scopes:
+                    items:
+                        type: string
+                    type: array
+                    title: Scopes
+                authorization_endpoint:
+                    type: string
+                    title: Authorization Endpoint
+                token_endpoint:
+                    type: string
+                    title: Token Endpoint
+                userinfo_endpoint:
+                    type: string
+                    title: Userinfo Endpoint
+                jwks_uri:
+                    type: string
+                    title: Jwks Uri
+                client_secret:
+                    type: string
+                    title: Client Secret
+            type: object
+            required:
+            - name
+            - client_id
+            - scopes
+            - authorization_endpoint
+            - token_endpoint
+            - userinfo_endpoint
+            - jwks_uri
+            - client_secret
+            title: OIDCFederationResourceCreate
+        OIDCFederationResourceEdit:
+            properties:
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                client_id:
+                    title: Client Id
+                    nullable: true
+                    type: string
+                client_secret:
+                    title: Client Secret
+                    nullable: true
+                    type: string
+                scopes:
+                    title: Scopes
+                    nullable: true
+                    items:
+                        type: string
+                    type: array
+                authorization_endpoint:
+                    title: Authorization Endpoint
+                    nullable: true
+                    type: string
+                token_endpoint:
+                    title: Token Endpoint
+                    nullable: true
+                    type: string
+                jwks_uri:
+                    title: Jwks Uri
+                    nullable: true
+                    type: string
+            type: object
+            title: OIDCFederationResourceEdit
+        PKeyResponseDM:
+            properties:
+                kty:
+                    type: string
+                    title: Kty
+                use:
+                    type: string
+                    title: Use
+                alg:
+                    type: string
+                    title: Alg
+                kid:
+                    type: string
+                    title: Kid
+                n:
+                    type: string
+                    title: N
+                e:
+                    type: string
+                    title: E
+            type: object
+            required:
+            - kty
+            - use
+            - alg
+            - kid
+            - n
+            - e
+            title: PKeyResponseDM
+        SAMLFederationResource:
+            properties:
+                name:
+                    type: string
+                    title: Name
+                id:
+                    type: string
+                    format: uuid
+                    title: Id
+                created_at:
+                    type: string
+                    format: date-time
+                    title: Created At
+                updated_at:
+                    type: string
+                    format: date-time
+                    title: Updated At
+                type:
+                    type: string
+                    title: Type
+                idp_certificate:
+                    type: string
+                    title: Idp Certificate
+                idp_sha1_fingerprint:
+                    type: string
+                    title: Idp Sha1 Fingerprint
+                entity_id:
+                    type: string
+                    title: Entity Id
+                sso_url:
+                    type: string
+                    title: Sso Url
+            type: object
+            required:
+            - name
+            - type
+            - idp_certificate
+            - idp_sha1_fingerprint
+            - entity_id
+            - sso_url
+            title: SAMLFederationResource
+        SAMLFederationResourceCreate:
+            properties:
+                name:
+                    type: string
+                    title: Name
+                entity_id:
+                    type: string
+                    title: Entity Id
+                sso_url:
+                    type: string
+                    title: Sso Url
+                idp_certificate:
+                    type: string
+                    title: Idp Certificate
+            type: object
+            required:
+            - name
+            - entity_id
+            - sso_url
+            - idp_certificate
+            title: SAMLFederationResourceCreate
+        SAMLFederationResourceEdit:
+            properties:
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                idp_certificate:
+                    title: Idp Certificate
+                    nullable: true
+                    type: string
+                entity_id:
+                    title: Entity Id
+                    nullable: true
+                    type: string
+                sso_url:
+                    title: Sso Url
+                    nullable: true
+                    type: string
+            type: object
+            title: SAMLFederationResourceEdit
+        ValidationError:
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            type: object
+            required:
+            - loc
+            - msg
+            - type
+            title: ValidationError
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+    securitySchemes:
+        HTTPBearer:
+            type: http
+            scheme: bearer
+tags:
+-   name: Authentication-Flow
+    x-mgc-hidden: true
+-   name: Federations
+    description: Manage federations.
+$id: https://federation.jaxyendy.com/openapi.json
