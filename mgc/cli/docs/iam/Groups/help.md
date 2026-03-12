@@ -1,18 +1,30 @@
 ---
 sidebar_position: 0
 ---
-# Healthcheck
+# Groups
 
-Endpoints para verificação de status e saúde do serviço.
+Groups management.
 
 ## Usage:
 ```
-mgc iam healthcheck [flags]
+mgc iam groups [flags]
+mgc iam groups [command]
+```
+
+## Commands:
+```
+create       Create group
+delete       Delete group
+get          Get group by ID
+get-by-email Get group by email
+members      members
+migrate      Migrate group
+update       Update group
 ```
 
 ## Flags:
 ```
--h, --help   help for healthcheck
+-h, --help   help for groups
 ```
 
 ## Global Flags:

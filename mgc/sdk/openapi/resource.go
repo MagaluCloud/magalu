@@ -60,15 +60,25 @@ func collectOperations(
 				continue
 			}
 
-			if !slices.Contains(op.Tags, tag.Name) {
-				continue
+			if tag != nil {
+				if !slices.Contains(op.Tags, tag.Name) {
+					continue
+				}
+			} else {
+				if len(op.Tags) > 0 {
+					continue
+				}
 			}
 
 			descs = append(descs, &operationDesc{path, op, method, key})
 		}
 	}
 
-	return newOperationTable(tag.Name, descs)
+	tagName := ""
+	if tag != nil {
+		tagName = tag.Name
+	}
+	return newOperationTable(tagName, descs)
 }
 
 func collectResourceChildren(
