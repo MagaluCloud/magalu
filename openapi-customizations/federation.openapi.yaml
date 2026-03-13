@@ -5,4 +5,18 @@
 # such as "x-mgc-name" or "x-mgc-description"
 
 servers:
--   url: http://127.0.0.1:8000
+-   url: https://{env}/federation
+    variables:
+        env:
+            description: Environment to use
+            default: api.magalu.cloud
+            enum:
+            - api.magalu.cloud
+            - api.mgc-federation.pre-prod.mgc.br-se1.jaxyendy.com
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: api.magalu.cloud
+                -   from: pre-prod
+                    to: api.mgc-federation.pre-prod.mgc.br-se1.jaxyendy.com
