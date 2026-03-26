@@ -1945,6 +1945,626 @@ paths:
             x-permission:
                 permission-name: net_vpc_subnet_create
                 product-name: network
+    /v1/vpcs/{vpc_id}/route_table/routes:
+        get:
+            tags:
+            - vpcs
+            summary: List routes.
+            description: List routes.
+            operationId: list_routes_v1_vpcs__vpc_id__route_table_routes_get
+            security:
+            -   OAuth2:
+                - network.read
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Vpc Id
+            -   name: zone
+                in: query
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Zone
+                    description: Filter routes by availability zone.
+                    nullable: true
+                description: Filter routes by availability zone.
+            -   name: sort
+                in: query
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Sort
+                    default: description:asc
+                    nullable: true
+            -   name: page
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    title: Page
+                    minimum: 1
+                    default: 1
+            -   name: items_per_page
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    title: Items Per Page
+                    maximum: 100
+                    minimum: 1
+                    default: 10
+            responses:
+                '200':
+                    description: Ok
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RouteListResponse'
+                '400':
+                    description: Bad Request / Validation Error
+                    content:
+                        application/problem+json:
+                            example:
+                                type: https://problems-registry.smartbear.com/missing-body-property
+                                status: 400
+                                title: Missing body property
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Unauthorized
+                                status: 401
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Forbidden
+                                status: 403
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '404':
+                    description: Not Found
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Not Found
+                                status: 404
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '409':
+                    description: Conflict
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Resource Conflict
+                                status: 409
+                                detail: Detail
+                                instance: /v1/path
+                                code: 400-09
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Internal Server Error
+                                status: 500
+                                detail: Detail
+                                instance: /v1/path
+                                code: 500-09
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-hidden: false
+        post:
+            tags:
+            - vpcs
+            summary: Create a new route.
+            description: Create a new route.
+            operationId: create_route_v1_vpcs__vpc_id__route_table_routes_post
+            security:
+            -   OAuth2:
+                - network.write
+            parameters:
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Vpc Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RouteCreatePayload'
+            responses:
+                '202':
+                    description: Accepted
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RouteCreateResponse'
+                    links:
+                        list:
+                            operationId: list_routes_v1_vpcs__vpc_id__route_table_routes_get
+                            description: List routes.
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        get:
+                            operationId: detail_route_v1_vpcs__vpc_id__route_table_routes__route_id__get
+                            description: Detail a route.
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        delete:
+                            operationId: delete_route_v1_vpcs__vpc_id__route_table_routes__route_id__delete
+                            description: Delete route.
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                '400':
+                    description: Bad Request / Validation Error
+                    content:
+                        application/problem+json:
+                            example:
+                                type: https://problems-registry.smartbear.com/missing-body-property
+                                status: 400
+                                title: Missing body property
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Unauthorized
+                                status: 401
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Forbidden
+                                status: 403
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '404':
+                    description: Not Found
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Not Found
+                                status: 404
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '409':
+                    description: Conflict
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Resource Conflict
+                                status: 409
+                                detail: Detail
+                                instance: /v1/path
+                                code: 400-09
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Internal Server Error
+                                status: 500
+                                detail: Detail
+                                instance: /v1/path
+                                code: 500-09
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-hidden: false
+    /v1/vpcs/{vpc_id}/route_table/routes/{route_id}:
+        delete:
+            tags:
+            - vpcs
+            summary: Delete route.
+            description: Delete a route.
+            operationId: delete_route_v1_vpcs__vpc_id__route_table_routes__route_id__delete
+            security:
+            -   OAuth2:
+                - network.write
+            parameters:
+            -   name: route_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Route Id
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Vpc Id
+            responses:
+                '202':
+                    description: Accepted
+                    content:
+                        application/json:
+                            schema: {}
+                '400':
+                    description: Bad Request / Validation Error
+                    content:
+                        application/problem+json:
+                            example:
+                                type: https://problems-registry.smartbear.com/missing-body-property
+                                status: 400
+                                title: Missing body property
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Unauthorized
+                                status: 401
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Forbidden
+                                status: 403
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '404':
+                    description: Not Found
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Not Found
+                                status: 404
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '409':
+                    description: Conflict
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Resource Conflict
+                                status: 409
+                                detail: Detail
+                                instance: /v1/path
+                                code: 400-09
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Internal Server Error
+                                status: 500
+                                detail: Detail
+                                instance: /v1/path
+                                code: 500-09
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-hidden: false
+        get:
+            tags:
+            - vpcs
+            summary: Detail a route.
+            description: Detail a route.
+            operationId: detail_route_v1_vpcs__vpc_id__route_table_routes__route_id__get
+            security:
+            -   OAuth2:
+                - network.read
+            parameters:
+            -   name: route_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Route Id
+            -   name: vpc_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Vpc Id
+            responses:
+                '200':
+                    description: Ok
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RouteDetailsResponse'
+                    links:
+                        list:
+                            operationId: list_routes_v1_vpcs__vpc_id__route_table_routes_get
+                            description: List routes.
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        create:
+                            operationId: create_route_v1_vpcs__vpc_id__route_table_routes_post
+                            description: Create a new route.
+                            parameters:
+                                vpc_id: $request.path.vpc_id
+                        delete:
+                            operationId: delete_route_v1_vpcs__vpc_id__route_table_routes__route_id__delete
+                            description: Delete route.
+                            parameters:
+                                route_id: $request.path.route_id
+                                vpc_id: $request.path.vpc_id
+                '400':
+                    description: Bad Request / Validation Error
+                    content:
+                        application/problem+json:
+                            example:
+                                type: https://problems-registry.smartbear.com/missing-body-property
+                                status: 400
+                                title: Missing body property
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Unauthorized
+                                status: 401
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Forbidden
+                                status: 403
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '404':
+                    description: Not Found
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Not Found
+                                status: 404
+                                detail: Detail
+                                code: 400-09
+                                instance: /v1/path
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '409':
+                    description: Conflict
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Resource Conflict
+                                status: 409
+                                detail: Detail
+                                instance: /v1/path
+                                code: 400-09
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '500':
+                    description: Internal Server Error
+                    content:
+                        application/problem+json:
+                            example:
+                                type: about:blank
+                                title: Internal Server Error
+                                status: 500
+                                detail: Detail
+                                instance: /v1/path
+                                code: 500-09
+                                errors:
+                                -   detail: Detail
+                                    pointer: /name
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProblemDetailsSchema'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            x-viveiro: true
+            x-mgc-hidden: false
     /v1/nat_gateways:
         get:
             tags:
@@ -2321,6 +2941,22 @@ components:
             required:
             - start
             - end
+        ErrorDetailItemSchema:
+            type: object
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            title: ErrorDetailItemSchema
+            required:
+            - detail
+            - pointer
+            example:
+                message: Unauthorized
+                slug: Unauthorized
         HTTPValidationError:
             type: object
             properties:
@@ -2797,6 +3433,89 @@ components:
             required:
             - count
             - total
+        ProblemDetailsSchema:
+            type: object
+            properties:
+                type:
+                    type: string
+                    title: Type
+                    description: Description.
+                    default: about:blank
+                    example: about:blank
+                title:
+                    type: string
+                    title: Title
+                    description: Description.
+                status:
+                    type: integer
+                    title: Status
+                    description: Description.
+                detail:
+                    type: string
+                    title: Detail
+                    description: Description.
+                instance:
+                    anyOf:
+                    -   type: string
+                    title: Instance
+                    description: Description.
+                    nullable: true
+                code:
+                    anyOf:
+                    -   type: string
+                    title: Code
+                    description: Description.
+                    nullable: true
+                errors:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: object
+                            properties:
+                                detail:
+                                    type: string
+                                    title: Detail
+                                    description: Description.
+                                pointer:
+                                    type: string
+                                    title: Pointer
+                                    description: Description.
+                            title: ErrorDetailItemSchema
+                            required:
+                            - detail
+                            - pointer
+                    title: Errors
+                    description: Description.
+                    nullable: true
+                resource_id:
+                    anyOf:
+                    -   type: string
+                    title: Resource Id
+                    description: Description.
+                    nullable: true
+                required_scopes:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
+                    title: Required Scopes
+                    description: Description.
+                    nullable: true
+            title: ProblemDetailsSchema
+            required:
+            - title
+            - status
+            - detail
+            example:
+                code: error-code
+                detail: Readable error detail
+                errors:
+                -   detail: Error detail
+                    pointer: /field
+                instance: /url/instance
+                status: 400
+                title: Error Title
+                type: about:blank
         PortCreateRequest:
             type: object
             properties:
@@ -3275,6 +3994,271 @@ components:
                     status: created
                     updated: '2022-01-01 00:00:00'
                     vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        RouteCreatePayload:
+            type: object
+            properties:
+                cidr_destination:
+                    type: string
+                    title: Cidr Destination
+                description:
+                    anyOf:
+                    -   type: string
+                    title: Description
+                    nullable: true
+                port_id:
+                    type: string
+                    title: Port Id
+                    format: uuid4
+            title: RouteCreatePayload
+            required:
+            - cidr_destination
+            - port_id
+            example:
+                cidr_destination: xxx.xxx.xxx.xxx/xx
+                description: Description text
+                port_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        RouteCreateResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                    format: uuid4
+                status:
+                    type: string
+                    title: Status
+                    enum:
+                    - pending
+                    - processing
+                    - created
+                    - error
+                    - deleting
+                    - deleted
+                    - updating
+            title: RouteCreateResponse
+            required:
+            - id
+            - status
+            example:
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                status: pending
+        RouteDetailsResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                    format: uuid4
+                description:
+                    anyOf:
+                    -   type: string
+                    title: Description
+                    nullable: true
+                cidr_destination:
+                    type: string
+                    title: Cidr Destination
+                next_hop:
+                    type: string
+                    title: Next Hop
+                vpc_id:
+                    type: string
+                    title: Vpc Id
+                    format: uuid4
+                port_id:
+                    type: string
+                    title: Port Id
+                    format: uuid4
+                status:
+                    type: string
+                    title: Status
+                type:
+                    type: string
+                    title: Type
+            title: RouteDetailsResponse
+            required:
+            - id
+            - cidr_destination
+            - next_hop
+            - vpc_id
+            - port_id
+            - status
+            - type
+            example:
+                cidr_destination: 192.168.1.1
+                description: description
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                next_hop: 192.168.1.1
+                port_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                status: PROCESSING
+                type: default
+                vpc_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        RouteListItem:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                    format: uuid4
+                description:
+                    anyOf:
+                    -   type: string
+                    title: Description
+                    nullable: true
+                cidr_destination:
+                    type: string
+                    title: Cidr Destination
+                port_id:
+                    type: string
+                    title: Port Id
+                    format: uuid4
+                next_hop:
+                    type: string
+                    title: Next Hop
+                status:
+                    type: string
+                    title: Status
+                type:
+                    type: string
+                    title: Type
+            title: RouteListItem
+            required:
+            - id
+            - cidr_destination
+            - port_id
+            - next_hop
+            - status
+            - type
+            example:
+                cidr_destination: 192.168.1.1
+                description: description
+                id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                next_hop: 192.168.1.1
+                port_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                status: PROCESSING
+                type: default
+        RouteListResponse:
+            type: object
+            properties:
+                meta:
+                    type: object
+                    properties:
+                        page:
+                            type: object
+                            properties:
+                                limit:
+                                    type: integer
+                                    title: Limit
+                                offset:
+                                    type: integer
+                                    title: Offset
+                                count:
+                                    type: integer
+                                    title: Count
+                                total:
+                                    type: integer
+                                    title: Total
+                                max_items_per_page:
+                                    type: integer
+                                    title: Max Items Per Page
+                            title: MetaPageInfo
+                            required:
+                            - limit
+                            - offset
+                            - count
+                            - total
+                            - max_items_per_page
+                        links:
+                            type: object
+                            properties:
+                                previous:
+                                    anyOf:
+                                    -   type: string
+                                    title: Previous
+                                next:
+                                    anyOf:
+                                    -   type: string
+                                    title: Next
+                                self:
+                                    type: string
+                                    title: Self
+                            title: MetaLinks
+                            required:
+                            - self
+                    title: Meta
+                    required:
+                    - page
+                    - links
+                result:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                                format: uuid4
+                            description:
+                                anyOf:
+                                -   type: string
+                                title: Description
+                                nullable: true
+                            cidr_destination:
+                                type: string
+                                title: Cidr Destination
+                            port_id:
+                                type: string
+                                title: Port Id
+                                format: uuid4
+                            next_hop:
+                                type: string
+                                title: Next Hop
+                            status:
+                                type: string
+                                title: Status
+                            type:
+                                type: string
+                                title: Type
+                        title: RouteListItem
+                        required:
+                        - id
+                        - cidr_destination
+                        - port_id
+                        - next_hop
+                        - status
+                        - type
+                        example:
+                            cidr_destination: 192.168.1.1
+                            description: description
+                            id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            next_hop: 192.168.1.1
+                            port_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                            status: PROCESSING
+                            type: default
+                    title: Result
+            title: RouteListResponse
+            required:
+            - meta
+            - result
+            example:
+                meta:
+                    links:
+                        next: ?_offset=30&_limit=10
+                        previous: ?_offset=10&_limit=10
+                        self: ?_offset=20&_limit=10
+                    page:
+                        count: 10
+                        limit: 10
+                        max_items_per_page: 100
+                        offset: 20
+                        total: 112
+                result:
+                -   cidr_destination: 192.168.1.1
+                    description: description
+                    id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    next_hop: 192.168.1.1
+                    port_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+                    status: PROCESSING
+                    type: default
         RuleCreateRequest:
             type: object
             properties:
