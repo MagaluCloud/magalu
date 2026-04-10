@@ -93,7 +93,7 @@ func newModule(
 
 	m = core.NewSimpleGrouper(
 		indexModule.DescriptorSpec,
-		func() (resources []core.Grouper, err error) {
+		func() (children []core.Descriptor, err error) {
 			ctx := context.Background()
 			mData, err := loader.Load(indexModule.Path)
 			if err != nil {
@@ -107,7 +107,15 @@ func newModule(
 			}
 
 			boundRefResolver := core.NewBoundRefResolver(indexModule.Url, refResolver)
-			resources = make([]core.Grouper, 0, len(doc.Tags))
+			children = make([]core.Descriptor, 0)
+
+			opTable := collectOperations(nil, doc, extensionPrefix, logger)
+
+			untaggedChildren, err := collectResourceChildren(indexModule.Name, opTable, doc, extensionPrefix, logger, boundRefResolver)
+			if err != nil {
+				return nil, err
+			}
+			children = append(children, untaggedChildren...)
 
 			for _, tag := range doc.Tags {
 				resource := newResource(
@@ -118,10 +126,10 @@ func newModule(
 					boundRefResolver,
 				)
 
-				resources = append(resources, resource)
+				children = append(children, resource)
 			}
 
-			return resources, nil
+			return children, nil
 		})
 
 	return m, nil

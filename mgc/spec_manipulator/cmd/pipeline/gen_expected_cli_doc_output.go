@@ -19,8 +19,9 @@ import (
 )
 
 type TreeNode struct {
-	Name     string     `json:"name"`
-	Children []TreeNode `json:"children,omitempty"`
+	Name       string     `json:"name"`
+	IsInternal bool       `json:"isInternal"`
+	Children   []TreeNode `json:"children,omitempty"`
 }
 
 func loadJSON(filename string) ([]TreeNode, error) {
@@ -35,6 +36,10 @@ func loadJSON(filename string) ([]TreeNode, error) {
 }
 
 func printPaths(node TreeNode, path string, result *[]string) {
+	if node.IsInternal {
+		return
+	}
+
 	currentPath := node.Name
 	if path != "" {
 		currentPath = path + " " + node.Name

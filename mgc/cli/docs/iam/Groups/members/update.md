@@ -1,18 +1,22 @@
 ---
-sidebar_position: 1
+sidebar_position: 5
 ---
-# List
+# Update
 
-Healthcheck
+Update a member's profile in a group.
 
 ## Usage:
 ```
-mgc iam healthcheck list [flags]
+mgc iam groups members update [group-id] [member-id] [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for list
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --group-id string               Group Id (required)
+-h, --help                          help for update
+    --member-id string              Member Id (required)
+    --profile string                Profile (required)
 ```
 
 ## Global Flags:

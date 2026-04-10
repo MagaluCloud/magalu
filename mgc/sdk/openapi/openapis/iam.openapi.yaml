@@ -1127,6 +1127,580 @@ paths:
             security:
             -   HTTPBearer: []
             x-mgc-hidden: true
+    /api/v1/invitations:
+        get:
+            tags:
+            - Invitations
+            summary: Get invites
+            operationId: get_invites_api_v1_invitations_get
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+            parameters:
+            -   name: status
+                in: query
+                required: false
+                schema:
+                    title: Status
+                    nullable: true
+                    $ref: '#/components/schemas/InviteStatusEnum'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Invite'
+                                title: Response Get Invites Api V1 Invitations Get
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+    /api/v1/invitations/{invite_id}:
+        delete:
+            tags:
+            - Invitations
+            summary: Cancel invite
+            operationId: cancel_invite_api_v1_invitations__invite_id__delete
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+            parameters:
+            -   name: invite_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Invite Id
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+    /api/v1/invitations/{invite_id}/resend:
+        post:
+            tags:
+            - Invitations
+            summary: Resend invite
+            operationId: resend_invite_api_v1_invitations__invite_id__resend_post
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+            parameters:
+            -   name: invite_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Invite Id
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+                    links:
+                        delete:
+                            operationId: cancel_invite_api_v1_invitations__invite_id__delete
+                            description: Cancel invite
+                            parameters:
+                                invite_id: $request.path.invite_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+    /api/v1/groups:
+        get:
+            tags:
+            - Groups
+            summary: Get group by email
+            description: Find a group by email.
+            operationId: get_groups_api_v1_groups_get
+            x-cli-name: get-by-email
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+            parameters:
+            -   name: email
+                in: query
+                required: true
+                schema:
+                    type: string
+                    pattern: ^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$
+                    title: Email
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GroupListResponse'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+        post:
+            tags:
+            - Groups
+            summary: Create group
+            description: Create a new group.
+            operationId: create_group_api_v1_groups_post
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateGroup'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Group'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+    /api/v1/groups/{group_id}:
+        get:
+            tags:
+            - Groups
+            summary: Get group by ID
+            description: Get a specific group by ID.
+            operationId: get_group_by_id_api_v1_groups__group_id__get
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+            parameters:
+            -   name: group_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Group Id
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GroupWithMembers'
+                    links:
+                        update:
+                            operationId: update_group_api_v1_groups__group_id__patch
+                            description: Update group
+                            parameters:
+                                group_id: $request.path.group_id
+                        update/description:
+                            operationId: update_group_api_v1_groups__group_id__patch
+                            description: Update group
+                            parameters:
+                                group_id: $request.path.group_id
+                            x-mgc-hidden: true
+                        delete:
+                            operationId: delete_group_api_v1_groups__group_id__delete
+                            description: Delete group
+                            parameters:
+                                group_id: $request.path.group_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+        patch:
+            tags:
+            - Groups
+            summary: Update group
+            description: Update a group description.
+            operationId: update_group_api_v1_groups__group_id__patch
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+            parameters:
+            -   name: group_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Group Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateGroup'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Group'
+                    links:
+                        get:
+                            operationId: get_group_by_id_api_v1_groups__group_id__get
+                            description: Get group by ID
+                            parameters:
+                                group_id: $request.path.group_id
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.description == $.owner.parameters.description
+                        delete:
+                            operationId: delete_group_api_v1_groups__group_id__delete
+                            description: Delete group
+                            parameters:
+                                group_id: $request.path.group_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+        delete:
+            tags:
+            - Groups
+            summary: Delete group
+            description: Delete a group.
+            operationId: delete_group_api_v1_groups__group_id__delete
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+            parameters:
+            -   name: group_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Group Id
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+    /api/v1/groups/migrate:
+        post:
+            tags:
+            - Groups
+            summary: Migrate group
+            description: Migrate a group from the old domain to the new one.
+            operationId: migrate_group_api_v1_groups_migrate_post
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/MigrateGroup'
+                required: true
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GroupRBAC'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+    /api/v1/groups/{group_id}/members:
+        post:
+            tags:
+            - Groups
+            summary: Add member to group
+            description: Add a member to a group.
+            operationId: add_member_to_group_api_v1_groups__group_id__members_post
+            x-cli-name: add
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+            parameters:
+            -   name: group_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Group Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/MemberGroupCreate'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MemberGroupResponse'
+                    links:
+                        update:
+                            operationId: update_group_member_api_v1_groups__group_id__members__member_id__patch
+                            description: Update group member
+                            parameters:
+                                group_id: $request.path.group_id
+                                member_id: $request.body#/member_id
+                        delete:
+                            operationId: remove_member_from_group_api_v1_groups__group_id__members__member_id__delete
+                            description: Remove member from group
+                            parameters:
+                                group_id: $request.path.group_id
+                                member_id: $request.body#/member_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+    /api/v1/groups/{group_id}/members/{member_id}:
+        patch:
+            tags:
+            - Groups
+            summary: Update group member
+            description: Update a member's profile in a group.
+            operationId: update_group_member_api_v1_groups__group_id__members__member_id__patch
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+            parameters:
+            -   name: group_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Group Id
+            -   name: member_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Member Id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/MemberGroupUpdate'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MemberGroupResponse'
+                    links:
+                        create:
+                            operationId: add_member_to_group_api_v1_groups__group_id__members_post
+                            description: Add member to group
+                            parameters:
+                                group_id: $request.path.group_id
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.profile == $.owner.parameters.profile
+                        delete:
+                            operationId: remove_member_from_group_api_v1_groups__group_id__members__member_id__delete
+                            description: Remove member from group
+                            parameters:
+                                group_id: $request.path.group_id
+                                member_id: $request.path.member_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
+        delete:
+            tags:
+            - Groups
+            summary: Remove member from group
+            description: Remove a member from a group.
+            operationId: remove_member_from_group_api_v1_groups__group_id__members__member_id__delete
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
+            parameters:
+            -   name: group_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Group Id
+            -   name: member_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Member Id
+            responses:
+                '204':
+                    description: Successful Response
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            example:
+                                origin: permissionsAPI
+                                permission: turia_iam_editor
+                                product: turiaiam
+                                message: User action not authorized for permission
+                                    turia_iam_editor
 components:
     schemas:
         APIKeyServiceAccountCreate:
@@ -1320,6 +1894,23 @@ components:
             required:
             - member_ids
             - operation
+        CreateGroup:
+            properties:
+                identifier:
+                    type: string
+                    title: Identifier
+                name:
+                    type: string
+                    title: Name
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - identifier
+            - name
+            title: CreateGroup
         CreateMember:
             type: object
             properties:
@@ -1402,6 +1993,84 @@ components:
                     title: Remove
                     default: []
             title: EditPermissions
+        Group:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - id
+            - name
+            title: Group
+        GroupListResponse:
+            properties:
+                items:
+                    items:
+                        $ref: '#/components/schemas/Group'
+                    type: array
+                    title: Items
+                meta:
+                    additionalProperties: true
+                    type: object
+                    title: Meta
+                    default: {}
+            type: object
+            required:
+            - items
+            title: GroupListResponse
+        GroupRBAC:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                email:
+                    type: string
+                    title: Email
+                    readOnly: true
+            type: object
+            required:
+            - id
+            - name
+            - email
+            title: GroupRBAC
+        GroupWithMembers:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                name:
+                    type: string
+                    title: Name
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+                members:
+                    items:
+                        $ref: '#/components/schemas/MemberGroupRBACResponse'
+                    type: array
+                    title: Members
+                    default: []
+            type: object
+            required:
+            - id
+            - name
+            title: GroupWithMembers
         HTTPValidationError:
             type: object
             properties:
@@ -1415,8 +2084,35 @@ components:
             example:
                 message: Unauthorized
                 slug: Unauthorized
-        Member:
+        Invite:
+            properties:
+                id:
+                    type: string
+                    title: Id
+                email:
+                    type: string
+                    title: Email
+                status:
+                    type: string
+                    title: Status
+                profile:
+                    type: string
+                    title: Profile
             type: object
+            required:
+            - id
+            - email
+            - status
+            - profile
+            title: Invite
+        InviteStatusEnum:
+            type: string
+            enum:
+            - pending
+            - expired
+            - rejected
+            title: Invite status
+        Member:
             properties:
                 uuid:
                     type: string
@@ -1438,7 +2134,114 @@ components:
                     title: Profile
                     nullable: true
                     type: string
+            type: object
             title: Member
+        MemberCreated:
+            properties:
+                uuid:
+                    type: string
+                    title: Uuid
+                    default: ''
+                email:
+                    type: string
+                    title: Email
+                    default: ''
+                name:
+                    type: string
+                    title: Name
+                    default: ''
+                tenant_id:
+                    type: string
+                    title: Tenant Id
+                    default: ''
+                profile:
+                    title: Profile
+                    nullable: true
+                    type: string
+                action:
+                    title: Action
+                    nullable: true
+                    type: string
+            type: object
+            title: MemberCreated
+        MemberGroupCreate:
+            properties:
+                member_id:
+                    type: string
+                    title: Member Id
+                profile:
+                    type: string
+                    title: Profile
+            type: object
+            required:
+            - member_id
+            - profile
+            title: MemberGroupCreate
+        MemberGroupRBACResponse:
+            properties:
+                group_id:
+                    type: string
+                    title: Group Id
+                member_id:
+                    type: string
+                    title: Member Id
+                profile:
+                    type: string
+                    title: Profile
+            type: object
+            required:
+            - group_id
+            - member_id
+            - profile
+            title: MemberGroupRBACResponse
+        MemberGroupResponse:
+            properties:
+                group_id:
+                    type: string
+                    title: Group Id
+                member_id:
+                    type: string
+                    title: Member Id
+                profile:
+                    type: string
+                    title: Profile
+            type: object
+            required:
+            - group_id
+            - member_id
+            - profile
+            title: MemberGroupResponse
+        MemberGroupUpdate:
+            properties:
+                profile:
+                    type: string
+                    title: Profile
+            type: object
+            required:
+            - profile
+            title: MemberGroupUpdate
+        MigrateGroup:
+            properties:
+                email:
+                    type: string
+                    format: email
+                    title: Email
+                identifier:
+                    title: Identifier
+                    nullable: true
+                    type: string
+                name:
+                    title: Name
+                    nullable: true
+                    type: string
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+            type: object
+            required:
+            - email
+            title: MigrateGroup
         OperationType:
             type: string
             title: OperationType
@@ -1647,6 +2450,14 @@ components:
             required:
             - uuid
             - legal_name
+        UpdateGroup:
+            properties:
+                description:
+                    title: Description
+                    nullable: true
+                    type: string
+            type: object
+            title: UpdateGroup
         ValidationError:
             type: object
             properties:
@@ -1689,6 +2500,10 @@ tags:
 -   name: Admins
     description: Admins of organization.
     x-mgc-hidden: true
+-   name: Invitations
+    description: Invitations to join the organization.
+-   name: Groups
+    description: Groups management.
 $id: https://iam.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/iam

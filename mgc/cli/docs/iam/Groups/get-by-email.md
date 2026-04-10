@@ -1,18 +1,19 @@
 ---
-sidebar_position: 2
+sidebar_position: 4
 ---
-# Create
+# Get-By-Email
 
-Sync Admins
+Find a group by email.
 
 ## Usage:
 ```
-mgc iam admins create [flags]
+mgc iam groups get-by-email [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for create
+    --email string   Email (pattern: ^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$) (required)
+-h, --help           help for get-by-email
 ```
 
 ## Global Flags:

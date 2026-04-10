@@ -1,20 +1,21 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 ---
-# Add
+# Create
 
-Change current Object Storage credential
+Create a new group.
 
 ## Usage:
 ```
-mgc object-storage api-key add [key-id] [key-secret] [flags]
+mgc iam groups create [flags]
 ```
 
 ## Flags:
 ```
--h, --help                help for add
-    --key-id string       ID of api key to use (required)
-    --key-secret string   Secret of api key to use (required)
+    --description string   Description
+-h, --help                 help for create
+    --identifier string    Identifier (required)
+    --name string          Name (required)
 ```
 
 ## Global Flags:
@@ -26,8 +27,10 @@ mgc object-storage api-key add [key-id] [key-secret] [flags]
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
+    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --server-url uri           Manually specify the server to use
 ```
 
