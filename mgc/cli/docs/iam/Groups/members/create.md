@@ -1,20 +1,20 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 ---
-# Add
+# Create
 
 Add a member to a group.
 
 ## Usage:
 ```
-mgc iam groups members add [group-id] [flags]
+mgc iam groups members create [group-id] [flags]
 ```
 
 ## Flags:
 ```
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
     --group-id string               Group Id (required)
--h, --help                          help for add
+-h, --help                          help for create
     --member-id string              Member Id (required)
     --profile string                Profile (required)
 ```

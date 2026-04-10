@@ -13,13 +13,11 @@ mgc iam groups [command]
 
 ## Commands:
 ```
-create       Create group
-delete       Delete group
-get          Get group by ID
-get-by-email Get group by email
-members      members
-migrate      Migrate group
-update       Update group
+create      Create Group
+delete      Delete Group
+list        List Groups
+members     members
+update      Update Group
 ```
 
 ## Flags:

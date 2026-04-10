@@ -1,22 +1,22 @@
 ---
-sidebar_position: 6
+sidebar_position: 1
 ---
-# Migrate
+# List
 
-Migrate a group from the old domain to the new one.
+List members of a group with pagination (max 20 per page) and
+enriched email/name.
 
 ## Usage:
 ```
-mgc iam groups migrate [flags]
+mgc iam groups members list [group-id] [flags]
 ```
 
 ## Flags:
 ```
-    --description string   Description
-    --email email          Email (required)
--h, --help                 help for migrate
-    --identifier string    Identifier
-    --name string          Name
+    --group-id string    Group Id (required)
+-h, --help               help for list
+    --page integer       Page: Número da página (min: 1)
+    --per-page integer   Per Page: Itens por página (Max 20) (range: 1 - 20)
 ```
 
 ## Global Flags:

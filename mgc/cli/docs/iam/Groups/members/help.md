@@ -13,9 +13,10 @@ mgc iam groups members [command]
 
 ## Commands:
 ```
-add         Add member to group
-delete      Remove member from group
-update      Update group member
+create      Add Member To Group
+delete      Remove Member From Group
+list        List Group Members
+update      Update Group Member
 ```
 
 ## Flags:

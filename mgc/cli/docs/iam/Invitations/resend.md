@@ -3,7 +3,7 @@ sidebar_position: 4
 ---
 # Resend
 
-Resend invite
+Resend Invite
 
 ## Usage:
 ```

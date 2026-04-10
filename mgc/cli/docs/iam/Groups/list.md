@@ -1,19 +1,19 @@
 ---
-sidebar_position: 4
+sidebar_position: 1
 ---
-# Get-By-Email
+# List
 
-Find a group by email.
+List groups for the authenticated user.
 
 ## Usage:
 ```
-mgc iam groups get-by-email [flags]
+mgc iam groups list [flags]
 ```
 
 ## Flags:
 ```
-    --email string   Email (pattern: ^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$) (required)
--h, --help           help for get-by-email
+    --email email   Email
+-h, --help          help for list
 ```
 
 ## Global Flags:

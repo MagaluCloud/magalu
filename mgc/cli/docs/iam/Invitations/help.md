@@ -13,9 +13,9 @@ mgc iam invitations [command]
 
 ## Commands:
 ```
-delete      Cancel invite
-list        Get invites
-resend      Resend invite
+delete      Cancel Invite
+list        Get Invites
+resend      Resend Invite
 ```
 
 ## Flags:

@@ -14,6 +14,7 @@ mgc iam service-accounts api-keys list [sa-uuid] [flags]
 ```
 -h, --help           help for list
     --sa-uuid uuid   Sa Uuid (required)
+    --status enum    APIKeyStatusEnum (one of "active" or "revoked")
 ```
 
 ## Global Flags:

@@ -3,7 +3,7 @@ sidebar_position: 3
 ---
 # Delete
 
-Cancel invite
+Cancel Invite
 
 ## Usage:
 ```

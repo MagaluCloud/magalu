@@ -3,7 +3,7 @@ sidebar_position: 1
 ---
 # List
 
-Get invites
+Get Invites
 
 ## Usage:
 ```
@@ -13,7 +13,7 @@ mgc iam invitations list [flags]
 ## Flags:
 ```
 -h, --help          help for list
-    --status enum   Invite status (one of "expired", "pending" or "rejected")
+    --status enum   InviteStatusEnum (one of "expired", "pending" or "rejected")
 ```
 
 ## Global Flags:
