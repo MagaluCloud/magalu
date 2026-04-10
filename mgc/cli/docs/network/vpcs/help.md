@@ -19,7 +19,6 @@ get         VPC Details
 list        List VPC
 ports       ports
 public-ips  public-ips
-route-table route-table
 subnets     subnets
 ```
 
