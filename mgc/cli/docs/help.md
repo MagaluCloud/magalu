@@ -23,6 +23,7 @@ kubernetes         APIs related to the Kubernetes product.
 load-balancer      [EXPERIMENTAL] Lbaas API: create and manage Load Balancers
 network            VPC Api Product
 object-storage     Operations for Object Storage
+tag                Tags API
 virtual-machine    Virtual Machine Api Product
 ```
 
