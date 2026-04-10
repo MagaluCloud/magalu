@@ -129,6 +129,11 @@ Add this extension to an operation to require user confirmation before execution
 this extension by default). This extension is an object with a single string property called `message` used to define the
 confirmation message to be shown to the user.
 
+The `message` field is a Go template and has access to `{{.parameters}}` and `{{.configs}}`. If the rendered message is
+empty (e.g. when a conditional template evaluates to an empty string), the confirmation prompt is silently skipped — no
+question is shown to the user and execution proceeds normally. This allows conditional confirmations that only trigger
+when specific parameter values are present.
+
 
 ```yaml
 paths:
@@ -136,6 +141,16 @@ paths:
         patch:
             x-mgc-confirmable:
                 message: "This action requires confirmation. Are you sure you wish to continue?"
+```
+
+Conditional confirmation example — prompt is only shown when a specific parameter condition is met:
+
+```yaml
+paths:
+   /v0/some/path:
+        post:
+            x-mgc-confirmable:
+                message: "{{if not .parameters.encrypted}}WARNING: You are performing this action without encryption.\nAre you sure you want to proceed?{{end}}"
 ```
 
 ### `x-mgc-promptInput`
