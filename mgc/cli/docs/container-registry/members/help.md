@@ -1,27 +1,28 @@
 ---
 sidebar_position: 0
 ---
-# Images
+# Members
 
-Routes related to listing and deletion of images.
+Routes related to managing registry membership and roles.
 
 ## Usage:
 ```
-mgc container-registry images [flags]
-mgc container-registry images [command]
+mgc container-registry members [flags]
+mgc container-registry members [command]
 ```
 
 ## Commands:
 ```
-delete      Delete image by digest or tag
-get         Get image details
-list        List images in container registry repository
-scans       scans
+create      Add a member to a container registry
+delete      Remove a member from a container registry
+get         Get registry member details
+list        List all members of a container registry
+update      Update a registry member's role
 ```
 
 ## Flags:
 ```
--h, --help   help for images
+-h, --help   help for members
 ```
 
 ## Global Flags:

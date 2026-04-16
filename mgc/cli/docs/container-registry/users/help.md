@@ -1,27 +1,26 @@
 ---
 sidebar_position: 0
 ---
-# Images
+# Users
 
-Routes related to listing and deletion of images.
+Routes related to creating and retrieving container registry users.
 
 ## Usage:
 ```
-mgc container-registry images [flags]
-mgc container-registry images [command]
+mgc container-registry users [flags]
+mgc container-registry users [command]
 ```
 
 ## Commands:
 ```
-delete      Delete image by digest or tag
-get         Get image details
-list        List images in container registry repository
-scans       scans
+create      Create a user
+delete      Delete a user by user_id
+list        Get user
 ```
 
 ## Flags:
 ```
--h, --help   help for images
+-h, --help   help for users
 ```
 
 ## Global Flags:

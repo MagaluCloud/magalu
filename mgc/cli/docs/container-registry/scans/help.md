@@ -1,27 +1,26 @@
 ---
 sidebar_position: 0
 ---
-# Images
+# Scans
 
-Routes related to listing and deletion of images.
+Routes related to image scanning, progress tracking, and vulnerability reports.
 
 ## Usage:
 ```
-mgc container-registry images [flags]
-mgc container-registry images [command]
+mgc container-registry scans [flags]
+mgc container-registry scans [command]
 ```
 
 ## Commands:
 ```
-delete      Delete image by digest or tag
-get         Get image details
-list        List images in container registry repository
-scans       scans
+get             Get image scan details
+stop            Stop an ongoing image scan
+vulnerabilities List vulnerabilities for an image scan
 ```
 
 ## Flags:
 ```
--h, --help   help for images
+-h, --help   help for scans
 ```
 
 ## Global Flags:

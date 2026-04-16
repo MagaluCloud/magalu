@@ -1,21 +1,32 @@
 ---
-sidebar_position: 2
+sidebar_position: 5
 ---
-# Create
+# Vulnerabilities
 
-Creates a container registry in Magalu Cloud.
+Returns paginated vulnerabilities found in a specific image scan.
 
 ## Usage:
 ```
-mgc container-registry registries create [flags]
+mgc container-registry scans vulnerabilities [scan-id] [flags]
+```
+
+## Examples:
+```
+mgc container-registry scans vulnerabilities --severity='["high"]'
 ```
 
 ## Flags:
 ```
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for create
-    --name string                   A unique, global name for the container registry. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 45 characters. (required)
-    --proxy-cache-id string         Proxy Cache UUID.
+    --control.limit integer         Limit. (min: 1)
+    --control.offset integer        Offset. (min: 0)
+    --control.sort string           Fields to use as reference to sort. (pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
+    --cve-id string                 Filter vulnerabilities by CVE ID.
+    --fixable                       Filter vulnerabilities that have a fixed version available.
+-h, --help                          help for vulnerabilities
+    --package-name string           Filter vulnerabilities by package name.
+    --scan-id uuid                  Scan UUID. (required)
+    --severity array(enum)          Filter vulnerabilities by severity.
 ```
 
 ## Global Flags:

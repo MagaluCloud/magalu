@@ -42,6 +42,10 @@ servers:
                     to: api.pre-prod.jaxyendy.com
 -   url: https://api-mcr.csre-plat-prod.1.yel.se1.br.jaxyendy.com
     description: SE1-YEL prod
+-   url: https://api-mcr.csre-plat-prod.1.gre.se1.br.jaxyendy.com
+    description: SE1-GRE prod
+-   url: https://api-mcr.csre-plat-preprod.1.gre.se1.br.jaxyendy.com
+    description: SE1-GRE pre-prod
 -   url: https://api-mcr.csre-plat-preprod.1.yel.ne1.br.jaxyendy.com
     description: NE1-YEL pre-prod
 -   url: https://api-mcr.csre-plat-prod.1.yel.ne1.br.jaxyendy.com
@@ -55,6 +59,9 @@ paths:
             description: Return container registry user's authentication credentials.
             operationId: getCredentials
             x-mgc-name: get
+            x-permission:
+                permission-name: cr_credentials_get
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.read
@@ -88,6 +95,9 @@ paths:
             operationId: resetPassword
             x-mgc-confirmable:
                 message: Are you sure you want to reset the container registry's password?
+            x-permission:
+                permission-name: cr_credentials_reset
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.write
@@ -117,6 +127,9 @@ paths:
             summary: Create a container registry
             description: Creates a container registry in Magalu Cloud.
             operationId: createRegistry
+            x-permission:
+                permission-name: cr_registry_create
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.write
@@ -163,6 +176,9 @@ paths:
             summary: List all container registries
             description: List user's container registries.
             operationId: getRegistries
+            x-permission:
+                permission-name: cr_registry_list
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.read
@@ -224,6 +240,9 @@ paths:
             summary: Get registry information
             description: Show detailed information about the user's container registry.
             operationId: getRegistry
+            x-permission:
+                permission-name: cr_registry_get
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.read
@@ -268,6 +287,9 @@ paths:
             summary: Delete a container registry by registry_id
             description: Delete a container registry by uuid.
             operationId: deleteRegistry
+            x-permission:
+                permission-name: cr_registry_delete
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.write
@@ -303,6 +325,9 @@ paths:
             summary: Create a proxy cache
             description: Creates a proxy cache in Magalu Cloud.
             operationId: createProxyCache
+            x-permission:
+                permission-name: cr_proxycache_create
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.write
@@ -338,6 +363,9 @@ paths:
             summary: List all proxy-caches
             description: List user's proxy caches.
             operationId: getProxyCaches
+            x-permission:
+                permission-name: cr_proxycache_list
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.read
@@ -393,6 +421,9 @@ paths:
             summary: Get a proxy cache by proxy_cache_id
             description: Get a proxycache by uuid.
             operationId: getProxyCache
+            x-permission:
+                permission-name: cr_proxycache_get
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.read
@@ -442,6 +473,9 @@ paths:
             summary: Update a proxy cache by proxy_cache_id
             description: Update a proxycache by uuid.
             operationId: updateProxyCache
+            x-permission:
+                permission-name: cr_proxycache_update
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.write
@@ -496,6 +530,9 @@ paths:
             summary: Delete a proxy cache by proxy_cache_id
             description: Delete a proxycache by uuid.
             operationId: deleteProxyCache
+            x-permission:
+                permission-name: cr_proxycache_delete
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.write
@@ -539,6 +576,9 @@ paths:
 
                 '
             operationId: checkProxyCacheCredentialStatus
+            x-permission:
+                permission-name: cr_proxycache_check
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.read
@@ -580,6 +620,9 @@ paths:
 
                 '
             operationId: getProxyCacheStatus
+            x-permission:
+                permission-name: cr_proxycache_get
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.read
@@ -611,6 +654,451 @@ paths:
                     $ref: '#/components/responses/NotFoundError'
                 '500':
                     $ref: '#/components/responses/InternalServerError'
+    /v0/users:
+        post:
+            tags:
+            - users
+            summary: Create a user
+            description: Creates a container registry user using the authId from the
+                request context.
+            operationId: createUser
+            x-permission:
+                permission-name: cr_user_create
+                product-name: containerregistry
+            security:
+            -   BearerAuth:
+                - mcr.write
+            -   OAuth2:
+                - mcr.write
+            responses:
+                '201':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UserResponse'
+                    links:
+                        delete:
+                            operationId: deleteUser
+                            description: Delete a user by user_id
+                            parameters:
+                                user_id: $response.body#/id
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+        get:
+            tags:
+            - users
+            summary: Get user
+            description: Returns the authenticated user.
+            operationId: getUser
+            x-permission:
+                permission-name: cr_user_get
+                product-name: containerregistry
+            security:
+            -   BearerAuth:
+                - mcr.read
+            -   OAuth2:
+                - mcr.read
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UserResponse'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+    /v0/users/{user_id}:
+        delete:
+            tags:
+            - users
+            summary: Delete a user by user_id
+            description: Delete a user by UUID.
+            operationId: deleteUser
+            x-permission:
+                permission-name: cr_user_delete
+                product-name: containerregistry
+            security:
+            -   BearerAuth:
+                - mcr.write
+            -   OAuth2:
+                - mcr.write
+            parameters:
+            -   name: user_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: User's UUID.
+            responses:
+                '204':
+                    description: Successful operation
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+    /v0/registries/{registry_id}/members:
+        post:
+            tags:
+            - members
+            summary: Add a member to a container registry
+            description: Adds an existing user as a member of a container registry
+                with a specific role.
+            operationId: addRegistryMember
+            x-permission:
+                permission-name: cr_registry_member_add
+                product-name: containerregistry
+            security:
+            -   BearerAuth:
+                - mcr.write
+            -   OAuth2:
+                - mcr.write
+            parameters:
+            -   name: registry_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Container Registry's UUID.
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/MemberRequest'
+            responses:
+                '201':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MemberResponse'
+                    links:
+                        list:
+                            operationId: getRegistryMembers
+                            description: List all members of a container registry
+                            parameters:
+                                registry_id: $request.path.registry_id
+                        get:
+                            operationId: getRegistryMember
+                            description: Get registry member details
+                            parameters:
+                                registry_id: $request.path.registry_id
+                                member_id: $response.body#/id
+                        update:
+                            operationId: updateRegistryMember
+                            description: Update a registry member's role
+                            parameters:
+                                registry_id: $request.path.registry_id
+                                member_id: $response.body#/id
+                        delete:
+                            operationId: deleteRegistryMember
+                            description: Remove a member from a container registry
+                            parameters:
+                                registry_id: $request.path.registry_id
+                                member_id: $response.body#/id
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+        get:
+            tags:
+            - members
+            summary: List all members of a container registry
+            description: Returns a paginated list of all users associated with the
+                container registry.
+            operationId: getRegistryMembers
+            x-permission:
+                permission-name: cr_registry_member_get
+                product-name: containerregistry
+            security:
+            -   BearerAuth:
+                - mcr.read
+            -   OAuth2:
+                - mcr.read
+            parameters:
+            -   name: registry_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Container Registry's UUID.
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    minimum: 1
+                    type: integer
+                description: Limit.
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    minimum: 0
+                    type: integer
+                description: Offset.
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    default: created_at:desc
+                    type: string
+                description: Fields to sort by.
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MembersResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+    /v0/registries/{registry_id}/members/{member_id}:
+        get:
+            tags:
+            - members
+            summary: Get registry member details
+            description: Returns detailed information about a specific member relationship
+                in the registry.
+            operationId: getRegistryMember
+            x-permission:
+                permission-name: cr_registry_member_get
+                product-name: containerregistry
+            security:
+            -   BearerAuth:
+                - mcr.read
+            -   OAuth2:
+                - mcr.read
+            parameters:
+            -   name: registry_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Container Registry's UUID.
+            -   name: member_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Registry member relationship UUID.
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MemberResponse'
+                    links:
+                        list:
+                            operationId: getRegistryMembers
+                            description: List all members of a container registry
+                            parameters:
+                                registry_id: $request.path.registry_id
+                        create:
+                            operationId: addRegistryMember
+                            description: Add a member to a container registry
+                            parameters:
+                                registry_id: $request.path.registry_id
+                        update:
+                            operationId: updateRegistryMember
+                            description: Update a registry member's role
+                            parameters:
+                                registry_id: $request.path.registry_id
+                                member_id: $response.body#/id
+                        update/role:
+                            operationId: updateRegistryMember
+                            description: Update a registry member's role
+                            parameters:
+                                registry_id: $request.path.registry_id
+                                member_id: $response.body#/id
+                            x-mgc-hidden: true
+                        delete:
+                            operationId: deleteRegistryMember
+                            description: Remove a member from a container registry
+                            parameters:
+                                registry_id: $request.path.registry_id
+                                member_id: $response.body#/id
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+        patch:
+            tags:
+            - members
+            summary: Update a registry member's role
+            description: Update the role of an existing registry member.
+            operationId: updateRegistryMember
+            x-permission:
+                permission-name: cr_registry_member_update
+                product-name: containerregistry
+            security:
+            -   BearerAuth:
+                - mcr.write
+            -   OAuth2:
+                - mcr.write
+            parameters:
+            -   name: registry_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+            -   name: member_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/MemberUpdateRequest'
+            responses:
+                '200':
+                    description: Member updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MemberResponse'
+                    links:
+                        list:
+                            operationId: getRegistryMembers
+                            description: List all members of a container registry
+                            parameters:
+                                registry_id: $request.path.registry_id
+                        create:
+                            operationId: addRegistryMember
+                            description: Add a member to a container registry
+                            parameters:
+                                registry_id: $request.path.registry_id
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.role == $.owner.parameters.role
+                        get:
+                            operationId: getRegistryMember
+                            description: Get registry member details
+                            parameters:
+                                registry_id: $request.path.registry_id
+                                member_id: $response.body#/id
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.role == $.owner.parameters.role
+                        delete:
+                            operationId: deleteRegistryMember
+                            description: Remove a member from a container registry
+                            parameters:
+                                registry_id: $request.path.registry_id
+                                member_id: $response.body#/id
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+        delete:
+            tags:
+            - members
+            summary: Remove a member from a container registry
+            description: Removes an existing member relationship from the registry.
+            operationId: deleteRegistryMember
+            x-permission:
+                permission-name: cr_registry_member_delete
+                product-name: containerregistry
+            security:
+            -   BearerAuth:
+                - mcr.write
+            -   OAuth2:
+                - mcr.write
+            parameters:
+            -   name: registry_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Container Registry's UUID.
+            -   name: member_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Registry member relationship UUID.
+            responses:
+                '204':
+                    description: Member removed successfully.
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
     /v1/registries/{registry_id}/repositories:
         get:
             tags:
@@ -618,6 +1106,9 @@ paths:
             summary: List all container registry repositories
             description: List all user's repositories in the container registry.
             operationId: getRepositoriesV1
+            x-permission:
+                permission-name: cr_repository_list
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.read
@@ -686,6 +1177,9 @@ paths:
             summary: Get a container registry repository by repository_id
             description: Return detailed repository's information filtered by id.
             operationId: getRepositoryV1
+            x-permission:
+                permission-name: cr_repository_get
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.read
@@ -744,6 +1238,9 @@ paths:
             summary: Delete a container registry repository by repository_id.
             description: Delete a repository by id.
             operationId: deleteRepositoryV1
+            x-permission:
+                permission-name: cr_repository_delete
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.write
@@ -786,6 +1283,9 @@ paths:
             summary: List images in container registry repository
             description: List all images in container registry repository
             operationId: getImagesV1
+            x-permission:
+                permission-name: cr_image_list
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.read
@@ -870,6 +1370,9 @@ paths:
             summary: Delete image by digest or tag
             description: Delete repository image by digest or tag
             operationId: deleteImageV1
+            x-permission:
+                permission-name: cr_image_delete
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.write
@@ -919,6 +1422,9 @@ paths:
             summary: Get image details
             description: Show detailed information about the image.
             operationId: getImageV1
+            x-permission:
+                permission-name: cr_image_get
+                product-name: containerregistry
             security:
             -   BearerAuth:
                 - mcr.read
@@ -976,6 +1482,352 @@ paths:
                     $ref: '#/components/responses/NotFoundError'
                 '429':
                     $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+    /v1/registries/{registry_id}/repositories/{repository_id}/images/{digest_or_tag}/scans:
+        post:
+            tags:
+            - images
+            summary: Schedule an image scan by digest or tag
+            description: Schedules an image scan for the image identified by digest
+                or tag.
+            operationId: scheduleImageScan
+            x-mgc-name: schedule
+            x-permission:
+                permission-name: cr_image_scan
+                product-name: containerregistry
+            security:
+            -   BearerAuth: []
+            -   OAuth2:
+                - mcr.write
+                - mcr.read
+            parameters:
+            -   name: registry_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Container Registry UUID.
+            -   name: repository_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Repository UUID.
+            -   name: digest_or_tag
+                in: path
+                required: true
+                schema:
+                    type: string
+                description: Digest or tag of an image.
+            responses:
+                '202':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ImageScanScheduleResponse'
+                    links:
+                        list:
+                            operationId: getImageScans
+                            description: List image scans for an image digest or tag
+                            parameters:
+                                registry_id: $request.path.registry_id
+                                repository_id: $request.path.repository_id
+                                digest_or_tag: $request.path.digest_or_tag
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+        get:
+            tags:
+            - images
+            summary: List image scans for an image digest or tag
+            description: Returns paginated image scans for the image identified by
+                digest or tag.
+            operationId: getImageScans
+            x-permission:
+                permission-name: cr_scan_list
+                product-name: containerregistry
+            security:
+            -   BearerAuth: []
+            -   OAuth2:
+                - mcr.read
+            parameters:
+            -   name: registry_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Container Registry UUID.
+            -   name: repository_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Repository UUID.
+            -   name: digest_or_tag
+                in: path
+                required: true
+                schema:
+                    type: string
+                description: Digest or tag of an image.
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    minimum: 1
+                    type: integer
+                description: Limit.
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    minimum: 0
+                    type: integer
+                description: Offset.
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    default: created_at:desc
+                    pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+                    type: string
+                description: Fields to use as reference to sort.
+            -   name: status
+                in: query
+                required: false
+                schema:
+                    $ref: '#/components/schemas/ScanStatus'
+                description: Filter scans by status.
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ImageScansResponse'
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+    /v1/scans/{scan_id}:
+        get:
+            tags:
+            - scans
+            summary: Get image scan details
+            description: Returns detailed information about a specific image scan.
+            operationId: getImageScan
+            x-permission:
+                permission-name: cr_scan_get
+                product-name: containerregistry
+            security:
+            -   BearerAuth: []
+            -   OAuth2:
+                - mcr.read
+            parameters:
+            -   name: scan_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Scan UUID.
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ImageScanResponse'
+                    links:
+                        vulnerabilities:
+                            operationId: getImageScanVulnerabilities
+                            description: List vulnerabilities for an image scan
+                            parameters:
+                                scan_id: $response.body#/id
+                        stop:
+                            operationId: stopImageScan
+                            description: Stop an ongoing image scan
+                            parameters:
+                                scan_id: $response.body#/id
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+    /v1/scans/{scan_id}/vulnerabilities:
+        get:
+            tags:
+            - scans
+            summary: List vulnerabilities for an image scan
+            description: Returns paginated vulnerabilities found in a specific image
+                scan.
+            operationId: getImageScanVulnerabilities
+            x-permission:
+                permission-name: cr_scan_list
+                product-name: containerregistry
+            security:
+            -   BearerAuth: []
+            -   OAuth2:
+                - mcr.read
+            parameters:
+            -   name: scan_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                description: Scan UUID.
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    minimum: 1
+                    type: integer
+                description: Limit.
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    minimum: 0
+                    type: integer
+                description: Offset.
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    default: severity:desc
+                    pattern: (^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$
+                    type: string
+                description: Fields to use as reference to sort.
+            -   name: severity
+                in: query
+                required: false
+                style: form
+                explode: true
+                schema:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/VulnerabilitySeverity'
+                description: Filter vulnerabilities by severity.
+            -   name: package_name
+                in: query
+                required: false
+                schema:
+                    type: string
+                description: Filter vulnerabilities by package name.
+            -   name: cve_id
+                in: query
+                required: false
+                schema:
+                    type: string
+                description: Filter vulnerabilities by CVE ID.
+            -   name: fixable
+                in: query
+                required: false
+                schema:
+                    type: boolean
+                description: Filter vulnerabilities that have a fixed version available.
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/VulnerabilitiesResponse'
+                    links:
+                        get:
+                            operationId: getImageScan
+                            description: Get image scan details
+                            parameters:
+                                scan_id: $request.path.scan_id
+                        stop:
+                            operationId: stopImageScan
+                            description: Stop an ongoing image scan
+                            parameters:
+                                scan_id: $request.path.scan_id
+                '400':
+                    $ref: '#/components/responses/BadRequestError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
+                '429':
+                    $ref: '#/components/responses/TooManyRequestsError'
+                '500':
+                    $ref: '#/components/responses/InternalServerError'
+    /v1/scans/{scan_id}/stop:
+        post:
+            tags:
+            - scans
+            summary: Stop an ongoing image scan
+            description: "Cancels an image scan job and its associated child architectures.\
+                \ \nOnly scans in 'CREATED' or 'IN_PROGRESS' status can be stopped.\n"
+            operationId: stopImageScan
+            x-permission:
+                permission-name: cr_image_scan
+                product-name: containerregistry
+            security:
+            -   BearerAuth: []
+            -   OAuth2:
+                - mcr.write
+            parameters:
+            -   name: scan_id
+                in: path
+                required: true
+                description: Unique identifier of the scan job (UUID)
+                schema:
+                    type: string
+                    format: uuid
+            responses:
+                '204':
+                    description: Scan successfully stopped or already in a terminal
+                        state.
+                    links:
+                        get:
+                            operationId: getImageScan
+                            description: Get image scan details
+                            parameters:
+                                scan_id: $request.path.scan_id
+                        vulnerabilities:
+                            operationId: getImageScanVulnerabilities
+                            description: List vulnerabilities for an image scan
+                            parameters:
+                                scan_id: $request.path.scan_id
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
                 '500':
                     $ref: '#/components/responses/InternalServerError'
 components:
@@ -1115,6 +1967,47 @@ components:
                 credential_type: basic
                 access_key: my_username
                 access_secret: my_password
+        MemberUpdateRequest:
+            type: object
+            description: Member update Request Object.
+            required:
+            - role
+            properties:
+                role:
+                    type: string
+                    description: The new role to assign to the member.
+                    enum:
+                    - developer
+                    - guest
+            example:
+                role: developer
+        MemberRequest:
+            type: object
+            description: Member addition Request Object.
+            required:
+            - user_id
+            properties:
+                user_id:
+                    type: string
+                    format: uuid
+                    description: User's UUID to be added to the registry.
+                role:
+                    type: string
+                    description: 'The role to assign to the member. If not provided,
+                        ''guest'' will be used by default.
+
+                        - developer: Can push and pull images
+
+                        - guest: Read-only access (pull images)
+
+                        '
+                    default: guest
+                    enum:
+                    - developer
+                    - guest
+            example:
+                user_id: e3d49354-35d7-4565-b634-65d8b86aa594
+                role: guest
         ProxyCacheCredentialStatusResponse:
             type: object
             description: Result of validating the proxy cache credentials
@@ -1301,7 +2194,7 @@ components:
                     type: string
                     description: A unique, global name for the container registry.
                         It must be written in lowercase letters and consists only
-                        of numbers and letters, up to a limit of 63 characters.
+                        of numbers and letters, up to a limit of 45 characters.
                 proxy_cache_id:
                     type: string
                     description: Proxy Cache UUID.
@@ -1311,6 +2204,55 @@ components:
             example:
                 name: cool_registry
                 proxy_cache_id: ef376048-a0f7-446c-826b-1d5cb3e5a5b0
+        MembersResponse:
+            type: object
+            required:
+            - results
+            - meta
+            properties:
+                results:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MemberResponse'
+                meta:
+                    $ref: '#/components/schemas/ListMetadata'
+        MemberResponse:
+            type: object
+            description: Registry member relationship response data.
+            required:
+            - id
+            - registry_id
+            - user_id
+            - role
+            - created_at
+            - updated_at
+            properties:
+                id:
+                    type: string
+                    description: Registry member relationship UUID.
+                registry_id:
+                    type: string
+                    description: Container Registry's UUID.
+                user_id:
+                    type: string
+                    description: User's UUID.
+                role:
+                    type: string
+                    description: The assigned role name.
+                    example: guest
+                created_at:
+                    type: string
+                    description: Timestamp when the member was added to the registry.
+                updated_at:
+                    type: string
+                    description: Timestamp of the last change to this membership.
+            example:
+                id: ef376048-a0f7-446c-826b-1d5cb3e5a5b0
+                registry_id: 0c6bbd87-881a-4bf8-b3f6-4ff3ceacb42c
+                user_id: e3d49354-35d7-4565-b634-65d8b86aa594
+                role: guest
+                created_at: '2024-05-20T14:30:00Z'
+                updated_at: '2024-05-20T14:30:00Z'
         CreateRegistryResponse:
             type: object
             description: Container Registry's creation response.
@@ -1583,6 +2525,425 @@ components:
                     pulled_at: '2024-05-15T19:56:47Z'
                     signed: false
                 extra_attr: {}
+        ScanStatus:
+            type: string
+            description: Image scan status.
+            enum:
+            - pending
+            - running
+            - completed
+            - failed
+            - stopped
+            example: completed
+        VulnerabilitySeverity:
+            type: string
+            description: Vulnerability severity level.
+            enum:
+            - unknown
+            - low
+            - medium
+            - high
+            - critical
+            example: high
+        SeverityResponse:
+            type: object
+            description: Image scan severity data.
+            required:
+            - total
+            - low
+            - medium
+            - high
+            - critical
+            - fixable
+            properties:
+                total:
+                    type: integer
+                    description: Vulnerabilities total count.
+                low:
+                    type: integer
+                    description: Low vulnerabilities count.
+                medium:
+                    type: integer
+                    description: Medium vulnerabilities count.
+                high:
+                    type: integer
+                    description: High vulnerabilities count.
+                critical:
+                    type: integer
+                    description: Critical vulnerabilities count.
+                fixable:
+                    type: integer
+                    description: Fixable vulnerabilities count.
+            example:
+                total: 10
+                low: 3
+                medium: 3
+                high: 3
+                critical: 1
+                fixable: 6
+        ImageScanScheduleResponse:
+            type: object
+            description: Image scan scheduling response data.
+            required:
+            - id
+            - digest
+            - registry_id
+            - repository_id
+            - status
+            - created_at
+            - updated_at
+            properties:
+                id:
+                    type: string
+                    description: Scan Job ID.
+                digest:
+                    type: string
+                    description: Image digest.
+                registry_id:
+                    type: string
+                    description: Registry UUID.
+                repository_id:
+                    type: string
+                    description: Repository UUID.
+                input_tag:
+                    type: string
+                    nullable: true
+                    description: Image tag
+                status:
+                    $ref: '#/components/schemas/ScanStatus'
+                created_at:
+                    type: string
+                    description: Date and time of image scan scheduling.
+                updated_at:
+                    type: string
+                    description: Date and time of the last scan update.
+            example:
+                id: 00000000-0000-0000-0000-000000000000
+                digest: sha256:000000000
+                input_tag: latest
+                registry_id: 00000000-0000-0000-0000-000000000000
+                repository_id: 00000000-0000-0000-0000-000000000000
+                status: pending
+                created_at: '2024-05-15T19:56:47Z'
+                updated_at: '2024-05-15T19:56:47Z'
+        ImageScanResponse:
+            type: object
+            description: Image scan response data.
+            required:
+            - id
+            - digest
+            - status
+            - created_at
+            - updated_at
+            properties:
+                id:
+                    type: string
+                    description: Scan Job ID.
+                digest:
+                    type: string
+                    description: Image digest.
+                input_tag:
+                    type: string
+                    description: Image tag
+                status:
+                    $ref: '#/components/schemas/ScanStatus'
+                os:
+                    type: string
+                    nullable: true
+                    description: Artifact operating system.
+                architecture:
+                    type: string
+                    nullable: true
+                    description: Artifact hardware architecture.
+                severity_summary:
+                    $ref: '#/components/schemas/SeverityResponse'
+                created_at:
+                    type: string
+                    description: Date and time of image scan scheduling.
+                updated_at:
+                    type: string
+                    description: Date and time of the last scan update.
+                finished_at:
+                    type: string
+                    nullable: true
+                    description: Date and time of image scan completion.
+                child_scans:
+                    type: array
+                    description: List of child image scans.
+                    items:
+                        $ref: '#/components/schemas/ChildImageScanResponse'
+            example:
+                id: 00000000-0000-0000-0000-000000000000
+                digest: sha256:000000000
+                input_tag: latest
+                status: completed
+                os: linux
+                architecture: arm64
+                severity_summary:
+                    total: 10
+                    low: 3
+                    medium: 3
+                    high: 3
+                    critical: 1
+                    fixable: 6
+                created_at: '2024-05-15T19:56:47Z'
+                updated_at: '2024-05-15T19:57:47Z'
+                finished_at: '2024-05-15T19:57:47Z'
+                child_scans:
+                -   id: 11111111-1111-1111-1111-111111111111
+                    digest: sha256:111111111
+                    status: completed
+                    os: linux
+                    architecture: amd64
+                    severity_summary:
+                        total: 4
+                        low: 1
+                        medium: 1
+                        high: 1
+                        critical: 1
+                        fixable: 2
+                    created_at: '2024-05-15T19:56:47Z'
+                    updated_at: '2024-05-15T19:57:47Z'
+                    finished_at: '2024-05-15T19:57:47Z'
+        ChildImageScanResponse:
+            type: object
+            description: Child image scan response data.
+            required:
+            - id
+            - digest
+            - status
+            - created_at
+            - updated_at
+            properties:
+                id:
+                    type: string
+                    description: Scan Job ID.
+                digest:
+                    type: string
+                    description: Image digest.
+                input_tag:
+                    type: string
+                    nullable: true
+                    description: Image tag
+                status:
+                    $ref: '#/components/schemas/ScanStatus'
+                os:
+                    type: string
+                    nullable: true
+                    description: Artifact operating system.
+                architecture:
+                    type: string
+                    nullable: true
+                    description: Artifact hardware architecture.
+                severity_summary:
+                    $ref: '#/components/schemas/SeverityResponse'
+                created_at:
+                    type: string
+                    description: Date and time of image scan scheduling.
+                updated_at:
+                    type: string
+                    description: Date and time of the last scan update.
+                finished_at:
+                    type: string
+                    nullable: true
+                    description: Date and time of image scan completion.
+            example:
+                id: 11111111-1111-1111-1111-111111111111
+                digest: sha256:111111111
+                input_tag: latest
+                status: completed
+                os: linux
+                architecture: amd64
+                severity_summary:
+                    total: 4
+                    low: 1
+                    medium: 1
+                    high: 1
+                    critical: 1
+                    fixable: 2
+                created_at: '2024-05-15T19:56:47Z'
+                updated_at: '2024-05-15T19:57:47Z'
+                finished_at: '2024-05-15T19:57:47Z'
+        ImageScansResponse:
+            type: object
+            description: Image scans response.
+            required:
+            - results
+            - meta
+            properties:
+                results:
+                    type: array
+                    description: List of image scans.
+                    items:
+                        $ref: '#/components/schemas/ImageScanResponse'
+                meta:
+                    $ref: '#/components/schemas/ListMetadata'
+        VulnerabilityCvssSourceResponse:
+            type: object
+            description: CVSS details for a specific source.
+            properties:
+                score:
+                    type: number
+                    format: float
+                    nullable: true
+                    description: CVSS v3 score.
+                vector:
+                    type: string
+                    nullable: true
+                    description: CVSS v3 vector.
+        VulnerabilityCvssMaxResponse:
+            type: object
+            description: Highest CVSS v3 score found among the available sources.
+            properties:
+                source:
+                    type: string
+                    nullable: true
+                    description: Source that provided the highest CVSS v3 score.
+                score:
+                    type: number
+                    format: float
+                    nullable: true
+                    description: Highest CVSS v3 score found.
+                vector:
+                    type: string
+                    nullable: true
+                    description: CVSS v3 vector associated with the highest score.
+        VulnerabilityCvssResponse:
+            type: object
+            description: CVSS information aggregated from Harbor scan sources.
+            required:
+            - preferred
+            - max
+            - by_source
+            properties:
+                preferred:
+                    allOf:
+                    -   $ref: '#/components/schemas/VulnerabilityCvssSourceResponse'
+                    nullable: true
+                    description: Preferred CVSS v3 information reported by Harbor.
+                max:
+                    allOf:
+                    -   $ref: '#/components/schemas/VulnerabilityCvssMaxResponse'
+                    nullable: true
+                    description: Highest CVSS v3 information found among the available
+                        sources.
+                by_source:
+                    type: object
+                    description: CVSS v3 information indexed by source name.
+                    additionalProperties:
+                        $ref: '#/components/schemas/VulnerabilityCvssSourceResponse'
+                    example:
+                        nvd:
+                            score: 6.5
+                            vector: CVSS:3.0/AV:L/AC:L/PR:L/UI:N/S:C/C:N/I:H/A:N
+                        redhat:
+                            score: 8.6
+                            vector: CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H
+            example:
+                preferred:
+                    score: 6.5
+                    vector: CVSS:3.0/AV:L/AC:L/PR:L/UI:N/S:C/C:N/I:H/A:N
+                max:
+                    source: redhat
+                    score: 8.6
+                    vector: CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H
+                by_source:
+                    nvd:
+                        score: 6.5
+                        vector: CVSS:3.0/AV:L/AC:L/PR:L/UI:N/S:C/C:N/I:H/A:N
+                    redhat:
+                        score: 8.6
+                        vector: CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H
+        VulnerabilityResponse:
+            type: object
+            description: Vulnerability response data.
+            required:
+            - cve_id
+            - severity
+            - package_name
+            - current_version
+            - description
+            - links
+            - fixable
+            - is_allowlisted
+            - cvss
+            properties:
+                cve_id:
+                    type: string
+                    description: CVE ID.
+                severity:
+                    $ref: '#/components/schemas/VulnerabilitySeverity'
+                cvss:
+                    $ref: '#/components/schemas/VulnerabilityCvssResponse'
+                is_allowlisted:
+                    type: boolean
+                    description: Indicates whether the vulnerability is allowlisted.
+                    default: false
+                package_name:
+                    type: string
+                    description: Affected package name.
+                current_version:
+                    type: string
+                    description: Affected package current version.
+                fixed_version:
+                    type: string
+                    nullable: true
+                    description: Version containing a fix.
+                fixable:
+                    type: boolean
+                    description: Indicates whether a fix is available.
+                target_path:
+                    type: string
+                    description: Path of the affected package.
+                description:
+                    type: string
+                    description: Vulnerability description.
+                links:
+                    type: array
+                    description: List of reference links.
+                    items:
+                        type: string
+            example:
+                cve_id: CVE-2016-2781
+                severity: low
+                cvss:
+                    preferred:
+                        score: 6.5
+                        vector: CVSS:3.0/AV:L/AC:L/PR:L/UI:N/S:C/C:N/I:H/A:N
+                    max:
+                        source: redhat
+                        score: 8.6
+                        vector: CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H
+                    by_source:
+                        nvd:
+                            score: 6.5
+                            vector: CVSS:3.0/AV:L/AC:L/PR:L/UI:N/S:C/C:N/I:H/A:N
+                        redhat:
+                            score: 8.6
+                            vector: CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H
+                is_allowlisted: false
+                package_name: coreutils
+                current_version: 9.4-3ubuntu6.1
+                fixed_version: null
+                fixable: false
+                target_path: /usr/bin/chroot
+                description: Example vulnerability description.
+                links:
+                - https://avd.aquasec.com/nvd/cve-2016-2781
+        VulnerabilitiesResponse:
+            type: object
+            description: Vulnerabilities response.
+            required:
+            - results
+            - meta
+            properties:
+                results:
+                    type: array
+                    description: List of vulnerabilities found in the image scan.
+                    items:
+                        $ref: '#/components/schemas/VulnerabilityResponse'
+                meta:
+                    $ref: '#/components/schemas/ListMetadata'
         ImageTagResponse:
             type: object
             description: Tag of an image response.
@@ -1605,6 +2966,28 @@ components:
                 pushed_at: '2024-05-15T19:56:47Z'
                 pulled_at: '2024-05-15T19:56:47Z'
                 signed: false
+        UserResponse:
+            type: object
+            description: Container registry user information.
+            required:
+            - id
+            - username
+            - created_at
+            properties:
+                id:
+                    type: string
+                    description: Unique identifier for the container registry user.
+                username:
+                    type: string
+                    description: The username used for registry authentication (usually
+                        the authId from the request context).
+                created_at:
+                    type: string
+                    description: Timestamp when the registry user was created.
+            example:
+                id: e3d49354-35d7-4565-b634-65d8b86aa594
+                username: e3d49354-35d7-4565-b634-65d8b86aa594
+                created_at: '2024-05-15T19:56:47Z'
         Error:
             type: object
             required:
@@ -1718,4 +3101,11 @@ tags:
     description: Routes related to listing and deletion of images.
 -   name: proxy-caches
     description: Routes related to creating, listing and deletion of proxy-caches.
+-   name: users
+    description: Routes related to creating and retrieving container registry users.
+-   name: members
+    description: Routes related to managing registry membership and roles.
+-   name: scans
+    description: Routes related to image scanning, progress tracking, and vulnerability
+        reports.
 $id: https://container-registry.jaxyendy.com/openapi.json
