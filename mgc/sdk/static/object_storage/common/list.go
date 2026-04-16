@@ -23,6 +23,48 @@ var listObjectsLogger = utils.NewLazyLoader(func() *zap.SugaredLogger {
 	return logger().Named("list")
 })
 
+// convertControlCharsToVisible converts control characters to visible Unicode symbols
+// Control chars (0x00-0x1F) map to Unicode Control Pictures block (U+2400-U+241F)
+// Examples: 0x01 → ␁ (U+2401), 0x02 → ␂ (U+2402), etc.
+func ConvertControlCharsToVisible(s string) string {
+	var result strings.Builder
+	result.Grow(len(s))
+
+	for _, r := range s {
+		// Control characters (0x00-0x1F) → Unicode Control Pictures (U+2400-U+241F)
+		if r >= 0x00 && r <= 0x1F {
+			// Map to Control Pictures Unicode block
+			result.WriteRune(rune(0x2400 + r))
+		} else if r == 0x7F { // DEL character → ␡ (U+2421)
+			result.WriteRune(0x2421)
+		} else {
+			result.WriteRune(r)
+		}
+	}
+
+	return result.String()
+}
+
+// ConvertVisibleToControlChars reverses ConvertControlCharsToVisible
+// Converts Unicode Control Pictures back to original control characters
+func ConvertVisibleToControlChars(s string) string {
+	var result strings.Builder
+	result.Grow(len(s))
+
+	for _, r := range s {
+		// Unicode Control Pictures (U+2400-U+241F) → Control characters (0x00-0x1F)
+		if r >= 0x2400 && r <= 0x241F {
+			result.WriteRune(rune(r - 0x2400))
+		} else if r == 0x2421 { // ␡ (U+2421) → DEL character (0x7F)
+			result.WriteRune(0x7F)
+		} else {
+			result.WriteRune(r)
+		}
+	}
+
+	return result.String()
+}
+
 type ListObjectsParams struct {
 	Destination      mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Path of the bucket to list objects from,example=bucket1" mgc:"positional"`
 	PaginationParams `json:",squash"` // nolint
@@ -78,7 +120,44 @@ type listObjectsRequestResponse struct {
 	Name                   string           `xml:"Name"`
 	Contents               []*BucketContent `xml:"Contents"`
 	CommonPrefixes         []*Prefix        `xml:"CommonPrefixes" json:"SubDirectories"`
+	EncodingType           string           `xml:"EncodingType"`
 	paginationResponseInfo `json:",squash"` // nolint
+}
+
+// decodeURLEncodedFields decodes URL-encoded fields and converts control chars to visible symbols
+func (r *listObjectsRequestResponse) decodeURLEncodedFields() error {
+	if r.EncodingType != "url" {
+		return nil
+	}
+
+	// Decode object keys
+	for _, content := range r.Contents {
+		decoded, err := url.QueryUnescape(content.Key)
+		if err != nil {
+			return fmt.Errorf("failed to decode object key %q: %w", content.Key, err)
+		}
+		content.Key = ConvertControlCharsToVisible(decoded)
+	}
+
+	// Decode prefix paths
+	for _, prefix := range r.CommonPrefixes {
+		decoded, err := url.QueryUnescape(prefix.Path)
+		if err != nil {
+			return fmt.Errorf("failed to decode prefix path %q: %w", prefix.Path, err)
+		}
+		prefix.Path = ConvertControlCharsToVisible(decoded)
+	}
+
+	// Decode continuation token if present
+	if r.NextContinuationToken != "" {
+		decoded, err := url.QueryUnescape(r.NextContinuationToken)
+		if err != nil {
+			return fmt.Errorf("failed to decode continuation token: %w", err)
+		}
+		r.NextContinuationToken = ConvertControlCharsToVisible(decoded)
+	}
+
+	return nil
 }
 
 type paginationResponseInfo struct {
@@ -196,6 +275,10 @@ func newListRequest(ctx context.Context, cfg Config, bucketURI mgcSchemaPkg.URI,
 		queryStringParts = append(queryStringParts, "delimiter="+url.QueryEscape(delimiter))
 	}
 
+	// Add encoding-type=url to get URL-encoded responses from S3
+	// This prevents XML parsing errors with special characters in object names
+	queryStringParts = append(queryStringParts, "encoding-type=url")
+
 	sort.Strings(queryStringParts)
 	finalUrl.RawQuery = strings.Join(queryStringParts, "&")
 
@@ -251,6 +334,18 @@ func ListGenerator(ctx context.Context, params ListObjectsParams, cfg Config, on
 				select {
 				case <-ctx.Done():
 					logger.Debugw("context.Done()", "err", err)
+				case ch <- pipeline.NewSimpleWalkDirEntry[*BucketContent](dst.Path(), nil, err):
+				}
+				return
+			}
+
+			// Decode URL-encoded fields if encoding-type=url was used
+			err = result.decodeURLEncodedFields()
+			if err != nil {
+				logger.Warnw("failed to decode URL-encoded fields", "err", err)
+				select {
+				case <-ctx.Done():
+					logger.Debugw("context.Done()", "err", ctx.Err())
 				case ch <- pipeline.NewSimpleWalkDirEntry[*BucketContent](dst.Path(), nil, err):
 				}
 				return
