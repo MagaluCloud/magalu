@@ -83,6 +83,7 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	addTimeoutFlag(rootCmd)
 	addWaitTerminationFlag(rootCmd)
 	addRetryUntilFlag(rootCmd)
+	addPaginateFlag(rootCmd)
 	addBypassConfirmationFlag(rootCmd)
 	addShowInternalFlag(rootCmd)
 	addShowHiddenFlag(rootCmd)
