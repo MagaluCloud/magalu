@@ -12,9 +12,35 @@ mgc federation update [domain-id] [federation-id] [flags]
 
 ## Flags:
 ```
-    --domain-id uuid       Domain Id (required)
-    --federation-id uuid   Federation Id (required)
--h, --help                 help for update
+    --domain-id uuid                       Domain Id (required)
+    --federation-id uuid                   Federation Id (required)
+-h, --help                                 help for update
+    --oidc object                          OIDCFederationResourceEdit (properties: authorization_endpoint, client_id, client_secret, jwks_uri, name, scopes and token_endpoint)
+                                           Use --oidc=help for more details
+    --oidc.authorization-endpoint string   OIDCFederationResourceEdit: Authorization Endpoint
+                                           This is the same as '--oidc=authorization_endpoint:string'.
+    --oidc.client-id string                OIDCFederationResourceEdit: Client Id
+                                           This is the same as '--oidc=client_id:string'.
+    --oidc.client-secret string            OIDCFederationResourceEdit: Client Secret
+                                           This is the same as '--oidc=client_secret:string'.
+    --oidc.jwks-uri string                 OIDCFederationResourceEdit: Jwks Uri
+                                           This is the same as '--oidc=jwks_uri:string'.
+    --oidc.name string                     OIDCFederationResourceEdit: Name
+                                           This is the same as '--oidc=name:string'.
+    --oidc.scopes array                    OIDCFederationResourceEdit: Scopes
+                                           This is the same as '--oidc=scopes:array'.
+    --oidc.token-endpoint string           OIDCFederationResourceEdit: Token Endpoint
+                                           This is the same as '--oidc=token_endpoint:string'.
+    --saml object                          SAMLFederationResourceEdit (properties: entity_id, idp_certificate, name and sso_url)
+                                           Use --saml=help for more details
+    --saml.entity-id string                SAMLFederationResourceEdit: Entity Id
+                                           This is the same as '--saml=entity_id:string'.
+    --saml.idp-certificate string          SAMLFederationResourceEdit: Idp Certificate
+                                           This is the same as '--saml=idp_certificate:string'.
+    --saml.name string                     SAMLFederationResourceEdit: Name
+                                           This is the same as '--saml=name:string'.
+    --saml.sso-url string                  SAMLFederationResourceEdit: Sso Url
+                                           This is the same as '--saml=sso_url:string'.
 ```
 
 ## Global Flags:

@@ -225,9 +225,12 @@ paths:
                 content:
                     application/json:
                         schema:
-                            anyOf:
-                            -   $ref: '#/components/schemas/OIDCFederationResourceEdit'
-                            -   $ref: '#/components/schemas/SAMLFederationResourceEdit'
+                            type: object
+                            properties:
+                                oidc:
+                                    $ref: '#/components/schemas/OIDCFederationResourceEdit'
+                                saml:
+                                    $ref: '#/components/schemas/SAMLFederationResourceEdit'
                             title: Fed In
                 required: true
             responses:
