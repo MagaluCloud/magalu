@@ -15,31 +15,33 @@ mgc federation update [domain-id] [federation-id] [flags]
     --domain-id uuid                       Domain Id (required)
     --federation-id uuid                   Federation Id (required)
 -h, --help                                 help for update
-    --oidc object                          OIDCFederationResourceEdit (properties: authorization_endpoint, client_id, client_secret, jwks_uri, name, scopes and token_endpoint)
+    --oidc object                          (properties: authorization_endpoint, client_id, client_secret, jwks_uri, name, scopes, token_endpoint and userinfo_endpoint)
                                            Use --oidc=help for more details
-    --oidc.authorization-endpoint string   OIDCFederationResourceEdit: Authorization Endpoint
+    --oidc.authorization-endpoint string   oidc's authorization_endpoint property: Authorization Endpoint
                                            This is the same as '--oidc=authorization_endpoint:string'.
-    --oidc.client-id string                OIDCFederationResourceEdit: Client Id
+    --oidc.client-id string                oidc's client_id property: Client Id
                                            This is the same as '--oidc=client_id:string'.
-    --oidc.client-secret string            OIDCFederationResourceEdit: Client Secret
+    --oidc.client-secret string            oidc's client_secret property: Client Secret
                                            This is the same as '--oidc=client_secret:string'.
-    --oidc.jwks-uri string                 OIDCFederationResourceEdit: Jwks Uri
+    --oidc.jwks-uri string                 oidc's jwks_uri property: Jwks Uri
                                            This is the same as '--oidc=jwks_uri:string'.
-    --oidc.name string                     OIDCFederationResourceEdit: Name
+    --oidc.name string                     oidc's name property: Name
                                            This is the same as '--oidc=name:string'.
-    --oidc.scopes array                    OIDCFederationResourceEdit: Scopes
+    --oidc.scopes array                    oidc's scopes property: Scopes
                                            This is the same as '--oidc=scopes:array'.
-    --oidc.token-endpoint string           OIDCFederationResourceEdit: Token Endpoint
+    --oidc.token-endpoint string           oidc's token_endpoint property: Token Endpoint
                                            This is the same as '--oidc=token_endpoint:string'.
-    --saml object                          SAMLFederationResourceEdit (properties: entity_id, idp_certificate, name and sso_url)
+    --oidc.userinfo-endpoint string        oidc's userinfo_endpoint property: Userinfo Endpoint
+                                           This is the same as '--oidc=userinfo_endpoint:string'.
+    --saml object                          (properties: entity_id, idp_certificate, name and sso_url)
                                            Use --saml=help for more details
-    --saml.entity-id string                SAMLFederationResourceEdit: Entity Id
+    --saml.entity-id string                saml's entity_id property: Entity Id
                                            This is the same as '--saml=entity_id:string'.
-    --saml.idp-certificate string          SAMLFederationResourceEdit: Idp Certificate
+    --saml.idp-certificate string          saml's idp_certificate property: Idp Certificate
                                            This is the same as '--saml=idp_certificate:string'.
-    --saml.name string                     SAMLFederationResourceEdit: Name
+    --saml.name string                     saml's name property: Name
                                            This is the same as '--saml=name:string'.
-    --saml.sso-url string                  SAMLFederationResourceEdit: Sso Url
+    --saml.sso-url string                  saml's sso_url property: Sso Url
                                            This is the same as '--saml=sso_url:string'.
 ```
 

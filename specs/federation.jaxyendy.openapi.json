@@ -1275,9 +1275,19 @@
               }
             ],
             "title": "Jwks Uri"
+          },
+          "userinfo_endpoint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Userinfo Endpoint"
           }
-        },
-        "title": "OIDCFederationResourceEdit"
+        }
       },
       "PKeyResponseDM": {
         "type": "object",
@@ -1445,8 +1455,7 @@
             ],
             "title": "Sso Url"
           }
-        },
-        "title": "SAMLFederationResourceEdit"
+        }
       },
       "ValidationError": {
         "type": "object",

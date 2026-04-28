@@ -815,7 +815,10 @@ components:
                     title: Jwks Uri
                     nullable: true
                     type: string
-            title: OIDCFederationResourceEdit
+                userinfo_endpoint:
+                    title: Userinfo Endpoint
+                    nullable: true
+                    type: string
         PKeyResponseDM:
             type: object
             properties:
@@ -926,7 +929,6 @@ components:
                     title: Sso Url
                     nullable: true
                     type: string
-            title: SAMLFederationResourceEdit
         ValidationError:
             type: object
             properties:
