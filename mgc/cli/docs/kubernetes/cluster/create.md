@@ -12,7 +12,7 @@ mgc kubernetes cluster create [flags]
 
 ## Examples:
 ```
-mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]' --cluster-ipv4-cidr="10.128.0.0/12" --description="This is an example cluster." --enabled-bastion=false --enabled-server-group=false --name="cluster-example" --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"availability_zones":["a","b","c"],"flavor":"cloud-k8s.gp1.small","name":"nodepool-example","replicas":3,"tags":["tag-value1"],"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --services-ipv4-cidr="10.128.0.0/12" --version="v1.32.3" --zone="br-region-zone"
+mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]' --cluster-ipv4-cidr="10.128.0.0/12" --description="This is an example cluster." --name="cluster-example" --network.subnet-ids='["627c1f78-f9a6-4419-b582-a982144ff6bc","57b69486-e800-4cc3-92e2-6037b4cafe35"]' --node-pools='[{"auto_scale":{"max_replicas":5,"min_replicas":2},"flavor":"BV2-4-40","name":"nodepool-example","replicas":3,"taints":[{"effect":"NoSchedule","key":"example-key","value":"valor1"}]}]' --services-ipv4-cidr="10.128.0.0/12" --version="v1.32.3"
 ```
 
 ## Flags:
@@ -25,13 +25,15 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
                                     This configuration can only be used during the cluster creation and can not be updated later.
                                     If not specified, the "192.168.0.0/16" value is used by default.
                                     
+    --cni string                    The CNI by the Kubernetes Cluster.
+                                    This parameter can only be set when creating a new cluster and can not be updated later.
+                                     (deprecated)
     --description string            A brief description of the Kubernetes cluster.
-                                    
-    --enabled-bastion               [Deprecated] This parameter is deprecated and its use won't create a bastion server
+    --enabled-bastion               This parameter is deprecated and its use won't create a bastion server
                                     Enables the use of a bastion host for secure access to the cluster.
-                                    
+                                     (deprecated)
     --enabled-server-group          Enables the use of a server group with anti-affinity policy during the creation of the cluster and its node pools.
-                                    
+                                     (deprecated)
 -h, --help                          help for create
     --name string                   Kubernetes cluster name. The name is primarily intended for idempotence, and must be unique within a namespace. The name cannot be changed.
                                     The name must follow the following rules:
@@ -40,6 +42,11 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
                                       - must start with an alphabetic character
                                       - must end with an alphanumeric character
                                      (max character count: 63) (required)
+    --network object                Request object for the Kubernetes clusters network resource request.
+                                     (single property: subnet_ids)
+                                    Use --network=help for more details
+    --network.subnet-ids array      Request object for the Kubernetes clusters network resource request: 
+                                    This is the same as '--network=subnet_ids:array'.
     --node-pools array(object)      An array representing a set of nodes within a Kubernetes cluster.
                                     
                                     Use --node-pools=help for more details
@@ -50,8 +57,9 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
     --version string                The Kubernetes version for the cluster, specified in the standard "vX.Y.Z" format.
                                     If no version is provided, the latest available version will be used by default.
                                     
-    --zone string                   [Deprecated] This parameter is deprecated and its use won't create a cluster at requested zone.
+    --zone string                   This parameter is deprecated and its use won't create a cluster at requested zone.
                                     Identifier of the zone where the Kubernetes cluster will be located.
+                                     (deprecated)
 ```
 
 ## Global Flags:

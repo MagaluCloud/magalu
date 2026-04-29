@@ -637,6 +637,10 @@ func getFlagFormattedExample(f *flag.Flag) (example string) {
 	}
 
 	desc := fv.Desc()
+	if desc.Schema.Deprecated {
+		return
+	}
+
 	example = getExampleFormattedValue(desc.Schema, desc.Container, desc.PropName)
 	if example == "" {
 		return
