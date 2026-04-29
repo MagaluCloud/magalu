@@ -1,19 +1,19 @@
 ---
 sidebar_position: 3
 ---
-# Replace
+# Check-Dns
 
-Edit Federation Resource
+Run this after configuring the txt_name / txt_value pair on your DNS provider.
 
 ## Usage:
 ```
-mgc federation domains replace [domain-id] [flags]
+mgc federation domains check-dns [domain-id] [flags]
 ```
 
 ## Flags:
 ```
     --domain-id uuid   Domain Id (required)
--h, --help             help for replace
+-h, --help             help for check-dns
 ```
 
 ## Global Flags:

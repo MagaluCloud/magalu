@@ -13,9 +13,9 @@ mgc federation domains [command]
 
 ## Commands:
 ```
+check-dns   Run this after configuring the txt_name / txt_value pair on your DNS provider.
 create      Create Domain
 list        Read Domain Collection
-replace     Edit Federation Resource
 ```
 
 ## Flags:

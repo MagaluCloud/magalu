@@ -95,7 +95,9 @@ paths:
         put:
             tags:
             - Domains
-            summary: Edit Federation Resource
+            x-mgc-name: check-dns
+            summary: Run this after configuring the txt_name / txt_value pair on your
+                DNS provider.
             operationId: edit_federation_resource_api_v1_domains__domain_id__put
             parameters:
             -   name: domain_id
