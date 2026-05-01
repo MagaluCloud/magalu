@@ -57,7 +57,7 @@ modules:
     - name: tag
       url: https://tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com/openapi.json
       path: tag.openapi.yaml
-      version: 0.0.1
+      version: 0.1.0
       description: Tags API
       summary: Tags API
     - name: virtual-machine
