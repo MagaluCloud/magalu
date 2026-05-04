@@ -26,10 +26,10 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
                                     If not specified, the "192.168.0.0/16" value is used by default.
                                     
     --description string            A brief description of the Kubernetes cluster.
-    --enabled-bastion               [Deprecated]This parameter is deprecated and its use won't create a bastion server
+    --enabled-bastion               [Deprecated] This parameter is deprecated and its use won't create a bastion server
                                     Enables the use of a bastion host for secure access to the cluster.
                                      
-    --enabled-server-group          [Deprecated]Enables the use of a server group with anti-affinity policy during the creation of the cluster and its node pools.
+    --enabled-server-group          [Deprecated] Enables the use of a server group with anti-affinity policy during the creation of the cluster and its node pools.
                                      
 -h, --help                          help for create
     --name string                   Kubernetes cluster name. The name is primarily intended for idempotence, and must be unique within a namespace. The name cannot be changed.
@@ -54,7 +54,7 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
     --version string                The Kubernetes version for the cluster, specified in the standard "vX.Y.Z" format.
                                     If no version is provided, the latest available version will be used by default.
                                     
-    --zone string                   [Deprecated]This parameter is deprecated and its use won't create a cluster at requested zone.
+    --zone string                   [Deprecated] This parameter is deprecated and its use won't create a cluster at requested zone.
                                     Identifier of the zone where the Kubernetes cluster will be located.
 ```
 
