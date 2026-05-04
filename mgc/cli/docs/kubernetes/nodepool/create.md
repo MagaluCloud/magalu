@@ -12,7 +12,7 @@ mgc kubernetes nodepool create [cluster-id] [flags]
 
 ## Examples:
 ```
-mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --availability-zones='["a","b","c"]' --flavor="cloud-k8s.gp1.small" --max-pods-per-node=32 --name="nodepool-example" --replicas=3 --tags='["tag-value1"]'
+mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --flavor="BV2-4-40" --max-pods-per-node=32 --name="nodepool-example" --network.subnet-ids='["627c1f78-f9a6-4419-b582-a982144ff6bc","57b69486-e800-4cc3-92e2-6037b4cafe35"]' --replicas=3
 ```
 
 ## Flags:
@@ -26,30 +26,15 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
     --auto-scale.min-replicas integer   Object specifying properties for updating workload resources in the Kubernetes cluster: Minimum number of replicas for autoscaling. If not provided, the autoscale value will be assumed based on the "replicas" field.
                                          (min: 0)
                                         This is the same as '--auto-scale=min_replicas:integer'.
-    --availability-zones array(enum)    List of availability zones where the resource can be created.
-                                        
+    --availability-zones array(enum)    [Deprecated] List of availability zones where the resource can be created.
+                                         
     --cli.list-links enum[=table]       List all available links for this command (one of "json", "table" or "yaml")
     --cluster-id uuid                   Cluster's UUID. (required)
-    --flavor string                     Definition of the CPU, RAM, and storage capacity of the nodes.
+    --flavor string                     Name of the machine type. The machine type defines the CPU, RAM, and storage capacity of the nodes.
+                                        The full list of available machine types can be found in the Virtual Machine by listing the machine types.
+                                        The smallest supported machine type is BV2-4-40.
                                         
-                                        | Flavor                     | vCPUs | RAM (GB) | Root Disk (GB) |
-                                        |----------------------------|-------|----------|----------------|
-                                        | cloud-k8s.gp1.small        | 2     | 4        | 20             |
-                                        | cloud-k8s.gp1.medium       | 4     | 8        | 50             |
-                                        | cloud-k8s.gp1.large        | 8     | 16       | 100            |
-                                        | cloud-k8s.gp2.small        | 2     | 4        | 300            |
-                                        | cloud-k8s.gp2.large        | 8     | 32       | 300            |
-                                        | cloud-k8s.hm1.medium       | 4     | 16       | 50             |
-                                        | cloud-k8s.i1-c48-r96-d300  | 48    | 96       | 300            |
-                                        | cloud-k8s.i1-c1-r8-d100    | 1     | 8        | 100            |
-                                        | cloud-k8s.i1-c8-r8-d40     | 8     | 8        | 40             |
-                                        | cloud-k8s.i1-c4-r16-d100   | 4     | 16       | 100            |
-                                        | cloud-k8s.i1-c4-r32-d100   | 4     | 32       | 100            |
-                                        | cloud-k8s.i1-c8-r32-d100   | 8     | 32       | 100            |
-                                        | cloud-k8s.i1-c16-r32-d40   | 16    | 32       | 40             |
-                                        | cloud-k8s.i1-c16-r64-d100  | 16    | 64       | 100            |
-                                        | cloud-k8s.i1-c32-r64-d100  | 32    | 64       | 100            |
-                                        | cloud-k8s.i1-c32-r128-d500 | 32    | 128      | 500            |
+                                        For V1 Clusters, the list of available flavors can be retrieved using the /v1/flavors endpoint (deprecated) or via the MGC CLI with the command 'kubernetes flavors list'.
                                          (required)
 -h, --help                              help for create
     --max-pods-per-node integer         Maximum number of Pods allowed per node.
@@ -61,8 +46,13 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
                                           - Must start with an alphabetic character
                                           - Must end with an alphanumeric character
                                          (max character count: 63) (required)
+    --network object                    Request object for the Kubernetes nodepools network resource request.
+                                         (single property: subnet_ids)
+                                        Use --network=help for more details
+    --network.subnet-ids array          Request object for the Kubernetes nodepools network resource request: 
+                                        This is the same as '--network=subnet_ids:array'.
     --replicas integer                  Number of replicas of the nodes in the node pool. (required) (default 1)
-    --tags array(string)                List of tags applied to the node pool.
+    --tags array(string)                [Deprecated] List of tags applied to the node pool. 
     --taints array(object)              Property associating a set of nodes.
                                         Use --taints=help for more details
 ```

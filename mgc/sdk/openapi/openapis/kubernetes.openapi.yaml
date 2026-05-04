@@ -83,26 +83,30 @@ paths:
                     \ \\\n  --header 'content-type: application/json' \\\n  --header\
                     \ 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"name\":\"\
                     cluster-example\",\"version\":\"v1.32.3\",\"description\":\"This\
-                    \ is an example cluster.\",\"zone\":\"br-region-zone\",\"enabled_bastion\"\
+                    \ is an example cluster.\",\"zone\":\"br-region-zone\",\"network\"\
+                    :{\"subnet_ids\":[[\"11111111-1111-1111-1111-111111111111\"],[\"\
+                    11111111-1111-1111-1111-111111111111\"]]},\"enabled_bastion\"\
                     :false,\"enabled_server_group\":false,\"node_pools\":[{\"name\"\
-                    :\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\"\
-                    :3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\"\
-                    ,\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\"\
-                    :{\"min_replicas\":2,\"max_replicas\":5},\"availability_zones\"\
-                    :[\"a\",\"b\",\"c\"]}],\"allowed_cidrs\":[\"192.168.1.0/24\",\"\
-                    10.0.0.0/16\"],\"cluster_ipv4_cidr\":\"10.128.0.0/12\",\"services_ipv4_cidr\"\
-                    :\"10.128.0.0/12\"}'"
+                    :\"nodepool-example\",\"flavor\":\"BV2-4-40\",\"replicas\":3,\"\
+                    taints\":[{\"key\":\"example-key\",\"value\":\"valor1\",\"effect\"\
+                    :\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\"\
+                    :5},\"availability_zones\":[\"a\",\"b\",\"c\"]}],\"allowed_cidrs\"\
+                    :[\"192.168.1.0/24\",\"10.0.0.0/16\"],\"cluster_ipv4_cidr\":\"\
+                    10.128.0.0/12\",\"services_ipv4_cidr\":\"10.128.0.0/12\",\"cni\"\
+                    :\"calico\"}'"
             -   lang: Shell + Httpie
                 source: "echo '{\"name\":\"cluster-example\",\"version\":\"v1.32.3\"\
                     ,\"description\":\"This is an example cluster.\",\"zone\":\"br-region-zone\"\
-                    ,\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\"\
-                    :[{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\"\
-                    ,\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\"\
-                    :\"example-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"\
-                    }],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5},\"availability_zones\"\
-                    :[\"a\",\"b\",\"c\"]}],\"allowed_cidrs\":[\"192.168.1.0/24\",\"\
-                    10.0.0.0/16\"],\"cluster_ipv4_cidr\":\"10.128.0.0/12\",\"services_ipv4_cidr\"\
-                    :\"10.128.0.0/12\"}' |  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\
+                    ,\"network\":{\"subnet_ids\":[[\"11111111-1111-1111-1111-111111111111\"\
+                    ],[\"11111111-1111-1111-1111-111111111111\"]]},\"enabled_bastion\"\
+                    :false,\"enabled_server_group\":false,\"node_pools\":[{\"name\"\
+                    :\"nodepool-example\",\"flavor\":\"BV2-4-40\",\"replicas\":3,\"\
+                    taints\":[{\"key\":\"example-key\",\"value\":\"valor1\",\"effect\"\
+                    :\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\"\
+                    :5},\"availability_zones\":[\"a\",\"b\",\"c\"]}],\"allowed_cidrs\"\
+                    :[\"192.168.1.0/24\",\"10.0.0.0/16\"],\"cluster_ipv4_cidr\":\"\
+                    10.128.0.0/12\",\"services_ipv4_cidr\":\"10.128.0.0/12\",\"cni\"\
+                    :\"calico\"}' |  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters\
                     \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json\
                     \ \\\n  x-tenant-id:SOME_STRING_VALUE"
             -   lang: Go + Native
@@ -112,16 +116,17 @@ paths:
                     \tpayload := strings.NewReader(\"{\\\"name\\\":\\\"cluster-example\\\
                     \",\\\"version\\\":\\\"v1.32.3\\\",\\\"description\\\":\\\"This\
                     \ is an example cluster.\\\",\\\"zone\\\":\\\"br-region-zone\\\
-                    \",\\\"enabled_bastion\\\":false,\\\"enabled_server_group\\\"\
-                    :false,\\\"node_pools\\\":[{\\\"name\\\":\\\"nodepool-example\\\
-                    \",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\"\
-                    :3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\
-                    \":\\\"example-key\\\",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\
-                    \":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\
-                    \":2,\\\"max_replicas\\\":5},\\\"availability_zones\\\":[\\\"\
-                    a\\\",\\\"b\\\",\\\"c\\\"]}],\\\"allowed_cidrs\\\":[\\\"192.168.1.0/24\\\
-                    \",\\\"10.0.0.0/16\\\"],\\\"cluster_ipv4_cidr\\\":\\\"10.128.0.0/12\\\
-                    \",\\\"services_ipv4_cidr\\\":\\\"10.128.0.0/12\\\"}\")\n\n\t\
+                    \",\\\"network\\\":{\\\"subnet_ids\\\":[[\\\"11111111-1111-1111-1111-111111111111\\\
+                    \"],[\\\"11111111-1111-1111-1111-111111111111\\\"]]},\\\"enabled_bastion\\\
+                    \":false,\\\"enabled_server_group\\\":false,\\\"node_pools\\\"\
+                    :[{\\\"name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"BV2-4-40\\\
+                    \",\\\"replicas\\\":3,\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\
+                    \",\\\"value\\\":\\\"valor1\\\",\\\"effect\\\":\\\"NoSchedule\\\
+                    \"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\
+                    \":5},\\\"availability_zones\\\":[\\\"a\\\",\\\"b\\\",\\\"c\\\"\
+                    ]}],\\\"allowed_cidrs\\\":[\\\"192.168.1.0/24\\\",\\\"10.0.0.0/16\\\
+                    \"],\\\"cluster_ipv4_cidr\\\":\\\"10.128.0.0/12\\\",\\\"services_ipv4_cidr\\\
+                    \":\\\"10.128.0.0/12\\\",\\\"cni\\\":\\\"calico\\\"}\")\n\n\t\
                     req, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"\
                     content-type\", \"application/json\")\n\treq.Header.Add(\"x-tenant-id\"\
                     , \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\",\
@@ -133,21 +138,23 @@ paths:
                     api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"\
                     name\\\":\\\"cluster-example\\\",\\\"version\\\":\\\"v1.32.3\\\
                     \",\\\"description\\\":\\\"This is an example cluster.\\\",\\\"\
-                    zone\\\":\\\"br-region-zone\\\",\\\"enabled_bastion\\\":false,\\\
-                    \"enabled_server_group\\\":false,\\\"node_pools\\\":[{\\\"name\\\
-                    \":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\
-                    \",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\
+                    zone\\\":\\\"br-region-zone\\\",\\\"network\\\":{\\\"subnet_ids\\\
+                    \":[[\\\"11111111-1111-1111-1111-111111111111\\\"],[\\\"11111111-1111-1111-1111-111111111111\\\
+                    \"]]},\\\"enabled_bastion\\\":false,\\\"enabled_server_group\\\
+                    \":false,\\\"node_pools\\\":[{\\\"name\\\":\\\"nodepool-example\\\
+                    \",\\\"flavor\\\":\\\"BV2-4-40\\\",\\\"replicas\\\":3,\\\"taints\\\
                     \":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"valor1\\\
                     \",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"\
                     min_replicas\\\":2,\\\"max_replicas\\\":5},\\\"availability_zones\\\
                     \":[\\\"a\\\",\\\"b\\\",\\\"c\\\"]}],\\\"allowed_cidrs\\\":[\\\
                     \"192.168.1.0/24\\\",\\\"10.0.0.0/16\\\"],\\\"cluster_ipv4_cidr\\\
                     \":\\\"10.128.0.0/12\\\",\\\"services_ipv4_cidr\\\":\\\"10.128.0.0/12\\\
-                    \"}\"\n\nheaders = {\n    'content-type': \"application/json\"\
-                    ,\n    'x-tenant-id': \"SOME_STRING_VALUE\",\n    'Authorization':\
-                    \ \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\nconn.request(\"POST\"\
-                    , \"/v0/clusters\", payload, headers)\n\nres = conn.getresponse()\n\
-                    data = res.read()\n\nprint(data.decode(\"utf-8\"))"
+                    \",\\\"cni\\\":\\\"calico\\\"}\"\n\nheaders = {\n    'content-type':\
+                    \ \"application/json\",\n    'x-tenant-id': \"SOME_STRING_VALUE\"\
+                    ,\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\
+                    \nconn.request(\"POST\", \"/v0/clusters\", payload, headers)\n\
+                    \nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"\
+                    utf-8\"))"
             -   lang: Node + Native
                 source: "const http = require(\"https\");\n\nconst options = {\n \
                     \ \"method\": \"POST\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
@@ -160,15 +167,17 @@ paths:
                     \ () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n\
                     \  });\n});\n\nreq.write(JSON.stringify({\n  name: 'cluster-example',\n\
                     \  version: 'v1.32.3',\n  description: 'This is an example cluster.',\n\
-                    \  zone: 'br-region-zone',\n  enabled_bastion: false,\n  enabled_server_group:\
+                    \  zone: 'br-region-zone',\n  network: {\n    subnet_ids: [\n\
+                    \      ['11111111-1111-1111-1111-111111111111'],\n      ['11111111-1111-1111-1111-111111111111']\n\
+                    \    ]\n  },\n  enabled_bastion: false,\n  enabled_server_group:\
                     \ false,\n  node_pools: [\n    {\n      name: 'nodepool-example',\n\
-                    \      flavor: 'cloud-k8s.gp1.small',\n      replicas: 3,\n  \
-                    \    tags: ['tag-value1'],\n      taints: [{key: 'example-key',\
-                    \ value: 'valor1', effect: 'NoSchedule'}],\n      auto_scale:\
-                    \ {min_replicas: 2, max_replicas: 5},\n      availability_zones:\
-                    \ ['a', 'b', 'c']\n    }\n  ],\n  allowed_cidrs: ['192.168.1.0/24',\
-                    \ '10.0.0.0/16'],\n  cluster_ipv4_cidr: '10.128.0.0/12',\n  services_ipv4_cidr:\
-                    \ '10.128.0.0/12'\n}));\nreq.end();"
+                    \      flavor: 'BV2-4-40',\n      replicas: 3,\n      taints:\
+                    \ [{key: 'example-key', value: 'valor1', effect: 'NoSchedule'}],\n\
+                    \      auto_scale: {min_replicas: 2, max_replicas: 5},\n     \
+                    \ availability_zones: ['a', 'b', 'c']\n    }\n  ],\n  allowed_cidrs:\
+                    \ ['192.168.1.0/24', '10.0.0.0/16'],\n  cluster_ipv4_cidr: '10.128.0.0/12',\n\
+                    \  services_ipv4_cidr: '10.128.0.0/12',\n  cni: 'calico'\n}));\n\
+                    req.end();"
             -   lang: Ruby + Native
                 source: 'require ''uri''
 
@@ -196,7 +205,7 @@ paths:
                     request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
 
                     request.body = "{\"name\":\"cluster-example\",\"version\":\"v1.32.3\",\"description\":\"This
-                    is an example cluster.\",\"zone\":\"br-region-zone\",\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\":[{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5},\"availability_zones\":[\"a\",\"b\",\"c\"]}],\"allowed_cidrs\":[\"192.168.1.0/24\",\"10.0.0.0/16\"],\"cluster_ipv4_cidr\":\"10.128.0.0/12\",\"services_ipv4_cidr\":\"10.128.0.0/12\"}"
+                    is an example cluster.\",\"zone\":\"br-region-zone\",\"network\":{\"subnet_ids\":[[\"11111111-1111-1111-1111-111111111111\"],[\"11111111-1111-1111-1111-111111111111\"]]},\"enabled_bastion\":false,\"enabled_server_group\":false,\"node_pools\":[{\"name\":\"nodepool-example\",\"flavor\":\"BV2-4-40\",\"replicas\":3,\"taints\":[{\"key\":\"example-key\",\"value\":\"valor1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5},\"availability_zones\":[\"a\",\"b\",\"c\"]}],\"allowed_cidrs\":[\"192.168.1.0/24\",\"10.0.0.0/16\"],\"cluster_ipv4_cidr\":\"10.128.0.0/12\",\"services_ipv4_cidr\":\"10.128.0.0/12\",\"cni\":\"calico\"}"
 
 
                     response = http.request(request)
@@ -486,12 +495,6 @@ paths:
                             description: Patches a cluster
                             parameters:
                                 cluster_id: $response.body#/id
-                        update/allowed_cidrs:
-                            operationId: patchCluster
-                            description: Patches a cluster
-                            parameters:
-                                cluster_id: $response.body#/id
-                            x-mgc-hidden: true
                         delete:
                             operationId: deleteCluster
                             description: Delete a cluster
@@ -688,10 +691,12 @@ paths:
                     \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
                     \ \\\n  --header 'content-type: application/json' \\\n  --header\
                     \ 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"allowed_cidrs\"\
-                    :[\"string\"]}'"
+                    :[\"string\"],\"description\":\"This is an example cluster.\"\
+                    ,\"version\":\"v1.31.0\"}'"
             -   lang: Shell + Httpie
-                source: "echo '{\"allowed_cidrs\":[\"string\"]}' |  \\\n  http PATCH\
-                    \ https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D\
+                source: "echo '{\"allowed_cidrs\":[\"string\"],\"description\":\"\
+                    This is an example cluster.\",\"version\":\"v1.31.0\"}' |  \\\n\
+                    \  http PATCH https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D\
                     \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json\
                     \ \\\n  x-tenant-id:SOME_STRING_VALUE"
             -   lang: Go + Native
@@ -699,22 +704,25 @@ paths:
                     net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"\
                     https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D\"\
                     \n\n\tpayload := strings.NewReader(\"{\\\"allowed_cidrs\\\":[\\\
-                    \"string\\\"]}\")\n\n\treq, _ := http.NewRequest(\"PATCH\", url,\
-                    \ payload)\n\n\treq.Header.Add(\"content-type\", \"application/json\"\
-                    )\n\treq.Header.Add(\"x-tenant-id\", \"SOME_STRING_VALUE\")\n\t\
-                    req.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \"string\\\"],\\\"description\\\":\\\"This is an example cluster.\\\
+                    \",\\\"version\\\":\\\"v1.31.0\\\"}\")\n\n\treq, _ := http.NewRequest(\"\
+                    PATCH\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"\
+                    application/json\")\n\treq.Header.Add(\"x-tenant-id\", \"SOME_STRING_VALUE\"\
+                    )\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\"\
                     )\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\
                     \tbody, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\t\
                     fmt.Println(string(body))\n\n}"
             -   lang: Python + Python3
                 source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
                     api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"\
-                    allowed_cidrs\\\":[\\\"string\\\"]}\"\n\nheaders = {\n    'content-type':\
-                    \ \"application/json\",\n    'x-tenant-id': \"SOME_STRING_VALUE\"\
-                    ,\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\
-                    \nconn.request(\"PATCH\", \"/v0/clusters/%7Bcluster_id%7D\", payload,\
-                    \ headers)\n\nres = conn.getresponse()\ndata = res.read()\n\n\
-                    print(data.decode(\"utf-8\"))"
+                    allowed_cidrs\\\":[\\\"string\\\"],\\\"description\\\":\\\"This\
+                    \ is an example cluster.\\\",\\\"version\\\":\\\"v1.31.0\\\"}\"\
+                    \n\nheaders = {\n    'content-type': \"application/json\",\n \
+                    \   'x-tenant-id': \"SOME_STRING_VALUE\",\n    'Authorization':\
+                    \ \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\nconn.request(\"PATCH\"\
+                    , \"/v0/clusters/%7Bcluster_id%7D\", payload, headers)\n\nres\
+                    \ = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"\
+                    utf-8\"))"
             -   lang: Node + Native
                 source: "const http = require(\"https\");\n\nconst options = {\n \
                     \ \"method\": \"PATCH\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\"\
@@ -725,8 +733,9 @@ paths:
                     \ function (res) {\n  const chunks = [];\n\n  res.on(\"data\"\
                     , function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on(\"\
                     end\", function () {\n    const body = Buffer.concat(chunks);\n\
-                    \    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({allowed_cidrs:\
-                    \ ['string']}));\nreq.end();"
+                    \    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n\
+                    \  allowed_cidrs: ['string'],\n  description: 'This is an example\
+                    \ cluster.',\n  version: 'v1.31.0'\n}));\nreq.end();"
             -   lang: Ruby + Native
                 source: 'require ''uri''
 
@@ -753,7 +762,8 @@ paths:
 
                     request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
 
-                    request.body = "{\"allowed_cidrs\":[\"string\"]}"
+                    request.body = "{\"allowed_cidrs\":[\"string\"],\"description\":\"This
+                    is an example cluster.\",\"version\":\"v1.31.0\"}"
 
 
                     response = http.request(request)
@@ -785,10 +795,6 @@ paths:
                             description: List a cluster by uuid
                             parameters:
                                 cluster_id: $request.path.cluster_id
-                            x-mgc-wait-termination:
-                                interval: 5s
-                                maxRetries: 10
-                                jsonPathQuery: $.result.allowed_cidrs == $.owner.parameters.allowed_cidrs
                         delete:
                             operationId: deleteCluster
                             description: Delete a cluster
@@ -999,18 +1005,20 @@ paths:
                     \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
                     \ \\\n  --header 'content-type: application/json' \\\n  --header\
                     \ 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"name\":\"\
-                    nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\"\
-                    :3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\"\
-                    ,\"value\":\"value1\",\"effect\":\"NoSchedule\"}],\"auto_scale\"\
-                    :{\"min_replicas\":2,\"max_replicas\":5},\"max_pods_per_node\"\
-                    :32,\"availability_zones\":[\"a\",\"b\",\"c\"]}'"
+                    nodepool-example\",\"flavor\":\"BV2-4-40\",\"replicas\":3,\"tags\"\
+                    :[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\"\
+                    :\"value1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\"\
+                    :2,\"max_replicas\":5},\"max_pods_per_node\":32,\"availability_zones\"\
+                    :[\"a\",\"b\",\"c\"],\"network\":{\"subnet_ids\":[[\"11111111-1111-1111-1111-111111111111\"\
+                    ]]}}'"
             -   lang: Shell + Httpie
-                source: "echo '{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\"\
+                source: "echo '{\"name\":\"nodepool-example\",\"flavor\":\"BV2-4-40\"\
                     ,\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\"\
                     :\"example-key\",\"value\":\"value1\",\"effect\":\"NoSchedule\"\
                     }],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5},\"max_pods_per_node\"\
-                    :32,\"availability_zones\":[\"a\",\"b\",\"c\"]}' |  \\\n  http\
-                    \ POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\
+                    :32,\"availability_zones\":[\"a\",\"b\",\"c\"],\"network\":{\"\
+                    subnet_ids\":[[\"11111111-1111-1111-1111-111111111111\"]]}}' |\
+                    \  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\
                     \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json\
                     \ \\\n  x-tenant-id:SOME_STRING_VALUE"
             -   lang: Go + Native
@@ -1018,13 +1026,14 @@ paths:
                     net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"\
                     https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\"\
                     \n\n\tpayload := strings.NewReader(\"{\\\"name\\\":\\\"nodepool-example\\\
-                    \",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\",\\\"replicas\\\"\
-                    :3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\
-                    \":\\\"example-key\\\",\\\"value\\\":\\\"value1\\\",\\\"effect\\\
-                    \":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\
-                    \":2,\\\"max_replicas\\\":5},\\\"max_pods_per_node\\\":32,\\\"\
-                    availability_zones\\\":[\\\"a\\\",\\\"b\\\",\\\"c\\\"]}\")\n\n\
-                    \treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"\
+                    \",\\\"flavor\\\":\\\"BV2-4-40\\\",\\\"replicas\\\":3,\\\"tags\\\
+                    \":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\
+                    \",\\\"value\\\":\\\"value1\\\",\\\"effect\\\":\\\"NoSchedule\\\
+                    \"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\
+                    \":5},\\\"max_pods_per_node\\\":32,\\\"availability_zones\\\"\
+                    :[\\\"a\\\",\\\"b\\\",\\\"c\\\"],\\\"network\\\":{\\\"subnet_ids\\\
+                    \":[[\\\"11111111-1111-1111-1111-111111111111\\\"]]}}\")\n\n\t\
+                    req, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"\
                     content-type\", \"application/json\")\n\treq.Header.Add(\"x-tenant-id\"\
                     , \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\",\
                     \ \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
@@ -1033,13 +1042,14 @@ paths:
             -   lang: Python + Python3
                 source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
                     api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"\
-                    name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"cloud-k8s.gp1.small\\\
+                    name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"BV2-4-40\\\
                     \",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\
                     \":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"value1\\\
                     \",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"\
                     min_replicas\\\":2,\\\"max_replicas\\\":5},\\\"max_pods_per_node\\\
                     \":32,\\\"availability_zones\\\":[\\\"a\\\",\\\"b\\\",\\\"c\\\"\
-                    ]}\"\n\nheaders = {\n    'content-type': \"application/json\"\
+                    ],\\\"network\\\":{\\\"subnet_ids\\\":[[\\\"11111111-1111-1111-1111-111111111111\\\
+                    \"]]}}\"\n\nheaders = {\n    'content-type': \"application/json\"\
                     ,\n    'x-tenant-id': \"SOME_STRING_VALUE\",\n    'Authorization':\
                     \ \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\nconn.request(\"POST\"\
                     , \"/v0/clusters/%7Bcluster_id%7D/node_pools\", payload, headers)\n\
@@ -1056,11 +1066,12 @@ paths:
                     , function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on(\"\
                     end\", function () {\n    const body = Buffer.concat(chunks);\n\
                     \    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n\
-                    \  name: 'nodepool-example',\n  flavor: 'cloud-k8s.gp1.small',\n\
-                    \  replicas: 3,\n  tags: ['tag-value1'],\n  taints: [{key: 'example-key',\
+                    \  name: 'nodepool-example',\n  flavor: 'BV2-4-40',\n  replicas:\
+                    \ 3,\n  tags: ['tag-value1'],\n  taints: [{key: 'example-key',\
                     \ value: 'value1', effect: 'NoSchedule'}],\n  auto_scale: {min_replicas:\
                     \ 2, max_replicas: 5},\n  max_pods_per_node: 32,\n  availability_zones:\
-                    \ ['a', 'b', 'c']\n}));\nreq.end();"
+                    \ ['a', 'b', 'c'],\n  network: {subnet_ids: [['11111111-1111-1111-1111-111111111111']]}\n\
+                    }));\nreq.end();"
             -   lang: Ruby + Native
                 source: 'require ''uri''
 
@@ -1087,7 +1098,7 @@ paths:
 
                     request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
 
-                    request.body = "{\"name\":\"nodepool-example\",\"flavor\":\"cloud-k8s.gp1.small\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"value1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5},\"max_pods_per_node\":32,\"availability_zones\":[\"a\",\"b\",\"c\"]}"
+                    request.body = "{\"name\":\"nodepool-example\",\"flavor\":\"BV2-4-40\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"value1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5},\"max_pods_per_node\":32,\"availability_zones\":[\"a\",\"b\",\"c\"],\"network\":{\"subnet_ids\":[[\"11111111-1111-1111-1111-111111111111\"]]}}"
 
 
                     response = http.request(request)
@@ -1348,10 +1359,12 @@ paths:
                     \ \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'\
                     \ \\\n  --header 'content-type: application/json' \\\n  --header\
                     \ 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"replicas\"\
-                    :0,\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}'"
+                    :0,\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5},\"version\"\
+                    :\"v1.31.0\"}'"
             -   lang: Shell + Httpie
                 source: "echo '{\"replicas\":0,\"auto_scale\":{\"min_replicas\":2,\"\
-                    max_replicas\":5}}' |  \\\n  http PATCH https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\
+                    max_replicas\":5},\"version\":\"v1.31.0\"}' |  \\\n  http PATCH\
+                    \ https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\
                     \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json\
                     \ \\\n  x-tenant-id:SOME_STRING_VALUE"
             -   lang: Go + Native
@@ -1359,21 +1372,22 @@ paths:
                     net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"\
                     https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\"\
                     \n\n\tpayload := strings.NewReader(\"{\\\"replicas\\\":0,\\\"\
-                    auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\":5}}\"\
-                    )\n\n\treq, _ := http.NewRequest(\"PATCH\", url, payload)\n\n\t\
-                    req.Header.Add(\"content-type\", \"application/json\")\n\treq.Header.Add(\"\
-                    x-tenant-id\", \"SOME_STRING_VALUE\")\n\treq.Header.Add(\"Authorization\"\
-                    , \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\
-                    \n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\
-                    \n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+                    auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\":5},\\\
+                    \"version\\\":\\\"v1.31.0\\\"}\")\n\n\treq, _ := http.NewRequest(\"\
+                    PATCH\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"\
+                    application/json\")\n\treq.Header.Add(\"x-tenant-id\", \"SOME_STRING_VALUE\"\
+                    )\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\"\
+                    )\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\
+                    \tbody, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\t\
+                    fmt.Println(string(body))\n\n}"
             -   lang: Python + Python3
                 source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
                     api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"\
                     replicas\\\":0,\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"\
-                    max_replicas\\\":5}}\"\n\nheaders = {\n    'content-type': \"\
-                    application/json\",\n    'x-tenant-id': \"SOME_STRING_VALUE\"\
-                    ,\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\
-                    \nconn.request(\"PATCH\", \"/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\"\
+                    max_replicas\\\":5},\\\"version\\\":\\\"v1.31.0\\\"}\"\n\nheaders\
+                    \ = {\n    'content-type': \"application/json\",\n    'x-tenant-id':\
+                    \ \"SOME_STRING_VALUE\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\
+                    \n    }\n\nconn.request(\"PATCH\", \"/v0/clusters/%7Bcluster_id%7D/node_pools/%7Bnode_pool_id%7D\"\
                     , payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\
                     \nprint(data.decode(\"utf-8\"))"
             -   lang: Node + Native
@@ -1386,8 +1400,9 @@ paths:
                     \ function (res) {\n  const chunks = [];\n\n  res.on(\"data\"\
                     , function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on(\"\
                     end\", function () {\n    const body = Buffer.concat(chunks);\n\
-                    \    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({replicas:\
-                    \ 0, auto_scale: {min_replicas: 2, max_replicas: 5}}));\nreq.end();"
+                    \    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n\
+                    \  replicas: 0,\n  auto_scale: {min_replicas: 2, max_replicas:\
+                    \ 5},\n  version: 'v1.31.0'\n}));\nreq.end();"
             -   lang: Ruby + Native
                 source: 'require ''uri''
 
@@ -1414,7 +1429,7 @@ paths:
 
                     request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
 
-                    request.body = "{\"replicas\":0,\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5}}"
+                    request.body = "{\"replicas\":0,\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5},\"version\":\"v1.31.0\"}"
 
 
                     response = http.request(request)
@@ -1799,8 +1814,8 @@ paths:
         get:
             tags:
             - nodepool
-            summary: V1alpha0 List node pools by cluster_id
-            description: V1alpha0 Gets a node pool from a Kubernetes cluster by cluster_uuid.
+            summary: List node pools by cluster_id
+            description: Gets a node pool from a Kubernetes cluster by cluster_uuid.
             operationId: listNodePoolsV1alpha0
             security:
             -   BearerAuth:
@@ -2044,6 +2059,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+            deprecated: true
     /v1/versions:
         get:
             tags:
@@ -2193,17 +2209,16 @@ components:
 
                         '
                     example: v1.32.3
+                    x-go-type: semver.Version
+                    x-go-type-import:
+                        path: github.com/Masterminds/semver/v3
+                        name: semver
                 description:
-                    type: string
-                    description: 'A brief description of the Kubernetes cluster.
-
-                        '
-                    example: This is an example cluster.
-                    default: ''
+                    $ref: '#/components/schemas/Description'
                 zone:
                     type: string
-                    description: '[Deprecated] This parameter is deprecated and its
-                        use won''t create a cluster at requested zone.
+                    description: 'This parameter is deprecated and its use won''t
+                        create a cluster at requested zone.
 
                         Identifier of the zone where the Kubernetes cluster will be
                         located.
@@ -2213,8 +2228,8 @@ components:
                     deprecated: true
                 enabled_bastion:
                     type: boolean
-                    description: '[Deprecated] This parameter is deprecated and its
-                        use won''t create a bastion server
+                    description: 'This parameter is deprecated and its use won''t
+                        create a bastion server
 
                         Enables the use of a bastion host for secure access to the
                         cluster.
@@ -2231,6 +2246,7 @@ components:
                         '
                     example: false
                     default: true
+                    deprecated: true
                 node_pools:
                     type: array
                     description: 'An array representing a set of nodes within a Kubernetes
@@ -2241,10 +2257,8 @@ components:
                         $ref: '#/components/schemas/CreateNodePoolRequest'
                     example:
                     -   name: nodepool-example
-                        flavor: cloud-k8s.gp1.small
+                        flavor: BV2-4-40
                         replicas: 3
-                        tags:
-                        - tag-value1
                         taints:
                         -   key: example-key
                             value: valor1
@@ -2252,10 +2266,6 @@ components:
                         auto_scale:
                             min_replicas: 2
                             max_replicas: 5
-                        availability_zones:
-                        - a
-                        - b
-                        - c
                     x-oapi-codegen-extra-tags:
                         binding: dive
                 allowed_cidrs:
@@ -2272,6 +2282,8 @@ components:
                     $ref: '#/components/schemas/ClusterIpv4Cidr'
                 services_ipv4_cidr:
                     $ref: '#/components/schemas/ServicesIpv4Cidr'
+                network:
+                    $ref: '#/components/schemas/ClusterNetworkRequest'
             required:
             - name
         CreateClusterResponse:
@@ -2350,9 +2362,10 @@ components:
                     example: This is an example cluster
                 project_id:
                     type: string
-                    description: (Deprecated) Unique identifier of the project where
-                        the cluster was provisioned.
+                    description: Unique identifier of the project where the cluster
+                        was provisioned.
                     example: 0000806e53ec429792a7885e63264411
+                    deprecated: true
                 region:
                     type: string
                     description: Identifier of the region where the Kubernetes cluster
@@ -2368,6 +2381,8 @@ components:
                     $ref: '#/components/schemas/ServicesIpv4Cidr'
                 platform:
                     $ref: '#/components/schemas/Platform'
+                network:
+                    $ref: '#/components/schemas/NetworkResponse'
         ClusterKubeConfigResponse:
             type: object
             description: Object of the kubeconfig response request for the cluster.
@@ -2409,9 +2424,10 @@ components:
                     example: This is an example cluster
                 project_id:
                     type: string
-                    description: (Deprecated) Unique identifier of the project where
-                        the cluster was provisioned.
+                    description: Unique identifier of the project where the cluster
+                        was provisioned.
                     example: 0000806e53ec429792a7885e63264411
+                    deprecated: true
                 region:
                     type: string
                     description: Identifier of the region where the Kubernetes cluster
@@ -2431,6 +2447,7 @@ components:
                     $ref: '#/components/schemas/NetworkResponse'
                 controlplane:
                     $ref: '#/components/schemas/NodePoolsResponse'
+                    deprecated: true
                 kube_api_server:
                     $ref: '#/components/schemas/KubeApiServer'
                 node_pools:
@@ -2465,6 +2482,7 @@ components:
             - region
             - machine_types_source
             - platform
+            - network
         CreateNodePoolRequest:
             type: object
             description: Object of the node pool request
@@ -2482,49 +2500,21 @@ components:
                     maxLength: 63
                 flavor:
                     type: string
-                    description: 'Definition of the CPU, RAM, and storage capacity
-                        of the nodes.
+                    description: 'Name of the machine type. The machine type defines
+                        the CPU, RAM, and storage capacity of the nodes.
+
+                        The full list of available machine types can be found in the
+                        Virtual Machine by listing the machine types.
+
+                        The smallest supported machine type is BV2-4-40.
 
 
-                        | Flavor                     | vCPUs | RAM (GB) | Root Disk
-                        (GB) |
-
-                        |----------------------------|-------|----------|----------------|
-
-                        | cloud-k8s.gp1.small        | 2     | 4        | 20             |
-
-                        | cloud-k8s.gp1.medium       | 4     | 8        | 50             |
-
-                        | cloud-k8s.gp1.large        | 8     | 16       | 100            |
-
-                        | cloud-k8s.gp2.small        | 2     | 4        | 300            |
-
-                        | cloud-k8s.gp2.large        | 8     | 32       | 300            |
-
-                        | cloud-k8s.hm1.medium       | 4     | 16       | 50             |
-
-                        | cloud-k8s.i1-c48-r96-d300  | 48    | 96       | 300            |
-
-                        | cloud-k8s.i1-c1-r8-d100    | 1     | 8        | 100            |
-
-                        | cloud-k8s.i1-c8-r8-d40     | 8     | 8        | 40             |
-
-                        | cloud-k8s.i1-c4-r16-d100   | 4     | 16       | 100            |
-
-                        | cloud-k8s.i1-c4-r32-d100   | 4     | 32       | 100            |
-
-                        | cloud-k8s.i1-c8-r32-d100   | 8     | 32       | 100            |
-
-                        | cloud-k8s.i1-c16-r32-d40   | 16    | 32       | 40             |
-
-                        | cloud-k8s.i1-c16-r64-d100  | 16    | 64       | 100            |
-
-                        | cloud-k8s.i1-c32-r64-d100  | 32    | 64       | 100            |
-
-                        | cloud-k8s.i1-c32-r128-d500 | 32    | 128      | 500            |
+                        For V1 Clusters, the list of available flavors can be retrieved
+                        using the /v1/flavors endpoint (deprecated) or via the MGC
+                        CLI with the command `kubernetes flavors list`.
 
                         '
-                    example: cloud-k8s.gp1.small
+                    example: BV2-4-40
                 replicas:
                     type: integer
                     description: Number of replicas of the nodes in the node pool.
@@ -2541,6 +2531,7 @@ components:
                         description: Items from the list of tags applied to the node
                             pool.
                         example: tag-value1
+                    deprecated: true
                 taints:
                     type: array
                     description: Property associating a set of nodes.
@@ -2552,6 +2543,9 @@ components:
                     $ref: '#/components/schemas/MaxPodsPerNode'
                 availability_zones:
                     $ref: '#/components/schemas/AvailabilityZones'
+                    deprecated: true
+                network:
+                    $ref: '#/components/schemas/NodePoolNetworkRequest'
             required:
             - name
             - flavor
@@ -2573,6 +2567,8 @@ components:
                     type: array
                     items:
                         type: string
+                description:
+                    $ref: '#/components/schemas/Description'
         PatchClusterResponse:
             type: object
             description: Object for cluster patch response
@@ -2581,6 +2577,8 @@ components:
                     type: array
                     items:
                         type: string
+                description:
+                    $ref: '#/components/schemas/Description'
         KubeApiServer:
             type: object
             description: Information about the Kubernetes API Server of the cluster.
@@ -2603,6 +2601,7 @@ components:
                     type: integer
                     description: Port used by the Kubernetes API Server.
                     example: 6443
+            deprecated: true
         NodePoolsResponse:
             type: object
             description: Object of the node pool response.
@@ -2625,8 +2624,7 @@ components:
                     example: 3
                 zone:
                     type: array
-                    description: '[Deprecated]Availability zone for creating the Kubernetes
-                        cluster.'
+                    description: Availability zone for creating the Kubernetes cluster.
                     deprecated: true
                     nullable: true
                     items:
@@ -2643,6 +2641,7 @@ components:
                         description: Items from the list of tags applied to the node
                             pool.
                         example: tag-example
+                    deprecated: true
                 labels:
                     type: object
                     additionalProperties:
@@ -2665,6 +2664,7 @@ components:
                         description: Items from the security groups defining rules
                             allowing network traffic in the worker node pool.
                         example: security-group-name
+                    deprecated: true
                 created_at:
                     type: string
                     description: Date of creation of the Kubernetes cluster.
@@ -2683,6 +2683,12 @@ components:
                     $ref: '#/components/schemas/MaxPodsPerNode'
                 availability_zones:
                     $ref: '#/components/schemas/AvailabilityZones'
+                version:
+                    type: string
+                    description: Node Pool Kubernetes Cluster.
+                    example: v1.22.9
+                network:
+                    $ref: '#/components/schemas/NetworkResponse'
             required:
             - id
             - name
@@ -2692,6 +2698,7 @@ components:
             - labels
             - auto_scale
             - status
+            - network
         ListNodePoolResponseV1alpha0:
             type: object
             description: Object of the node pool response.
@@ -2709,7 +2716,7 @@ components:
                 flavor:
                     type: string
                     description: Node pool flavor name
-                    example: cloud-k8s.gp1.small
+                    example: BV2-4-40
                 replicas:
                     type: integer
                     description: Number of replicas of the nodes in the node pool.
@@ -2718,6 +2725,8 @@ components:
                     $ref: '#/components/schemas/AutoScaleResponse'
                 status:
                     $ref: '#/components/schemas/Status'
+                availability_zones:
+                    $ref: '#/components/schemas/AvailabilityZones'
             required:
             - id
             - name
@@ -2725,17 +2734,6 @@ components:
             - replicas
             - auto_scale
             - status
-        ListNodePoolsResponseV0:
-            type: object
-            description: Object of the node pool response in the cluster.
-            required:
-            - results
-            properties:
-                results:
-                    type: array
-                    description: List of node pools.
-                    items:
-                        $ref: '#/components/schemas/NodePoolsResponse'
         ListNodePoolsResponseV1alpha0:
             type: object
             description: Object of the node pool response in the cluster.
@@ -2817,7 +2815,7 @@ components:
                 flavor:
                     type: string
                     description: Name of the flavor.
-                    example: cloud-k8s.gp1.small
+                    example: BV2-4-40
                 infrastructure:
                     $ref: '#/components/schemas/NodeInfrastructure'
                 status:
@@ -3036,38 +3034,26 @@ components:
                 slug: Unauthorized
         NetworkResponse:
             type: object
-            description: 'Response object for the Kubernetes cluster network resource
-                request.
+            description: 'Response object for the Kubernetes clusters and nodepools
+                network.
 
                 '
             properties:
-                uuid:
+                vpc_id:
                     type: string
-                    description: Nodepool's UUID.
-                    example: 7c24eb01-9423-4f09-a2d2-99ba5df01411
-                cidr:
-                    type: string
-                    description: 'Available IP addresses used for provisioning nodes
-                        in the cluster.
+                    description: 'VPC ID.
 
                         '
-                    example: 00.0.0.0/00
-                name:
-                    type: string
-                    description: Name of the node pool.
-                    example: k8s-clusterapi-cluster-example
-                subnet_id:
-                    type: string
-                    description: 'Identifier of the internal subnet where the cluster
-                        will be provisioned.
+                subnets:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/SubnetResponse'
+                    description: 'Subnets details.
 
                         '
-                    example: c5f750a0-a032-477e-a23a-bcffab8b0707
             required:
-            - uuid
-            - cidr
-            - name
-            - subnet_id
+            - vpc_id
+            - subnets
         Addons:
             type: object
             description: 'Object representing addons that extend the functionality
@@ -3097,6 +3083,7 @@ components:
             - loadbalance
             - volume
             - secrets
+            deprecated: true
         AutoScale:
             type: object
             description: 'Object specifying properties for updating workload resources
@@ -3218,10 +3205,11 @@ components:
             - node_image
             - disk_size
             - disk_type
+            deprecated: true
         Flavor:
             type: object
-            description: '[Deprecated] Definition of CPU capacity, RAM, and storage
-                for nodes. This will be removed in favor of using VM Machine Type.'
+            description: Definition of CPU capacity, RAM, and storage for nodes. This
+                will be removed in favor of using VM Machine Type.
             deprecated: true
             properties:
                 name:
@@ -3414,11 +3402,18 @@ components:
 
                     Example: "a"
 
+                    DEPRECATED: This field is deprecated in favor of the field "network.subnet_ids".
+
+                    THE VALUES FROM THIS FIELD WILL BE OVERWRITTEN WHEN THE FIELD
+                    "network.subnet_ids" IS PRESENT.
+
                     '
+                deprecated: true
             example:
             - a
             - b
             - c
+            deprecated: true
         ClusterIpv4Cidr:
             type: string
             description: 'The IP address CIDR used by the Pods in the cluster.
@@ -3457,6 +3452,72 @@ components:
                     example: v0.1.0
             required:
             - version
+        SubnetResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: 'Subnet ID.
+
+                        '
+                availability_zone:
+                    type: string
+                    description: 'Subnet availability zone.
+
+                        '
+                cidr:
+                    type: string
+                    description: 'Subnet CIDR.
+
+                        '
+            required:
+            - id
+            - availability_zone
+            - cidr
+            description: 'Network configuration.
+
+                '
+        ClusterNetworkRequest:
+            type: object
+            properties:
+                subnet_ids:
+                    type: array
+                    items:
+                        type: string
+                        format: uuid
+                        description: UUID identifier to uniquely identify the Subnet.
+                    example:
+                    - 627c1f78-f9a6-4419-b582-a982144ff6bc
+                    - 57b69486-e800-4cc3-92e2-6037b4cafe35
+            required:
+            - subnet_ids
+            description: 'Request object for the Kubernetes clusters network resource
+                request.
+
+                '
+        NodePoolNetworkRequest:
+            type: object
+            properties:
+                subnet_ids:
+                    type: array
+                    items:
+                        type: string
+                        format: uuid
+                        description: UUID identifier to uniquely identify the Subnet.
+                    example:
+                    - 627c1f78-f9a6-4419-b582-a982144ff6bc
+                    - 57b69486-e800-4cc3-92e2-6037b4cafe35
+            required:
+            - subnet_ids
+            description: 'Request object for the Kubernetes nodepools network resource
+                request.
+
+                '
+        Description:
+            type: string
+            description: A brief description of the Kubernetes cluster.
+            default: ''
+            example: This is an example cluster.
     securitySchemes:
         BearerAuth:
             type: http
