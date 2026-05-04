@@ -26,8 +26,8 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
     --auto-scale.min-replicas integer   Object specifying properties for updating workload resources in the Kubernetes cluster: Minimum number of replicas for autoscaling. If not provided, the autoscale value will be assumed based on the "replicas" field.
                                          (min: 0)
                                         This is the same as '--auto-scale=min_replicas:integer'.
-    --availability-zones array(enum)    List of availability zones where the resource can be created.
-                                         (deprecated)
+    --availability-zones array(enum)    [Deprecated]List of availability zones where the resource can be created.
+                                         
     --cli.list-links enum[=table]       List all available links for this command (one of "json", "table" or "yaml")
     --cluster-id uuid                   Cluster's UUID. (required)
     --flavor string                     Name of the machine type. The machine type defines the CPU, RAM, and storage capacity of the nodes.
@@ -52,7 +52,7 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
     --network.subnet-ids array          Request object for the Kubernetes nodepools network resource request: 
                                         This is the same as '--network=subnet_ids:array'.
     --replicas integer                  Number of replicas of the nodes in the node pool. (required) (default 1)
-    --tags array(string)                List of tags applied to the node pool. (deprecated)
+    --tags array(string)                [Deprecated]List of tags applied to the node pool. 
     --taints array(object)              Property associating a set of nodes.
                                         Use --taints=help for more details
 ```

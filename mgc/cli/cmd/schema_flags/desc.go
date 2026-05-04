@@ -164,7 +164,7 @@ func (d SchemaFlagValueDesc) Description() (description string) {
 		if description != "" {
 			description += " "
 		}
-		description += "(deprecated)"
+		description = "[Deprecated]" + description
 	}
 
 	return description
