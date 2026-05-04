@@ -12,7 +12,7 @@ mgc kubernetes cluster update [cluster-id] [flags]
 
 ## Examples:
 ```
-mgc kubernetes cluster update --description="This is an example cluster." --version="v1.31.0"
+mgc kubernetes cluster update --description="This is an example cluster."
 ```
 
 ## Flags:
@@ -22,11 +22,6 @@ mgc kubernetes cluster update --description="This is an example cluster." --vers
     --cluster-id uuid               Cluster's UUID (required)
     --description string            A brief description of the Kubernetes cluster.
 -h, --help                          help for update
-    --version string                The target Kubernetes version for the cluster upgrade.
-                                    
-                                    **Supported Upgrade Paths:**
-                                    * **Patch:** Same minor version (e.g., 'v1.30.1' → 'v1.30.2')
-                                    * **Minor:** Next consecutive minor version (e.g., 'v1.30.1' → 'v1.31.0')
 ```
 
 ## Global Flags:

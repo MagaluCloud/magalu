@@ -25,9 +25,6 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
                                     This configuration can only be used during the cluster creation and can not be updated later.
                                     If not specified, the "192.168.0.0/16" value is used by default.
                                     
-    --cni string                    The CNI by the Kubernetes Cluster.
-                                    This parameter can only be set when creating a new cluster and can not be updated later.
-                                     (deprecated)
     --description string            A brief description of the Kubernetes cluster.
     --enabled-bastion               This parameter is deprecated and its use won't create a bastion server
                                     Enables the use of a bastion host for secure access to the cluster.

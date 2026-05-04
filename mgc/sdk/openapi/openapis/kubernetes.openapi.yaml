@@ -2284,8 +2284,6 @@ components:
                     $ref: '#/components/schemas/ServicesIpv4Cidr'
                 network:
                     $ref: '#/components/schemas/ClusterNetworkRequest'
-                cni:
-                    $ref: '#/components/schemas/CNI'
             required:
             - name
         CreateClusterResponse:
@@ -2321,8 +2319,6 @@ components:
                     $ref: '#/components/schemas/ClusterIpv4Cidr'
                 services_ipv4_cidr:
                     $ref: '#/components/schemas/ServicesIpv4Cidr'
-                cni:
-                    $ref: '#/components/schemas/CNI'
         ClustersResponse:
             type: object
             description: Object of the clusters response request.
@@ -2385,8 +2381,6 @@ components:
                     $ref: '#/components/schemas/ServicesIpv4Cidr'
                 platform:
                     $ref: '#/components/schemas/Platform'
-                cni:
-                    $ref: '#/components/schemas/CNI'
                 network:
                     $ref: '#/components/schemas/NetworkResponse'
         ClusterKubeConfigResponse:
@@ -2481,8 +2475,6 @@ components:
                     $ref: '#/components/schemas/ServicesIpv4Cidr'
                 platform:
                     $ref: '#/components/schemas/Platform'
-                cni:
-                    $ref: '#/components/schemas/CNI'
             required:
             - name
             - id
@@ -2567,8 +2559,6 @@ components:
                     description: Number of replicas of the nodes in the node pool.
                 auto_scale:
                     $ref: '#/components/schemas/AutoScale'
-                version:
-                    $ref: '#/components/schemas/KubernetesVersion'
         PatchClusterRequest:
             type: object
             description: Cluster fields to be patched
@@ -2579,8 +2569,6 @@ components:
                         type: string
                 description:
                     $ref: '#/components/schemas/Description'
-                version:
-                    $ref: '#/components/schemas/KubernetesVersion'
         PatchClusterResponse:
             type: object
             description: Object for cluster patch response
@@ -2591,8 +2579,6 @@ components:
                         type: string
                 description:
                     $ref: '#/components/schemas/Description'
-                version:
-                    $ref: '#/components/schemas/KubernetesVersion'
         KubeApiServer:
             type: object
             description: Information about the Kubernetes API Server of the cluster.
@@ -3527,39 +3513,11 @@ components:
                 request.
 
                 '
-        CNI:
-            type: string
-            description: 'The CNI by the Kubernetes Cluster.
-
-                This parameter can only be set when creating a new cluster and can
-                not be updated later.
-
-                '
-            default: cilium-kube-router
-            example: calico
-            deprecated: true
         Description:
             type: string
             description: A brief description of the Kubernetes cluster.
             default: ''
             example: This is an example cluster.
-        KubernetesVersion:
-            type: string
-            description: 'The target Kubernetes version for the cluster upgrade.
-
-
-                **Supported Upgrade Paths:**
-
-                * **Patch:** Same minor version (e.g., `v1.30.1` → `v1.30.2`)
-
-                * **Minor:** Next consecutive minor version (e.g., `v1.30.1` → `v1.31.0`)
-
-                '
-            example: v1.31.0
-            x-go-type: semver.Version
-            x-go-type-import:
-                path: github.com/Masterminds/semver/v3
-                name: semver
     securitySchemes:
         BearerAuth:
             type: http

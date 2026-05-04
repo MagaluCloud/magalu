@@ -12,7 +12,7 @@ mgc kubernetes nodepool update [cluster-id] [node-pool-id] [flags]
 
 ## Examples:
 ```
-mgc kubernetes nodepool update --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --version="v1.31.0"
+mgc kubernetes nodepool update --auto-scale.max-replicas=5 --auto-scale.min-replicas=2
 ```
 
 ## Flags:
@@ -31,11 +31,6 @@ mgc kubernetes nodepool update --auto-scale.max-replicas=5 --auto-scale.min-repl
 -h, --help                              help for update
     --node-pool-id uuid                 Nodepool's UUID. (required)
     --replicas integer                  Number of replicas of the nodes in the node pool.
-    --version string                    The target Kubernetes version for the cluster upgrade.
-                                        
-                                        **Supported Upgrade Paths:**
-                                        * **Patch:** Same minor version (e.g., 'v1.30.1' → 'v1.30.2')
-                                        * **Minor:** Next consecutive minor version (e.g., 'v1.30.1' → 'v1.31.0')
 ```
 
 ## Global Flags:
