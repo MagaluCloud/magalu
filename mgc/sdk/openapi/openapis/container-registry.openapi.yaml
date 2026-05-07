@@ -1494,10 +1494,12 @@ paths:
             operationId: scheduleImageScan
             x-mgc-name: schedule
             x-permission:
-                permission-name: cr_image_scan
+                permission-name: cr_image_scan_schedule
                 product-name: containerregistry
             security:
-            -   BearerAuth: []
+            -   BearerAuth:
+                - mcr.write
+                - mcr.read
             -   OAuth2:
                 - mcr.write
                 - mcr.read
@@ -1557,10 +1559,11 @@ paths:
                 digest or tag.
             operationId: getImageScans
             x-permission:
-                permission-name: cr_scan_list
+                permission-name: cr_image_scan_list
                 product-name: containerregistry
             security:
-            -   BearerAuth: []
+            -   BearerAuth:
+                - mcr.read
             -   OAuth2:
                 - mcr.read
             parameters:
@@ -1639,10 +1642,11 @@ paths:
             description: Returns detailed information about a specific image scan.
             operationId: getImageScan
             x-permission:
-                permission-name: cr_scan_get
+                permission-name: cr_image_scan_get
                 product-name: containerregistry
             security:
-            -   BearerAuth: []
+            -   BearerAuth:
+                - mcr.read
             -   OAuth2:
                 - mcr.read
             parameters:
@@ -1692,10 +1696,11 @@ paths:
                 scan.
             operationId: getImageScanVulnerabilities
             x-permission:
-                permission-name: cr_scan_list
+                permission-name: cr_image_scan_list_vulnerabilities
                 product-name: containerregistry
             security:
-            -   BearerAuth: []
+            -   BearerAuth:
+                - mcr.read
             -   OAuth2:
                 - mcr.read
             parameters:
@@ -1792,13 +1797,14 @@ paths:
             - scans
             summary: Stop an ongoing image scan
             description: "Cancels an image scan job and its associated child architectures.\
-                \ \nOnly scans in 'CREATED' or 'IN_PROGRESS' status can be stopped.\n"
+                \ \nOnly scans in 'pending' or 'running' status can be stopped.\n"
             operationId: stopImageScan
             x-permission:
-                permission-name: cr_image_scan
+                permission-name: cr_image_scan_stop
                 product-name: containerregistry
             security:
-            -   BearerAuth: []
+            -   BearerAuth:
+                - mcr.write
             -   OAuth2:
                 - mcr.write
             parameters:

@@ -4,7 +4,7 @@ sidebar_position: 4
 # Stop
 
 Cancels an image scan job and its associated child architectures. 
-Only scans in 'CREATED' or 'IN_PROGRESS' status can be stopped.
+Only scans in 'pending' or 'running' status can be stopped.
 
 ## Usage:
 ```
