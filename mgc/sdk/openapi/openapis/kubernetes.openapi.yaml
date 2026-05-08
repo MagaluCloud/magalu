@@ -791,6 +791,10 @@ paths:
                                 $ref: '#/components/schemas/PatchClusterResponse'
                     links:
                         get:
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 60
+                                jsonPathQuery: $.result.status.state == "Running"
                             operationId: getClusterById
                             description: List a cluster by uuid
                             parameters:

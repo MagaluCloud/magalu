@@ -19,6 +19,7 @@ mgc kubernetes cluster update --description="This is an example cluster."
 ```
     --allowed-cidrs array(string)   
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
     --cluster-id uuid               Cluster's UUID (required)
     --description string            A brief description of the Kubernetes cluster.
 -h, --help                          help for update
