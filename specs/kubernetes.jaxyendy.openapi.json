@@ -721,6 +721,15 @@
                   "$ref": "#/components/schemas/PatchClusterResponse"
                 }
               }
+            },
+            "links": {
+              "get": {
+                "x-mgc-wait-termination": {
+                  "interval": "5s",
+                  "maxRetries": 60,
+                  "jsonPathQuery": "$.result.status.state == \"Running\""
+                }
+              }
             }
           },
           "400": {
