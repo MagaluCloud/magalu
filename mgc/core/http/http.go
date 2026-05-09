@@ -2,6 +2,8 @@ package http
 
 import (
 	"bytes"
+	"compress/gzip"
+	"compress/zlib"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -17,6 +19,7 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/MagaluCloud/magalu/mgc/core/xml"
+	"github.com/andybalholm/brotli"
 )
 
 // contextKey is an unexported type for keys defined in this package.
@@ -49,6 +52,65 @@ func ClientFromContext(context context.Context) *Client {
 		return nil
 	}
 	return client
+}
+
+// DecompressResponse wraps resp.Body with the appropriate decoder based on the
+// Content-Encoding header, then clears the encoding metadata so downstream
+// consumers see a transparent stream. Net/http only auto-decompresses gzip
+// when the caller did not set Accept-Encoding itself; we advertise it
+// explicitly, so the decode is our responsibility.
+func DecompressResponse(resp *http.Response) error {
+	if resp == nil || resp.Body == nil {
+		return nil
+	}
+	encoding := strings.ToLower(strings.TrimSpace(resp.Header.Get("Content-Encoding")))
+	if encoding == "" || encoding == "identity" {
+		return nil
+	}
+
+	original := resp.Body
+	var wrapped io.ReadCloser
+	switch encoding {
+	case "gzip", "x-gzip":
+		gzr, err := gzip.NewReader(original)
+		if err != nil {
+			return fmt.Errorf("error creating gzip reader: %w", err)
+		}
+		wrapped = &decompressedBody{Reader: gzr, closers: []io.Closer{gzr, original}}
+	case "deflate":
+		zr, err := zlib.NewReader(original)
+		if err != nil {
+			return fmt.Errorf("error creating deflate reader: %w", err)
+		}
+		wrapped = &decompressedBody{Reader: zr, closers: []io.Closer{zr, original}}
+	case "br":
+		br := brotli.NewReader(original)
+		wrapped = &decompressedBody{Reader: br, closers: []io.Closer{original}}
+	default:
+		return nil
+	}
+
+	resp.Body = wrapped
+	resp.Header.Del("Content-Encoding")
+	resp.Header.Del("Content-Length")
+	resp.ContentLength = -1
+	resp.Uncompressed = true
+	return nil
+}
+
+type decompressedBody struct {
+	io.Reader
+	closers []io.Closer
+}
+
+func (d *decompressedBody) Close() error {
+	var firstErr error
+	for _, c := range d.closers {
+		if err := c.Close(); err != nil && firstErr == nil {
+			firstErr = err
+		}
+	}
+	return firstErr
 }
 
 func BodyReaderSafe(resp *http.Response) (io.ReadCloser, error) {
