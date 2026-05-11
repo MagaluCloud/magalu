@@ -1,20 +1,27 @@
 ---
-sidebar_position: 3
+sidebar_position: 0
 ---
-# Add
+# Members
 
-Change current Object Storage credential
+Groups management. | members
 
 ## Usage:
 ```
-mgc object-storage api-key add [key-id] [key-secret] [flags]
+mgc iam groups members [flags]
+mgc iam groups members [command]
+```
+
+## Commands:
+```
+create      Add Member To Group
+delete      Remove Member From Group
+list        List Group Members
+update      Update Group Member
 ```
 
 ## Flags:
 ```
--h, --help                help for add
-    --key-id string       ID of api key to use (required)
-    --key-secret string   Secret of api key to use (required)
+-h, --help   help for members
 ```
 
 ## Global Flags:

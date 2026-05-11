@@ -12,7 +12,9 @@ mgc iam permissions list [flags]
 
 ## Flags:
 ```
+    --case-sensitive        Case Sensitive
 -h, --help                  help for list
+    --partial-match         Partial Match
     --product-name string   Product Name
 ```
 

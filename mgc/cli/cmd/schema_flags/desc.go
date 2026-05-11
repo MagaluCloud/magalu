@@ -160,6 +160,13 @@ func (d SchemaFlagValueDesc) Description() (description string) {
 		description += fmt.Sprintf("(%s)", constraints)
 	}
 
+	if d.Schema.Deprecated {
+		if description != "" {
+			description += " "
+		}
+		description = "[Deprecated] " + description
+	}
+
 	return description
 }
 

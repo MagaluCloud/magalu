@@ -5,6 +5,11 @@
     "description": "The Magalu Cloud IAM.",
     "version": "0.1.0"
   },
+  "servers": [
+    {
+      "url": "/iam"
+    }
+  ],
   "paths": {
     "/api/v1/healthcheck": {
       "get": {
@@ -134,7 +139,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Member"
+                  "$ref": "#/components/schemas/MemberCreated"
                 }
               }
             }
@@ -171,6 +176,117 @@
             ]
           }
         ]
+      }
+    },
+    "/api/v1/members/organizations": {
+      "get": {
+        "tags": [
+          "Members"
+        ],
+        "summary": "Get Member Groups Organizations",
+        "operationId": "get_member_groups_organizations_api_v1_members_organizations_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Get Member Groups Organizations Api V1 Members Organizations Get",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
+        "x-mgc-hidden": true
+      }
+    },
+    "/api/v1/members/{member_id}/organizations": {
+      "get": {
+        "tags": [
+          "Members"
+        ],
+        "summary": "Get Member Organizations By Id",
+        "operationId": "get_member_organizations_by_id_api_v1_members__member_id__organizations_get",
+        "parameters": [
+          {
+            "name": "member_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Member Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Get Member Organizations By Id Api V1 Members  Member Id  Organizations Get",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
+        "x-mgc-hidden": true
       }
     },
     "/api/v1/members/{uuid}": {
@@ -772,7 +888,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/RolesMember"
+                    "$ref": "#/components/schemas/RoleUser"
                   },
                   "title": "Response Get Role Members Api V1 Roles  Role Name  Members Get"
                 }
@@ -835,6 +951,40 @@
                 }
               ],
               "title": "Product Name"
+            }
+          },
+          {
+            "name": "partial_match",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Partial Match",
+              "default": false
+            }
+          },
+          {
+            "name": "case_sensitive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Case Sensitive",
+              "default": true
             }
           }
         ],
@@ -945,13 +1095,11 @@
           "required": true
         },
         "responses": {
-          "201": {
+          "202": {
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AccessControl"
-                }
+                "schema": {}
               }
             }
           },
@@ -1300,6 +1448,22 @@
               "type": "string",
               "title": "Sa Uuid",
               "format": "uuid"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/APIKeyStatusEnum"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
             }
           }
         ],
@@ -1656,6 +1820,1126 @@
         ],
         "x-mgc-hidden": true
       }
+    },
+    "/api/v1/invitations": {
+      "get": {
+        "tags": [
+          "Invitations"
+        ],
+        "summary": "Get Invites",
+        "operationId": "get_invites_api_v1_invitations_get",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/InviteStatusEnum"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Invite"
+                  },
+                  "title": "Response Get Invites Api V1 Invitations Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/invitations/{invite_id}": {
+      "delete": {
+        "tags": [
+          "Invitations"
+        ],
+        "summary": "Cancel Invite",
+        "operationId": "cancel_invite_api_v1_invitations__invite_id__delete",
+        "parameters": [
+          {
+            "name": "invite_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invite Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/invitations/{invite_id}/resend": {
+      "post": {
+        "tags": [
+          "Invitations"
+        ],
+        "summary": "Resend Invite",
+        "operationId": "resend_invite_api_v1_invitations__invite_id__resend_post",
+        "parameters": [
+          {
+            "name": "invite_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invite Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/groups": {
+      "get": {
+        "tags": [
+          "Groups",
+          "Groups"
+        ],
+        "summary": "List Groups",
+        "description": "List groups for the authenticated user.\n\n- **PF (Pessoa Física):** Returns groups with ``profile`` and ``email``.\n- **PJ (Pessoa Jurídica):** Requires admin permission (turia_iam_adm).\n  Returns groups with ``email`` but without ``profile``.\n\nOptionally filter by email (query param).",
+        "operationId": "list_groups_api_v1_groups_get",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "email"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Email"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/PFGroupListResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PJGroupListResponse"
+                    }
+                  ],
+                  "title": "Response List Groups Api V1 Groups Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Groups",
+          "Groups"
+        ],
+        "summary": "Create Group",
+        "description": "Create a new group.",
+        "operationId": "create_group_api_v1_groups_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGroup"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupRBAC"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/groups/exists": {
+      "get": {
+        "tags": [
+          "Groups",
+          "Groups"
+        ],
+        "summary": "Check Group Exists",
+        "description": "Check if a group exists by its email.",
+        "operationId": "check_group_exists_api_v1_groups_exists_get",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "The group email to check",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Email",
+              "description": "The group email to check"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupExistsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
+        "x-mgc-hidden": true
+      }
+    },
+    "/api/v1/groups/{group_id}": {
+      "get": {
+        "tags": [
+          "Groups",
+          "Groups"
+        ],
+        "summary": "Get Group By Id",
+        "description": "Get a specific group by ID.",
+        "operationId": "get_group_by_id_api_v1_groups__group_id__get",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Group Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupRBACWithProfile"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
+        "x-mgc-hidden": true
+      },
+      "delete": {
+        "tags": [
+          "Groups",
+          "Groups"
+        ],
+        "summary": "Delete Group",
+        "description": "Delete a group.",
+        "operationId": "delete_group_api_v1_groups__group_id__delete",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Group Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Groups",
+          "Groups"
+        ],
+        "summary": "Update Group",
+        "description": "Update a group description.",
+        "operationId": "update_group_api_v1_groups__group_id__patch",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Group Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGroup"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupRBAC"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/groups/migrate": {
+      "post": {
+        "tags": [
+          "Groups",
+          "Groups"
+        ],
+        "summary": "Migrate Group",
+        "description": "Migrate a group from the old domain to the new one.",
+        "operationId": "migrate_group_api_v1_groups_migrate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MigrateGroup"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupRBAC"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
+        "x-mgc-hidden": true
+      }
+    },
+    "/api/v1/groups/{group_id}/organizations": {
+      "get": {
+        "tags": [
+          "Groups",
+          "Groups"
+        ],
+        "summary": "Get Group Organizations",
+        "description": "Get all organizations a groups belongs.",
+        "operationId": "get_group_organizations_api_v1_groups__group_id__organizations_get",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Group Id",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupOrganizationListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
+        "x-mgc-hidden": true
+      }
+    },
+    "/api/v1/groups/{group_id}/members": {
+      "get": {
+        "tags": [
+          "Groups",
+          "Groups"
+        ],
+        "summary": "List Group Members",
+        "description": "List members of a group with pagination (max 20 per page) and\nenriched email/name.",
+        "operationId": "list_group_members_api_v1_groups__group_id__members_get",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Group Id"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número da página",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Page",
+              "minimum": 1,
+              "description": "Número da página",
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Itens por página (Max 20)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Per Page",
+              "maximum": 20,
+              "minimum": 1,
+              "description": "Itens por página (Max 20)",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupMembersListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Groups",
+          "Groups"
+        ],
+        "summary": "Add Member To Group",
+        "description": "Add a member to a group.",
+        "operationId": "add_member_to_group_api_v1_groups__group_id__members_post",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Group Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberGroupCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberGroupResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/groups/{group_id}/members/{member_id}": {
+      "delete": {
+        "tags": [
+          "Groups",
+          "Groups"
+        ],
+        "summary": "Remove Member From Group",
+        "description": "Remove a member from a group.",
+        "operationId": "remove_member_from_group_api_v1_groups__group_id__members__member_id__delete",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Group Id"
+            }
+          },
+          {
+            "name": "member_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Member Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Groups",
+          "Groups"
+        ],
+        "summary": "Update Group Member",
+        "description": "Update a member's profile in a group.",
+        "operationId": "update_group_member_api_v1_groups__group_id__members__member_id__patch",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Group Id"
+            }
+          },
+          {
+            "name": "member_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Member Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberGroupUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberGroupResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "tags": [
+          "Users",
+          "Users"
+        ],
+        "summary": "Get Users",
+        "operationId": "get_users_api_v1_users_get",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "email"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Email"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  },
+                  "title": "Response Get Users Api V1 Users Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
+        "x-mgc-hidden": true
+      }
     }
   },
   "components": {
@@ -1884,6 +3168,14 @@
         },
         "title": "APIKeyServiceAccountEditInput"
       },
+      "APIKeyStatusEnum": {
+        "type": "string",
+        "title": "APIKeyStatusEnum",
+        "enum": [
+          "active",
+          "revoked"
+        ]
+      },
       "AccessControl": {
         "type": "object",
         "properties": {
@@ -2051,6 +3343,35 @@
           "operation"
         ]
       },
+      "CreateGroup": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "title": "Identifier"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          }
+        },
+        "title": "CreateGroup",
+        "required": [
+          "identifier",
+          "name"
+        ]
+      },
       "CreateMember": {
         "type": "object",
         "properties": {
@@ -2205,6 +3526,171 @@
         },
         "title": "EditPermissions"
       },
+      "GroupExistsResponse": {
+        "type": "object",
+        "properties": {
+          "exists": {
+            "type": "boolean",
+            "title": "Exists"
+          }
+        },
+        "title": "GroupExistsResponse",
+        "required": [
+          "exists"
+        ]
+      },
+      "GroupMembersListResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberGroupResponse"
+            },
+            "title": "Items"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "title": "GroupMembersListResponse",
+        "required": [
+          "items",
+          "meta"
+        ]
+      },
+      "GroupOrganizationListResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupOrganizationResponse"
+            },
+            "title": "Items"
+          }
+        },
+        "title": "GroupOrganizationListResponse",
+        "required": [
+          "items"
+        ]
+      },
+      "GroupOrganizationResponse": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "title": "Uuid",
+            "format": "uuid"
+          },
+          "legal_name": {
+            "type": "string",
+            "title": "Legal Name"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "profile_image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Image Url"
+          }
+        },
+        "title": "GroupOrganizationResponse",
+        "required": [
+          "uuid",
+          "legal_name",
+          "email"
+        ]
+      },
+      "GroupRBAC": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "readOnly": true
+          }
+        },
+        "title": "GroupRBAC",
+        "required": [
+          "id",
+          "name",
+          "email"
+        ]
+      },
+      "GroupRBACWithProfile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "profile": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "readOnly": true
+          }
+        },
+        "title": "GroupRBACWithProfile",
+        "required": [
+          "id",
+          "name",
+          "email"
+        ]
+      },
       "HTTPValidationError": {
         "type": "object",
         "properties": {
@@ -2217,6 +3703,43 @@
           }
         },
         "title": "HTTPValidationError"
+      },
+      "Invite": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "profile": {
+            "type": "string",
+            "title": "Profile"
+          }
+        },
+        "title": "Invite",
+        "required": [
+          "id",
+          "email",
+          "status",
+          "profile"
+        ]
+      },
+      "InviteStatusEnum": {
+        "type": "string",
+        "title": "InviteStatusEnum",
+        "enum": [
+          "pending",
+          "expired",
+          "rejected"
+        ]
       },
       "Member": {
         "type": "object",
@@ -2255,6 +3778,165 @@
         },
         "title": "Member"
       },
+      "MemberCreated": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "title": "Uuid",
+            "default": ""
+          },
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "default": ""
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "default": ""
+          },
+          "tenant_id": {
+            "type": "string",
+            "title": "Tenant Id",
+            "default": ""
+          },
+          "profile": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile"
+          },
+          "action": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action"
+          }
+        },
+        "title": "MemberCreated"
+      },
+      "MemberGroupCreate": {
+        "type": "object",
+        "properties": {
+          "member_id": {
+            "type": "string",
+            "title": "Member Id"
+          },
+          "profile": {
+            "type": "string",
+            "title": "Profile"
+          }
+        },
+        "title": "MemberGroupCreate",
+        "required": [
+          "member_id",
+          "profile"
+        ]
+      },
+      "MemberGroupResponse": {
+        "type": "object",
+        "properties": {
+          "group_id": {
+            "type": "string",
+            "title": "Group Id"
+          },
+          "member_id": {
+            "type": "string",
+            "title": "Member Id"
+          },
+          "profile": {
+            "type": "string",
+            "title": "Profile"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "default": ""
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "default": ""
+          }
+        },
+        "title": "MemberGroupResponse",
+        "required": [
+          "group_id",
+          "member_id",
+          "profile"
+        ]
+      },
+      "MemberGroupUpdate": {
+        "type": "object",
+        "properties": {
+          "profile": {
+            "type": "string",
+            "title": "Profile"
+          }
+        },
+        "title": "MemberGroupUpdate",
+        "required": [
+          "profile"
+        ]
+      },
+      "MigrateGroup": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "format": "email"
+          },
+          "identifier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Identifier"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          }
+        },
+        "title": "MigrateGroup",
+        "required": [
+          "email"
+        ]
+      },
       "OperationType": {
         "type": "string",
         "title": "OperationType",
@@ -2263,9 +3945,146 @@
           "remove"
         ]
       },
+      "PFGroupItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "profile": {
+            "type": "string",
+            "title": "Profile"
+          }
+        },
+        "title": "PFGroupItem",
+        "required": [
+          "id",
+          "name",
+          "email",
+          "profile"
+        ]
+      },
+      "PFGroupListResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PFGroupItem"
+            },
+            "title": "Items"
+          }
+        },
+        "title": "PFGroupListResponse",
+        "required": [
+          "items"
+        ]
+      },
+      "PJGroupItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          }
+        },
+        "title": "PJGroupItem",
+        "required": [
+          "id",
+          "name",
+          "email"
+        ]
+      },
+      "PJGroupListResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PJGroupItem"
+            },
+            "title": "Items"
+          }
+        },
+        "title": "PJGroupListResponse",
+        "required": [
+          "items"
+        ]
+      },
+      "PaginationMeta": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "per_page": {
+            "type": "integer",
+            "title": "Per Page"
+          },
+          "total_pages": {
+            "type": "integer",
+            "title": "Total Pages"
+          },
+          "total_items": {
+            "type": "integer",
+            "title": "Total Items"
+          }
+        },
+        "title": "PaginationMeta",
+        "required": [
+          "page",
+          "per_page",
+          "total_pages",
+          "total_items"
+        ]
+      },
       "Permission": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
           "name": {
             "type": "string",
             "title": "Name"
@@ -2277,6 +4096,7 @@
         },
         "title": "Permission",
         "required": [
+          "id",
           "name",
           "description"
         ]
@@ -2320,6 +4140,10 @@
       "Product": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
           "name": {
             "type": "string",
             "title": "Name"
@@ -2334,6 +4158,7 @@
         },
         "title": "Product",
         "required": [
+          "id",
           "name",
           "permissions"
         ]
@@ -2402,31 +4227,56 @@
           "permissions"
         ]
       },
-      "RolesMember": {
+      "RoleUser": {
         "type": "object",
         "properties": {
           "member_uuid": {
             "type": "string",
             "title": "Member Uuid"
           },
-          "roles": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "member_role": {
             "anyOf": [
               {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
+                "type": "string"
               },
               {
                 "type": "null"
               }
             ],
+            "title": "Member Role"
+          },
+          "profile_image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Image Url"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
             "title": "Roles"
           }
         },
-        "title": "RolesMember",
+        "title": "RoleUser",
         "required": [
           "member_uuid",
+          "name",
+          "email",
           "roles"
         ]
       },
@@ -2529,7 +4379,7 @@
             "title": "Email"
           },
           "tenant": {
-            "$ref": "#/components/schemas/Tentant"
+            "$ref": "#/components/schemas/Tenant"
           }
         },
         "title": "ServiceAccountDetail",
@@ -2568,7 +4418,7 @@
         },
         "title": "ServiceAccountEdit"
       },
-      "Tentant": {
+      "Tenant": {
         "type": "object",
         "properties": {
           "uuid": {
@@ -2580,10 +4430,69 @@
             "title": "Legal Name"
           }
         },
-        "title": "Tentant",
+        "title": "Tenant",
         "required": [
           "uuid",
           "legal_name"
+        ]
+      },
+      "UpdateGroup": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          }
+        },
+        "title": "UpdateGroup"
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "tenant_id": {
+            "type": "string",
+            "title": "Tenant Id",
+            "format": "uuid"
+          },
+          "uuid": {
+            "type": "string",
+            "title": "Uuid",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "format": "email"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "default": ""
+          },
+          "profile": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile"
+          }
+        },
+        "title": "User",
+        "required": [
+          "tenant_id",
+          "uuid",
+          "email"
         ]
       },
       "ValidationError": {
@@ -2662,6 +4571,19 @@
     {
       "name": "Admins",
       "description": "Admins of organization.",
+      "x-mgc-hidden": true
+    },
+    {
+      "name": "Invitations",
+      "description": "Invitations to join the organization."
+    },
+    {
+      "name": "Groups",
+      "description": "Groups management."
+    },
+    {
+      "name": "Users",
+      "description": "Users management.",
       "x-mgc-hidden": true
     }
   ]

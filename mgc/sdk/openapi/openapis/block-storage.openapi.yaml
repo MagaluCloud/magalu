@@ -1326,6 +1326,11 @@ paths:
                     description: Unprocessable Entity
             x-viveiro: true
             x-permission-name: bs_volume_create
+            x-mgc-confirmable:
+                message: "{{if not .parameters.encrypted}}WARNING: You are creating\
+                    \ a volume WITHOUT encryption. \nThe recommended policy is to\
+                    \ keep encryption enabled. \nAre you sure you want to proceed\
+                    \ without encryption?{{end}}"
             security:
             -   OAuth2:
                 - block-storage.write

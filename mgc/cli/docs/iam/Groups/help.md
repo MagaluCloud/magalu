@@ -1,30 +1,33 @@
 ---
-sidebar_position: 4
+sidebar_position: 0
 ---
-# Public-Url
+# Groups
 
-Get bucket public url
+Groups management.
 
 ## Usage:
 ```
-mgc object-storage buckets public-url [dst] [flags]
+mgc iam groups [flags]
+mgc iam groups [command]
 ```
 
-## Examples:
+## Commands:
 ```
-mgc object-storage buckets public-url --dst="bucket1"
+create      Create Group
+delete      Delete Group
+list        List Groups
+members     members
+update      Update Group
 ```
 
 ## Flags:
 ```
-    --dst uri   Path of the bucket to generate the public url (required)
--h, --help      help for public-url
+-h, --help   help for groups
 ```
 
 ## Global Flags:
 ```
     --api-key string           Use your API key to authenticate with the API
-    --chunk-size integer       Chunk size to consider when doing multipart requests. Specified in Mb (range: 8 - 5120) (required) (default 8)
 -U, --cli.retry-until string   Retry the action with the same parameters until the given condition is met. The flag parameters
                                use the format: 'retries,interval,condition', where 'retries' is a positive integer, 'interval' is
                                a duration (ex: 2s) and 'condition' is a 'engine=value' pair such as "jsonpath=expression"
@@ -34,8 +37,5 @@ mgc object-storage buckets public-url --dst="bucket1"
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --region string            Region to reach the service (default "br-se1")
-    --server-url uri           Manually specify the server to use
-    --workers integer          Number of routines that spawn to do parallel operations within object_storage (min: 1) (required) (default 5)
 ```
 

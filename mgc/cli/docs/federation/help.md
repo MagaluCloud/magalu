@@ -1,18 +1,28 @@
 ---
 sidebar_position: 0
 ---
-# Admins
+# Federation
 
-Admins of organization.
+Federation Api Product
 
 ## Usage:
 ```
-mgc iam admins [flags]
+mgc federation [flags]
+mgc federation [command]
+```
+
+## Commands:
+```
+domains     Manage domains.
+list        Read Federation Collection
+oidc        Create Federation
+saml        Create Federation
+update      Edit Federation Resource
 ```
 
 ## Flags:
 ```
--h, --help   help for admins
+-h, --help   help for federation
 ```
 
 ## Global Flags:

@@ -1,18 +1,23 @@
 ---
-sidebar_position: 1
+sidebar_position: 4
 ---
-# List
+# Saml
 
-Healthcheck
+Create Federation
 
 ## Usage:
 ```
-mgc iam healthcheck list [flags]
+mgc federation saml [domain-id] [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for list
+    --domain-id uuid           Domain Id (required)
+    --entity-id string         Entity Id (required)
+-h, --help                     help for saml
+    --idp-certificate string   Idp Certificate (required)
+    --name string              Name (required)
+    --sso-url string           Sso Url (required)
 ```
 
 ## Global Flags:

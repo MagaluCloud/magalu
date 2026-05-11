@@ -88,13 +88,15 @@ func handleExecutorPre(
 
 	if cExec, ok := core.ExecutorAs[core.ConfirmableExecutor](exec); ok && !getBypassConfirmationFlag(cmd) {
 		msg := cExec.ConfirmPrompt(parameters, configs)
-		run, err := ui.Confirm(msg)
-		if err != nil {
-			return nil, err
-		}
+		if msg != "" {
+			run, err := ui.Confirm(msg)
+			if err != nil {
+				return nil, err
+			}
 
-		if !run {
-			return nil, core.UserDeniedConfirmationError{Prompt: msg}
+			if !run {
+				return nil, core.UserDeniedConfirmationError{Prompt: msg}
+			}
 		}
 	}
 	if pExec, ok := core.ExecutorAs[core.PromptInputExecutor](exec); ok && !getBypassConfirmationFlag(cmd) {
