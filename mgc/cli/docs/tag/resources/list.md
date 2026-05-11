@@ -1,21 +1,30 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 ---
-# Create
+# List
 
-Create a Tag
+List all resources that you have access
 
 ## Usage:
 ```
-mgc tag tags create [flags]
+mgc tag resources list [flags]
+```
+
+## Examples:
+```
+mgc tag resources list --external-id="31201f93-f5f4-4cf1-ba9c-bfed0717f4ac"
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --color string                  Color: 8-character lowercase hexadecimal string representing RGBA, without '#' prefix. (between 8 and 8 characters and pattern: ^[0-9a-f]+$)
--h, --help                          help for create
-    --name string                   name for tag (required)
+    --control.limit integer      Limit (range: 1 - 100)
+    --control.offset integer     Offset (min: 0)
+    --control.sort string        Sort
+    --external-id string        External Id: id of the resource in the source api
+    --force-authentication      Force authentication by sending the header even if this API doesn't require it
+-h, --help                      help for list
+    --region enum               RegionEnum: cloud region (one of "br-ne1" or "br-se1")
+    --resource-type-name enum   ResourceEnum: resource type name, must be related to a product (one of "bs.snapshot", "bs.volume", "cr.registry", "cr.repository", "db.cluster", "db.instance", "db.parameter-group", "db.replica", "db.snapshot", "k8s.cluster", "k8s.nodepool", "lb.network-acl", "lb.network-backend", "lb.network-certificate", "lb.network-healthcheck", "lb.network-listener", "lb.network-loadbalancer", "net.nat-gateway", "net.port", "net.public-ip", "net.rule", "net.security-group", "net.subnet", "net.vpc", "os.bucket", "os.object", "vm.image", "vm.instance" or "vm.snapshot")
 ```
 
 ## Global Flags:

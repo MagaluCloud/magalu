@@ -1,21 +1,22 @@
 ---
 sidebar_position: 3
 ---
-# Delete
+# Get
 
-delete resource from tag and value
+Get resource
 
 ## Usage:
 ```
-mgc tag tag-value-resource delete [tag-name] [value-name] [resource-id] [flags]
+mgc tag resources get [id] [flags]
 ```
 
 ## Flags:
 ```
--h, --help                 help for delete
-    --resource-id string   Resource Id (required)
-    --tag-name string      Tag Name: name for tag (required)
-    --value-name string    tag value name, is allowed only one name per tag_id (required)
+    --control.limit integer    Limit: Number of items per page (range: 1 - 100)
+    --control.offset integer   Offset for pagination (min: 0)
+    --force-authentication     Force authentication by sending the header even if this API doesn't require it
+-h, --help                     help for get
+    --id uuid                  Id (required)
 ```
 
 ## Global Flags:

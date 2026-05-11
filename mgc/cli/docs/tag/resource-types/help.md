@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Resource-Types
 
-List resource-types
+resource-types
 
 ## Usage:
 ```

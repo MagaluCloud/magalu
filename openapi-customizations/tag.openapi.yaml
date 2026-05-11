@@ -5,18 +5,18 @@
 # such as "x-mgc-name" or "x-mgc-description"
 
 servers:
--   url: https://{env}/tag
+-   url: https://{env}
     variables:
         env:
             description: Environment to use
             default: api.magalu.cloud
             enum:
             - api.magalu.cloud
-            - api.pre-prod.jaxyendy.com
+            - tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com
             x-mgc-transforms:
             -   type: translate
                 translations:
                 -   from: prod
                     to: api.magalu.cloud
                 -   from: pre-prod
-                    to: api.pre-prod.jaxyendy.com
+                    to: tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com

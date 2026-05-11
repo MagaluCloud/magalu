@@ -52,3 +52,7 @@ jaxyendy:
       file: federation.jaxyendy.openapi.json
       menu: federation
       enabled: true
+    - url: https://tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com/openapi.json
+      file: tag.jaxyendy.openapi.json
+      menu: tag
+      enabled: true

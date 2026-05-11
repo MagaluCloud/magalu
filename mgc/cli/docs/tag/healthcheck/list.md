@@ -3,22 +3,16 @@ sidebar_position: 1
 ---
 # List
 
-List all resource types
+Healthcheck Readiness
 
 ## Usage:
 ```
-mgc tag resource-types list [flags]
+mgc tag healthcheck list [flags]
 ```
 
 ## Flags:
 ```
-    --control.limit integer    Limit: Number of items per page (range: 1 - 100)
-    --control.offset integer   Offset for pagination (min: 0)
-    --control.sort string      Sorting criteria
-    --force-authentication     Force authentication by sending the header even if this API doesn't require it
--h, --help                     help for list
-    --name enum                ResourceEnum: resource type name, must be related to a product (one of "bs.snapshot", "bs.volume", "cr.registry", "cr.repository", "db.cluster", "db.instance", "db.parameter-group", "db.replica", "db.snapshot", "k8s.cluster", "k8s.nodepool", "lb.network-acl", "lb.network-backend", "lb.network-certificate", "lb.network-healthcheck", "lb.network-listener", "lb.network-loadbalancer", "net.nat-gateway", "net.port", "net.public-ip", "net.rule", "net.security-group", "net.subnet", "net.vpc", "os.bucket", "os.object", "vm.image", "vm.instance" or "vm.snapshot")
-    --product enum             ProductEnum: product owner of a resource (one of "block-storage", "container-registry", "database", "kubernetes", "load-balancer", "network", "object-storage" or "virtual-machine")
+-h, --help   help for list
 ```
 
 ## Global Flags:

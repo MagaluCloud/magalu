@@ -1,24 +1,26 @@
 ---
-sidebar_position: 2
+sidebar_position: 5
 ---
-# Create
+# Update
 
-Associate tag and value to resource
+Update Tag
 
 ## Usage:
 ```
-mgc tag tag-value-resource create [tag-name] [value-name] [flags]
+mgc tag update [name] [flags]
+```
+
+## Examples:
+```
+mgc tag update --color="ffffff00" --name="kubernetes-expenses"
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for create
-    --region array(enum)             (required)
-    --resource-id string            Resource Id: id for resource (vm, database, etc.) (required)
-    --resource-type-id uuid         Resource Type Id: uuid for resource type (required)
-    --tag-name string               Tag Name: name for tag (required)
-    --value-name string             tag value name, is allowed only one name per tag_id (required)
+    --color string           Color: 8-character lowercase hexadecimal string representing RGBA, without '#' prefix. (between 8 and 8 characters and pattern: ^[0-9a-f]+$)
+    --force-authentication   Force authentication by sending the header even if this API doesn't require it
+-h, --help                   help for update
+    --name string            name for tag (required)
 ```
 
 ## Global Flags:

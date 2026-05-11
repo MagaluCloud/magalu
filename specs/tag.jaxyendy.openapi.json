@@ -22,9 +22,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-
-                }
+                "schema": {}
               }
             }
           }
@@ -33,9 +31,6 @@
     },
     "/v0/tags": {
       "post": {
-        "tags": [
-          "tags"
-        ],
         "summary": "Create tag, if values are informed, they will be created either",
         "operationId": "create_tags_public",
         "security": [
@@ -96,9 +91,6 @@
         }
       },
       "get": {
-        "tags": [
-          "tags"
-        ],
         "summary": "List tags",
         "operationId": "list_tags_public",
         "security": [
@@ -258,9 +250,6 @@
     },
     "/v0/tags/{name}": {
       "patch": {
-        "tags": [
-          "tags"
-        ],
         "summary": "Update Tag",
         "operationId": "update_tags_public",
         "security": [
@@ -335,9 +324,6 @@
         }
       },
       "delete": {
-        "tags": [
-          "tags"
-        ],
         "summary": "Delete Tag",
         "operationId": "delete_tags_public",
         "security": [
@@ -403,9 +389,6 @@
         }
       },
       "get": {
-        "tags": [
-          "tags"
-        ],
         "summary": "Get Tag",
         "operationId": "get_tags_public",
         "security": [
@@ -1047,7 +1030,6 @@
               "type": "string",
               "title": "Sort",
               "description": "Sorting criteria",
-              "examples": "created_at:asc\ncreate_at:asc,updated_at:desc",
               "default": ""
             },
             "description": "Sorting criteria"

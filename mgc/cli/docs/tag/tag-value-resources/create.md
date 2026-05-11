@@ -1,23 +1,27 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
-# List
+# Create
 
-List all Tags
+Link a tag-value to a cloud resource
 
 ## Usage:
 ```
-mgc tag tags list [flags]
+mgc tag tag-value-resources create [tag-name] [value-name] [flags]
+```
+
+## Examples:
+```
+mgc tag tag-value-resources create --resource-id="31201f93-f5f4-4cf1-ba9c-bfed0717f4ac" --tag-name="kubernetes-expenses" --value-name="test-labs"
 ```
 
 ## Flags:
 ```
-    --color string             Color: 8-character lowercase hexadecimal string representing RGBA, without '#' prefix. (between 8 and 8 characters and pattern: ^[0-9a-f]+$)
-    --control.limit integer     Limit (min: 0)
-    --control.offset integer    Offset (min: 0)
-    --control.sort string       Sort
--h, --help                     help for list
-    --name string              name for tag
+    --force-authentication   Force authentication by sending the header even if this API doesn't require it
+-h, --help                   help for create
+    --resource-id uuid       Resource Id: id of the enrolled resource (vm, database, etc.) (required)
+    --tag-name string        Tag Name: name for tag (required)
+    --value-name string      tag value name, is allowed only one name per tag_id (required)
 ```
 
 ## Global Flags:

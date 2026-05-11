@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Tag-Values
 
-Manage Values from Tag
+tag-values
 
 ## Usage:
 ```

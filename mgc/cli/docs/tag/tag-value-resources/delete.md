@@ -1,22 +1,27 @@
 ---
-sidebar_position: 4
+sidebar_position: 3
 ---
-# Get
+# Delete
 
-List resource by tag and value
+Delete a link between a tag-value and a cloud resource
 
 ## Usage:
 ```
-mgc tag tag-value-resource get [tag-name] [value-name] [resource-id] [flags]
+mgc tag tag-value-resources delete [tag-name] [value-name] [resource-id] [flags]
+```
+
+## Examples:
+```
+mgc tag tag-value-resources delete --tag-name="kubernetes-expenses" --value-name="test-labs"
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for get
-    --resource-id string            Resource Id (required)
-    --tag-name string               Tag Name: name for tag (required)
-    --value-name string             tag value name, is allowed only one name per tag_id (required)
+    --force-authentication   Force authentication by sending the header even if this API doesn't require it
+-h, --help                   help for delete
+    --resource-id uuid       Resource Id (required)
+    --tag-name string        Tag Name: name for tag (required)
+    --value-name string      tag value name, is allowed only one name per tag_id (required)
 ```
 
 ## Global Flags:

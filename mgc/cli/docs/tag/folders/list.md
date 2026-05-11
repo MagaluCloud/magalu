@@ -1,20 +1,28 @@
 ---
-sidebar_position: 4
+sidebar_position: 1
 ---
-# Get
+# List
 
-List tag by Name
+List all folders
 
 ## Usage:
 ```
-mgc tag tags get [name] [flags]
+mgc tag folders list [flags]
+```
+
+## Examples:
+```
+mgc tag folders list --name="Development environment for testing and feature implementation."
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for get
-    --name string                   name for tag (required)
+    --control.limit integer     Limit (range: 1 - 100)
+    --control.offset integer    Offset (min: 0)
+    --control.sort string       Sort
+    --force-authentication     Force authentication by sending the header even if this API doesn't require it
+-h, --help                     help for list
+    --name string              name for folder
 ```
 
 ## Global Flags:

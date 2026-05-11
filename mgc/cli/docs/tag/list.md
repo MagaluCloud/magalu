@@ -1,19 +1,30 @@
 ---
-sidebar_position: 3
+sidebar_position: 1
 ---
-# Delete
+# List
 
-Delete tag by name
+List tags
 
 ## Usage:
 ```
-mgc tag tags delete [name] [flags]
+mgc tag list [flags]
+```
+
+## Examples:
+```
+mgc tag list --color="ffffff00" --kinds='["finops"]'
 ```
 
 ## Flags:
 ```
--h, --help          help for delete
-    --name string   name for tag (required)
+    --color string             Color: 8-character lowercase hexadecimal string representing RGBA, without '#' prefix. (between 8 and 8 characters and pattern: ^[0-9a-f]+$)
+    --control.limit integer     Limit (range: 1 - 100)
+    --control.offset integer    Offset (min: 0)
+    --control.sort string       Sort
+    --force-authentication     Force authentication by sending the header even if this API doesn't require it
+-h, --help                     help for list
+    --kinds array(enum)        Kinds: a tag kind describe the purpose for this tag in mgc, the most common case is kind finops.
+    --name string              name for tag
 ```
 
 ## Global Flags:

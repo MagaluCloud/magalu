@@ -1,27 +1,25 @@
 ---
-sidebar_position: 0
+sidebar_position: 4
 ---
-# Tag-Value-Resource
+# Get
 
-Manage Resource from value
+Get Tag
 
 ## Usage:
 ```
-mgc tag tag-value-resource [flags]
-mgc tag tag-value-resource [command]
+mgc tag get [name] [flags]
 ```
 
-## Commands:
+## Examples:
 ```
-create      Link a tag-value to a cloud resource
-delete      Delete a link between a tag-value and a cloud resource
-get         Retrieve a link between a tag-value and a cloud resource
-list        List links between tag-values and a cloud resources
+mgc tag get --name="kubernetes-expenses"
 ```
 
 ## Flags:
 ```
--h, --help   help for tag-value-resource
+    --force-authentication   Force authentication by sending the header even if this API doesn't require it
+-h, --help                   help for get
+    --name string            name for tag (required)
 ```
 
 ## Global Flags:
@@ -33,8 +31,10 @@ list        List links between tag-values and a cloud resources
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
+    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --server-url uri           Manually specify the server to use
 ```
 

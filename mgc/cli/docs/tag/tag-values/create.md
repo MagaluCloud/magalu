@@ -3,7 +3,7 @@ sidebar_position: 2
 ---
 # Create
 
-Create a value to Tag
+Create TagValue
 
 ## Usage:
 ```
@@ -12,11 +12,11 @@ mgc tag tag-values create [tag-name] [flags]
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            description for this tag value
--h, --help                          help for create
-    --name string                   tag value name, is allowed only one name per tag_id (required)
-    --tag-name string               Tag Name: name for tag (required)
+    --description string     description for this tag value
+    --force-authentication   Force authentication by sending the header even if this API doesn't require it
+-h, --help                   help for create
+    --name string            tag value name, is allowed only one name per tag_id (required)
+    --tag-name string        Tag Name: name for tag (required)
 ```
 
 ## Global Flags:

@@ -1,26 +1,24 @@
 ---
-sidebar_position: 1
+sidebar_position: 0
 ---
-# List
+# Healthcheck
 
-List resources by tag_name and value
+healthcheck
 
 ## Usage:
 ```
-mgc tag tag-value-resource list [tag-name] [value-name] [flags]
+mgc tag healthcheck [flags]
+mgc tag healthcheck [command]
+```
+
+## Commands:
+```
+list        Healthcheck Readiness
 ```
 
 ## Flags:
 ```
-    --control.limit integer     Limit (min: 0)
-    --control.offset integer    Offset (min: 0)
-    --control.sort string       Sort
--h, --help                     help for list
-    --region enum              cloud region (one of "br-ne1" or "br-se1")
-    --resource-id string       Resource Id: id for resource (vm, database, etc.)
-    --resource-type-id uuid    Resource Type Id: uuid for resource type
-    --tag-name string          Tag Name: name for tag (required)
-    --value-name string        tag value name, is allowed only one name per tag_id (required)
+-h, --help   help for healthcheck
 ```
 
 ## Global Flags:
@@ -32,10 +30,8 @@ mgc tag tag-value-resource list [tag-name] [value-name] [flags]
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
-    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --server-url uri           Manually specify the server to use
 ```
 

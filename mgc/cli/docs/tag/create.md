@@ -1,24 +1,29 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
-# List
+# Create
 
-List all resource types
+Create tag, if values are informed, they will be created either
 
 ## Usage:
 ```
-mgc tag resource-types list [flags]
+mgc tag create [flags]
+```
+
+## Examples:
+```
+mgc tag create --color="ffffff00" --kinds='["finops"]' --name="kubernetes-expenses"
 ```
 
 ## Flags:
 ```
-    --control.limit integer    Limit: Number of items per page (range: 1 - 100)
-    --control.offset integer   Offset for pagination (min: 0)
-    --control.sort string      Sorting criteria
-    --force-authentication     Force authentication by sending the header even if this API doesn't require it
--h, --help                     help for list
-    --name enum                ResourceEnum: resource type name, must be related to a product (one of "bs.snapshot", "bs.volume", "cr.registry", "cr.repository", "db.cluster", "db.instance", "db.parameter-group", "db.replica", "db.snapshot", "k8s.cluster", "k8s.nodepool", "lb.network-acl", "lb.network-backend", "lb.network-certificate", "lb.network-healthcheck", "lb.network-listener", "lb.network-loadbalancer", "net.nat-gateway", "net.port", "net.public-ip", "net.rule", "net.security-group", "net.subnet", "net.vpc", "os.bucket", "os.object", "vm.image", "vm.instance" or "vm.snapshot")
-    --product enum             ProductEnum: product owner of a resource (one of "block-storage", "container-registry", "database", "kubernetes", "load-balancer", "network", "object-storage" or "virtual-machine")
+    --color string           Color: 8-character lowercase hexadecimal string representing RGBA, without '#' prefix. (between 8 and 8 characters and pattern: ^[0-9a-f]+$)
+    --force-authentication   Force authentication by sending the header even if this API doesn't require it
+-h, --help                   help for create
+    --kinds array(enum)      Kinds: a tag kind describe the purpose for this tag in mgc, the most common case is kind finops.
+    --name string            name for tag (required)
+    --values array(object)   Values (at most 20 items)
+                             Use --values=help for more details
 ```
 
 ## Global Flags:

@@ -3,18 +3,24 @@ sidebar_position: 3
 ---
 # Delete
 
-Delete value name from tag
+Delete TagValue
 
 ## Usage:
 ```
 mgc tag tag-values delete [tag-name] [value-name] [flags]
 ```
 
+## Examples:
+```
+mgc tag tag-values delete --tag-name="kubernetes-expenses" --value-name="test-labs"
+```
+
 ## Flags:
 ```
--h, --help                help for delete
-    --tag-name string     Tag Name: name for tag (required)
-    --value-name string   tag value name, is allowed only one name per tag_id (required)
+    --force-authentication   Force authentication by sending the header even if this API doesn't require it
+-h, --help                   help for delete
+    --tag-name string        Tag Name: name for tag (required)
+    --value-name string      tag value name, is allowed only one name per tag_id (required)
 ```
 
 ## Global Flags:

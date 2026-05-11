@@ -3,7 +3,7 @@ sidebar_position: 1
 ---
 # List
 
-List all values from a Tag
+List TagValues
 
 ## Usage:
 ```
@@ -12,9 +12,10 @@ mgc tag tag-values list [tag-name] [flags]
 
 ## Flags:
 ```
-    --control.limit integer     Limit (min: 0)
+    --control.limit integer     Limit (range: 1 - 100)
     --control.offset integer    Offset (min: 0)
     --control.sort string       Sort
+    --force-authentication     Force authentication by sending the header even if this API doesn't require it
 -h, --help                     help for list
     --name string              tag value name, is allowed only one name per tag_id
     --tag-name string          Tag Name: name for tag (required)

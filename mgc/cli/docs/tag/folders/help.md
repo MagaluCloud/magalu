@@ -1,26 +1,27 @@
 ---
-sidebar_position: 4
+sidebar_position: 0
 ---
-# Get
+# Folders
 
-Get TagValue
+folders
 
 ## Usage:
 ```
-mgc tag tag-values get [tag-name] [value-name] [flags]
+mgc tag folders [flags]
+mgc tag folders [command]
 ```
 
-## Examples:
+## Commands:
 ```
-mgc tag tag-values get --tag-name="kubernetes-expenses" --value-name="test-labs"
+create      Create folder
+get         Get Folder
+list        List all folders
+update      Update folder
 ```
 
 ## Flags:
 ```
-    --force-authentication   Force authentication by sending the header even if this API doesn't require it
--h, --help                   help for get
-    --tag-name string        Tag Name: name for tag (required)
-    --value-name string      tag value name, is allowed only one name per tag_id (required)
+-h, --help   help for folders
 ```
 
 ## Global Flags:
@@ -32,10 +33,8 @@ mgc tag tag-values get --tag-name="kubernetes-expenses" --value-name="test-labs"
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
-    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --server-url uri           Manually specify the server to use
 ```
 
