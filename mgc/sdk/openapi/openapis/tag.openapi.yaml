@@ -25,7 +25,6 @@ paths:
                 - tag.read
     /v0/tags:
         post:
-            tags: []
             summary: Create tag
             description: 'If values are informed, they will be created either; max
                 size for values list accepted on creation is: 50'
@@ -53,7 +52,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
         get:
-            tags: []
             summary: List tags
             operationId: list_tags_public
             security:
@@ -141,7 +139,6 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
     /v0/tags/{name}:
         patch:
-            tags: []
             summary: Update Tag
             operationId: update_tags_public
             security:
@@ -176,7 +173,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
         delete:
-            tags: []
             summary: Delete Tag
             operationId: delete_tags_public
             security:
@@ -206,7 +202,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
         get:
-            tags: []
             summary: Get Tag
             operationId: get_tags_public
             security:
@@ -238,7 +233,7 @@ paths:
     /v0/tags/{tag_name}/values:
         post:
             tags:
-            - tag-values
+            - values
             summary: Create TagValue
             operationId: create_tag_values_v0_tags__tag_name__values_post
             security:
@@ -266,6 +261,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TagValuesOutputPublic'
+                    links:
+                        list:
+                            operationId: list_tag_values_v0_tags__tag_name__values_get
+                            description: List TagValues
+                            parameters:
+                                tag_name: $request.path.tag_name
+                        get:
+                            operationId: get_tag_values_v0_tags__tag_name__values__value_name__get
+                            description: Get TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $request.body#/name
+                        update:
+                            operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
+                            description: Update TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $request.body#/name
+                        delete:
+                            operationId: delete_tag_values
+                            description: Delete TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $request.body#/name
                 '422':
                     description: Validation Error
                     content:
@@ -274,7 +293,7 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
         get:
             tags:
-            - tag-values
+            - values
             summary: List TagValues
             operationId: list_tag_values_v0_tags__tag_name__values_get
             security:
@@ -341,7 +360,7 @@ paths:
     /v0/tags/{tag_name}/values/{value_name}:
         delete:
             tags:
-            - tag-values
+            - values
             summary: Delete TagValue
             operationId: delete_tag_values
             security:
@@ -381,7 +400,7 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
         patch:
             tags:
-            - tag-values
+            - values
             summary: Update TagValue
             operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
             security:
@@ -419,6 +438,41 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TagValuesOutputPublic'
+                    links:
+                        list:
+                            operationId: list_tag_values_v0_tags__tag_name__values_get
+                            description: List TagValues
+                            parameters:
+                                tag_name: $request.path.tag_name
+                        create:
+                            operationId: create_tag_values_v0_tags__tag_name__values_post
+                            description: Create TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.description == $.owner.parameters.description
+                        get:
+                            operationId: get_tag_values_v0_tags__tag_name__values__value_name__get
+                            description: Get TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $response.body#/name
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.description == $.owner.parameters.description
+                        delete:
+                            operationId: delete_tag_values
+                            description: Delete TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $response.body#/name
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.description == $.owner.parameters.description
                 '422':
                     description: Validation Error
                     content:
@@ -427,7 +481,7 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
         get:
             tags:
-            - tag-values
+            - values
             summary: Get TagValue
             operationId: get_tag_values_v0_tags__tag_name__values__value_name__get
             security:
@@ -459,6 +513,36 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TagValuesOutputPublic'
+                    links:
+                        list:
+                            operationId: list_tag_values_v0_tags__tag_name__values_get
+                            description: List TagValues
+                            parameters:
+                                tag_name: $request.path.tag_name
+                        create:
+                            operationId: create_tag_values_v0_tags__tag_name__values_post
+                            description: Create TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                        update:
+                            operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
+                            description: Update TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $response.body#/name
+                        update/description:
+                            operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
+                            description: Update TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $response.body#/name
+                            x-mgc-hidden: true
+                        delete:
+                            operationId: delete_tag_values
+                            description: Delete TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $response.body#/name
                 '422':
                     description: Validation Error
                     content:
@@ -468,7 +552,7 @@ paths:
     /v0/tags/{tag_name}/values/{value_name}/resources:
         post:
             tags:
-            - tag-value-resources
+            - value-resources
             summary: Link a tag-value to a cloud resource
             operationId: create_tag_value_resource_v0_tags__tag_name__values__value_name__resources_post
             security:
@@ -506,6 +590,19 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TagValueResourcesOutputPublic'
+                    links:
+                        delete:
+                            operationId: delete_tag_value_resource_v0_tags__tag_name__values__value_name__resources__resource_id__delete
+                            description: Delete a link between a tag-value and a cloud
+                                resource
+                            parameters:
+                                resource_id: $request.body#/resource_id
+                                tag_name: $request.path.tag_name
+                                value_name: $request.path.value_name
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.resource_id == $.owner.parameters.resource_id
                 '422':
                     description: Validation Error
                     content:
@@ -515,7 +612,7 @@ paths:
     /v0/tags/{tag_name}/values/{value_name}/resources/{resource_id}:
         delete:
             tags:
-            - tag-value-resources
+            - value-resources
             summary: Delete a link between a tag-value and a cloud resource
             operationId: delete_tag_value_resource_v0_tags__tag_name__values__value_name__resources__resource_id__delete
             security:
@@ -653,6 +750,17 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ProjectsOutputPublic'
+                    links:
+                        get:
+                            operationId: get_projects_public
+                            description: Get project
+                            parameters:
+                                name: $request.body#/name
+                        update:
+                            operationId: update_projects_public
+                            description: Update project
+                            parameters:
+                                name: $request.body#/name
                 '422':
                     description: Validation Error
                     content:
@@ -751,6 +859,16 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ProjectsOutputPublic'
+                    links:
+                        get:
+                            operationId: get_projects_public
+                            description: Get project
+                            parameters:
+                                name: $request.path.name
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.description == $.owner.parameters.description
                 '422':
                     description: Validation Error
                     content:
@@ -782,6 +900,18 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ProjectsOutputPublic'
+                    links:
+                        update:
+                            operationId: update_projects_public
+                            description: Update project
+                            parameters:
+                                name: $request.path.name
+                        update/description:
+                            operationId: update_projects_public
+                            description: Update project
+                            parameters:
+                                name: $request.path.name
+                            x-mgc-hidden: true
                 '422':
                     description: Validation Error
                     content:
@@ -1524,8 +1654,24 @@ components:
                         tags:projects-tw: Allow public write operations for projects
                     tokenUrl: https://idpa-api-preprod.luizalabs.com/oauth/token
 tags:
--   name: Healthcheck
-    description: Endpoints para verificação de status e saúde do serviço.
+-   name: healthcheck
+    description: Service health and readiness endpoints used for monitoring.
+    x-mgc-hidden: true
+-   name: values
+    description: Manage the values associated with a tag.
+-   name: value-resources
+    description: Link or unlink tag values to cloud resources.
+-   name: resource-types
+    description: List the resource types supported for tagging.
+-   name: resources
+    description: List and inspect cloud resources that have tags applied.
+-   name: projects
+    description: Manage projects used to group tags.
+-   name: resource-types-internal
+    description: Internal endpoints for managing resource types.
+    x-mgc-hidden: true
+-   name: resources-internal
+    description: Internal endpoints for managing tagged resources.
     x-mgc-hidden: true
 $id: https://tags.csre-plat-preprod.1.yel.se1.br.jaxyendy.com/openapi.json
 servers:

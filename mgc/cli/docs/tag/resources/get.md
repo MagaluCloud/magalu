@@ -1,33 +1,21 @@
 ---
-sidebar_position: 0
+sidebar_position: 3
 ---
-# Tag
+# Get
 
-Tags API
+Get resource
 
 ## Usage:
 ```
-mgc tag [flags]
-mgc tag [command]
-```
-
-## Commands:
-```
-create          Create tag
-delete          Delete Tag
-get             Get Tag
-list            List tags
-projects        Manage projects used to group tags.
-resource-types  List the resource types supported for tagging.
-resources       List and inspect cloud resources that have tags applied.
-update          Update Tag
-value-resources Link or unlink tag values to cloud resources.
-values          Manage the values associated with a tag.
+mgc tag resources get [id] [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for tag
+    --control.limit integer    Limit: Number of items per page (range: 1 - 100)
+    --control.offset integer   Offset for pagination (min: 0)
+-h, --help                     help for get
+    --id uuid                  Id (required)
 ```
 
 ## Global Flags:
@@ -39,8 +27,10 @@ values          Manage the values associated with a tag.
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
+    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --server-url uri           Manually specify the server to use
 ```
 

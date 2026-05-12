@@ -1,33 +1,27 @@
 ---
 sidebar_position: 0
 ---
-# Tag
+# Projects
 
-Tags API
+Manage projects used to group tags.
 
 ## Usage:
 ```
-mgc tag [flags]
-mgc tag [command]
+mgc tag projects [flags]
+mgc tag projects [command]
 ```
 
 ## Commands:
 ```
-create          Create tag
-delete          Delete Tag
-get             Get Tag
-list            List tags
-projects        Manage projects used to group tags.
-resource-types  List the resource types supported for tagging.
-resources       List and inspect cloud resources that have tags applied.
-update          Update Tag
-value-resources Link or unlink tag values to cloud resources.
-values          Manage the values associated with a tag.
+create      Create project
+get         Get project
+list        List all projects
+update      Update project
 ```
 
 ## Flags:
 ```
--h, --help   help for tag
+-h, --help   help for projects
 ```
 
 ## Global Flags:

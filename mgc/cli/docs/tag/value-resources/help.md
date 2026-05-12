@@ -1,33 +1,25 @@
 ---
 sidebar_position: 0
 ---
-# Tag
+# Value-Resources
 
-Tags API
+Link or unlink tag values to cloud resources.
 
 ## Usage:
 ```
-mgc tag [flags]
-mgc tag [command]
+mgc tag value-resources [flags]
+mgc tag value-resources [command]
 ```
 
 ## Commands:
 ```
-create          Create tag
-delete          Delete Tag
-get             Get Tag
-list            List tags
-projects        Manage projects used to group tags.
-resource-types  List the resource types supported for tagging.
-resources       List and inspect cloud resources that have tags applied.
-update          Update Tag
-value-resources Link or unlink tag values to cloud resources.
-values          Manage the values associated with a tag.
+create      Link a tag-value to a cloud resource
+delete      Delete a link between a tag-value and a cloud resource
 ```
 
 ## Flags:
 ```
--h, --help   help for tag
+-h, --help   help for value-resources
 ```
 
 ## Global Flags:

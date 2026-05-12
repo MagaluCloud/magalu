@@ -1,33 +1,24 @@
 ---
 sidebar_position: 0
 ---
-# Tag
+# Resource-Types
 
-Tags API
+List the resource types supported for tagging.
 
 ## Usage:
 ```
-mgc tag [flags]
-mgc tag [command]
+mgc tag resource-types [flags]
+mgc tag resource-types [command]
 ```
 
 ## Commands:
 ```
-create          Create tag
-delete          Delete Tag
-get             Get Tag
-list            List tags
-projects        Manage projects used to group tags.
-resource-types  List the resource types supported for tagging.
-resources       List and inspect cloud resources that have tags applied.
-update          Update Tag
-value-resources Link or unlink tag values to cloud resources.
-values          Manage the values associated with a tag.
+list        List all resource types
 ```
 
 ## Flags:
 ```
--h, --help   help for tag
+-h, --help   help for resource-types
 ```
 
 ## Global Flags:

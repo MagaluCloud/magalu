@@ -32,8 +32,6 @@
     },
     "/v0/tags": {
       "post": {
-        "tags": [
-        ],
         "summary": "Create tag",
         "description": "If values are informed, they will be created either; max size for values list accepted on creation is: 50",
         "operationId": "create_tags_public",
@@ -95,8 +93,6 @@
         }
       },
       "get": {
-        "tags": [
-        ],
         "summary": "List tags",
         "operationId": "list_tags_public",
         "security": [
@@ -259,8 +255,6 @@
     },
     "/v0/tags/{name}": {
       "patch": {
-        "tags": [
-        ],
         "summary": "Update Tag",
         "operationId": "update_tags_public",
         "security": [
@@ -335,8 +329,6 @@
         }
       },
       "delete": {
-        "tags": [
-        ],
         "summary": "Delete Tag",
         "operationId": "delete_tags_public",
         "security": [
@@ -402,8 +394,6 @@
         }
       },
       "get": {
-        "tags": [
-        ],
         "summary": "Get Tag",
         "operationId": "get_tags_public",
         "security": [
@@ -472,7 +462,7 @@
     "/v0/tags/{tag_name}/values": {
       "post": {
         "tags": [
-          "tag-values"
+          "values"
         ],
         "summary": "Create TagValue",
         "operationId": "create_tag_values_v0_tags__tag_name__values_post",
@@ -546,7 +536,7 @@
       },
       "get": {
         "tags": [
-          "tag-values"
+          "values"
         ],
         "summary": "List TagValues",
         "operationId": "list_tag_values_v0_tags__tag_name__values_get",
@@ -663,7 +653,7 @@
     "/v0/tags/{tag_name}/values/{value_name}": {
       "delete": {
         "tags": [
-          "tag-values"
+          "values"
         ],
         "summary": "Delete TagValue",
         "operationId": "delete_tag_values",
@@ -741,7 +731,7 @@
       },
       "patch": {
         "tags": [
-          "tag-values"
+          "values"
         ],
         "summary": "Update TagValue",
         "operationId": "update_tag_values_v0_tags__tag_name__values__value_name__patch",
@@ -829,7 +819,7 @@
       },
       "get": {
         "tags": [
-          "tag-values"
+          "values"
         ],
         "summary": "Get TagValue",
         "operationId": "get_tag_values_v0_tags__tag_name__values__value_name__get",
@@ -909,7 +899,7 @@
     "/v0/tags/{tag_name}/values/{value_name}/resources": {
       "post": {
         "tags": [
-          "tag-value-resources"
+          "value-resources"
         ],
         "summary": "Link a tag-value to a cloud resource",
         "operationId": "create_tag_value_resource_v0_tags__tag_name__values__value_name__resources_post",
@@ -999,7 +989,7 @@
     "/v0/tags/{tag_name}/values/{value_name}/resources/{resource_id}": {
       "delete": {
         "tags": [
-          "tag-value-resources"
+          "value-resources"
         ],
         "summary": "Delete a link between a tag-value and a cloud resource",
         "operationId": "delete_tag_value_resource_v0_tags__tag_name__values__value_name__resources__resource_id__delete",
@@ -2830,10 +2820,40 @@
       }
     }
   },
-   "tags": [
+  "tags": [
     {
-      "name": "Healthcheck",
-      "description": "Endpoints para verificação de status e saúde do serviço.",
+      "name": "healthcheck",
+      "description": "Service health and readiness endpoints used for monitoring.",
+      "x-mgc-hidden": true
+    },
+    {
+      "name": "values",
+      "description": "Manage the values associated with a tag."
+    },
+    {
+      "name": "value-resources",
+      "description": "Link or unlink tag values to cloud resources."
+    },
+    {
+      "name": "resource-types",
+      "description": "List the resource types supported for tagging."
+    },
+    {
+      "name": "resources",
+      "description": "List and inspect cloud resources that have tags applied."
+    },
+    {
+      "name": "projects",
+      "description": "Manage projects used to group tags."
+    },
+    {
+      "name": "resource-types-internal",
+      "description": "Internal endpoints for managing resource types.",
+      "x-mgc-hidden": true
+    },
+    {
+      "name": "resources-internal",
+      "description": "Internal endpoints for managing tagged resources.",
       "x-mgc-hidden": true
     }
   ]
