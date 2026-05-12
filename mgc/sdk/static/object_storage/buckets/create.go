@@ -20,7 +20,7 @@ var createLogger = utils.NewLazyLoader(func() *zap.SugaredLogger {
 type createParams struct {
 	BucketName            common.BucketName `json:"bucket" jsonschema:"description=Name of the bucket to be created" mgc:"positional"`
 	IsPrefix              bool              `json:"bucket_is_prefix" jsonschema:"description=Use bucket name as prefix value to generate a unique bucket name,default=false"`
-	EnableVersioning      bool              `json:"enable_versioning,omitempty" jsonschema:"description=Enable versioning for this bucket,default=true,required"`
+	EnableVersioning      *bool             `json:"enable_versioning,omitempty" jsonschema:"description=Enable versioning for this bucket (default true)"`
 	common.ACLPermissions `json:",squash"`  // nolint
 }
 
@@ -119,7 +119,18 @@ func create(ctx context.Context, params createParams, cfg common.Config) (*creat
 
 	logger.Info("bucket created successfully")
 
-	if !params.EnableVersioning {
+	enableVersioning := true
+	if params.EnableVersioning == nil {
+		params.EnableVersioning = &enableVersioning
+	}
+
+	if *params.EnableVersioning {
+		logger.Info("enabling bucket versioning, as 'enable_versioning' was passed as true")
+		_, err := versioning.EnableBucketVersioning(ctx, versioning.EnableBucketVersioningParams{Bucket: params.BucketName}, cfg)
+		if err != nil {
+			return nil, err
+		}
+	} else {
 		logger.Info("suspending bucket versioning, as 'enable_versioning' was passed as false")
 		_, err := versioning.SuspendBucketVersioning(ctx, versioning.SuspendBucketVersioningParams{Bucket: params.BucketName}, cfg)
 		if err != nil {
