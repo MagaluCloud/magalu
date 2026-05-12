@@ -1,18 +1,18 @@
 ---
-sidebar_position: 1
+sidebar_position: 4
 ---
-# List
+# Get
 
-Returns the authenticated user.
+Returns the authenticated container registry user.
 
 ## Usage:
 ```
-mgc container-registry users list [flags]
+mgc container-registry users get [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for list
+-h, --help   help for get
 ```
 
 ## Global Flags:

@@ -15,7 +15,7 @@ mgc container-registry users [command]
 ```
 create      Create a user
 delete      Delete a user by user_id
-list        Get user
+get         Get authenticated user
 ```
 
 ## Flags:

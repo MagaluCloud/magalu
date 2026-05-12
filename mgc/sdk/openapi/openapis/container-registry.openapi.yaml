@@ -694,9 +694,10 @@ paths:
         get:
             tags:
             - users
-            summary: Get user
-            description: Returns the authenticated user.
+            summary: Get authenticated user
+            description: Returns the authenticated container registry user.
             operationId: getUser
+            x-cli-name: get
             x-permission:
                 permission-name: cr_user_get
                 product-name: containerregistry
