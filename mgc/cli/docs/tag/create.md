@@ -3,7 +3,7 @@ sidebar_position: 2
 ---
 # Create
 
-Create tag, if values are informed, they will be created either
+If values are informed, they will be created either; max size for values list accepted on creation is: 50
 
 ## Usage:
 ```
@@ -12,17 +12,17 @@ mgc tag create [flags]
 
 ## Examples:
 ```
-mgc tag create --color="ffffff00" --kinds='["finops"]' --name="kubernetes-expenses"
+mgc tag create --color="ffffff00" --description="tag to monitor expenses with kubernetes" --kinds='["finops"]' --name="kubernetes-expenses"
 ```
 
 ## Flags:
 ```
-    --color string           Color: 8-character lowercase hexadecimal string representing RGBA, without '#' prefix. (between 8 and 8 characters and pattern: ^[0-9a-f]+$)
-    --force-authentication   Force authentication by sending the header even if this API doesn't require it
+    --color string           Color: 8-character lowercase hexadecimal string representing RGBA, without '#' prefix. (between 6 and 6 characters and pattern: ^[0-9a-fA-F]+$)
+    --description string     description for this tag (max character count: 500)
 -h, --help                   help for create
     --kinds array(enum)      Kinds: a tag kind describe the purpose for this tag in mgc, the most common case is kind finops.
     --name string            name for tag (required)
-    --values array(object)   Values (at most 20 items)
+    --values array(object)   Values (at most 50 items)
                              Use --values=help for more details
 ```
 

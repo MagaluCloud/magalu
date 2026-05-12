@@ -61,7 +61,7 @@ modules:
       description: Manage users global data
       summary: Manage users global data
     - name: tag
-      url: https://tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com/openapi.json
+      url: https://tags.csre-plat-preprod.1.yel.se1.br.jaxyendy.com/openapi.json
       path: tag.openapi.yaml
       version: 0.1.0
       description: Tags API

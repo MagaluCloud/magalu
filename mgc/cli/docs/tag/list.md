@@ -17,14 +17,13 @@ mgc tag list --color="ffffff00" --kinds='["finops"]'
 
 ## Flags:
 ```
-    --color string             Color: 8-character lowercase hexadecimal string representing RGBA, without '#' prefix. (between 8 and 8 characters and pattern: ^[0-9a-f]+$)
+    --color string             Color: 8-character lowercase hexadecimal string representing RGBA, without '#' prefix. (between 6 and 6 characters and pattern: ^[0-9a-fA-F]+$)
     --control.limit integer     Limit (range: 1 - 100)
     --control.offset integer    Offset (min: 0)
     --control.sort string       Sort
-    --force-authentication     Force authentication by sending the header even if this API doesn't require it
 -h, --help                     help for list
     --kinds array(enum)        Kinds: a tag kind describe the purpose for this tag in mgc, the most common case is kind finops.
-    --name string              name for tag
+    --name string              name for tag (between 1 and 72 characters and pattern: ^[\w\ \-\[\]\(\)\.\:]+$)
 ```
 
 ## Global Flags:

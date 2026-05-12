@@ -13,17 +13,11 @@ mgc tag [command]
 
 ## Commands:
 ```
-create              Create tag, if values are informed, they will be created either
-delete              Delete Tag
-folders             folders
-get                 Get Tag
-healthcheck         healthcheck
-list                List tags
-resource-types      resource-types
-resources           resources
-tag-value-resources tag-value-resources
-tag-values          tag-values
-update              Update Tag
+create      Create tag
+delete      Delete Tag
+get         Get Tag
+list        List tags
+update      Update Tag
 ```
 
 ## Flags:

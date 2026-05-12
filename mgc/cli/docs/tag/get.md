@@ -17,9 +17,8 @@ mgc tag get --name="kubernetes-expenses"
 
 ## Flags:
 ```
-    --force-authentication   Force authentication by sending the header even if this API doesn't require it
--h, --help                   help for get
-    --name string            name for tag (required)
+-h, --help          help for get
+    --name string   name for tag (required)
 ```
 
 ## Global Flags:

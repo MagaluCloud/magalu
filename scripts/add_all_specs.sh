@@ -29,7 +29,7 @@ $BASEDIR/add_specs_without_region.sh iam iam specs/iam.jaxyendy.openapi.json htt
 
 $BASEDIR/add_specs_without_region.sh federation federation specs/federation.jaxyendy.openapi.json https://federation.jaxyendy.com/openapi.json
 
-$BASEDIR/add_specs_without_region.sh tag tag specs/tag.jaxyendy.openapi.json https://tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com/openapi.json
+$BASEDIR/add_specs_without_region.sh tag tag specs/tag.jaxyendy.openapi.json https://tags.csre-plat-preprod.1.yel.se1.br.jaxyendy.com/openapi.json
 
 make oapi-index-gen
 # EXAMPLE

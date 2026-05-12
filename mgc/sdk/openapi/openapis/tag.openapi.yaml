@@ -11,6 +11,7 @@ paths:
         get:
             tags:
             - healthcheck
+            x-mgc-hidden: true
             summary: Healthcheck Readiness
             operationId: healthcheck_readiness_readiness_get
             responses:
@@ -24,10 +25,13 @@ paths:
                 - tag.read
     /v0/tags:
         post:
-            summary: Create tag, if values are informed, they will be created either
+            tags: []
+            summary: Create tag
+            description: 'If values are informed, they will be created either; max
+                size for values list accepted on creation is: 50'
             operationId: create_tags_public
             security:
-            -   OAuth2ClientCredentials:
+            -   OAuth2:
                 - tags:tags-tw
             requestBody:
                 required: true
@@ -49,10 +53,11 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
         get:
+            tags: []
             summary: List tags
             operationId: list_tags_public
             security:
-            -   OAuth2ClientCredentials:
+            -   OAuth2:
                 - tags:tags-tr
             parameters:
             -   name: name
@@ -63,6 +68,9 @@ paths:
                     title: Name
                     nullable: true
                     type: string
+                    minLength: 1
+                    maxLength: 72
+                    pattern: ^[\w\ \-\[\]\(\)\.\:]+$
                 description: name for tag
             -   name: color
                 in: query
@@ -73,9 +81,9 @@ paths:
                     title: Color
                     nullable: true
                     type: string
-                    minLength: 8
-                    maxLength: 8
-                    pattern: ^[0-9a-f]+$
+                    minLength: 6
+                    maxLength: 6
+                    pattern: ^[0-9a-fA-F]+$
                     example: ffffff00
                 description: 8-character lowercase hexadecimal string representing
                     RGBA, without '#' prefix.
@@ -133,10 +141,11 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
     /v0/tags/{name}:
         patch:
+            tags: []
             summary: Update Tag
             operationId: update_tags_public
             security:
-            -   OAuth2ClientCredentials:
+            -   OAuth2:
                 - tags:tags-tw
             parameters:
             -   name: name
@@ -167,10 +176,11 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
         delete:
+            tags: []
             summary: Delete Tag
             operationId: delete_tags_public
             security:
-            -   OAuth2ClientCredentials:
+            -   OAuth2:
                 - tags:tags-tw
             parameters:
             -   name: name
@@ -196,10 +206,11 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
         get:
+            tags: []
             summary: Get Tag
             operationId: get_tags_public
             security:
-            -   OAuth2ClientCredentials:
+            -   OAuth2:
                 - tags:tags-tr
             parameters:
             -   name: name
@@ -231,7 +242,7 @@ paths:
             summary: Create TagValue
             operationId: create_tag_values_v0_tags__tag_name__values_post
             security:
-            -   OAuth2ClientCredentials:
+            -   OAuth2:
                 - tags:tags-tw
             parameters:
             -   name: tag_name
@@ -255,22 +266,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TagValuesOutputPublic'
-                    links:
-                        list:
-                            operationId: list_tag_values_v0_tags__tag_name__values_get
-                            description: List TagValues
-                            parameters:
-                                tag_name: $request.path.tag_name
-                        get:
-                            operationId: get_tag_values_v0_tags__tag_name__values__value_name__get
-                            description: Get TagValue
-                            parameters:
-                                tag_name: $request.path.tag_name
-                        delete:
-                            operationId: delete_tag_values
-                            description: Delete TagValue
-                            parameters:
-                                tag_name: $request.path.tag_name
                 '422':
                     description: Validation Error
                     content:
@@ -283,7 +278,7 @@ paths:
             summary: List TagValues
             operationId: list_tag_values_v0_tags__tag_name__values_get
             security:
-            -   OAuth2ClientCredentials:
+            -   OAuth2:
                 - tags:tags-tr
             parameters:
             -   name: tag_name
@@ -302,6 +297,9 @@ paths:
                     title: Name
                     nullable: true
                     type: string
+                    minLength: 1
+                    maxLength: 72
+                    pattern: ^[\w\ \-\[\]\(\)\.\:]+$
                 description: tag value name, is allowed only one name per tag_id
             -   name: _limit
                 in: query
@@ -347,7 +345,7 @@ paths:
             summary: Delete TagValue
             operationId: delete_tag_values
             security:
-            -   OAuth2ClientCredentials:
+            -   OAuth2:
                 - tags:tags-tw
             parameters:
             -   name: tag_name
@@ -381,13 +379,59 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
+        patch:
+            tags:
+            - tag-values
+            summary: Update TagValue
+            operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+            parameters:
+            -   name: tag_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: name for tag
+                    title: Tag Name
+                    example: kubernetes-expenses
+                description: name for tag
+            -   name: value_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: tag value name, is allowed only one name per tag_id
+                    title: Value Name
+                    example: test-labs
+                description: tag value name, is allowed only one name per tag_id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Body_update_tag_values_v0_tags__tag_name__values__value_name__patch'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagValuesOutputPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
         get:
             tags:
             - tag-values
             summary: Get TagValue
             operationId: get_tag_values_v0_tags__tag_name__values__value_name__get
             security:
-            -   OAuth2ClientCredentials:
+            -   OAuth2:
                 - tags:tags-tr
             parameters:
             -   name: tag_name
@@ -415,23 +459,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TagValuesOutputPublic'
-                    links:
-                        list:
-                            operationId: list_tag_values_v0_tags__tag_name__values_get
-                            description: List TagValues
-                            parameters:
-                                tag_name: $request.path.tag_name
-                        create:
-                            operationId: create_tag_values_v0_tags__tag_name__values_post
-                            description: Create TagValue
-                            parameters:
-                                tag_name: $request.path.tag_name
-                        delete:
-                            operationId: delete_tag_values
-                            description: Delete TagValue
-                            parameters:
-                                tag_name: $request.path.tag_name
-                                value_name: $request.path.value_name
                 '422':
                     description: Validation Error
                     content:
@@ -445,7 +472,7 @@ paths:
             summary: Link a tag-value to a cloud resource
             operationId: create_tag_value_resource_v0_tags__tag_name__values__value_name__resources_post
             security:
-            -   OAuth2ClientCredentials:
+            -   OAuth2:
                 - tags:tags-tw
             parameters:
             -   name: tag_name
@@ -479,19 +506,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/TagValueResourcesOutputPublic'
-                    links:
-                        delete:
-                            operationId: delete_tag_value_resource_v0_tags__tag_name__values__value_name__resources__resource_id__delete
-                            description: Delete a link between a tag-value and a cloud
-                                resource
-                            parameters:
-                                resource_id: $request.body#/resource_id
-                                tag_name: $request.path.tag_name
-                                value_name: $request.path.value_name
-                            x-mgc-wait-termination:
-                                interval: 5s
-                                maxRetries: 10
-                                jsonPathQuery: $.result.resource_id == $.owner.parameters.resource_id
                 '422':
                     description: Validation Error
                     content:
@@ -505,7 +519,7 @@ paths:
             summary: Delete a link between a tag-value and a cloud resource
             operationId: delete_tag_value_resource_v0_tags__tag_name__values__value_name__resources__resource_id__delete
             security:
-            -   OAuth2ClientCredentials:
+            -   OAuth2:
                 - tags:tags-tw
             parameters:
             -   name: resource_id
@@ -553,7 +567,7 @@ paths:
             summary: List all resource types
             operationId: list_resource_types
             security:
-            -   OAuth2ClientCredentials:
+            -   OAuth2:
                 - tags:tags-tr
             parameters:
             -   name: _limit
@@ -617,39 +631,28 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    /v0/folders:
+    /v0/projects:
         post:
             tags:
-            - folders
-            summary: Create folder
-            operationId: create_folders_public
+            - projects
+            summary: Create project
+            operationId: create_projects_public
             security:
-            -   OAuth2ClientCredentials:
-                - tags:folders-tw
+            -   OAuth2:
+                - tags:projects-tw
             requestBody:
                 required: true
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/Body_create_folders_public'
+                            $ref: '#/components/schemas/Body_create_projects_public'
             responses:
                 '201':
                     description: Successful Response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/FoldersOutputPublic'
-                    links:
-                        get:
-                            operationId: get_folders_public
-                            description: Get Folder
-                            parameters:
-                                name: $request.body#/name
-                        update:
-                            operationId: update_folders_public
-                            description: Update folder
-                            parameters:
-                                name: $request.body#/name
+                                $ref: '#/components/schemas/ProjectsOutputPublic'
                 '422':
                     description: Validation Error
                     content:
@@ -658,23 +661,26 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
         get:
             tags:
-            - folders
-            summary: List all folders
-            operationId: list_folders_public
+            - projects
+            summary: List all projects
+            operationId: list_projects_public
             security:
-            -   OAuth2ClientCredentials:
-                - tags:folders-tr
+            -   OAuth2:
+                - tags:projects-tr
             parameters:
             -   name: name
                 in: query
                 required: false
                 schema:
-                    description: name for folder
+                    description: name for project
                     title: Name
                     nullable: true
                     type: string
+                    minLength: 1
+                    maxLength: 72
+                    pattern: ^[\w\ \-\[\]\(\)\.\:]+$
                     example: Development environment for testing and feature implementation.
-                description: name for folder
+                description: name for project
             -   name: _limit
                 in: query
                 required: false
@@ -705,52 +711,46 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/FoldersOutputListPublic'
+                                $ref: '#/components/schemas/ProjectsOutputListPublic'
                 '422':
                     description: Validation Error
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-    /v0/folders/{name}:
+    /v0/projects/{name}:
         patch:
             tags:
-            - folders
-            summary: Update folder
-            description: Update a folder. Default folder cannot be modified.
-            operationId: update_folders_public
+            - projects
+            summary: Update project
+            description: Update a project. Default project cannot be modified.
+            operationId: update_projects_public
             security:
-            -   OAuth2ClientCredentials:
-                - tags:folders-tw
+            -   OAuth2:
+                - tags:projects-tw
             parameters:
             -   name: name
                 in: path
                 required: true
                 schema:
                     type: string
-                    description: name for folder
+                    description: name for project
                     title: Name
                     example: sandbox
-                description: name for folder
+                description: name for project
             requestBody:
                 required: true
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/FoldersUpdateInput'
+                            $ref: '#/components/schemas/ProjectsUpdateInput'
             responses:
                 '200':
                     description: Successful Response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/FoldersOutputPublic'
-                    links:
-                        get:
-                            operationId: get_folders_public
-                            description: Get Folder
-                            parameters:
-                                name: $request.path.name
+                                $ref: '#/components/schemas/ProjectsOutputPublic'
                 '422':
                     description: Validation Error
                     content:
@@ -759,35 +759,29 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
         get:
             tags:
-            - folders
-            summary: Get Folder
-            operationId: get_folders_public
+            - projects
+            summary: Get project
+            operationId: get_projects_public
             security:
-            -   OAuth2ClientCredentials:
-                - tags:folders-tr
+            -   OAuth2:
+                - tags:projects-tr
             parameters:
             -   name: name
                 in: path
                 required: true
                 schema:
                     type: string
-                    description: name for folder
+                    description: name for project
                     title: Name
                     example: sandbox
-                description: name for folder
+                description: name for project
             responses:
                 '200':
                     description: Successful Response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/FoldersOutputPublic'
-                    links:
-                        update:
-                            operationId: update_folders_public
-                            description: Update folder
-                            parameters:
-                                name: $request.path.name
+                                $ref: '#/components/schemas/ProjectsOutputPublic'
                 '422':
                     description: Validation Error
                     content:
@@ -801,9 +795,9 @@ paths:
             summary: Get resource
             operationId: get_resources_public
             security:
-            -   OAuth2ClientCredentials:
+            -   OAuth2:
                 - tags:tags-tr
-                - tags:folders-tr
+                - tags:projects-tr
             parameters:
             -   name: id
                 in: path
@@ -853,9 +847,9 @@ paths:
             summary: List all resources that you have access
             operationId: list_resources_public
             security:
-            -   OAuth2ClientCredentials:
+            -   OAuth2:
                 - tags:tags-tr
-                - tags:folders-tr
+                - tags:projects-tr
             parameters:
             -   name: external_id
                 in: query
@@ -921,24 +915,25 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
 components:
     schemas:
-        Body_create_folders_public:
+        Body_create_projects_public:
             properties:
                 name:
                     type: string
                     maxLength: 72
                     minLength: 1
                     title: Name
-                    description: name for folder
+                    description: name for project
                     example: sandbox
                 description:
                     title: Description
-                    description: description for this folder
+                    description: description for this project
                     nullable: true
                     type: string
+                    maxLength: 500
             type: object
             required:
             - name
-            title: Body_create_folders_public
+            title: Body_create_projects_public
         Body_create_tag_value_resource_v0_tags__tag_name__values__value_name__resources_post:
             properties:
                 resource_id:
@@ -962,6 +957,7 @@ components:
                     description: description for this tag value
                     nullable: true
                     type: string
+                    maxLength: 500
             type: object
             required:
             - name
@@ -974,21 +970,28 @@ components:
                     items:
                         $ref: '#/components/schemas/ComposedTagValuesInput'
                     type: array
-                    maxItems: 20
+                    maxItems: 50
                 name:
                     type: string
                     title: Name
                     description: name for tag
                     example: kubernetes-expenses
+                description:
+                    title: Description
+                    description: description for this tag
+                    nullable: true
+                    type: string
+                    maxLength: 500
+                    example: tag to monitor expenses with kubernetes
                 color:
                     title: Color
                     description: 8-character lowercase hexadecimal string representing
                         RGBA, without '#' prefix.
                     nullable: true
                     type: string
-                    maxLength: 8
-                    minLength: 8
-                    pattern: ^[0-9a-f]+$
+                    maxLength: 6
+                    minLength: 6
+                    pattern: ^[0-9a-fA-F]+$
                     example: ffffff00
                 kinds:
                     title: Kinds
@@ -1004,6 +1007,19 @@ components:
             required:
             - name
             title: Body_create_tags_public
+        Body_update_tag_values_v0_tags__tag_name__values__value_name__patch:
+            properties:
+                description:
+                    title: Description
+                    description: description for this tag value
+                    nullable: true
+                    type: string
+                    maxLength: 500
+                    example: tag value to monitor expenses with test-labs
+            type: object
+            required:
+            - description
+            title: Body_update_tag_values_v0_tags__tag_name__values__value_name__patch
         Body_update_tags_public:
             properties:
                 color:
@@ -1012,9 +1028,9 @@ components:
                         RGBA, without '#' prefix.
                     nullable: true
                     type: string
-                    maxLength: 8
-                    minLength: 8
-                    pattern: ^[0-9a-f]+$
+                    maxLength: 6
+                    minLength: 6
+                    pattern: ^[0-9a-fA-F]+$
                     example: ffffff00
             type: object
             title: Body_update_tags_public
@@ -1022,6 +1038,9 @@ components:
             properties:
                 name:
                     type: string
+                    maxLength: 72
+                    minLength: 1
+                    pattern: ^[\w\ \-\[\]\(\)\.\:]+$
                     title: Name
                     description: tag value name, is allowed only one name per tag_id
                     example: test-labs
@@ -1030,6 +1049,7 @@ components:
                     description: description for this tag value
                     nullable: true
                     type: string
+                    maxLength: 500
                     example: tag value to monitor expenses with test-labs
             type: object
             required:
@@ -1050,72 +1070,6 @@ components:
             - tag
             - values
             title: ComposedTagsAndTagValuesOutputPublic
-        FoldersOutputListPublic:
-            properties:
-                results:
-                    items:
-                        $ref: '#/components/schemas/FoldersOutputPublic'
-                    type: array
-                    title: Results
-            type: object
-            required:
-            - results
-            title: FoldersOutputListPublic
-        FoldersOutputPublic:
-            properties:
-                id:
-                    type: string
-                    format: uuid
-                    title: Id
-                    description: uuid for folder
-                    example: c62a416a-49b6-4788-9f22-be883784fa4c
-                name:
-                    type: string
-                    title: Name
-                    description: name for folder
-                    example: sandbox
-                description:
-                    title: Description
-                    description: description for this folder
-                    nullable: true
-                    type: string
-                    example: Development environment for testing and feature implementation.
-                created_at:
-                    type: string
-                    format: date-time
-                    title: Created At
-                    description: element creation date
-                    example: '2025-06-20T18:36:18.919454'
-                updated_at:
-                    title: Updated At
-                    description: element last update date, None if never updated
-                    nullable: true
-                    type: string
-                    format: date-time
-                    example: '2025-06-20T18:36:18.919454'
-            type: object
-            required:
-            - id
-            - name
-            - created_at
-            title: FoldersOutputPublic
-        FoldersUpdateInput:
-            properties:
-                name:
-                    title: Name
-                    description: name for folder
-                    nullable: true
-                    type: string
-                    maxLength: 72
-                    minLength: 1
-                    example: sandbox
-                description:
-                    title: Description
-                    description: description for this folder
-                    nullable: true
-                    type: string
-            type: object
-            title: FoldersUpdateInput
         HTTPValidationError:
             properties:
                 message:
@@ -1141,6 +1095,65 @@ components:
             - database
             - load-balancer
             title: ProductEnum
+        ProjectsOutputListPublic:
+            properties:
+                results:
+                    items:
+                        $ref: '#/components/schemas/ProjectsOutputPublic'
+                    type: array
+                    title: Results
+            type: object
+            required:
+            - results
+            title: ProjectsOutputListPublic
+        ProjectsOutputPublic:
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                    title: Id
+                    description: uuid for project
+                    example: c62a416a-49b6-4788-9f22-be883784fa4c
+                name:
+                    type: string
+                    title: Name
+                    description: name for project
+                    example: sandbox
+                description:
+                    title: Description
+                    description: description for this project
+                    nullable: true
+                    type: string
+                    example: Development environment for testing and feature implementation.
+                created_at:
+                    type: string
+                    format: date-time
+                    title: Created At
+                    description: element creation date
+                    example: '2025-06-20T18:36:18.919454'
+                updated_at:
+                    title: Updated At
+                    description: element last update date, None if never updated
+                    nullable: true
+                    type: string
+                    format: date-time
+                    example: '2025-06-20T18:36:18.919454'
+            type: object
+            required:
+            - id
+            - name
+            - created_at
+            title: ProjectsOutputPublic
+        ProjectsUpdateInput:
+            properties:
+                description:
+                    title: Description
+                    description: description for this project
+                    nullable: true
+                    type: string
+                    maxLength: 500
+            type: object
+            title: ProjectsUpdateInput
         RegionEnum:
             type: string
             enum:
@@ -1500,47 +1513,34 @@ components:
                 message: Unauthorized
                 slug: Unauthorized
     securitySchemes:
-        OAuth2ClientCredentials:
+        OAuth2:
             type: oauth2
             flows:
                 clientCredentials:
                     scopes:
-                        tags:tags-r: Allow internal read operations
-                        tags:tags-w: Allow internal write operations
                         tags:tags-tr: Allow public read operations
                         tags:tags-tw: Allow public write operations
-                        tags:folders-r: Allow internal read operations for folders
-                        tags:folders-w: Allow internal write operations for folders
-                        tags:folders-tr: Allow public read operations for folders
-                        tags:folders-tw: Allow public write operations for folders
-                    tokenUrl: https://autoseg-idp.luizalabs.com/oauth/token
+                        tags:projects-tr: Allow public read operations for projects
+                        tags:projects-tw: Allow public write operations for projects
+                    tokenUrl: https://idpa-api-preprod.luizalabs.com/oauth/token
 tags:
--   name: folders
-    description: folders
--   name: healthcheck
-    description: healthcheck
--   name: resource-types
-    description: resource-types
--   name: resources
-    description: resources
--   name: tag-value-resources
-    description: tag-value-resources
--   name: tag-values
-    description: tag-values
-$id: https://tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com/openapi.json
+-   name: Healthcheck
+    description: Endpoints para verificação de status e saúde do serviço.
+    x-mgc-hidden: true
+$id: https://tags.csre-plat-preprod.1.yel.se1.br.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}
     variables:
         env:
             description: Environment to use
-            default: api.magalu.cloud
+            default: tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com
             enum:
-            - api.magalu.cloud
             - tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com
+            - tags.csre-plat-preprod.1.yel.se1.br.jaxyendy.com
             x-mgc-transforms:
             -   type: translate
                 translations:
                 -   from: prod
-                    to: api.magalu.cloud
-                -   from: pre-prod
                     to: tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com
+                -   from: pre-prod
+                    to: tags.csre-plat-preprod.1.yel.se1.br.jaxyendy.com

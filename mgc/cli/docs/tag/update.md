@@ -17,10 +17,9 @@ mgc tag update --color="ffffff00" --name="kubernetes-expenses"
 
 ## Flags:
 ```
-    --color string           Color: 8-character lowercase hexadecimal string representing RGBA, without '#' prefix. (between 8 and 8 characters and pattern: ^[0-9a-f]+$)
-    --force-authentication   Force authentication by sending the header even if this API doesn't require it
--h, --help                   help for update
-    --name string            name for tag (required)
+    --color string   Color: 8-character lowercase hexadecimal string representing RGBA, without '#' prefix. (between 6 and 6 characters and pattern: ^[0-9a-fA-F]+$)
+-h, --help           help for update
+    --name string    name for tag (required)
 ```
 
 ## Global Flags:

@@ -9,14 +9,14 @@ servers:
     variables:
         env:
             description: Environment to use
-            default: api.magalu.cloud
+            default: tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com
             enum:
-            - api.magalu.cloud
             - tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com
+            - tags.csre-plat-preprod.1.yel.se1.br.jaxyendy.com
             x-mgc-transforms:
             -   type: translate
                 translations:
                 -   from: prod
-                    to: api.magalu.cloud
-                -   from: pre-prod
                     to: tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com
+                -   from: pre-prod
+                    to: tags.csre-plat-preprod.1.yel.se1.br.jaxyendy.com
