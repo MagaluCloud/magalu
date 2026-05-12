@@ -1,0 +1,22 @@
+# This file is to be merged on top of mgc/sdk/openapi/openapis/tag.openapi.yaml
+# using yaml_merge.py
+# NOTE: Lists are merged by their indexes, be careful with parameters, tags and such!
+# to keep it sane, keep some list item identifier (ex: "name") and add extra properties,
+# such as "x-mgc-name" or "x-mgc-description"
+
+servers:
+-   url: https://{env}
+    variables:
+        env:
+            description: Environment to use
+            default: tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com
+            enum:
+            - tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com
+            - tags.csre-plat-preprod.1.yel.se1.br.jaxyendy.com
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com
+                -   from: pre-prod
+                    to: tags.csre-plat-preprod.1.yel.se1.br.jaxyendy.com

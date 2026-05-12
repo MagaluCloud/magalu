@@ -3,12 +3,14 @@ package http
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
 	"mime"
 	"mime/multipart"
 	"net/http"
+	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -366,10 +368,16 @@ var defaultTransport *http.Transport
 
 func DefaultTransport() http.RoundTripper {
 	if defaultTransport == nil {
-		defaultTransport = (http.DefaultTransport).(*http.Transport)
+		defaultTransport = (http.DefaultTransport).(*http.Transport).Clone()
 		defaultTransport.MaxIdleConns = 1000   //500
 		defaultTransport.MaxConnsPerHost = 500 //200
 		defaultTransport.IdleConnTimeout = 30 * time.Second
+		if os.Getenv("MGC_INSECURE_SKIP_VERIFY") == "true" {
+			if defaultTransport.TLSClientConfig == nil {
+				defaultTransport.TLSClientConfig = &tls.Config{}
+			}
+			defaultTransport.TLSClientConfig.InsecureSkipVerify = true
+		}
 	}
 	return defaultTransport
 }

@@ -390,6 +390,7 @@ func TestOperation_SetSecurityHeader(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			mockAuth := new(mockAuth)
+			mockAuth.On("CurrentTenantID").Return("", assert.AnError).Maybe()
 			tt.mockSetup(mockAuth)
 
 			op := &operation{

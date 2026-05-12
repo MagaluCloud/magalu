@@ -627,6 +627,12 @@ func (o *operation) setSecurityHeader(ctx context.Context, paramValues core.Para
 				return err
 			}
 			req.Header.Set("Authorization", "Bearer "+accessToken)
+
+			if req.Header.Get("x-tenant-id") == "" {
+				if tenantID, err := auth.CurrentTenantID(); err == nil && tenantID != "" {
+					req.Header.Set("x-tenant-id", tenantID)
+				}
+			}
 		}
 		return nil
 	}

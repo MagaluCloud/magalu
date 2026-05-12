@@ -1,0 +1,1692 @@
+openapi: 3.0.3
+info:
+    title: Tags API
+    description: Tags API
+    contact:
+        name: XPNG.CAT
+        url: https://github.com/luizalabs
+    version: 0.1.0
+paths:
+    /readiness:
+        get:
+            tags:
+            - healthcheck
+            x-mgc-hidden: true
+            summary: Healthcheck Readiness
+            operationId: healthcheck_readiness_readiness_get
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema: {}
+            security:
+            -   OAuth2:
+                - tag.read
+    /v0/tags:
+        post:
+            summary: Create tag
+            description: 'If values are informed, they will be created either; max
+                size for values list accepted on creation is: 50'
+            operationId: create_tags_public
+            security:
+            -   OAuth2:
+                - tags:tags-tw
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Body_create_tags_public'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ComposedTagsAndTagValuesOutputPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        get:
+            summary: List tags
+            operationId: list_tags_public
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+            parameters:
+            -   name: name
+                in: query
+                required: false
+                schema:
+                    description: name for tag
+                    title: Name
+                    nullable: true
+                    type: string
+                    minLength: 1
+                    maxLength: 72
+                    pattern: ^[\w\ \-\[\]\(\)\.\:]+$
+                description: name for tag
+            -   name: color
+                in: query
+                required: false
+                schema:
+                    description: 8-character lowercase hexadecimal string representing
+                        RGBA, without '#' prefix.
+                    title: Color
+                    nullable: true
+                    type: string
+                    minLength: 6
+                    maxLength: 6
+                    pattern: ^[0-9a-fA-F]+$
+                    example: ffffff00
+                description: 8-character lowercase hexadecimal string representing
+                    RGBA, without '#' prefix.
+            -   name: kinds
+                in: query
+                required: false
+                schema:
+                    description: a tag kind describe the purpose for this tag in mgc,
+                        the most common case is kind finops.
+                    title: Kinds
+                    nullable: true
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TagKinds'
+                    example:
+                    - finops
+                description: a tag kind describe the purpose for this tag in mgc,
+                    the most common case is kind finops.
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 100
+                    minimum: 1
+                    default: 20
+                    title: ' Limit'
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    minimum: 0
+                    default: 0
+                    title: ' Offset'
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    default: ''
+                    title: ' Sort'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagsOutputListPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v0/tags/{name}:
+        patch:
+            summary: Update Tag
+            operationId: update_tags_public
+            security:
+            -   OAuth2:
+                - tags:tags-tw
+            parameters:
+            -   name: name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: name for tag
+                    title: Name
+                    example: kubernetes-expenses
+                description: name for tag
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Body_update_tags_public'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagsOutputPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        delete:
+            summary: Delete Tag
+            operationId: delete_tags_public
+            security:
+            -   OAuth2:
+                - tags:tags-tw
+            parameters:
+            -   name: name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: name for tag
+                    title: Name
+                    example: kubernetes-expenses
+                description: name for tag
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagsOutputPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        get:
+            summary: Get Tag
+            operationId: get_tags_public
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+            parameters:
+            -   name: name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: name for tag
+                    title: Name
+                    example: kubernetes-expenses
+                description: name for tag
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagsOutputPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v0/tags/{tag_name}/values:
+        post:
+            tags:
+            - values
+            summary: Create TagValue
+            operationId: create_tag_values_v0_tags__tag_name__values_post
+            security:
+            -   OAuth2:
+                - tags:tags-tw
+            parameters:
+            -   name: tag_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: name for tag
+                    title: Tag Name
+                description: name for tag
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Body_create_tag_values_v0_tags__tag_name__values_post'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagValuesOutputPublic'
+                    links:
+                        list:
+                            operationId: list_tag_values_v0_tags__tag_name__values_get
+                            description: List TagValues
+                            parameters:
+                                tag_name: $request.path.tag_name
+                        get:
+                            operationId: get_tag_values_v0_tags__tag_name__values__value_name__get
+                            description: Get TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $request.body#/name
+                        update:
+                            operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
+                            description: Update TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $request.body#/name
+                        delete:
+                            operationId: delete_tag_values
+                            description: Delete TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $request.body#/name
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        get:
+            tags:
+            - values
+            summary: List TagValues
+            operationId: list_tag_values_v0_tags__tag_name__values_get
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+            parameters:
+            -   name: tag_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: name for tag
+                    title: Tag Name
+                description: name for tag
+            -   name: name
+                in: query
+                required: false
+                schema:
+                    description: tag value name, is allowed only one name per tag_id
+                    title: Name
+                    nullable: true
+                    type: string
+                    minLength: 1
+                    maxLength: 72
+                    pattern: ^[\w\ \-\[\]\(\)\.\:]+$
+                description: tag value name, is allowed only one name per tag_id
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 100
+                    minimum: 1
+                    default: 20
+                    title: ' Limit'
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    minimum: 0
+                    default: 0
+                    title: ' Offset'
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    default: ''
+                    title: ' Sort'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagValuesOutputListPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v0/tags/{tag_name}/values/{value_name}:
+        delete:
+            tags:
+            - values
+            summary: Delete TagValue
+            operationId: delete_tag_values
+            security:
+            -   OAuth2:
+                - tags:tags-tw
+            parameters:
+            -   name: tag_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: name for tag
+                    title: Tag Name
+                    example: kubernetes-expenses
+                description: name for tag
+            -   name: value_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: tag value name, is allowed only one name per tag_id
+                    title: Value Name
+                    example: test-labs
+                description: tag value name, is allowed only one name per tag_id
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagValuesOutputPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        patch:
+            tags:
+            - values
+            summary: Update TagValue
+            operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+            parameters:
+            -   name: tag_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: name for tag
+                    title: Tag Name
+                    example: kubernetes-expenses
+                description: name for tag
+            -   name: value_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: tag value name, is allowed only one name per tag_id
+                    title: Value Name
+                    example: test-labs
+                description: tag value name, is allowed only one name per tag_id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Body_update_tag_values_v0_tags__tag_name__values__value_name__patch'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagValuesOutputPublic'
+                    links:
+                        list:
+                            operationId: list_tag_values_v0_tags__tag_name__values_get
+                            description: List TagValues
+                            parameters:
+                                tag_name: $request.path.tag_name
+                        create:
+                            operationId: create_tag_values_v0_tags__tag_name__values_post
+                            description: Create TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.description == $.owner.parameters.description
+                        get:
+                            operationId: get_tag_values_v0_tags__tag_name__values__value_name__get
+                            description: Get TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $response.body#/name
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.description == $.owner.parameters.description
+                        delete:
+                            operationId: delete_tag_values
+                            description: Delete TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $response.body#/name
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.description == $.owner.parameters.description
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        get:
+            tags:
+            - values
+            summary: Get TagValue
+            operationId: get_tag_values_v0_tags__tag_name__values__value_name__get
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+            parameters:
+            -   name: tag_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: name for tag
+                    title: Tag Name
+                    example: kubernetes-expenses
+                description: name for tag
+            -   name: value_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: tag value name, is allowed only one name per tag_id
+                    title: Value Name
+                    example: test-labs
+                description: tag value name, is allowed only one name per tag_id
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagValuesOutputPublic'
+                    links:
+                        list:
+                            operationId: list_tag_values_v0_tags__tag_name__values_get
+                            description: List TagValues
+                            parameters:
+                                tag_name: $request.path.tag_name
+                        create:
+                            operationId: create_tag_values_v0_tags__tag_name__values_post
+                            description: Create TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                        update:
+                            operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
+                            description: Update TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $response.body#/name
+                        update/description:
+                            operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
+                            description: Update TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $response.body#/name
+                            x-mgc-hidden: true
+                        delete:
+                            operationId: delete_tag_values
+                            description: Delete TagValue
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $response.body#/name
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v0/tags/{tag_name}/values/{value_name}/resources:
+        post:
+            tags:
+            - value-resources
+            summary: Link a tag-value to a cloud resource
+            operationId: create_tag_value_resource_v0_tags__tag_name__values__value_name__resources_post
+            security:
+            -   OAuth2:
+                - tags:tags-tw
+            parameters:
+            -   name: tag_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: name for tag
+                    title: Tag Name
+                    example: kubernetes-expenses
+                description: name for tag
+            -   name: value_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: tag value name, is allowed only one name per tag_id
+                    title: Value Name
+                    example: test-labs
+                description: tag value name, is allowed only one name per tag_id
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Body_create_tag_value_resource_v0_tags__tag_name__values__value_name__resources_post'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagValueResourcesOutputPublic'
+                    links:
+                        delete:
+                            operationId: delete_tag_value_resource_v0_tags__tag_name__values__value_name__resources__resource_id__delete
+                            description: Delete a link between a tag-value and a cloud
+                                resource
+                            parameters:
+                                resource_id: $request.body#/resource_id
+                                tag_name: $request.path.tag_name
+                                value_name: $request.path.value_name
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.resource_id == $.owner.parameters.resource_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v0/tags/{tag_name}/values/{value_name}/resources/{resource_id}:
+        delete:
+            tags:
+            - value-resources
+            summary: Delete a link between a tag-value and a cloud resource
+            operationId: delete_tag_value_resource_v0_tags__tag_name__values__value_name__resources__resource_id__delete
+            security:
+            -   OAuth2:
+                - tags:tags-tw
+            parameters:
+            -   name: resource_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Resource Id
+            -   name: tag_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: name for tag
+                    title: Tag Name
+                    example: kubernetes-expenses
+                description: name for tag
+            -   name: value_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: tag value name, is allowed only one name per tag_id
+                    title: Value Name
+                    example: test-labs
+                description: tag value name, is allowed only one name per tag_id
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagValueResourcesOutputPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v0/resource-types:
+        get:
+            tags:
+            - resource-types
+            summary: List all resource types
+            operationId: list_resource_types
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+            parameters:
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 100
+                    minimum: 1
+                    title: Limit
+                    description: Number of items per page
+                    default: 20
+                description: Number of items per page
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    minimum: 0
+                    title: Offset
+                    description: Offset for pagination
+                    default: 0
+                description: Offset for pagination
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    title: Sort
+                    description: Sorting criteria
+                    default: ''
+                description: Sorting criteria
+            -   name: name
+                in: query
+                required: false
+                schema:
+                    description: resource type name, must be related to a product
+                    title: Name
+                    nullable: true
+                    $ref: '#/components/schemas/ResourceEnum'
+                description: resource type name, must be related to a product
+            -   name: product
+                in: query
+                required: false
+                schema:
+                    description: product owner of a resource
+                    title: Product
+                    nullable: true
+                    $ref: '#/components/schemas/ProductEnum'
+                description: product owner of a resource
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ResourceTypesOutputListPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v0/projects:
+        post:
+            tags:
+            - projects
+            summary: Create project
+            operationId: create_projects_public
+            security:
+            -   OAuth2:
+                - tags:projects-tw
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Body_create_projects_public'
+            responses:
+                '201':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProjectsOutputPublic'
+                    links:
+                        get:
+                            operationId: get_projects_public
+                            description: Get project
+                            parameters:
+                                name: $request.body#/name
+                        update:
+                            operationId: update_projects_public
+                            description: Update project
+                            parameters:
+                                name: $request.body#/name
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        get:
+            tags:
+            - projects
+            summary: List all projects
+            operationId: list_projects_public
+            security:
+            -   OAuth2:
+                - tags:projects-tr
+            parameters:
+            -   name: name
+                in: query
+                required: false
+                schema:
+                    description: name for project
+                    title: Name
+                    nullable: true
+                    type: string
+                    minLength: 1
+                    maxLength: 72
+                    pattern: ^[\w\ \-\[\]\(\)\.\:]+$
+                    example: Development environment for testing and feature implementation.
+                description: name for project
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 100
+                    minimum: 1
+                    default: 20
+                    title: ' Limit'
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    minimum: 0
+                    default: 0
+                    title: ' Offset'
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    default: ''
+                    title: ' Sort'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProjectsOutputListPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v0/projects/{name}:
+        patch:
+            tags:
+            - projects
+            summary: Update project
+            description: Update a project. Default project cannot be modified.
+            operationId: update_projects_public
+            security:
+            -   OAuth2:
+                - tags:projects-tw
+            parameters:
+            -   name: name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: name for project
+                    title: Name
+                    example: sandbox
+                description: name for project
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ProjectsUpdateInput'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProjectsOutputPublic'
+                    links:
+                        get:
+                            operationId: get_projects_public
+                            description: Get project
+                            parameters:
+                                name: $request.path.name
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.description == $.owner.parameters.description
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        get:
+            tags:
+            - projects
+            summary: Get project
+            operationId: get_projects_public
+            security:
+            -   OAuth2:
+                - tags:projects-tr
+            parameters:
+            -   name: name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    description: name for project
+                    title: Name
+                    example: sandbox
+                description: name for project
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProjectsOutputPublic'
+                    links:
+                        update:
+                            operationId: update_projects_public
+                            description: Update project
+                            parameters:
+                                name: $request.path.name
+                        update/description:
+                            operationId: update_projects_public
+                            description: Update project
+                            parameters:
+                                name: $request.path.name
+                            x-mgc-hidden: true
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v0/resources/{id}:
+        get:
+            tags:
+            - resources
+            summary: Get resource
+            operationId: get_resources_public
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+                - tags:projects-tr
+            parameters:
+            -   name: id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    format: uuid
+                    title: Id
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 100
+                    minimum: 1
+                    title: Limit
+                    description: Number of items per page
+                    default: 20
+                description: Number of items per page
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    minimum: 0
+                    title: Offset
+                    description: Offset for pagination
+                    default: 0
+                description: Offset for pagination
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ResourcesOutputPublicExpanded'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+    /v0/resources:
+        get:
+            tags:
+            - resources
+            summary: List all resources that you have access
+            operationId: list_resources_public
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+                - tags:projects-tr
+            parameters:
+            -   name: external_id
+                in: query
+                required: false
+                schema:
+                    type: string
+                    description: id of the resource in the source api
+                    title: External Id
+                    example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                description: id of the resource in the source api
+            -   name: resource_type_name
+                in: query
+                required: false
+                schema:
+                    $ref: '#/components/schemas/ResourceEnum'
+                    description: resource type name, must be related to a product
+                    example: os.bucket
+                description: resource type name, must be related to a product
+            -   name: region
+                in: query
+                required: false
+                schema:
+                    $ref: '#/components/schemas/RegionEnum'
+                    description: cloud region
+                    example: br-se1
+                description: cloud region
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 100
+                    minimum: 1
+                    default: 20
+                    title: ' Limit'
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    minimum: 0
+                    default: 0
+                    title: ' Offset'
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    default: ''
+                    title: ' Sort'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ResourcesOutputListPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+components:
+    schemas:
+        Body_create_projects_public:
+            properties:
+                name:
+                    type: string
+                    maxLength: 72
+                    minLength: 1
+                    title: Name
+                    description: name for project
+                    example: sandbox
+                description:
+                    title: Description
+                    description: description for this project
+                    nullable: true
+                    type: string
+                    maxLength: 500
+            type: object
+            required:
+            - name
+            title: Body_create_projects_public
+        Body_create_tag_value_resource_v0_tags__tag_name__values__value_name__resources_post:
+            properties:
+                resource_id:
+                    type: string
+                    format: uuid
+                    title: Resource Id
+                    description: id of the enrolled resource (vm, database, etc.)
+                    example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+            type: object
+            required:
+            - resource_id
+            title: Body_create_tag_value_resource_v0_tags__tag_name__values__value_name__resources_post
+        Body_create_tag_values_v0_tags__tag_name__values_post:
+            properties:
+                name:
+                    type: string
+                    title: Name
+                    description: tag value name, is allowed only one name per tag_id
+                description:
+                    title: Description
+                    description: description for this tag value
+                    nullable: true
+                    type: string
+                    maxLength: 500
+            type: object
+            required:
+            - name
+            title: Body_create_tag_values_v0_tags__tag_name__values_post
+        Body_create_tags_public:
+            properties:
+                values:
+                    title: Values
+                    nullable: true
+                    items:
+                        $ref: '#/components/schemas/ComposedTagValuesInput'
+                    type: array
+                    maxItems: 50
+                name:
+                    type: string
+                    title: Name
+                    description: name for tag
+                    example: kubernetes-expenses
+                description:
+                    title: Description
+                    description: description for this tag
+                    nullable: true
+                    type: string
+                    maxLength: 500
+                    example: tag to monitor expenses with kubernetes
+                color:
+                    title: Color
+                    description: 8-character lowercase hexadecimal string representing
+                        RGBA, without '#' prefix.
+                    nullable: true
+                    type: string
+                    maxLength: 6
+                    minLength: 6
+                    pattern: ^[0-9a-fA-F]+$
+                    example: ffffff00
+                kinds:
+                    title: Kinds
+                    description: a tag kind describe the purpose for this tag in mgc,
+                        the most common case is kind finops.
+                    nullable: true
+                    items:
+                        $ref: '#/components/schemas/TagKinds'
+                    type: array
+                    example:
+                    - finops
+            type: object
+            required:
+            - name
+            title: Body_create_tags_public
+        Body_update_tag_values_v0_tags__tag_name__values__value_name__patch:
+            properties:
+                description:
+                    title: Description
+                    description: description for this tag value
+                    nullable: true
+                    type: string
+                    maxLength: 500
+                    example: tag value to monitor expenses with test-labs
+            type: object
+            required:
+            - description
+            title: Body_update_tag_values_v0_tags__tag_name__values__value_name__patch
+        Body_update_tags_public:
+            properties:
+                color:
+                    title: Color
+                    description: 8-character lowercase hexadecimal string representing
+                        RGBA, without '#' prefix.
+                    nullable: true
+                    type: string
+                    maxLength: 6
+                    minLength: 6
+                    pattern: ^[0-9a-fA-F]+$
+                    example: ffffff00
+            type: object
+            title: Body_update_tags_public
+        ComposedTagValuesInput:
+            properties:
+                name:
+                    type: string
+                    maxLength: 72
+                    minLength: 1
+                    pattern: ^[\w\ \-\[\]\(\)\.\:]+$
+                    title: Name
+                    description: tag value name, is allowed only one name per tag_id
+                    example: test-labs
+                description:
+                    title: Description
+                    description: description for this tag value
+                    nullable: true
+                    type: string
+                    maxLength: 500
+                    example: tag value to monitor expenses with test-labs
+            type: object
+            required:
+            - name
+            - description
+            title: ComposedTagValuesInput
+        ComposedTagsAndTagValuesOutputPublic:
+            properties:
+                tag:
+                    $ref: '#/components/schemas/TagsOutputPublic'
+                values:
+                    items:
+                        $ref: '#/components/schemas/TagValuesOutputPublic'
+                    type: array
+                    title: Values
+            type: object
+            required:
+            - tag
+            - values
+            title: ComposedTagsAndTagValuesOutputPublic
+        HTTPValidationError:
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            type: object
+            title: HTTPValidationError
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        ProductEnum:
+            type: string
+            enum:
+            - object-storage
+            - network
+            - virtual-machine
+            - block-storage
+            - kubernetes
+            - container-registry
+            - database
+            - load-balancer
+            title: ProductEnum
+        ProjectsOutputListPublic:
+            properties:
+                results:
+                    items:
+                        $ref: '#/components/schemas/ProjectsOutputPublic'
+                    type: array
+                    title: Results
+            type: object
+            required:
+            - results
+            title: ProjectsOutputListPublic
+        ProjectsOutputPublic:
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                    title: Id
+                    description: uuid for project
+                    example: c62a416a-49b6-4788-9f22-be883784fa4c
+                name:
+                    type: string
+                    title: Name
+                    description: name for project
+                    example: sandbox
+                description:
+                    title: Description
+                    description: description for this project
+                    nullable: true
+                    type: string
+                    example: Development environment for testing and feature implementation.
+                created_at:
+                    type: string
+                    format: date-time
+                    title: Created At
+                    description: element creation date
+                    example: '2025-06-20T18:36:18.919454'
+                updated_at:
+                    title: Updated At
+                    description: element last update date, None if never updated
+                    nullable: true
+                    type: string
+                    format: date-time
+                    example: '2025-06-20T18:36:18.919454'
+            type: object
+            required:
+            - id
+            - name
+            - created_at
+            title: ProjectsOutputPublic
+        ProjectsUpdateInput:
+            properties:
+                description:
+                    title: Description
+                    description: description for this project
+                    nullable: true
+                    type: string
+                    maxLength: 500
+            type: object
+            title: ProjectsUpdateInput
+        RegionEnum:
+            type: string
+            enum:
+            - br-se1
+            - br-ne1
+            title: RegionEnum
+        ResourceEnum:
+            type: string
+            enum:
+            - os.bucket
+            - os.object
+            - net.nat-gateway
+            - net.port
+            - net.public-ip
+            - net.rule
+            - net.security-group
+            - net.subnet
+            - net.vpc
+            - vm.image
+            - vm.instance
+            - vm.snapshot
+            - bs.snapshot
+            - bs.volume
+            - k8s.cluster
+            - k8s.nodepool
+            - cr.registry
+            - cr.repository
+            - db.cluster
+            - db.instance
+            - db.parameter-group
+            - db.replica
+            - db.snapshot
+            - lb.network-acl
+            - lb.network-backend
+            - lb.network-certificate
+            - lb.network-healthcheck
+            - lb.network-listener
+            - lb.network-loadbalancer
+            title: ResourceEnum
+        ResourceTagsOutput:
+            properties:
+                tag_name:
+                    type: string
+                    title: Tag Name
+                tag_value_name:
+                    type: string
+                    title: Tag Value Name
+                color:
+                    type: string
+                    title: Color
+            type: object
+            required:
+            - tag_name
+            - tag_value_name
+            - color
+            title: ResourceTagsOutput
+        ResourceType:
+            properties:
+                name:
+                    $ref: '#/components/schemas/ResourceEnum'
+                    description: resource type name, must be related to a product
+                    example: os.bucket
+                product:
+                    $ref: '#/components/schemas/ProductEnum'
+                    description: product owner of a resource
+                    example: object-storage
+            type: object
+            required:
+            - name
+            - product
+            title: ResourceType
+        ResourceTypesOutputListPublic:
+            properties:
+                results:
+                    items:
+                        $ref: '#/components/schemas/ResourceTypesOutputPublic'
+                    type: array
+                    title: Results
+            type: object
+            required:
+            - results
+            title: ResourceTypesOutputListPublic
+        ResourceTypesOutputPublic:
+            properties:
+                name:
+                    $ref: '#/components/schemas/ResourceEnum'
+                    description: resource type name, must be related to a product
+                    example: os.bucket
+                product:
+                    $ref: '#/components/schemas/ProductEnum'
+                    description: product owner of a resource
+                    example: object-storage
+                created_at:
+                    type: string
+                    format: date-time
+                    title: Created At
+                    description: element creation date
+                    example: '2025-06-20T18:36:18.919454'
+                updated_at:
+                    title: Updated At
+                    description: element last update date, None if never updated
+                    nullable: true
+                    type: string
+                    format: date-time
+                    example: '2025-06-20T18:36:18.919454'
+            type: object
+            required:
+            - name
+            - product
+            - created_at
+            title: ResourceTypesOutputPublic
+        ResourcesOutputInternal:
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                    title: Id
+                    description: id of the enrolled resource (vm, database, etc.)
+                    example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                external_id:
+                    type: string
+                    title: External Id
+                    description: id of the resource in the source api
+                    example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                resource_type:
+                    $ref: '#/components/schemas/ResourceType'
+                region:
+                    $ref: '#/components/schemas/RegionEnum'
+                    description: cloud region
+                    example: br-se1
+                created_at:
+                    type: string
+                    format: date-time
+                    title: Created At
+                    description: element creation date
+                    example: '2025-06-20T18:36:18.919454'
+                updated_at:
+                    title: Updated At
+                    description: element last update date, None if never updated
+                    nullable: true
+                    type: string
+                    format: date-time
+                    example: '2025-06-20T18:36:18.919454'
+            type: object
+            required:
+            - id
+            - external_id
+            - resource_type
+            - region
+            - created_at
+            title: ResourcesOutputInternal
+        ResourcesOutputListPublic:
+            properties:
+                results:
+                    items:
+                        $ref: '#/components/schemas/ResourcesOutputInternal'
+                    type: array
+                    title: Results
+            type: object
+            required:
+            - results
+            title: ResourcesOutputListPublic
+        ResourcesOutputPublicExpanded:
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                    title: Id
+                    description: id of the enrolled resource (vm, database, etc.)
+                    example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                external_id:
+                    type: string
+                    title: External Id
+                    description: id of the resource in the source api
+                    example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                resource_type:
+                    $ref: '#/components/schemas/ResourceType'
+                region:
+                    $ref: '#/components/schemas/RegionEnum'
+                    description: cloud region
+                    example: br-se1
+                created_at:
+                    type: string
+                    format: date-time
+                    title: Created At
+                    description: element creation date
+                    example: '2025-06-20T18:36:18.919454'
+                updated_at:
+                    title: Updated At
+                    description: element last update date, None if never updated
+                    nullable: true
+                    type: string
+                    format: date-time
+                    example: '2025-06-20T18:36:18.919454'
+                tags:
+                    items:
+                        $ref: '#/components/schemas/ResourceTagsOutput'
+                    type: array
+                    title: Tags
+                    description: list of tag name, tag color, tag value associated
+                        to a resource
+                    example:
+                    - kubernetes-expenses
+                    - ffffff00
+                    - test-labs
+            type: object
+            required:
+            - id
+            - external_id
+            - resource_type
+            - region
+            - created_at
+            - tags
+            title: ResourcesOutputPublicExpanded
+        TagKinds:
+            type: string
+            enum:
+            - finops
+            title: TagKinds
+        TagValueResourcesOutputPublic:
+            properties:
+                resource_id:
+                    type: string
+                    format: uuid
+                    title: Resource Id
+                    description: id of the enrolled resource (vm, database, etc.)
+                    example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                created_at:
+                    type: string
+                    format: date-time
+                    title: Created At
+                    description: element creation date
+                    example: '2025-06-20T18:36:18.919454'
+                updated_at:
+                    title: Updated At
+                    description: element last update date, None if never updated
+                    nullable: true
+                    type: string
+                    format: date-time
+                    example: '2025-06-20T18:36:18.919454'
+            type: object
+            required:
+            - resource_id
+            - created_at
+            title: TagValueResourcesOutputPublic
+        TagValuesOutputListPublic:
+            properties:
+                results:
+                    items:
+                        $ref: '#/components/schemas/TagValuesOutputPublic'
+                    type: array
+                    title: Results
+            type: object
+            required:
+            - results
+            title: TagValuesOutputListPublic
+        TagValuesOutputPublic:
+            properties:
+                name:
+                    type: string
+                    title: Name
+                    description: tag value name, is allowed only one name per tag_id
+                    example: test-labs
+                description:
+                    title: Description
+                    description: description for this tag value
+                    nullable: true
+                    type: string
+                    example: tag value to monitor expenses with test-labs
+                created_at:
+                    type: string
+                    format: date-time
+                    title: Created At
+                    description: element creation date
+                    example: '2025-06-20T18:36:18.919454'
+                updated_at:
+                    title: Updated At
+                    description: element last update date, None if never updated
+                    nullable: true
+                    type: string
+                    format: date-time
+                    example: '2025-06-20T18:36:18.919454'
+            type: object
+            required:
+            - name
+            - description
+            - created_at
+            title: TagValuesOutputPublic
+        TagsOutputListPublic:
+            properties:
+                results:
+                    items:
+                        $ref: '#/components/schemas/TagsOutputPublic'
+                    type: array
+                    title: Results
+            type: object
+            required:
+            - results
+            title: TagsOutputListPublic
+        TagsOutputPublic:
+            properties:
+                name:
+                    type: string
+                    title: Name
+                    description: name for tag
+                    example: kubernetes-expenses
+                color:
+                    title: Color
+                    description: 8-character lowercase hexadecimal string representing
+                        RGBA, without '#' prefix.
+                    nullable: true
+                    type: string
+                    example: ffffff00
+                kinds:
+                    items:
+                        type: string
+                    type: array
+                    title: Kinds
+                    description: a tag kind describe the purpose for this tag in mgc,
+                        the most common case is kind finops.
+                    example:
+                    - finops
+                created_at:
+                    type: string
+                    format: date-time
+                    title: Created At
+                    description: element creation date
+                    example: '2025-06-20T18:36:18.919454'
+                updated_at:
+                    title: Updated At
+                    description: element last update date, None if never updated
+                    nullable: true
+                    type: string
+                    format: date-time
+                    example: '2025-06-20T18:36:18.919454'
+            type: object
+            required:
+            - name
+            - kinds
+            - created_at
+            title: TagsOutputPublic
+        ValidationError:
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            type: object
+            required:
+            - loc
+            - msg
+            - type
+            title: ValidationError
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+    securitySchemes:
+        OAuth2:
+            type: oauth2
+            flows:
+                clientCredentials:
+                    scopes:
+                        tags:tags-tr: Allow public read operations
+                        tags:tags-tw: Allow public write operations
+                        tags:projects-tr: Allow public read operations for projects
+                        tags:projects-tw: Allow public write operations for projects
+                    tokenUrl: https://idpa-api-preprod.luizalabs.com/oauth/token
+tags:
+-   name: healthcheck
+    description: Service health and readiness endpoints used for monitoring.
+    x-mgc-hidden: true
+-   name: values
+    description: Manage the values associated with a tag.
+-   name: value-resources
+    description: Link or unlink tag values to cloud resources.
+-   name: resource-types
+    description: List the resource types supported for tagging.
+-   name: resources
+    description: List and inspect cloud resources that have tags applied.
+-   name: projects
+    description: Manage projects used to group tags.
+-   name: resource-types-internal
+    description: Internal endpoints for managing resource types.
+    x-mgc-hidden: true
+-   name: resources-internal
+    description: Internal endpoints for managing tagged resources.
+    x-mgc-hidden: true
+$id: https://tags.csre-plat-preprod.1.yel.se1.br.jaxyendy.com/openapi.json
+servers:
+-   url: https://{env}
+    variables:
+        env:
+            description: Environment to use
+            default: tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com
+            enum:
+            - tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com
+            - tags.csre-plat-preprod.1.yel.se1.br.jaxyendy.com
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com
+                -   from: pre-prod
+                    to: tags.csre-plat-preprod.1.yel.se1.br.jaxyendy.com

@@ -1,0 +1,2860 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Tags API",
+    "description": "Tags API",
+    "contact": {
+      "name": "XPNG.CAT",
+      "url": "https://github.com/luizalabs"
+    },
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/readiness": {
+      "get": {
+        "tags": [
+          "healthcheck"
+        ],
+        "x-mgc-hidden": true,
+        "summary": "Healthcheck Readiness",
+        "operationId": "healthcheck_readiness_readiness_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/tags": {
+      "post": {
+        "summary": "Create tag",
+        "description": "If values are informed, they will be created either; max size for values list accepted on creation is: 50",
+        "operationId": "create_tags_public",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:tags-tw"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "tenant_id for user",
+              "examples": [
+                "5cfa8f10-8be5-4057-b178-deb7badd8dd6"
+              ],
+              "title": "X-Tenant-Id"
+            },
+            "description": "tenant_id for user"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_tags_public"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComposedTagsAndTagValuesOutputPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List tags",
+        "operationId": "list_tags_public",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:tags-tr"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 72,
+                  "pattern": "^[\\w\\ \\-\\[\\]\\(\\)\\.\\:]+$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "name for tag",
+              "title": "Name"
+            },
+            "description": "name for tag"
+          },
+          {
+            "name": "color",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 6,
+                  "maxLength": 6,
+                  "pattern": "^[0-9a-fA-F]+$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "8-character lowercase hexadecimal string representing RGBA, without '#' prefix.",
+              "examples": [
+                "ffffff00",
+                "ffffffff",
+                "000000ff"
+              ],
+              "title": "Color"
+            },
+            "description": "8-character lowercase hexadecimal string representing RGBA, without '#' prefix."
+          },
+          {
+            "name": "kinds",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TagKinds"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "a tag kind describe the purpose for this tag in mgc, the most common case is kind finops.",
+              "examples": [
+                [
+                  "finops"
+                ],
+                [
+                  "finops",
+                  "access-control"
+                ]
+              ],
+              "title": "Kinds"
+            },
+            "description": "a tag kind describe the purpose for this tag in mgc, the most common case is kind finops."
+          },
+          {
+            "name": "_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": " Limit"
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": " Offset"
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": " Sort"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "tenant_id for user",
+              "examples": [
+                "5cfa8f10-8be5-4057-b178-deb7badd8dd6"
+              ],
+              "title": "X-Tenant-Id"
+            },
+            "description": "tenant_id for user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagsOutputListPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/tags/{name}": {
+      "patch": {
+        "summary": "Update Tag",
+        "operationId": "update_tags_public",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:tags-tw"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "name for tag",
+              "examples": [
+                "kubernetes-expenses",
+                "storage-for-datalake"
+              ],
+              "title": "Name"
+            },
+            "description": "name for tag"
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "tenant_id for user",
+              "examples": [
+                "5cfa8f10-8be5-4057-b178-deb7badd8dd6"
+              ],
+              "title": "X-Tenant-Id"
+            },
+            "description": "tenant_id for user"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_update_tags_public"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagsOutputPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Tag",
+        "operationId": "delete_tags_public",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:tags-tw"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "name for tag",
+              "examples": [
+                "kubernetes-expenses",
+                "storage-for-datalake"
+              ],
+              "title": "Name"
+            },
+            "description": "name for tag"
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "tenant_id for user",
+              "examples": [
+                "5cfa8f10-8be5-4057-b178-deb7badd8dd6"
+              ],
+              "title": "X-Tenant-Id"
+            },
+            "description": "tenant_id for user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagsOutputPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Tag",
+        "operationId": "get_tags_public",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:tags-tr"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "name for tag",
+              "examples": [
+                "kubernetes-expenses",
+                "storage-for-datalake"
+              ],
+              "title": "Name"
+            },
+            "description": "name for tag"
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "tenant_id for user",
+              "examples": [
+                "5cfa8f10-8be5-4057-b178-deb7badd8dd6"
+              ],
+              "title": "X-Tenant-Id"
+            },
+            "description": "tenant_id for user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagsOutputPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/tags/{tag_name}/values": {
+      "post": {
+        "tags": [
+          "values"
+        ],
+        "summary": "Create TagValue",
+        "operationId": "create_tag_values_v0_tags__tag_name__values_post",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:tags-tw"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tag_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "name for tag",
+              "title": "Tag Name"
+            },
+            "description": "name for tag"
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "tenant_id for user",
+              "examples": [
+                "5cfa8f10-8be5-4057-b178-deb7badd8dd6"
+              ],
+              "title": "X-Tenant-Id"
+            },
+            "description": "tenant_id for user"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_tag_values_v0_tags__tag_name__values_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagValuesOutputPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "values"
+        ],
+        "summary": "List TagValues",
+        "operationId": "list_tag_values_v0_tags__tag_name__values_get",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:tags-tr"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tag_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "name for tag",
+              "title": "Tag Name"
+            },
+            "description": "name for tag"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 72,
+                  "pattern": "^[\\w\\ \\-\\[\\]\\(\\)\\.\\:]+$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "tag value name, is allowed only one name per tag_id",
+              "title": "Name"
+            },
+            "description": "tag value name, is allowed only one name per tag_id"
+          },
+          {
+            "name": "_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": " Limit"
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": " Offset"
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": " Sort"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "tenant_id for user",
+              "title": "X-Tenant-Id"
+            },
+            "description": "tenant_id for user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagValuesOutputListPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/tags/{tag_name}/values/{value_name}": {
+      "delete": {
+        "tags": [
+          "values"
+        ],
+        "summary": "Delete TagValue",
+        "operationId": "delete_tag_values",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:tags-tw"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tag_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "name for tag",
+              "examples": [
+                "kubernetes-expenses",
+                "storage-for-datalake"
+              ],
+              "title": "Tag Name"
+            },
+            "description": "name for tag"
+          },
+          {
+            "name": "value_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "tag value name, is allowed only one name per tag_id",
+              "examples": [
+                "test-labs",
+                "production-labs"
+              ],
+              "title": "Value Name"
+            },
+            "description": "tag value name, is allowed only one name per tag_id"
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagValuesOutputPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "values"
+        ],
+        "summary": "Update TagValue",
+        "operationId": "update_tag_values_v0_tags__tag_name__values__value_name__patch",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:tags-tr"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tag_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "name for tag",
+              "examples": [
+                "kubernetes-expenses",
+                "storage-for-datalake"
+              ],
+              "title": "Tag Name"
+            },
+            "description": "name for tag"
+          },
+          {
+            "name": "value_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "tag value name, is allowed only one name per tag_id",
+              "examples": [
+                "test-labs",
+                "production-labs"
+              ],
+              "title": "Value Name"
+            },
+            "description": "tag value name, is allowed only one name per tag_id"
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_update_tag_values_v0_tags__tag_name__values__value_name__patch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagValuesOutputPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "values"
+        ],
+        "summary": "Get TagValue",
+        "operationId": "get_tag_values_v0_tags__tag_name__values__value_name__get",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:tags-tr"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tag_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "name for tag",
+              "examples": [
+                "kubernetes-expenses",
+                "storage-for-datalake"
+              ],
+              "title": "Tag Name"
+            },
+            "description": "name for tag"
+          },
+          {
+            "name": "value_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "tag value name, is allowed only one name per tag_id",
+              "examples": [
+                "test-labs",
+                "production-labs"
+              ],
+              "title": "Value Name"
+            },
+            "description": "tag value name, is allowed only one name per tag_id"
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagValuesOutputPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/tags/{tag_name}/values/{value_name}/resources": {
+      "post": {
+        "tags": [
+          "value-resources"
+        ],
+        "summary": "Link a tag-value to a cloud resource",
+        "operationId": "create_tag_value_resource_v0_tags__tag_name__values__value_name__resources_post",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:tags-tw"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tag_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "name for tag",
+              "examples": [
+                "kubernetes-expenses",
+                "storage-for-datalake"
+              ],
+              "title": "Tag Name"
+            },
+            "description": "name for tag"
+          },
+          {
+            "name": "value_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "tag value name, is allowed only one name per tag_id",
+              "examples": [
+                "test-labs",
+                "production-labs"
+              ],
+              "title": "Value Name"
+            },
+            "description": "tag value name, is allowed only one name per tag_id"
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_tag_value_resource_v0_tags__tag_name__values__value_name__resources_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagValueResourcesOutputPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/tags/{tag_name}/values/{value_name}/resources/{resource_id}": {
+      "delete": {
+        "tags": [
+          "value-resources"
+        ],
+        "summary": "Delete a link between a tag-value and a cloud resource",
+        "operationId": "delete_tag_value_resource_v0_tags__tag_name__values__value_name__resources__resource_id__delete",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:tags-tw"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "resource_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Resource Id"
+            }
+          },
+          {
+            "name": "tag_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "name for tag",
+              "examples": [
+                "kubernetes-expenses",
+                "storage-for-datalake"
+              ],
+              "title": "Tag Name"
+            },
+            "description": "name for tag"
+          },
+          {
+            "name": "value_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "tag value name, is allowed only one name per tag_id",
+              "examples": [
+                "test-labs",
+                "production-labs"
+              ],
+              "title": "Value Name"
+            },
+            "description": "tag value name, is allowed only one name per tag_id"
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "X-Tenant-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagValueResourcesOutputPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/resource-types": {
+      "get": {
+        "tags": [
+          "resource-types"
+        ],
+        "summary": "List all resource types",
+        "operationId": "list_resource_types",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:tags-tr"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "description": "Number of items per page",
+              "default": 20
+            },
+            "description": "Number of items per page"
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "title": "Offset",
+              "description": "Offset for pagination",
+              "default": 0
+            },
+            "description": "Offset for pagination"
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Sort",
+              "description": "Sorting criteria",
+              "default": ""
+            },
+            "description": "Sorting criteria"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ResourceEnum"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "resource type name, must be related to a product",
+              "title": "Name"
+            },
+            "description": "resource type name, must be related to a product"
+          },
+          {
+            "name": "product",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ProductEnum"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "product owner of a resource",
+              "title": "Product"
+            },
+            "description": "product owner of a resource"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceTypesOutputListPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/projects": {
+      "post": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Create project",
+        "operationId": "create_projects_public",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:projects-tw"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "tenant_id for user",
+              "examples": [
+                "5cfa8f10-8be5-4057-b178-deb7badd8dd6"
+              ],
+              "title": "X-Tenant-Id"
+            },
+            "description": "tenant_id for user"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_projects_public"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectsOutputPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "List all projects",
+        "operationId": "list_projects_public",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:projects-tr"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 72,
+                  "pattern": "^[\\w\\ \\-\\[\\]\\(\\)\\.\\:]+$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "name for project",
+              "examples": [
+                "Development environment for testing and feature implementation."
+              ],
+              "title": "Name"
+            },
+            "description": "name for project"
+          },
+          {
+            "name": "_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": " Limit"
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": " Offset"
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": " Sort"
+            }
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "tenant_id for user",
+              "examples": [
+                "5cfa8f10-8be5-4057-b178-deb7badd8dd6"
+              ],
+              "title": "X-Tenant-Id"
+            },
+            "description": "tenant_id for user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectsOutputListPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/projects/{name}": {
+      "patch": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Update project",
+        "description": "Update a project. Default project cannot be modified.",
+        "operationId": "update_projects_public",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:projects-tw"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "name for project",
+              "examples": [
+                "sandbox",
+                "staging",
+                "qa"
+              ],
+              "title": "Name"
+            },
+            "description": "name for project"
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "tenant_id for user",
+              "examples": [
+                "5cfa8f10-8be5-4057-b178-deb7badd8dd6"
+              ],
+              "title": "X-Tenant-Id"
+            },
+            "description": "tenant_id for user"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectsUpdateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectsOutputPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Get project",
+        "operationId": "get_projects_public",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:projects-tr"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "name for project",
+              "examples": [
+                "sandbox",
+                "staging",
+                "qa"
+              ],
+              "title": "Name"
+            },
+            "description": "name for project"
+          },
+          {
+            "name": "x-tenant-id",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "tenant_id for user",
+              "examples": [
+                "5cfa8f10-8be5-4057-b178-deb7badd8dd6"
+              ],
+              "title": "X-Tenant-Id"
+            },
+            "description": "tenant_id for user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectsOutputPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/resources/{id}": {
+      "get": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "Get resource",
+        "operationId": "get_resources_public",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:tags-tr",
+              "tags:projects-tr"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "description": "Number of items per page",
+              "default": 20
+            },
+            "description": "Number of items per page"
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "title": "Offset",
+              "description": "Offset for pagination",
+              "default": 0
+            },
+            "description": "Offset for pagination"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourcesOutputPublicExpanded"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/resources": {
+      "get": {
+        "tags": [
+          "resources"
+        ],
+        "summary": "List all resources that you have access",
+        "operationId": "list_resources_public",
+        "security": [
+          {
+            "OAuth2": [
+              "tags:tags-tr",
+              "tags:projects-tr"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "external_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "id of the resource in the source api",
+              "examples": [
+                "31201f93-f5f4-4cf1-ba9c-bfed0717f4ac",
+                "bucket-name"
+              ],
+              "title": "External Id"
+            },
+            "description": "id of the resource in the source api"
+          },
+          {
+            "name": "resource_type_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ResourceEnum",
+              "description": "resource type name, must be related to a product",
+              "examples": [
+                "os.bucket",
+                "os.object",
+                "net.nat-gateway",
+                "net.port",
+                "net.public-ip",
+                "net.rule",
+                "net.security-group",
+                "net.subnet",
+                "net.vpc",
+                "vm.image",
+                "vm.instance",
+                "vm.snapshot",
+                "bs.snapshot",
+                "bs.volume",
+                "k8s.cluster",
+                "k8s.nodepool",
+                "cr.registry",
+                "cr.repository",
+                "db.cluster",
+                "db.instance",
+                "db.parameter-group",
+                "db.replica",
+                "db.snapshot",
+                "lb.network-acl",
+                "lb.network-backend",
+                "lb.network-certificate",
+                "lb.network-healthcheck",
+                "lb.network-listener",
+                "lb.network-loadbalancer"
+              ]
+            },
+            "description": "resource type name, must be related to a product"
+          },
+          {
+            "name": "region",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/RegionEnum",
+              "description": "cloud region",
+              "examples": [
+                "br-se1",
+                "br-ne1"
+              ]
+            },
+            "description": "cloud region"
+          },
+          {
+            "name": "_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": " Limit"
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": " Offset"
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": " Sort"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourcesOutputListPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_create_projects_public": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 72,
+            "minLength": 1,
+            "title": "Name",
+            "description": "name for project",
+            "examples": [
+              "sandbox",
+              "staging",
+              "qa"
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "description for this project"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "Body_create_projects_public"
+      },
+      "Body_create_tag_value_resource_v0_tags__tag_name__values__value_name__resources_post": {
+        "properties": {
+          "resource_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Resource Id",
+            "description": "id of the enrolled resource (vm, database, etc.)",
+            "examples": [
+              "31201f93-f5f4-4cf1-ba9c-bfed0717f4ac"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "resource_id"
+        ],
+        "title": "Body_create_tag_value_resource_v0_tags__tag_name__values__value_name__resources_post"
+      },
+      "Body_create_tag_values_v0_tags__tag_name__values_post": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "tag value name, is allowed only one name per tag_id"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "description for this tag value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "Body_create_tag_values_v0_tags__tag_name__values_post"
+      },
+      "Body_create_tags_public": {
+        "properties": {
+          "values": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ComposedTagValuesInput"
+                },
+                "type": "array",
+                "maxItems": 50
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Values"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "name for tag",
+            "examples": [
+              "kubernetes-expenses",
+              "storage-for-datalake"
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "description for this tag",
+            "examples": [
+              "tag to monitor expenses with kubernetes"
+            ]
+          },
+          "color": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 6,
+                "minLength": 6,
+                "pattern": "^[0-9a-fA-F]+$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Color",
+            "description": "8-character lowercase hexadecimal string representing RGBA, without '#' prefix.",
+            "examples": [
+              "ffffff00",
+              "ffffffff",
+              "000000ff"
+            ]
+          },
+          "kinds": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TagKinds"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kinds",
+            "description": "a tag kind describe the purpose for this tag in mgc, the most common case is kind finops.",
+            "examples": [
+              [
+                "finops"
+              ],
+              [
+                "finops",
+                "access-control"
+              ]
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "Body_create_tags_public"
+      },
+      "Body_update_tag_values_v0_tags__tag_name__values__value_name__patch": {
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "description for this tag value",
+            "examples": [
+              "tag value to monitor expenses with test-labs"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "description"
+        ],
+        "title": "Body_update_tag_values_v0_tags__tag_name__values__value_name__patch"
+      },
+      "Body_update_tags_public": {
+        "properties": {
+          "color": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 6,
+                "minLength": 6,
+                "pattern": "^[0-9a-fA-F]+$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Color",
+            "description": "8-character lowercase hexadecimal string representing RGBA, without '#' prefix.",
+            "examples": [
+              "ffffff00",
+              "ffffffff",
+              "000000ff"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "Body_update_tags_public"
+      },
+      "ComposedTagValuesInput": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 72,
+            "minLength": 1,
+            "pattern": "^[\\w\\ \\-\\[\\]\\(\\)\\.\\:]+$",
+            "title": "Name",
+            "description": "tag value name, is allowed only one name per tag_id",
+            "examples": [
+              "test-labs",
+              "production-labs"
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "description for this tag value",
+            "examples": [
+              "tag value to monitor expenses with test-labs"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description"
+        ],
+        "title": "ComposedTagValuesInput"
+      },
+      "ComposedTagsAndTagValuesOutputPublic": {
+        "properties": {
+          "tag": {
+            "$ref": "#/components/schemas/TagsOutputPublic"
+          },
+          "values": {
+            "items": {
+              "$ref": "#/components/schemas/TagValuesOutputPublic"
+            },
+            "type": "array",
+            "title": "Values"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tag",
+          "values"
+        ],
+        "title": "ComposedTagsAndTagValuesOutputPublic"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ProductEnum": {
+        "type": "string",
+        "enum": [
+          "object-storage",
+          "network",
+          "virtual-machine",
+          "block-storage",
+          "kubernetes",
+          "container-registry",
+          "database",
+          "load-balancer"
+        ],
+        "title": "ProductEnum"
+      },
+      "ProjectsOutputListPublic": {
+        "properties": {
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/ProjectsOutputPublic"
+            },
+            "type": "array",
+            "title": "Results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "results"
+        ],
+        "title": "ProjectsOutputListPublic"
+      },
+      "ProjectsOutputPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id",
+            "description": "uuid for project",
+            "examples": [
+              "c62a416a-49b6-4788-9f22-be883784fa4c"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "name for project",
+            "examples": [
+              "sandbox",
+              "staging",
+              "qa"
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "description for this project",
+            "examples": [
+              "Development environment for testing and feature implementation."
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "element creation date",
+            "examples": [
+              "2025-06-20T18:36:18.919454"
+            ]
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At",
+            "description": "element last update date, None if never updated",
+            "examples": [
+              "2025-06-20T18:36:18.919454"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "created_at"
+        ],
+        "title": "ProjectsOutputPublic"
+      },
+      "ProjectsUpdateInput": {
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "description for this project"
+          }
+        },
+        "type": "object",
+        "title": "ProjectsUpdateInput"
+      },
+      "RegionEnum": {
+        "type": "string",
+        "enum": [
+          "br-se1",
+          "br-ne1"
+        ],
+        "title": "RegionEnum"
+      },
+      "ResourceEnum": {
+        "type": "string",
+        "enum": [
+          "os.bucket",
+          "os.object",
+          "net.nat-gateway",
+          "net.port",
+          "net.public-ip",
+          "net.rule",
+          "net.security-group",
+          "net.subnet",
+          "net.vpc",
+          "vm.image",
+          "vm.instance",
+          "vm.snapshot",
+          "bs.snapshot",
+          "bs.volume",
+          "k8s.cluster",
+          "k8s.nodepool",
+          "cr.registry",
+          "cr.repository",
+          "db.cluster",
+          "db.instance",
+          "db.parameter-group",
+          "db.replica",
+          "db.snapshot",
+          "lb.network-acl",
+          "lb.network-backend",
+          "lb.network-certificate",
+          "lb.network-healthcheck",
+          "lb.network-listener",
+          "lb.network-loadbalancer"
+        ],
+        "title": "ResourceEnum"
+      },
+      "ResourceTagsOutput": {
+        "properties": {
+          "tag_name": {
+            "type": "string",
+            "title": "Tag Name"
+          },
+          "tag_value_name": {
+            "type": "string",
+            "title": "Tag Value Name"
+          },
+          "color": {
+            "type": "string",
+            "title": "Color"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tag_name",
+          "tag_value_name",
+          "color"
+        ],
+        "title": "ResourceTagsOutput"
+      },
+      "ResourceType": {
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/ResourceEnum",
+            "description": "resource type name, must be related to a product",
+            "examples": [
+              "os.bucket",
+              "os.object",
+              "net.nat-gateway",
+              "net.port",
+              "net.public-ip",
+              "net.rule",
+              "net.security-group",
+              "net.subnet",
+              "net.vpc",
+              "vm.image",
+              "vm.instance",
+              "vm.snapshot",
+              "bs.snapshot",
+              "bs.volume",
+              "k8s.cluster",
+              "k8s.nodepool",
+              "cr.registry",
+              "cr.repository",
+              "db.cluster",
+              "db.instance",
+              "db.parameter-group",
+              "db.replica",
+              "db.snapshot",
+              "lb.network-acl",
+              "lb.network-backend",
+              "lb.network-certificate",
+              "lb.network-healthcheck",
+              "lb.network-listener",
+              "lb.network-loadbalancer"
+            ]
+          },
+          "product": {
+            "$ref": "#/components/schemas/ProductEnum",
+            "description": "product owner of a resource",
+            "examples": [
+              "object-storage",
+              "network",
+              "virtual-machine",
+              "block-storage",
+              "kubernetes",
+              "container-registry",
+              "database",
+              "load-balancer"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "product"
+        ],
+        "title": "ResourceType"
+      },
+      "ResourceTypesOutputListPublic": {
+        "properties": {
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceTypesOutputPublic"
+            },
+            "type": "array",
+            "title": "Results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "results"
+        ],
+        "title": "ResourceTypesOutputListPublic"
+      },
+      "ResourceTypesOutputPublic": {
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/ResourceEnum",
+            "description": "resource type name, must be related to a product",
+            "examples": [
+              "os.bucket",
+              "os.object",
+              "net.nat-gateway",
+              "net.port",
+              "net.public-ip",
+              "net.rule",
+              "net.security-group",
+              "net.subnet",
+              "net.vpc",
+              "vm.image",
+              "vm.instance",
+              "vm.snapshot",
+              "bs.snapshot",
+              "bs.volume",
+              "k8s.cluster",
+              "k8s.nodepool",
+              "cr.registry",
+              "cr.repository",
+              "db.cluster",
+              "db.instance",
+              "db.parameter-group",
+              "db.replica",
+              "db.snapshot",
+              "lb.network-acl",
+              "lb.network-backend",
+              "lb.network-certificate",
+              "lb.network-healthcheck",
+              "lb.network-listener",
+              "lb.network-loadbalancer"
+            ]
+          },
+          "product": {
+            "$ref": "#/components/schemas/ProductEnum",
+            "description": "product owner of a resource",
+            "examples": [
+              "object-storage",
+              "network",
+              "virtual-machine",
+              "block-storage",
+              "kubernetes",
+              "container-registry",
+              "database",
+              "load-balancer"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "element creation date",
+            "examples": [
+              "2025-06-20T18:36:18.919454"
+            ]
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At",
+            "description": "element last update date, None if never updated",
+            "examples": [
+              "2025-06-20T18:36:18.919454"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "product",
+          "created_at"
+        ],
+        "title": "ResourceTypesOutputPublic"
+      },
+      "ResourcesOutputInternal": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id",
+            "description": "id of the enrolled resource (vm, database, etc.)",
+            "examples": [
+              "31201f93-f5f4-4cf1-ba9c-bfed0717f4ac"
+            ]
+          },
+          "external_id": {
+            "type": "string",
+            "title": "External Id",
+            "description": "id of the resource in the source api",
+            "examples": [
+              "31201f93-f5f4-4cf1-ba9c-bfed0717f4ac",
+              "bucket-name"
+            ]
+          },
+          "resource_type": {
+            "$ref": "#/components/schemas/ResourceType"
+          },
+          "region": {
+            "$ref": "#/components/schemas/RegionEnum",
+            "description": "cloud region",
+            "examples": [
+              "br-se1",
+              "br-ne1"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "element creation date",
+            "examples": [
+              "2025-06-20T18:36:18.919454"
+            ]
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At",
+            "description": "element last update date, None if never updated",
+            "examples": [
+              "2025-06-20T18:36:18.919454"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "external_id",
+          "resource_type",
+          "region",
+          "created_at"
+        ],
+        "title": "ResourcesOutputInternal"
+      },
+      "ResourcesOutputListPublic": {
+        "properties": {
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/ResourcesOutputInternal"
+            },
+            "type": "array",
+            "title": "Results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "results"
+        ],
+        "title": "ResourcesOutputListPublic"
+      },
+      "ResourcesOutputPublicExpanded": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id",
+            "description": "id of the enrolled resource (vm, database, etc.)",
+            "examples": [
+              "31201f93-f5f4-4cf1-ba9c-bfed0717f4ac"
+            ]
+          },
+          "external_id": {
+            "type": "string",
+            "title": "External Id",
+            "description": "id of the resource in the source api",
+            "examples": [
+              "31201f93-f5f4-4cf1-ba9c-bfed0717f4ac",
+              "bucket-name"
+            ]
+          },
+          "resource_type": {
+            "$ref": "#/components/schemas/ResourceType"
+          },
+          "region": {
+            "$ref": "#/components/schemas/RegionEnum",
+            "description": "cloud region",
+            "examples": [
+              "br-se1",
+              "br-ne1"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "element creation date",
+            "examples": [
+              "2025-06-20T18:36:18.919454"
+            ]
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At",
+            "description": "element last update date, None if never updated",
+            "examples": [
+              "2025-06-20T18:36:18.919454"
+            ]
+          },
+          "tags": {
+            "items": {
+              "$ref": "#/components/schemas/ResourceTagsOutput"
+            },
+            "type": "array",
+            "title": "Tags",
+            "description": "list of tag name, tag color, tag value associated to a resource",
+            "examples": [
+              [
+                "kubernetes-expenses",
+                "ffffff00",
+                "test-labs"
+              ]
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "external_id",
+          "resource_type",
+          "region",
+          "created_at",
+          "tags"
+        ],
+        "title": "ResourcesOutputPublicExpanded"
+      },
+      "TagKinds": {
+        "type": "string",
+        "enum": [
+          "finops"
+        ],
+        "title": "TagKinds"
+      },
+      "TagValueResourcesOutputPublic": {
+        "properties": {
+          "resource_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Resource Id",
+            "description": "id of the enrolled resource (vm, database, etc.)",
+            "examples": [
+              "31201f93-f5f4-4cf1-ba9c-bfed0717f4ac"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "element creation date",
+            "examples": [
+              "2025-06-20T18:36:18.919454"
+            ]
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At",
+            "description": "element last update date, None if never updated",
+            "examples": [
+              "2025-06-20T18:36:18.919454"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "resource_id",
+          "created_at"
+        ],
+        "title": "TagValueResourcesOutputPublic"
+      },
+      "TagValuesOutputListPublic": {
+        "properties": {
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/TagValuesOutputPublic"
+            },
+            "type": "array",
+            "title": "Results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "results"
+        ],
+        "title": "TagValuesOutputListPublic"
+      },
+      "TagValuesOutputPublic": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "tag value name, is allowed only one name per tag_id",
+            "examples": [
+              "test-labs",
+              "production-labs"
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "description for this tag value",
+            "examples": [
+              "tag value to monitor expenses with test-labs"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "element creation date",
+            "examples": [
+              "2025-06-20T18:36:18.919454"
+            ]
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At",
+            "description": "element last update date, None if never updated",
+            "examples": [
+              "2025-06-20T18:36:18.919454"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "created_at"
+        ],
+        "title": "TagValuesOutputPublic"
+      },
+      "TagsOutputListPublic": {
+        "properties": {
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/TagsOutputPublic"
+            },
+            "type": "array",
+            "title": "Results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "results"
+        ],
+        "title": "TagsOutputListPublic"
+      },
+      "TagsOutputPublic": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "name for tag",
+            "examples": [
+              "kubernetes-expenses",
+              "storage-for-datalake"
+            ]
+          },
+          "color": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Color",
+            "description": "8-character lowercase hexadecimal string representing RGBA, without '#' prefix.",
+            "examples": [
+              "ffffff00",
+              "ffffffff",
+              "000000ff"
+            ]
+          },
+          "kinds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Kinds",
+            "description": "a tag kind describe the purpose for this tag in mgc, the most common case is kind finops.",
+            "examples": [
+              [
+                "finops"
+              ],
+              [
+                "finops",
+                "access-control"
+              ]
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "element creation date",
+            "examples": [
+              "2025-06-20T18:36:18.919454"
+            ]
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At",
+            "description": "element last update date, None if never updated",
+            "examples": [
+              "2025-06-20T18:36:18.919454"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "kinds",
+          "created_at"
+        ],
+        "title": "TagsOutputPublic"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "scopes": {
+              "tags:tags-tr": "Allow public read operations",
+              "tags:tags-tw": "Allow public write operations",
+              "tags:projects-tr": "Allow public read operations for projects",
+              "tags:projects-tw": "Allow public write operations for projects"
+            },
+            "tokenUrl": "https://idpa-api-preprod.luizalabs.com/oauth/token"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "healthcheck",
+      "description": "Service health and readiness endpoints used for monitoring.",
+      "x-mgc-hidden": true
+    },
+    {
+      "name": "values",
+      "description": "Manage the values associated with a tag."
+    },
+    {
+      "name": "value-resources",
+      "description": "Link or unlink tag values to cloud resources."
+    },
+    {
+      "name": "resource-types",
+      "description": "List the resource types supported for tagging."
+    },
+    {
+      "name": "resources",
+      "description": "List and inspect cloud resources that have tags applied."
+    },
+    {
+      "name": "projects",
+      "description": "Manage projects used to group tags."
+    },
+    {
+      "name": "resource-types-internal",
+      "description": "Internal endpoints for managing resource types.",
+      "x-mgc-hidden": true
+    },
+    {
+      "name": "resources-internal",
+      "description": "Internal endpoints for managing tagged resources.",
+      "x-mgc-hidden": true
+    }
+  ]
+}
