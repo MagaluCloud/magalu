@@ -80,10 +80,10 @@ func DecompressResponse(resp *http.Response) error {
 		}
 		wrapped = &decompressedBody{Reader: gzr, closers: []io.Closer{gzr, original}}
 	case "deflate":
-		// HTTP spec diz que "deflate" é zlib (RFC 1950), mas o IIS da Microsoft
-		// historicamente envia raw DEFLATE (RFC 1951) e outros servidores copiaram
-		// esse comportamento. Inspecionamos o header sem consumir bytes para escolher
-		// o reader correto.
+		// The HTTP spec defines "deflate" as zlib (RFC 1950), but Microsoft's IIS
+		// historically sends raw DEFLATE (RFC 1951), a behavior subsequently
+		// adopted by other servers. We inspect the header without consuming bytes
+		// to select the appropriate reader.
 		buffered := bufio.NewReader(original)
 		var dr io.ReadCloser
 		if hasZlibHeader(buffered) {
@@ -111,10 +111,10 @@ func DecompressResponse(resp *http.Response) error {
 	return nil
 }
 
-// hasZlibHeader inspeciona (sem consumir) os 2 primeiros bytes para decidir se
-// o stream é zlib (RFC 1950) ou raw DEFLATE (RFC 1951). Um header zlib válido
-// tem o método de compressão deflate (low nibble do CMF == 8) e (CMF*256+FLG)
-// múltiplo de 31.
+// hasZlibHeader inspects the first 2 bytes to determine whether the
+// stream is zlib (RFC 1950) or raw DEFLATE (RFC 1951). A valid zlib
+// header uses the deflate compression method (low nibble of CMF == 8)
+// and (CMF * 256 + FLG) must be a multiple of 31.
 func hasZlibHeader(br *bufio.Reader) bool {
 	header, err := br.Peek(2)
 	if err != nil || len(header) < 2 {
