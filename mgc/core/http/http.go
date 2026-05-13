@@ -1,7 +1,9 @@
 package http
 
 import (
+	"bufio"
 	"bytes"
+	"compress/flate"
 	"compress/gzip"
 	"compress/zlib"
 	"context"
@@ -78,11 +80,22 @@ func DecompressResponse(resp *http.Response) error {
 		}
 		wrapped = &decompressedBody{Reader: gzr, closers: []io.Closer{gzr, original}}
 	case "deflate":
-		zr, err := zlib.NewReader(original)
-		if err != nil {
-			return fmt.Errorf("error creating deflate reader: %w", err)
+		// HTTP spec diz que "deflate" é zlib (RFC 1950), mas o IIS da Microsoft
+		// historicamente envia raw DEFLATE (RFC 1951) e outros servidores copiaram
+		// esse comportamento. Inspecionamos o header sem consumir bytes para escolher
+		// o reader correto.
+		buffered := bufio.NewReader(original)
+		var dr io.ReadCloser
+		if hasZlibHeader(buffered) {
+			zr, err := zlib.NewReader(buffered)
+			if err != nil {
+				return fmt.Errorf("error creating deflate reader: %w", err)
+			}
+			dr = zr
+		} else {
+			dr = flate.NewReader(buffered)
 		}
-		wrapped = &decompressedBody{Reader: zr, closers: []io.Closer{zr, original}}
+		wrapped = &decompressedBody{Reader: dr, closers: []io.Closer{dr, original}}
 	case "br":
 		br := brotli.NewReader(original)
 		wrapped = &decompressedBody{Reader: br, closers: []io.Closer{original}}
@@ -96,6 +109,22 @@ func DecompressResponse(resp *http.Response) error {
 	resp.ContentLength = -1
 	resp.Uncompressed = true
 	return nil
+}
+
+// hasZlibHeader inspeciona (sem consumir) os 2 primeiros bytes para decidir se
+// o stream é zlib (RFC 1950) ou raw DEFLATE (RFC 1951). Um header zlib válido
+// tem o método de compressão deflate (low nibble do CMF == 8) e (CMF*256+FLG)
+// múltiplo de 31.
+func hasZlibHeader(br *bufio.Reader) bool {
+	header, err := br.Peek(2)
+	if err != nil || len(header) < 2 {
+		return false
+	}
+	cmf, flg := header[0], header[1]
+	if cmf&0x0F != 8 {
+		return false
+	}
+	return (uint16(cmf)<<8|uint16(flg))%31 == 0
 }
 
 type decompressedBody struct {
