@@ -1,31 +1,23 @@
 ---
-sidebar_position: 0
+sidebar_position: 1
 ---
-# Vpcs
+# List
 
-Operations related to VPCs
+List routes.
 
 ## Usage:
 ```
-mgc network vpcs [flags]
-mgc network vpcs [command]
-```
-
-## Commands:
-```
-create      Create a new Virtual Private Cloud (VPC)
-delete      Delete VPC
-get         VPC Details
-list        List VPC
-ports       ports
-public-ips  public-ips
-route-table route-table
-subnets     subnets
+mgc network vpcs route-table routes list [vpc-id] [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for vpcs
+-h, --help                     help for list
+    --items-per-page integer   Items Per Page (range: 1 - 100)
+    --page integer             Page (min: 1)
+    --sort string              Sort
+    --vpc-id string            Vpc Id (required)
+    --zone string              Filter routes by availability zone.
 ```
 
 ## Global Flags:
@@ -37,8 +29,11 @@ subnets     subnets
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
+    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+    --server-url uri           Manually specify the server to use
 ```
 

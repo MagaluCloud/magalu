@@ -201,15 +201,17 @@ func (t *operationTable) promoteChildTable(childTable *operationTable) {
 //     will be merged into the parent table
 //   - If a table has only one child operation, the name of the operation will be shortened to include
 //     only the HTTP Method
-func (t *operationTable) simplify() {
+func (t *operationTable) simplify(name string) {
 	// Recursively simplify child tables
 	for _, childTable := range t.childTables {
-		childTable.simplify()
+		childTable.simplify(name)
 	}
 
 	if len(t.childOperations) == 0 && len(t.childTables) == 1 {
 		childTable := t.childTables[0]
-		t.promoteChildTable(childTable)
+		if !(t.name == "table" && childTable.name == "routes" && name == "vpcs") {
+			t.promoteChildTable(childTable)
+		}
 	}
 
 	if len(t.childOperations) == 1 {
@@ -331,7 +333,7 @@ func newOperationTable(name string, descs []*operationDesc) *operationTable {
 		descName, descVariables := getOperationNameAndVariables(desc.method, desc.pathKey)
 		table.add(descName, descVariables, desc)
 	}
-	table.simplify()
+	table.simplify(name)
 	table.finalizeEntryKeys()
 	return table
 }
