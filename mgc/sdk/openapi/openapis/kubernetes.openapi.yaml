@@ -2503,22 +2503,7 @@ components:
                     example: nodepool-example
                     maxLength: 63
                 flavor:
-                    type: string
-                    description: 'Name of the machine type. The machine type defines
-                        the CPU, RAM, and storage capacity of the nodes.
-
-                        The full list of available machine types can be found in the
-                        Virtual Machine by listing the machine types.
-
-                        The smallest supported machine type is BV2-4-40.
-
-
-                        For V1 Clusters, the list of available flavors can be retrieved
-                        using the /v1/flavors endpoint (deprecated) or via the MGC
-                        CLI with the command `kubernetes flavors list`.
-
-                        '
-                    example: BV2-4-40
+                    $ref: '#/components/schemas/NodePoolFlavor'
                 replicas:
                     type: integer
                     description: Number of replicas of the nodes in the node pool.
@@ -2554,6 +2539,21 @@ components:
             - name
             - flavor
             - replicas
+        NodePoolFlavor:
+            type: string
+            description: 'Name of the machine type. The machine type defines the CPU,
+                RAM, and storage capacity of the nodes.
+
+                The full list of available machine types can be found in the Virtual
+                Machine by listing the machine types.
+
+                The smallest supported machine type is BV2-4-40.
+
+
+                For V1 Clusters, the list of available flavors can be retrieved using
+                the /v1/flavors endpoint (deprecated) or via the MGC CLI with the
+                command `kubernetes flavors list`.'
+            example: BV2-4-40
         PatchNodePoolRequest:
             type: object
             description: Object of the node pool modification request.
@@ -2563,6 +2563,8 @@ components:
                     description: Number of replicas of the nodes in the node pool.
                 auto_scale:
                     $ref: '#/components/schemas/AutoScale'
+                flavor:
+                    $ref: '#/components/schemas/NodePoolFlavor'
         PatchClusterRequest:
             type: object
             description: Cluster fields to be patched

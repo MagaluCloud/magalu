@@ -34,8 +34,7 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
                                         The full list of available machine types can be found in the Virtual Machine by listing the machine types.
                                         The smallest supported machine type is BV2-4-40.
                                         
-                                        For V1 Clusters, the list of available flavors can be retrieved using the /v1/flavors endpoint (deprecated) or via the MGC CLI with the command 'kubernetes flavors list'.
-                                         (required)
+                                        For V1 Clusters, the list of available flavors can be retrieved using the /v1/flavors endpoint (deprecated) or via the MGC CLI with the command 'kubernetes flavors list'. (required)
 -h, --help                              help for create
     --max-pods-per-node integer         Maximum number of Pods allowed per node.
                                          (range: 8 - 110)

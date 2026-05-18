@@ -12,7 +12,7 @@ mgc kubernetes nodepool update [cluster-id] [node-pool-id] [flags]
 
 ## Examples:
 ```
-mgc kubernetes nodepool update --auto-scale.max-replicas=5 --auto-scale.min-replicas=2
+mgc kubernetes nodepool update --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --flavor="BV2-4-40"
 ```
 
 ## Flags:
@@ -28,6 +28,11 @@ mgc kubernetes nodepool update --auto-scale.max-replicas=5 --auto-scale.min-repl
                                         This is the same as '--auto-scale=min_replicas:integer'.
     --cli.list-links enum[=table]       List all available links for this command (one of "json", "table" or "yaml")
     --cluster-id uuid                   Cluster's UUID. (required)
+    --flavor string                     Name of the machine type. The machine type defines the CPU, RAM, and storage capacity of the nodes.
+                                        The full list of available machine types can be found in the Virtual Machine by listing the machine types.
+                                        The smallest supported machine type is BV2-4-40.
+                                        
+                                        For V1 Clusters, the list of available flavors can be retrieved using the /v1/flavors endpoint (deprecated) or via the MGC CLI with the command 'kubernetes flavors list'.
 -h, --help                              help for update
     --node-pool-id uuid                 Nodepool's UUID. (required)
     --replicas integer                  Number of replicas of the nodes in the node pool.
