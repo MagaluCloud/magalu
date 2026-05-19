@@ -1,27 +1,25 @@
 ---
 sidebar_position: 0
 ---
-# Images
+# Scans
 
-Routes related to listing and deletion of images.
+Routes related to listing and deletion of images. | scans
 
 ## Usage:
 ```
-mgc container-registry images [flags]
-mgc container-registry images [command]
+mgc container-registry images scans [flags]
+mgc container-registry images scans [command]
 ```
 
 ## Commands:
 ```
-delete      Delete image by digest or tag
-get         Get image details
-list        List images in container registry repository
-scans       scans
+list        List image scans for an image digest or tag
+schedule    Schedule an image scan by digest or tag
 ```
 
 ## Flags:
 ```
--h, --help   help for images
+-h, --help   help for scans
 ```
 
 ## Global Flags:
