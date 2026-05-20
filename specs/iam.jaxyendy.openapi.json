@@ -2641,14 +2641,22 @@
           }
         ]
       },
-      "post": {
+       "post": {
         "tags": [
           "Groups",
           "Groups"
         ],
         "summary": "Add Member To Group",
-        "description": "Add a member to a group.",
+        "description": "Add a member to a group by email.\n\nThe API accepts the user's email address and automatically resolves\nit to the corresponding UUID before adding the member to the group.\n\n- **member_email**: Valid email address of the user to add\n- **profile**: Member profile (e.g., \"member\", \"admin\")\n\nRaises:\n- 422: Invalid email format\n- 404: User email not found in ID Magalu\n- 400: Service accounts or groups cannot be added to groups",
         "operationId": "add_member_to_group_api_v1_groups__group_id__members_post",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "group_id",
@@ -2661,14 +2669,14 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/MemberGroupCreate"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -2704,15 +2712,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/groups/{group_id}/members/{member_id}": {
@@ -3827,22 +3827,23 @@
         "title": "MemberCreated"
       },
       "MemberGroupCreate": {
-        "type": "object",
         "properties": {
-          "member_id": {
+          "member_email": {
             "type": "string",
-            "title": "Member Id"
+            "format": "email",
+            "title": "Member Email"
           },
           "profile": {
             "type": "string",
             "title": "Profile"
           }
         },
-        "title": "MemberGroupCreate",
+        "type": "object",
         "required": [
-          "member_id",
+          "member_email",
           "profile"
-        ]
+        ],
+        "title": "MemberGroupCreate"
       },
       "MemberGroupResponse": {
         "type": "object",

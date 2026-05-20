@@ -1843,8 +1843,31 @@ paths:
             - Groups
             - Groups
             summary: Add Member To Group
-            description: Add a member to a group.
+            description: 'Add a member to a group by email.
+
+
+                The API accepts the user''s email address and automatically resolves
+
+                it to the corresponding UUID before adding the member to the group.
+
+
+                - **member_email**: Valid email address of the user to add
+
+                - **profile**: Member profile (e.g., "member", "admin")
+
+
+                Raises:
+
+                - 422: Invalid email format
+
+                - 404: User email not found in ID Magalu
+
+                - 400: Service accounts or groups cannot be added to groups'
             operationId: add_member_to_group_api_v1_groups__group_id__members_post
+            security:
+            -   OAuth2:
+                - iam:read
+                - iam:write
             parameters:
             -   name: group_id
                 in: path
@@ -1853,11 +1876,11 @@ paths:
                     type: string
                     title: Group Id
             requestBody:
+                required: true
                 content:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/MemberGroupCreate'
-                required: true
             responses:
                 '201':
                     description: Successful Response
@@ -1876,13 +1899,13 @@ paths:
                             description: Update Group Member
                             parameters:
                                 group_id: $request.path.group_id
-                                member_id: $request.body#/member_id
+                                member_id: $response.body#/member_id
                         delete:
                             operationId: remove_member_from_group_api_v1_groups__group_id__members__member_id__delete
                             description: Remove Member From Group
                             parameters:
                                 group_id: $request.path.group_id
-                                member_id: $request.body#/member_id
+                                member_id: $response.body#/member_id
                 '422':
                     description: Validation Error
                     content:
@@ -1899,10 +1922,6 @@ paths:
                                 product: turiaiam
                                 message: User action not authorized for permission
                                     turia_iam_editor
-            security:
-            -   OAuth2:
-                - iam:read
-                - iam:write
     /api/v1/groups/{group_id}/members/{member_id}:
         delete:
             tags:
@@ -2564,18 +2583,19 @@ components:
                     type: string
             title: MemberCreated
         MemberGroupCreate:
-            type: object
             properties:
-                member_id:
+                member_email:
                     type: string
-                    title: Member Id
+                    format: email
+                    title: Member Email
                 profile:
                     type: string
                     title: Profile
-            title: MemberGroupCreate
+            type: object
             required:
-            - member_id
+            - member_email
             - profile
+            title: MemberGroupCreate
         MemberGroupResponse:
             type: object
             properties:
