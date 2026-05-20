@@ -15,8 +15,8 @@ mgc container-registry members update [registry-id] [member-id] [flags]
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
     --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
 -h, --help                          help for update
-    --member-id uuid                 (required)
-    --registry-id uuid               (required)
+    --member-id uuid                Registry member relationship UUID. (required)
+    --registry-id uuid              Container Registry's UUID. (required)
     --role enum                     The new role to assign to the member. (one of "developer" or "guest") (required)
 ```
 
