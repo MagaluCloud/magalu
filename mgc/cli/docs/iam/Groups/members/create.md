@@ -3,7 +3,7 @@ sidebar_position: 2
 ---
 # Create
 
-Add a member to a group.
+Add a member to a group by email.
 
 ## Usage:
 ```
@@ -15,7 +15,7 @@ mgc iam groups members create [group-id] [flags]
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
     --group-id string               Group Id (required)
 -h, --help                          help for create
-    --member-id string              Member Id (required)
+    --member-email email            Member Email (required)
     --profile string                Profile (required)
 ```
 
