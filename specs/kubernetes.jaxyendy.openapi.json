@@ -2513,6 +2513,9 @@
           },
           "flavor": {
             "$ref": "#/components/schemas/NodePoolFlavor"
+          },
+          "version": {
+            "$ref": "#/components/schemas/KubernetesVersion"
           }
         }
       },
@@ -2528,6 +2531,9 @@
           },
           "description": {
             "$ref": "#/components/schemas/Description"
+          },
+          "version": {
+            "$ref": "#/components/schemas/KubernetesVersion"
           }
         }
       },
@@ -2543,6 +2549,9 @@
           },
           "description": {
             "$ref": "#/components/schemas/Description"
+          },
+          "version": {
+            "$ref": "#/components/schemas/KubernetesVersion"
           }
         }
       },
@@ -3536,6 +3545,16 @@
         "description": "A brief description of the Kubernetes cluster.",
         "default": "",
         "example": "This is an example cluster."
+      },
+      "KubernetesVersion": {
+        "type": "string",
+        "description": "The target Kubernetes version for the cluster upgrade.\n\n**Supported Upgrade Paths:**\n* **Patch:** Same minor version (e.g., `v1.30.1` → `v1.30.2`)\n* **Minor:** Next consecutive minor version (e.g., `v1.30.1` → `v1.31.0`)\n",
+        "example": "v1.31.0",
+        "x-go-type": "semver.Version",
+        "x-go-type-import": {
+          "path": "github.com/Masterminds/semver/v3",
+          "name": "semver"
+        }
       }
     },
     "securitySchemes": {
