@@ -796,6 +796,11 @@ func (o *operation) Execute(
 		return nil, fmt.Errorf("HTTP request error: %w", err)
 	}
 
+	if err := mgcHttpPkg.DecompressResponse(resp); err != nil {
+		logger.Warnw("failed to decompress HTTP response", "error", err)
+		return nil, err
+	}
+
 	logger = logger.With("response", (*mgcHttpPkg.LogResponse)(resp))
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		logger.Debugw("failed to execute HTTP request", "error", err)

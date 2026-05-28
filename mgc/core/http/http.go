@@ -1,7 +1,11 @@
 package http
 
 import (
+	"bufio"
 	"bytes"
+	"compress/flate"
+	"compress/gzip"
+	"compress/zlib"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -17,6 +21,7 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/MagaluCloud/magalu/mgc/core/xml"
+	"github.com/andybalholm/brotli"
 )
 
 // contextKey is an unexported type for keys defined in this package.
@@ -49,6 +54,92 @@ func ClientFromContext(context context.Context) *Client {
 		return nil
 	}
 	return client
+}
+
+// DecompressResponse wraps resp.Body with the appropriate decoder based on the
+// Content-Encoding header, then clears the encoding metadata so downstream
+// consumers see a transparent stream. Net/http only auto-decompresses gzip
+// when the caller did not set Accept-Encoding itself; we advertise it
+// explicitly, so the decode is our responsibility.
+func DecompressResponse(resp *http.Response) error {
+	if resp == nil || resp.Body == nil {
+		return nil
+	}
+	encoding := strings.ToLower(strings.TrimSpace(resp.Header.Get("Content-Encoding")))
+	if encoding == "" || encoding == "identity" {
+		return nil
+	}
+
+	original := resp.Body
+	var wrapped io.ReadCloser
+	switch encoding {
+	case "gzip", "x-gzip":
+		gzr, err := gzip.NewReader(original)
+		if err != nil {
+			return fmt.Errorf("error creating gzip reader: %w", err)
+		}
+		wrapped = &decompressedBody{Reader: gzr, closers: []io.Closer{gzr, original}}
+	case "deflate":
+		// The HTTP spec defines "deflate" as zlib (RFC 1950), but Microsoft's IIS
+		// historically sends raw DEFLATE (RFC 1951), a behavior subsequently
+		// adopted by other servers. We inspect the header without consuming bytes
+		// to select the appropriate reader.
+		buffered := bufio.NewReader(original)
+		var dr io.ReadCloser
+		if hasZlibHeader(buffered) {
+			zr, err := zlib.NewReader(buffered)
+			if err != nil {
+				return fmt.Errorf("error creating deflate reader: %w", err)
+			}
+			dr = zr
+		} else {
+			dr = flate.NewReader(buffered)
+		}
+		wrapped = &decompressedBody{Reader: dr, closers: []io.Closer{dr, original}}
+	case "br":
+		br := brotli.NewReader(original)
+		wrapped = &decompressedBody{Reader: br, closers: []io.Closer{original}}
+	default:
+		return nil
+	}
+
+	resp.Body = wrapped
+	resp.Header.Del("Content-Encoding")
+	resp.Header.Del("Content-Length")
+	resp.ContentLength = -1
+	resp.Uncompressed = true
+	return nil
+}
+
+// hasZlibHeader inspects the first 2 bytes to determine whether the
+// stream is zlib (RFC 1950) or raw DEFLATE (RFC 1951). A valid zlib
+// header uses the deflate compression method (low nibble of CMF == 8)
+// and (CMF * 256 + FLG) must be a multiple of 31.
+func hasZlibHeader(br *bufio.Reader) bool {
+	header, err := br.Peek(2)
+	if err != nil || len(header) < 2 {
+		return false
+	}
+	cmf, flg := header[0], header[1]
+	if cmf&0x0F != 8 {
+		return false
+	}
+	return (uint16(cmf)<<8|uint16(flg))%31 == 0
+}
+
+type decompressedBody struct {
+	io.Reader
+	closers []io.Closer
+}
+
+func (d *decompressedBody) Close() error {
+	var firstErr error
+	for _, c := range d.closers {
+		if err := c.Close(); err != nil && firstErr == nil {
+			firstErr = err
+		}
+	}
+	return firstErr
 }
 
 func BodyReaderSafe(resp *http.Response) (io.ReadCloser, error) {
