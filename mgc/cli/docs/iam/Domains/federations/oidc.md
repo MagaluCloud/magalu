@@ -1,21 +1,28 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 ---
-# List
+# Oidc
 
-Read Domain Collection
+Create Domain Federation Oidc
 
 ## Usage:
 ```
-mgc federation domains list [flags]
+mgc iam domains federations oidc [domain-id] [flags]
 ```
 
 ## Flags:
 ```
--h, --help             help for list
-    --limit integer    Limit (max: 100)
-    --offset integer   Offset
-    --verified         Verified
+    --authorization-endpoint string   Authorization Endpoint (required)
+    --cli.list-links enum[=table]     List all available links for this command (one of "json", "table" or "yaml")
+    --client-id string                Client Id (required)
+    --client-secret string            Client Secret (required)
+    --domain-id uuid                  Domain Id (required)
+-h, --help                            help for oidc
+    --jwks-uri string                 Jwks Uri (required)
+    --name string                     Name (required)
+    --scopes array(string)            Scopes (required)
+    --token-endpoint string           Token Endpoint (required)
+    --userinfo-endpoint string        Userinfo Endpoint (required)
 ```
 
 ## Global Flags:

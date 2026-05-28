@@ -3,45 +3,49 @@ sidebar_position: 5
 ---
 # Update
 
-Edit Federation Resource
+Update Domain Federation Resource
 
 ## Usage:
 ```
-mgc federation update [domain-id] [federation-id] [flags]
+mgc iam domains federations update [domain-id] [federation-id] [flags]
+```
+
+## Examples:
+```
+
 ```
 
 ## Flags:
 ```
+    --cli.list-links enum[=table]          List all available links for this command (one of "json", "table" or "yaml")
     --domain-id uuid                       Domain Id (required)
     --federation-id uuid                   Federation Id (required)
 -h, --help                                 help for update
-    --oidc object                          (properties: authorization_endpoint, client_id, client_secret, jwks_uri, name, scopes, token_endpoint and userinfo_endpoint)
+    --oidc object                          DomainFederationOIDCEdit (properties: authorization_endpoint, client_id, client_secret, jwks_uri, name, scopes and token_endpoint)
                                            Use --oidc=help for more details
-    --oidc.authorization-endpoint string   oidc's authorization_endpoint property: Authorization Endpoint
+    --oidc.authorization-endpoint string   DomainFederationOIDCEdit: Authorization Endpoint
                                            This is the same as '--oidc=authorization_endpoint:string'.
-    --oidc.client-id string                oidc's client_id property: Client Id
+    --oidc.client-id string                DomainFederationOIDCEdit: Client Id
                                            This is the same as '--oidc=client_id:string'.
-    --oidc.client-secret string            oidc's client_secret property: Client Secret
+    --oidc.client-secret string            DomainFederationOIDCEdit: Client Secret
                                            This is the same as '--oidc=client_secret:string'.
-    --oidc.jwks-uri string                 oidc's jwks_uri property: Jwks Uri
+    --oidc.jwks-uri string                 DomainFederationOIDCEdit: Jwks Uri
                                            This is the same as '--oidc=jwks_uri:string'.
-    --oidc.name string                     oidc's name property: Name
+    --oidc.name string                     DomainFederationOIDCEdit: Name
                                            This is the same as '--oidc=name:string'.
-    --oidc.scopes array                    oidc's scopes property: Scopes
+    --oidc.scopes array                    DomainFederationOIDCEdit: Scopes
                                            This is the same as '--oidc=scopes:array'.
-    --oidc.token-endpoint string           oidc's token_endpoint property: Token Endpoint
+    --oidc.token-endpoint string           DomainFederationOIDCEdit: Token Endpoint
                                            This is the same as '--oidc=token_endpoint:string'.
-    --oidc.userinfo-endpoint string        oidc's userinfo_endpoint property: Userinfo Endpoint
-                                           This is the same as '--oidc=userinfo_endpoint:string'.
-    --saml object                          (properties: entity_id, idp_certificate, name and sso_url)
+    --saml object                          DomainFederationSAMLEdit (properties: entity_id, idp_certificate, name and sso_url)
                                            Use --saml=help for more details
-    --saml.entity-id string                saml's entity_id property: Entity Id
+    --saml.entity-id string                DomainFederationSAMLEdit: Entity Id
                                            This is the same as '--saml=entity_id:string'.
-    --saml.idp-certificate string          saml's idp_certificate property: Idp Certificate
+    --saml.idp-certificate string          DomainFederationSAMLEdit: Idp Certificate
                                            This is the same as '--saml=idp_certificate:string'.
-    --saml.name string                     saml's name property: Name
+    --saml.name string                     DomainFederationSAMLEdit: Name
                                            This is the same as '--saml=name:string'.
-    --saml.sso-url string                  saml's sso_url property: Sso Url
+    --saml.sso-url string                  DomainFederationSAMLEdit: Sso Url
                                            This is the same as '--saml=sso_url:string'.
 ```
 

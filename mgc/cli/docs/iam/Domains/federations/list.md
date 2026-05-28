@@ -1,26 +1,19 @@
 ---
-sidebar_position: 0
+sidebar_position: 1
 ---
-# Domains
+# List
 
-Manage domains.
+List Federation
 
 ## Usage:
 ```
-mgc federation domains [flags]
-mgc federation domains [command]
-```
-
-## Commands:
-```
-check-dns   Run this after configuring the txt_name / txt_value pair on your DNS provider.
-create      Create Domain
-list        Read Domain Collection
+mgc iam domains federations list [domain-id] [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for domains
+    --domain-id uuid   Domain Id (required)
+-h, --help             help for list
 ```
 
 ## Global Flags:
@@ -32,8 +25,10 @@ list        Read Domain Collection
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
+    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --server-url uri           Manually specify the server to use
 ```
 

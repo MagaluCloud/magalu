@@ -1,19 +1,24 @@
 ---
-sidebar_position: 2
+sidebar_position: 4
 ---
-# Create
+# Saml
 
-Add new domain
+Create Domain Federation Saml
 
 ## Usage:
 ```
-mgc federation domains create [flags]
+mgc iam domains federations saml [domain-id] [flags]
 ```
 
 ## Flags:
 ```
-    --domain string   Domain (required)
--h, --help            help for create
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --domain-id uuid                Domain Id (required)
+    --entity-id string              Entity Id (required)
+-h, --help                          help for saml
+    --idp-certificate string        Idp Certificate (required)
+    --name string                   Name (required)
+    --sso-url string                Sso Url (required)
 ```
 
 ## Global Flags:

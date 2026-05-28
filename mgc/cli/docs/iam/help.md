@@ -14,6 +14,7 @@ mgc iam [command]
 ## Commands:
 ```
 access-control   Access control of permissions and roles.
+domains          Domains Federations of organization.
 groups           Groups management.
 invitations      Invitations to join the organization.
 members          Members of Organization.

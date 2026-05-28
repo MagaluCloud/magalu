@@ -3,7 +3,7 @@ sidebar_position: 3
 ---
 # Delete
 
-Remove a member from a group.
+Remove a member from a group by email.
 
 ## Usage:
 ```

@@ -48,7 +48,3 @@ jaxyendy:
       file: iam.jaxyendy.openapi.json
       menu: iam
       enabled: true
-    - url: https://api.magalu.cloud/federation/openapi.json
-      file: federation.jaxyendy.openapi.json
-      menu: federation
-      enabled: true

@@ -1,23 +1,19 @@
 ---
-sidebar_position: 4
+sidebar_position: 3
 ---
-# Saml
+# Check-Dns
 
-Create Federation
+Run this after configuring the txt_name / txt_value pair on your DNS provider.
 
 ## Usage:
 ```
-mgc federation saml [domain-id] [flags]
+mgc iam domains check-dns [domain-id] [flags]
 ```
 
 ## Flags:
 ```
-    --domain-id uuid           Domain Id (required)
-    --entity-id string         Entity Id (required)
--h, --help                     help for saml
-    --idp-certificate string   Idp Certificate (required)
-    --name string              Name (required)
-    --sso-url string           Sso Url (required)
+    --domain-id string   Domain Id (required)
+-h, --help               help for check-dns
 ```
 
 ## Global Flags:
