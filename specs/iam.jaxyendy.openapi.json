@@ -3383,7 +3383,7 @@
           "Domains"
         ],
         "summary": "Update Domain Federation Resource",
-        "description": "Update Domain Federation Resource\n\nExamples:\n\nOIDC:\n  mgc iam domains federations update \\\n    --domain-id \"<domain_id>\" \\\n    --federation-id \"<federation_id>\" \\\n    --oidc.name \"<federation_name>\" \\\n    --oidc.client-id \"<oidc_client_id>\" \\\n    --oidc.client-secret \"<oidc_client_secret>\" \\\n    --oidc.authorization-endpoint \"<oidc_authorization_endpoint_url>\" \\\n    --oidc.token-endpoint \"<oidc_token_endpoint_url>\" \\\n    --oidc.jwks-uri \"<oidc_jwks_uri>\" \\\n    --oidc.scopes '[\"<scope_1>\",\"<scope_2>\"]'\n\nSAML:\n  mgc iam domains federations update \\\n    --domain-id \"<domain_id>\" \\\n    --federation-id \"<federation_id>\" \\\n    --saml.name \"<federation_name>\" \\\n    --saml.entity-id \"<saml_entity_id>\" \\\n    --saml.sso-url \"<saml_sso_url>\" \\\n    --saml.idp-certificate \"<saml_idp_certificate_pem>\"",
+        "description": "Update Domain Federation Resource\n\nExamples:\n\nOIDC:\n  mgc iam domains federations update \\\n    --domain-id \"<domain_id>\" \\\n    --federation-id \"<federation_id>\" \\\n    --oidc.name \"<federation_name>\" \\\n    --oidc.client-id \"<oidc_client_id>\" \\\n    --oidc.client-secret \"<oidc_client_secret>\" \\\n    --oidc.authorization-endpoint \"<oidc_authorization_endpoint_url>\" \\\n    --oidc.token-endpoint \"<oidc_token_endpoint_url>\" \\\n    --oidc.userinfo-endpoint \"<oidc_userinfo_endpoint_url>\" \\\n    --oidc.jwks-uri \"<oidc_jwks_uri>\" \\\n    --oidc.scopes '[\"<scope_1>\",\"<scope_2>\"]'\n\nSAML:\n  mgc iam domains federations update \\\n    --domain-id \"<domain_id>\" \\\n    --federation-id \"<federation_id>\" \\\n    --saml.name \"<federation_name>\" \\\n    --saml.entity-id \"<saml_entity_id>\" \\\n    --saml.sso-url \"<saml_sso_url>\" \\\n    --saml.idp-certificate \"<saml_idp_certificate_pem>\"",
         "operationId": "update_domain_api_v1_domains__domain_id__federations__federation_id__patch",
         "security": [
           {
@@ -4162,41 +4162,100 @@
         "title": "DomainFederationOIDC"
       },
       "DomainFederationOIDCEdit": {
+        "type": "object",
         "properties": {
           "name": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Name"
           },
           "client_id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Client Id"
           },
           "client_secret": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Client Secret"
           },
           "scopes": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Scopes"
           },
           "authorization_endpoint": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Authorization Endpoint"
           },
           "token_endpoint": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Token Endpoint"
           },
           "jwks_uri": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Jwks Uri"
+          },
+          "userinfo_endpoint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Userinfo Endpoint"
           }
-        },
-        "type": "object",
-        "title": "DomainFederationOIDCEdit"
+        }
       },
       "DomainFederationOIDCResponse": {
         "properties": {
@@ -4299,24 +4358,51 @@
       "DomainFederationSAMLEdit": {
         "properties": {
           "name": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Name"
           },
+          "idp_certificate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Idp Certificate"
+          },
           "entity_id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Entity Id"
           },
           "sso_url": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Sso Url"
-          },
-          "idp_certificate": {
-            "type": "string",
-            "title": "Idp Certificate"
           }
         },
-        "type": "object",
-        "title": "DomainFederationSAMLEdit"
+        "type": "object"
       },
       "DomainFederationSAMLResponse": {
         "properties": {

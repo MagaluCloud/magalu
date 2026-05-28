@@ -2443,7 +2443,8 @@ paths:
                 \ \"<federation_name>\" \\\n    --oidc.client-id \"<oidc_client_id>\"\
                 \ \\\n    --oidc.client-secret \"<oidc_client_secret>\" \\\n    --oidc.authorization-endpoint\
                 \ \"<oidc_authorization_endpoint_url>\" \\\n    --oidc.token-endpoint\
-                \ \"<oidc_token_endpoint_url>\" \\\n    --oidc.jwks-uri \"<oidc_jwks_uri>\"\
+                \ \"<oidc_token_endpoint_url>\" \\\n    --oidc.userinfo-endpoint \"\
+                <oidc_userinfo_endpoint_url>\" \\\n    --oidc.jwks-uri \"<oidc_jwks_uri>\"\
                 \ \\\n    --oidc.scopes '[\"<scope_1>\",\"<scope_2>\"]'\n\nSAML:\n\
                 \  mgc iam domains federations update \\\n    --domain-id \"<domain_id>\"\
                 \ \\\n    --federation-id \"<federation_id>\" \\\n    --saml.name\
@@ -2904,32 +2905,42 @@ components:
             - jwks_uri
             title: DomainFederationOIDC
         DomainFederationOIDCEdit:
+            type: object
             properties:
                 name:
-                    type: string
                     title: Name
+                    nullable: true
+                    type: string
                 client_id:
-                    type: string
                     title: Client Id
-                client_secret:
+                    nullable: true
                     type: string
+                client_secret:
                     title: Client Secret
+                    nullable: true
+                    type: string
                 scopes:
+                    title: Scopes
+                    nullable: true
+                    type: array
                     items:
                         type: string
-                    type: array
-                    title: Scopes
                 authorization_endpoint:
-                    type: string
                     title: Authorization Endpoint
+                    nullable: true
+                    type: string
                 token_endpoint:
-                    type: string
                     title: Token Endpoint
-                jwks_uri:
+                    nullable: true
                     type: string
+                jwks_uri:
                     title: Jwks Uri
-            type: object
-            title: DomainFederationOIDCEdit
+                    nullable: true
+                    type: string
+                userinfo_endpoint:
+                    title: Userinfo Endpoint
+                    nullable: true
+                    type: string
         DomainFederationOIDCResponse:
             properties:
                 id:
@@ -3010,19 +3021,22 @@ components:
         DomainFederationSAMLEdit:
             properties:
                 name:
-                    type: string
                     title: Name
-                entity_id:
+                    nullable: true
                     type: string
-                    title: Entity Id
-                sso_url:
-                    type: string
-                    title: Sso Url
                 idp_certificate:
-                    type: string
                     title: Idp Certificate
+                    nullable: true
+                    type: string
+                entity_id:
+                    title: Entity Id
+                    nullable: true
+                    type: string
+                sso_url:
+                    title: Sso Url
+                    nullable: true
+                    type: string
             type: object
-            title: DomainFederationSAMLEdit
         DomainFederationSAMLResponse:
             properties:
                 id:
