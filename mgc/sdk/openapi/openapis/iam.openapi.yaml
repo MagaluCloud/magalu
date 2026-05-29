@@ -1933,12 +1933,7 @@ paths:
             - Groups
             - Groups
             summary: Update Group Member
-            description: 'Update a member''s profile in a group by UUID.
-
-
-                The API accepts the user''s UUID in the URL path and automatically
-
-                resolves it to the corresponding UUID before updating the member.
+            description: 'Update a member''s profile in a group by member-id.
 
 
                 - **member_id**: UUID address of the member to update
@@ -2026,10 +2021,8 @@ paths:
             - Groups
             - Groups
             summary: Remove Member From Group
-            description: 'Remove a member from a group by email.
+            description: 'Remove a member from a group by member-id.
 
-
-                The API accepts the user''s email address in the URL path and automatically
 
                 resolves it to the corresponding UUID before removing the member.
 

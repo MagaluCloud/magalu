@@ -3,7 +3,7 @@ sidebar_position: 4
 ---
 # Update
 
-Update a member's profile in a group by UUID.
+Update a member's profile in a group by member-id.
 
 ## Usage:
 ```

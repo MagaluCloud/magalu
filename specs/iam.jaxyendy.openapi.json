@@ -2741,7 +2741,7 @@
           "Groups"
         ],
         "summary": "Update Group Member",
-        "description": "Update a member's profile in a group by UUID.\n\nThe API accepts the user's UUID in the URL path and automatically\nresolves it to the corresponding UUID before updating the member.\n\n- **member_id**: UUID address of the member to update\n- **profile**: New profile to assign (e.g., \"member\", \"admin\", \"viewer\")\n\nRaises:\n- 422: Invalid UUID format\n- 404: User UUID not found in ID Magalu\n- 400: Service accounts or groups cannot be members",
+        "description": "Update a member's profile in a group by member-id.\n\n- **member_id**: UUID address of the member to update\n- **profile**: New profile to assign (e.g., \"member\", \"admin\", \"viewer\")\n\nRaises:\n- 422: Invalid UUID format\n- 404: User UUID not found in ID Magalu\n- 400: Service accounts or groups cannot be members",
         "operationId": "update_group_member_api_v1_groups__group_id__members__member_id__patch",
         "security": [
           {
@@ -2823,7 +2823,7 @@
           "Groups"
         ],
         "summary": "Remove Member From Group",
-        "description": "Remove a member from a group by email.\n\nThe API accepts the user's email address in the URL path and automatically\nresolves it to the corresponding UUID before removing the member.\n\n- **member_uuid**: Valid member_uui of the member to remove\n\nRaises:\n- 422: Invalid email format\n- 404: User email not found in ID Magalu\n- 400: Service accounts or groups cannot be members (validation check)",
+        "description": "Remove a member from a group by member-id.\n\nresolves it to the corresponding UUID before removing the member.\n\n- **member_uuid**: Valid member_uui of the member to remove\n\nRaises:\n- 422: Invalid email format\n- 404: User email not found in ID Magalu\n- 400: Service accounts or groups cannot be members (validation check)",
         "operationId": "remove_member_from_group_api_v1_groups__group_id__members__member_id__delete",
         "security": [
           {
