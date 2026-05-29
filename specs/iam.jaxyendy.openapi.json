@@ -23,7 +23,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+
+                }
               }
             }
           },
@@ -51,6 +53,14 @@
         ],
         "summary": "Get Members",
         "operationId": "get_members_api_v1_members_get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "email",
@@ -107,15 +117,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       },
       "post": {
         "tags": [
@@ -123,15 +125,23 @@
         ],
         "summary": "Add Member",
         "operationId": "add_member_api_v1_members_post",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateMember"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -167,15 +177,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/members/organizations": {
@@ -191,9 +193,9 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
-                  "title": "Response Get Member Groups Organizations Api V1 Members Organizations Get",
-                  "additionalProperties": true
+                  "title": "Response Get Member Groups Organizations Api V1 Members Organizations Get"
                 }
               }
             }
@@ -230,6 +232,14 @@
         ],
         "summary": "Get Member Organizations By Id",
         "operationId": "get_member_organizations_by_id_api_v1_members__member_id__organizations_get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "member_id",
@@ -248,8 +258,8 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "title": "Response Get Member Organizations By Id Api V1 Members  Member Id  Organizations Get",
-                  "additionalProperties": true
+                  "additionalProperties": true,
+                  "title": "Response Get Member Organizations By Id Api V1 Members  Member Id  Organizations Get"
                 }
               }
             }
@@ -278,14 +288,6 @@
             }
           }
         },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ],
         "x-mgc-hidden": true
       }
     },
@@ -296,6 +298,14 @@
         ],
         "summary": "Remove Member",
         "operationId": "remove_member_api_v1_members__uuid__delete",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "uuid",
@@ -303,8 +313,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Uuid",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "Uuid"
             }
           }
         ],
@@ -335,15 +345,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/members/{uuid}/grants": {
@@ -353,6 +355,14 @@
         ],
         "summary": "Get Grants",
         "operationId": "get_grants_api_v1_members__uuid__grants_get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "uuid",
@@ -360,8 +370,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Uuid",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "Uuid"
             }
           }
         ],
@@ -399,15 +409,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       },
       "patch": {
         "tags": [
@@ -415,6 +417,14 @@
         ],
         "summary": "Add Grants",
         "operationId": "add_grants_api_v1_members__uuid__grants_patch",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "uuid",
@@ -422,20 +432,20 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Uuid",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "Uuid"
             }
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/EditGrant"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "204": {
@@ -464,15 +474,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/members/grants/batch": {
@@ -537,6 +539,14 @@
         ],
         "summary": "Get Roles",
         "operationId": "get_roles_api_v1_roles_get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "role_name",
@@ -593,15 +603,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       },
       "post": {
         "tags": [
@@ -609,15 +611,23 @@
         ],
         "summary": "Create Role",
         "operationId": "create_role_api_v1_roles_post",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateRole"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -657,15 +667,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/roles/{role_name}": {
@@ -675,6 +677,14 @@
         ],
         "summary": "Remove Role",
         "operationId": "remove_role_api_v1_roles__role_name__delete",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "role_name",
@@ -713,15 +723,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/roles/{role_name}/permissions": {
@@ -731,6 +733,14 @@
         ],
         "summary": "Get Role Permissions",
         "operationId": "get_role_permissions_api_v1_roles__role_name__permissions_get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "role_name",
@@ -748,7 +758,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RolePermissions"
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/RolePermissions"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+
+                      }
+                    }
+                  ],
+                  "title": "Response Get Role Permissions Api V1 Roles  Role Name  Permissions Get"
                 }
               }
             }
@@ -776,15 +797,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       },
       "patch": {
         "tags": [
@@ -792,6 +805,14 @@
         ],
         "summary": "Edit Role Permissions",
         "operationId": "edit_role_permissions_api_v1_roles__role_name__permissions_patch",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "role_name",
@@ -804,14 +825,14 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/EditPermissions"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -851,15 +872,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/roles/{role_name}/members": {
@@ -869,6 +882,14 @@
         ],
         "summary": "Get Role Members",
         "operationId": "get_role_members_api_v1_roles__role_name__members_get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "role_name",
@@ -918,15 +939,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/permissions": {
@@ -936,6 +949,14 @@
         ],
         "summary": "Get Products And Permissions",
         "operationId": "get_products_and_permissions_api_v1_permissions_get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "product_name",
@@ -966,8 +987,8 @@
                   "type": "null"
                 }
               ],
-              "title": "Partial Match",
-              "default": false
+              "default": false,
+              "title": "Partial Match"
             }
           },
           {
@@ -983,8 +1004,8 @@
                   "type": "null"
                 }
               ],
-              "title": "Case Sensitive",
-              "default": true
+              "default": true,
+              "title": "Case Sensitive"
             }
           }
         ],
@@ -1026,15 +1047,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/access-control": {
@@ -1099,7 +1112,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+
+                }
               }
             }
           },
@@ -1210,10 +1225,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/ServiceAccountDetail"
                   },
+                  "type": "array",
                   "title": "Response Get Api V1 Service Accounts Get"
                 }
               }
@@ -1310,6 +1325,14 @@
         ],
         "summary": "Remove",
         "operationId": "remove_api_v1_service_accounts__sa_uuid__delete",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "sa_uuid",
@@ -1317,8 +1340,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Sa Uuid",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "Sa Uuid"
             }
           }
         ],
@@ -1349,15 +1372,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       },
       "patch": {
         "tags": [
@@ -1365,6 +1380,14 @@
         ],
         "summary": "Edit",
         "operationId": "edit_api_v1_service_accounts__sa_uuid__patch",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "sa_uuid",
@@ -1372,20 +1395,20 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Sa Uuid",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "Sa Uuid"
             }
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ServiceAccountEdit"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -1421,7 +1444,16 @@
               }
             }
           }
-        },
+        }
+      }
+    },
+    "/api/v1/service-accounts/{sa_uuid}/api-keys": {
+      "post": {
+        "tags": [
+          "Service-Accounts"
+        ],
+        "summary": "Create Apikey",
+        "operationId": "create_apikey_api_v1_service_accounts__sa_uuid__api_keys_post",
         "security": [
           {
             "OAuth2": [
@@ -1429,16 +1461,7 @@
               "iam:write"
             ]
           }
-        ]
-      }
-    },
-    "/api/v1/service-accounts/{sa_uuid}/api-keys": {
-      "get": {
-        "tags": [
-          "Service-Accounts"
         ],
-        "summary": "Get Apikeys",
-        "operationId": "get_apikeys_api_v1_service_accounts__sa_uuid__api_keys_get",
         "parameters": [
           {
             "name": "sa_uuid",
@@ -1446,8 +1469,80 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Sa Uuid",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "Sa Uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APIKeyServiceAccountCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIKeyServiceAccountDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Service-Accounts"
+        ],
+        "summary": "Get Apikeys",
+        "operationId": "get_apikeys_api_v1_service_accounts__sa_uuid__api_keys_get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "sa_uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Sa Uuid"
             }
           },
           {
@@ -1505,87 +1600,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
-      },
-      "post": {
-        "tags": [
-          "Service-Accounts"
-        ],
-        "summary": "Create Apikey",
-        "operationId": "create_apikey_api_v1_service_accounts__sa_uuid__api_keys_post",
-        "parameters": [
-          {
-            "name": "sa_uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Sa Uuid",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/APIKeyServiceAccountCreate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIKeyServiceAccountDetail"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "example": {
-                  "origin": "permissionsAPI",
-                  "permission": "turia_iam_editor",
-                  "product": "turiaiam",
-                  "message": "User action not authorized for permission turia_iam_editor"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/service-accounts/{sa_uuid}/api-keys/{apikey_uuid}": {
@@ -1595,6 +1610,14 @@
         ],
         "summary": "Revoke Apikey",
         "operationId": "revoke_apikey_api_v1_service_accounts__sa_uuid__api_keys__apikey_uuid__delete",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "sa_uuid",
@@ -1602,8 +1625,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Sa Uuid",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "Sa Uuid"
             }
           },
           {
@@ -1612,8 +1635,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Apikey Uuid",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "Apikey Uuid"
             }
           }
         ],
@@ -1644,15 +1667,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       },
       "patch": {
         "tags": [
@@ -1660,6 +1675,14 @@
         ],
         "summary": "Edit Apikey",
         "operationId": "edit_apikey_api_v1_service_accounts__sa_uuid__api_keys__apikey_uuid__patch",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "sa_uuid",
@@ -1667,8 +1690,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Sa Uuid",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "Sa Uuid"
             }
           },
           {
@@ -1677,20 +1700,20 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Apikey Uuid",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "Apikey Uuid"
             }
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/APIKeyServiceAccountEditInput"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -1726,15 +1749,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/scopes": {
@@ -1750,10 +1765,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/ScopeGroup"
                   },
+                  "type": "array",
                   "title": "Response Get Groups And Products And Scopes Api V1 Scopes Get"
                 }
               }
@@ -1795,7 +1810,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+
+                }
               }
             }
           },
@@ -1828,6 +1845,14 @@
         ],
         "summary": "Get Invites",
         "operationId": "get_invites_api_v1_invitations_get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "status",
@@ -1884,15 +1909,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/invitations/{invite_id}": {
@@ -1902,6 +1919,14 @@
         ],
         "summary": "Cancel Invite",
         "operationId": "cancel_invite_api_v1_invitations__invite_id__delete",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "invite_id",
@@ -1940,15 +1965,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/invitations/{invite_id}/resend": {
@@ -1958,6 +1975,14 @@
         ],
         "summary": "Resend Invite",
         "operationId": "resend_invite_api_v1_invitations__invite_id__resend_post",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "invite_id",
@@ -1974,7 +1999,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+
+                }
               }
             }
           },
@@ -2001,15 +2028,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/groups": {
@@ -2021,6 +2040,14 @@
         "summary": "List Groups",
         "description": "List groups for the authenticated user.\n\n- **PF (Pessoa Física):** Returns groups with ``profile`` and ``email``.\n- **PJ (Pessoa Jurídica):** Requires admin permission (turia_iam_adm).\n  Returns groups with ``email`` but without ``profile``.\n\nOptionally filter by email (query param).",
         "operationId": "list_groups_api_v1_groups_get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "email",
@@ -2082,15 +2109,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       },
       "post": {
         "tags": [
@@ -2100,15 +2119,23 @@
         "summary": "Create Group",
         "description": "Create a new group.",
         "operationId": "create_group_api_v1_groups_post",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateGroup"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -2144,15 +2171,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/groups/exists": {
@@ -2164,17 +2183,25 @@
         "summary": "Check Group Exists",
         "description": "Check if a group exists by its email.",
         "operationId": "check_group_exists_api_v1_groups_exists_get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "email",
             "in": "query",
-            "description": "The group email to check",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Email",
-              "description": "The group email to check"
-            }
+              "description": "The group email to check",
+              "title": "Email"
+            },
+            "description": "The group email to check"
           }
         ],
         "responses": {
@@ -2212,14 +2239,6 @@
             }
           }
         },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ],
         "x-mgc-hidden": true
       }
     },
@@ -2232,6 +2251,14 @@
         "summary": "Get Group By Id",
         "description": "Get a specific group by ID.",
         "operationId": "get_group_by_id_api_v1_groups__group_id__get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "group_id",
@@ -2278,6 +2305,16 @@
             }
           }
         },
+        "x-mgc-hidden": true
+      },
+      "patch": {
+        "tags": [
+          "Groups",
+          "Groups"
+        ],
+        "summary": "Update Group",
+        "description": "Update a group description.",
+        "operationId": "update_group_api_v1_groups__group_id__patch",
         "security": [
           {
             "OAuth2": [
@@ -2286,7 +2323,62 @@
             ]
           }
         ],
-        "x-mgc-hidden": true
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Group Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGroup"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupRBAC"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        }
       },
       "delete": {
         "tags": [
@@ -2296,6 +2388,14 @@
         "summary": "Delete Group",
         "description": "Delete a group.",
         "operationId": "delete_group_api_v1_groups__group_id__delete",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "group_id",
@@ -2334,88 +2434,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
-      },
-      "patch": {
-        "tags": [
-          "Groups",
-          "Groups"
-        ],
-        "summary": "Update Group",
-        "description": "Update a group description.",
-        "operationId": "update_group_api_v1_groups__group_id__patch",
-        "parameters": [
-          {
-            "name": "group_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Group Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateGroup"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GroupRBAC"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "example": {
-                  "origin": "permissionsAPI",
-                  "permission": "turia_iam_editor",
-                  "product": "turiaiam",
-                  "message": "User action not authorized for permission turia_iam_editor"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/groups/migrate": {
@@ -2492,6 +2511,14 @@
         "summary": "Get Group Organizations",
         "description": "Get all organizations a groups belongs.",
         "operationId": "get_group_organizations_api_v1_groups__group_id__organizations_get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "group_id",
@@ -2499,8 +2526,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Group Id",
-              "format": "uuid"
+              "format": "uuid",
+              "title": "Group Id"
             }
           }
         ],
@@ -2539,14 +2566,6 @@
             }
           }
         },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ],
         "x-mgc-hidden": true
       }
     },
@@ -2559,6 +2578,14 @@
         "summary": "List Group Members",
         "description": "List members of a group with pagination (max 20 per page) and\nenriched email/name.",
         "operationId": "list_group_members_api_v1_groups__group_id__members_get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "group_id",
@@ -2572,29 +2599,29 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Número da página",
             "required": false,
             "schema": {
               "type": "integer",
-              "title": "Page",
               "minimum": 1,
               "description": "Número da página",
-              "default": 1
-            }
+              "default": 1,
+              "title": "Page"
+            },
+            "description": "Número da página"
           },
           {
             "name": "per_page",
             "in": "query",
-            "description": "Itens por página (Max 20)",
             "required": false,
             "schema": {
               "type": "integer",
-              "title": "Per Page",
               "maximum": 20,
               "minimum": 1,
               "description": "Itens por página (Max 20)",
-              "default": 20
-            }
+              "default": 20,
+              "title": "Per Page"
+            },
+            "description": "Itens por página (Max 20)"
           }
         ],
         "responses": {
@@ -2631,17 +2658,9 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       },
-       "post": {
+      "post": {
         "tags": [
           "Groups",
           "Groups"
@@ -2716,14 +2735,104 @@
       }
     },
     "/api/v1/groups/{group_id}/members/{member_id}": {
+      "patch": {
+        "tags": [
+          "Groups",
+          "Groups"
+        ],
+        "summary": "Update Group Member",
+        "description": "Update a member's profile in a group by member-id.\n\n- **member_id**: UUID address of the member to update\n- **profile**: New profile to assign (e.g., \"member\", \"admin\", \"viewer\")\n\nRaises:\n- 422: Invalid UUID format\n- 404: User UUID not found in ID Magalu\n- 400: Service accounts or groups cannot be members",
+        "operationId": "update_group_member_api_v1_groups__group_id__members__member_id__patch",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Group Id"
+            }
+          },
+          {
+            "name": "member_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Member Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberGroupUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberGroupResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "tags": [
           "Groups",
           "Groups"
         ],
         "summary": "Remove Member From Group",
-        "description": "Remove a member from a group.",
+        "description": "Remove a member from a group by member-id.\n\nresolves it to the corresponding UUID before removing the member.\n\n- **member_uuid**: Valid member_uui of the member to remove\n\nRaises:\n- 422: Invalid email format\n- 404: User email not found in ID Magalu\n- 400: Service accounts or groups cannot be members (validation check)",
         "operationId": "remove_member_from_group_api_v1_groups__group_id__members__member_id__delete",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "group_id",
@@ -2771,97 +2880,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
-      },
-      "patch": {
-        "tags": [
-          "Groups",
-          "Groups"
-        ],
-        "summary": "Update Group Member",
-        "description": "Update a member's profile in a group.",
-        "operationId": "update_group_member_api_v1_groups__group_id__members__member_id__patch",
-        "parameters": [
-          {
-            "name": "group_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Group Id"
-            }
-          },
-          {
-            "name": "member_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Member Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MemberGroupUpdate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MemberGroupResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "example": {
-                  "origin": "permissionsAPI",
-                  "permission": "turia_iam_editor",
-                  "product": "turiaiam",
-                  "message": "User action not authorized for permission turia_iam_editor"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2": [
-              "iam:read",
-              "iam:write"
-            ]
-          }
-        ]
+        }
       }
     },
     "/api/v1/users": {
@@ -2872,6 +2891,14 @@
         ],
         "summary": "Get Users",
         "operationId": "get_users_api_v1_users_get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "email",
@@ -2930,6 +2957,17 @@
             }
           }
         },
+        "x-mgc-hidden": true
+      }
+    },
+    "/api/v1/domains": {
+      "get": {
+        "tags": [
+          "Domains",
+          "Domains"
+        ],
+        "summary": "Read Domain Collection",
+        "operationId": "get_domain_api_v1_domains_get",
         "security": [
           {
             "OAuth2": [
@@ -2938,14 +2976,507 @@
             ]
           }
         ],
-        "x-mgc-hidden": true
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "default": 50,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Domains"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Domains",
+          "Domains"
+        ],
+        "summary": "Create Domain",
+        "operationId": "create_domain_api_v1_domains_post",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DomainCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Domain"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/domains/{domain_id}": {
+      "put": {
+        "tags": [
+          "Domains"
+        ],
+        "x-mgc-name": "check-dns",
+        "summary": "Run this after configuring the txt_name / txt_value pair on your DNS provider.",
+        "operationId": "update_domain_api_v1_domains__domain_id__put",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Domain Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Domain"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/domains/{domain_id}/federations": {
+      "get": {
+        "tags": [
+          "Domains",
+          "Domains"
+        ],
+        "summary": "List Federation",
+        "operationId": "get_domain_federations_api_v1_domains__domain_id__federations_get",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Domain Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainFederationCollectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/domains/{domain_id}/federations/oidc": {
+      "post": {
+        "tags": [
+          "Domains",
+          "Domains"
+        ],
+        "summary": "Create Domain Federation Oidc",
+        "operationId": "create_domain_federation_oidc_api_v1_domains__domain_id__federations_oidc_post",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Domain Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DomainFederationOIDC"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainFederationOIDCResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/domains/{domain_id}/federations/saml": {
+      "post": {
+        "tags": [
+          "Domains",
+          "Domains"
+        ],
+        "summary": "Create Domain Federation Saml",
+        "operationId": "create_domain_federation_saml_api_v1_domains__domain_id__federations_saml_post",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Domain Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DomainFederationSAML"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainFederationSAMLResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/domains/{domain_id}/federations/{federation_id}": {
+      "patch": {
+        "tags": [
+          "Domains",
+          "Domains"
+        ],
+        "summary": "Update Domain Federation Resource",
+        "description": "Update Domain Federation Resource\n\nExamples:\n\nOIDC:\n  mgc iam domains federations update \\\n    --domain-id \"<domain_id>\" \\\n    --federation-id \"<federation_id>\" \\\n    --oidc.name \"<federation_name>\" \\\n    --oidc.client-id \"<oidc_client_id>\" \\\n    --oidc.client-secret \"<oidc_client_secret>\" \\\n    --oidc.authorization-endpoint \"<oidc_authorization_endpoint_url>\" \\\n    --oidc.token-endpoint \"<oidc_token_endpoint_url>\" \\\n    --oidc.userinfo-endpoint \"<oidc_userinfo_endpoint_url>\" \\\n    --oidc.jwks-uri \"<oidc_jwks_uri>\" \\\n    --oidc.scopes '[\"<scope_1>\",\"<scope_2>\"]'\n\nSAML:\n  mgc iam domains federations update \\\n    --domain-id \"<domain_id>\" \\\n    --federation-id \"<federation_id>\" \\\n    --saml.name \"<federation_name>\" \\\n    --saml.entity-id \"<saml_entity_id>\" \\\n    --saml.sso-url \"<saml_sso_url>\" \\\n    --saml.idp-certificate \"<saml_idp_certificate_pem>\"",
+        "operationId": "update_domain_api_v1_domains__domain_id__federations__federation_id__patch",
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Domain Id"
+            }
+          },
+          {
+            "name": "federation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Federation Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "oidc": {
+                    "$ref": "#/components/schemas/DomainFederationOIDCEdit"
+                  },
+                  "saml": {
+                    "$ref": "#/components/schemas/DomainFederationSAMLEdit"
+                  }
+                },
+                "title": "Fed In"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Update Domain Api V1 Domains  Domain Id  Federations  Federation Id  Patch"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
   "components": {
     "schemas": {
       "APIKeyServiceAccountCreate": {
-        "type": "object",
         "properties": {
           "name": {
             "type": "string",
@@ -2965,10 +3496,10 @@
           "scopes": {
             "anyOf": [
               {
-                "type": "array",
                 "items": {
                   "type": "string"
-                }
+                },
+                "type": "array"
               },
               {
                 "type": "null"
@@ -2978,13 +3509,13 @@
             "default": []
           }
         },
-        "title": "APIKeyServiceAccountCreate",
+        "type": "object",
         "required": [
           "name"
-        ]
+        ],
+        "title": "APIKeyServiceAccountCreate"
       },
       "APIKeyServiceAccountDetail": {
-        "type": "object",
         "properties": {
           "uuid": {
             "type": "string",
@@ -3037,10 +3568,10 @@
           "scopes": {
             "anyOf": [
               {
-                "type": "array",
                 "items": {
                   "type": "string"
-                }
+                },
+                "type": "array"
               },
               {
                 "type": "null"
@@ -3052,10 +3583,10 @@
           "scopes_pending_approval": {
             "anyOf": [
               {
-                "type": "array",
                 "items": {
                   "type": "string"
-                }
+                },
+                "type": "array"
               },
               {
                 "type": "null"
@@ -3120,13 +3651,13 @@
             "title": "Api Key"
           }
         },
-        "title": "APIKeyServiceAccountDetail",
+        "type": "object",
         "required": [
           "uuid"
-        ]
+        ],
+        "title": "APIKeyServiceAccountDetail"
       },
       "APIKeyServiceAccountEditInput": {
-        "type": "object",
         "properties": {
           "name": {
             "anyOf": [
@@ -3153,10 +3684,10 @@
           "scopes": {
             "anyOf": [
               {
-                "type": "array",
                 "items": {
                   "type": "string"
-                }
+                },
+                "type": "array"
               },
               {
                 "type": "null"
@@ -3166,18 +3697,18 @@
             "default": []
           }
         },
+        "type": "object",
         "title": "APIKeyServiceAccountEditInput"
       },
       "APIKeyStatusEnum": {
         "type": "string",
-        "title": "APIKeyStatusEnum",
         "enum": [
           "active",
           "revoked"
-        ]
+        ],
+        "title": "APIKeyStatusEnum"
       },
       "AccessControl": {
-        "type": "object",
         "properties": {
           "name": {
             "anyOf": [
@@ -3223,10 +3754,10 @@
             "default": false
           }
         },
+        "type": "object",
         "title": "AccessControl"
       },
       "AccessControlCreate": {
-        "type": "object",
         "properties": {
           "name": {
             "anyOf": [
@@ -3251,10 +3782,10 @@
             "title": "Description"
           }
         },
+        "type": "object",
         "title": "AccessControlCreate"
       },
       "AccessControlStatus": {
-        "type": "object",
         "properties": {
           "status": {
             "anyOf": [
@@ -3279,10 +3810,10 @@
             "title": "Enforce Mfa"
           }
         },
+        "type": "object",
         "title": "AccessControlStatus"
       },
       "ApiProducts": {
-        "type": "object",
         "properties": {
           "uuid": {
             "type": "string",
@@ -3293,58 +3824,58 @@
             "title": "Name"
           },
           "scopes": {
-            "type": "array",
             "items": {
               "$ref": "#/components/schemas/Scope"
             },
+            "type": "array",
             "title": "Scopes"
           }
         },
-        "title": "ApiProducts",
+        "type": "object",
         "required": [
           "uuid",
           "name",
           "scopes"
-        ]
+        ],
+        "title": "ApiProducts"
       },
       "BatchUpdateMembers": {
-        "type": "object",
         "properties": {
           "member_ids": {
-            "type": "array",
             "items": {
               "type": "string"
             },
+            "type": "array",
             "title": "Member Ids"
           },
           "operation": {
             "$ref": "#/components/schemas/OperationType"
           },
           "role_names": {
-            "type": "array",
             "items": {
               "type": "string"
             },
+            "type": "array",
             "title": "Role Names",
             "default": []
           },
           "permission_names": {
-            "type": "array",
             "items": {
               "type": "string"
             },
+            "type": "array",
             "title": "Permission Names",
             "default": []
           }
         },
-        "title": "BatchUpdateMembers",
+        "type": "object",
         "required": [
           "member_ids",
           "operation"
-        ]
+        ],
+        "title": "BatchUpdateMembers"
       },
       "CreateGroup": {
-        "type": "object",
         "properties": {
           "identifier": {
             "type": "string",
@@ -3366,14 +3897,14 @@
             "title": "Description"
           }
         },
-        "title": "CreateGroup",
+        "type": "object",
         "required": [
           "identifier",
           "name"
-        ]
+        ],
+        "title": "CreateGroup"
       },
       "CreateMember": {
-        "type": "object",
         "properties": {
           "email": {
             "type": "string",
@@ -3382,10 +3913,10 @@
           "roles": {
             "anyOf": [
               {
-                "type": "array",
                 "items": {
                   "type": "string"
-                }
+                },
+                "type": "array"
               },
               {
                 "type": "null"
@@ -3396,10 +3927,10 @@
           "permissions": {
             "anyOf": [
               {
-                "type": "array",
                 "items": {
                   "type": "string"
-                }
+                },
+                "type": "array"
               },
               {
                 "type": "null"
@@ -3408,13 +3939,13 @@
             "title": "Permissions"
           }
         },
-        "title": "CreateMember",
+        "type": "object",
         "required": [
           "email"
-        ]
+        ],
+        "title": "CreateMember"
       },
       "CreateRole": {
-        "type": "object",
         "properties": {
           "name": {
             "type": "string",
@@ -3434,10 +3965,10 @@
           "permissions": {
             "anyOf": [
               {
-                "type": "array",
                 "items": {
                   "type": "string"
-                }
+                },
+                "type": "array"
               },
               {
                 "type": "null"
@@ -3457,13 +3988,511 @@
             "title": "Based Role"
           }
         },
-        "title": "CreateRole",
+        "type": "object",
         "required": [
           "name"
-        ]
+        ],
+        "title": "CreateRole"
+      },
+      "Domain": {
+        "properties": {
+          "domain": {
+            "type": "string",
+            "title": "Domain"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "txt_name": {
+            "type": "string",
+            "title": "Txt Name"
+          },
+          "txt_value": {
+            "type": "string",
+            "title": "Txt Value"
+          },
+          "verified": {
+            "type": "boolean",
+            "title": "Verified"
+          },
+          "verified_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verified At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "domain",
+          "id",
+          "created_at",
+          "updated_at",
+          "txt_name",
+          "txt_value",
+          "verified"
+        ],
+        "title": "Domain"
+      },
+      "DomainCreate": {
+        "properties": {
+          "domain": {
+            "type": "string",
+            "title": "Domain"
+          }
+        },
+        "type": "object",
+        "required": [
+          "domain"
+        ],
+        "title": "DomainCreate"
+      },
+      "DomainFederationCollectionResponse": {
+        "properties": {
+          "data": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/DomainFederationOIDCResponse"
+                },
+                {
+                  "$ref": "#/components/schemas/DomainFederationSAMLResponse"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "type",
+                "mapping": {
+                  "oidc": "#/components/schemas/DomainFederationOIDCResponse",
+                  "saml": "#/components/schemas/DomainFederationSAMLResponse"
+                }
+              }
+            },
+            "type": "array",
+            "title": "Data"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "offset",
+          "limit",
+          "count"
+        ],
+        "title": "DomainFederationCollectionResponse"
+      },
+      "DomainFederationOIDC": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "client_id": {
+            "type": "string",
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "type": "string",
+            "title": "Client Secret"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scopes"
+          },
+          "authorization_endpoint": {
+            "type": "string",
+            "title": "Authorization Endpoint"
+          },
+          "token_endpoint": {
+            "type": "string",
+            "title": "Token Endpoint"
+          },
+          "userinfo_endpoint": {
+            "type": "string",
+            "title": "Userinfo Endpoint"
+          },
+          "jwks_uri": {
+            "type": "string",
+            "title": "Jwks Uri"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "client_id",
+          "client_secret",
+          "scopes",
+          "authorization_endpoint",
+          "token_endpoint",
+          "userinfo_endpoint",
+          "jwks_uri"
+        ],
+        "title": "DomainFederationOIDC"
+      },
+      "DomainFederationOIDCEdit": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          },
+          "scopes": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scopes"
+          },
+          "authorization_endpoint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Authorization Endpoint"
+          },
+          "token_endpoint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Token Endpoint"
+          },
+          "jwks_uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jwks Uri"
+          },
+          "userinfo_endpoint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Userinfo Endpoint"
+          }
+        }
+      },
+      "DomainFederationOIDCResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "type": {
+            "type": "string",
+            "const": "oidc",
+            "title": "Type",
+            "default": "oidc"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "client_id": {
+            "type": "string",
+            "title": "Client Id"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scopes"
+          },
+          "authorization_endpoint": {
+            "type": "string",
+            "title": "Authorization Endpoint"
+          },
+          "token_endpoint": {
+            "type": "string",
+            "title": "Token Endpoint"
+          },
+          "userinfo_endpoint": {
+            "type": "string",
+            "title": "Userinfo Endpoint"
+          },
+          "jwks_uri": {
+            "type": "string",
+            "title": "Jwks Uri"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "name",
+          "client_id",
+          "scopes",
+          "authorization_endpoint",
+          "token_endpoint",
+          "userinfo_endpoint",
+          "jwks_uri"
+        ],
+        "title": "DomainFederationOIDCResponse"
+      },
+      "DomainFederationSAML": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "entity_id": {
+            "type": "string",
+            "title": "Entity Id"
+          },
+          "sso_url": {
+            "type": "string",
+            "title": "Sso Url"
+          },
+          "idp_certificate": {
+            "type": "string",
+            "title": "Idp Certificate"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "entity_id",
+          "sso_url",
+          "idp_certificate"
+        ],
+        "title": "DomainFederationSAML"
+      },
+      "DomainFederationSAMLEdit": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "idp_certificate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Idp Certificate"
+          },
+          "entity_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity Id"
+          },
+          "sso_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sso Url"
+          }
+        },
+        "type": "object"
+      },
+      "DomainFederationSAMLResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "type": {
+            "type": "string",
+            "const": "saml",
+            "title": "Type",
+            "default": "saml"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "entity_id": {
+            "type": "string",
+            "title": "Entity Id"
+          },
+          "sso_url": {
+            "type": "string",
+            "title": "Sso Url"
+          },
+          "idp_certificate": {
+            "type": "string",
+            "title": "Idp Certificate"
+          },
+          "idp_sha1_fingerprint": {
+            "type": "string",
+            "title": "Idp Sha1 Fingerprint"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "name",
+          "entity_id",
+          "sso_url",
+          "idp_certificate",
+          "idp_sha1_fingerprint"
+        ],
+        "title": "DomainFederationSAMLResponse"
+      },
+      "Domains": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/Domain"
+            },
+            "type": "array",
+            "title": "Data"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "offset",
+          "limit",
+          "count"
+        ],
+        "title": "Domains"
       },
       "EditGrant": {
-        "type": "object",
         "properties": {
           "operation": {
             "$ref": "#/components/schemas/OperationType"
@@ -3471,10 +4500,10 @@
           "roles": {
             "anyOf": [
               {
-                "type": "array",
                 "items": {
                   "type": "string"
-                }
+                },
+                "type": "array"
               },
               {
                 "type": "null"
@@ -3486,10 +4515,10 @@
           "permissions": {
             "anyOf": [
               {
-                "type": "array",
                 "items": {
                   "type": "string"
-                }
+                },
+                "type": "array"
               },
               {
                 "type": "null"
@@ -3499,89 +4528,89 @@
             "default": []
           }
         },
-        "title": "EditGrant",
+        "type": "object",
         "required": [
           "operation"
-        ]
+        ],
+        "title": "EditGrant"
       },
       "EditPermissions": {
-        "type": "object",
         "properties": {
           "add": {
-            "type": "array",
             "items": {
               "type": "string"
             },
+            "type": "array",
             "title": "Add",
             "default": []
           },
           "remove": {
-            "type": "array",
             "items": {
               "type": "string"
             },
+            "type": "array",
             "title": "Remove",
             "default": []
           }
         },
+        "type": "object",
         "title": "EditPermissions"
       },
       "GroupExistsResponse": {
-        "type": "object",
         "properties": {
           "exists": {
             "type": "boolean",
             "title": "Exists"
           }
         },
-        "title": "GroupExistsResponse",
+        "type": "object",
         "required": [
           "exists"
-        ]
+        ],
+        "title": "GroupExistsResponse"
       },
       "GroupMembersListResponse": {
-        "type": "object",
         "properties": {
           "items": {
-            "type": "array",
             "items": {
               "$ref": "#/components/schemas/MemberGroupResponse"
             },
+            "type": "array",
             "title": "Items"
           },
           "meta": {
             "$ref": "#/components/schemas/PaginationMeta"
           }
         },
-        "title": "GroupMembersListResponse",
+        "type": "object",
         "required": [
           "items",
           "meta"
-        ]
+        ],
+        "title": "GroupMembersListResponse"
       },
       "GroupOrganizationListResponse": {
-        "type": "object",
         "properties": {
           "items": {
-            "type": "array",
             "items": {
               "$ref": "#/components/schemas/GroupOrganizationResponse"
             },
+            "type": "array",
             "title": "Items"
           }
         },
-        "title": "GroupOrganizationListResponse",
+        "type": "object",
         "required": [
           "items"
-        ]
+        ],
+        "title": "GroupOrganizationListResponse"
       },
       "GroupOrganizationResponse": {
-        "type": "object",
         "properties": {
           "uuid": {
             "type": "string",
-            "title": "Uuid",
-            "format": "uuid"
+            "format": "uuid",
+            "title": "Uuid"
           },
           "legal_name": {
             "type": "string",
@@ -3603,15 +4632,15 @@
             "title": "Profile Image Url"
           }
         },
-        "title": "GroupOrganizationResponse",
+        "type": "object",
         "required": [
           "uuid",
           "legal_name",
           "email"
-        ]
+        ],
+        "title": "GroupOrganizationResponse"
       },
       "GroupRBAC": {
-        "type": "object",
         "properties": {
           "id": {
             "type": "string",
@@ -3638,15 +4667,15 @@
             "readOnly": true
           }
         },
-        "title": "GroupRBAC",
+        "type": "object",
         "required": [
           "id",
           "name",
           "email"
-        ]
+        ],
+        "title": "GroupRBAC"
       },
       "GroupRBACWithProfile": {
-        "type": "object",
         "properties": {
           "id": {
             "type": "string",
@@ -3684,28 +4713,28 @@
             "readOnly": true
           }
         },
-        "title": "GroupRBACWithProfile",
+        "type": "object",
         "required": [
           "id",
           "name",
           "email"
-        ]
+        ],
+        "title": "GroupRBACWithProfile"
       },
       "HTTPValidationError": {
-        "type": "object",
         "properties": {
           "detail": {
-            "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValidationError"
             },
+            "type": "array",
             "title": "Detail"
           }
         },
+        "type": "object",
         "title": "HTTPValidationError"
       },
       "Invite": {
-        "type": "object",
         "properties": {
           "id": {
             "type": "string",
@@ -3724,25 +4753,25 @@
             "title": "Profile"
           }
         },
-        "title": "Invite",
+        "type": "object",
         "required": [
           "id",
           "email",
           "status",
           "profile"
-        ]
+        ],
+        "title": "Invite"
       },
       "InviteStatusEnum": {
         "type": "string",
-        "title": "InviteStatusEnum",
         "enum": [
           "pending",
           "expired",
           "rejected"
-        ]
+        ],
+        "title": "InviteStatusEnum"
       },
       "Member": {
-        "type": "object",
         "properties": {
           "uuid": {
             "type": "string",
@@ -3776,10 +4805,10 @@
             "title": "Profile"
           }
         },
+        "type": "object",
         "title": "Member"
       },
       "MemberCreated": {
-        "type": "object",
         "properties": {
           "uuid": {
             "type": "string",
@@ -3824,6 +4853,7 @@
             "title": "Action"
           }
         },
+        "type": "object",
         "title": "MemberCreated"
       },
       "MemberGroupCreate": {
@@ -3846,7 +4876,6 @@
         "title": "MemberGroupCreate"
       },
       "MemberGroupResponse": {
-        "type": "object",
         "properties": {
           "group_id": {
             "type": "string",
@@ -3871,33 +4900,33 @@
             "default": ""
           }
         },
-        "title": "MemberGroupResponse",
+        "type": "object",
         "required": [
           "group_id",
           "member_id",
           "profile"
-        ]
+        ],
+        "title": "MemberGroupResponse"
       },
       "MemberGroupUpdate": {
-        "type": "object",
         "properties": {
           "profile": {
             "type": "string",
             "title": "Profile"
           }
         },
-        "title": "MemberGroupUpdate",
+        "type": "object",
         "required": [
           "profile"
-        ]
+        ],
+        "title": "MemberGroupUpdate"
       },
       "MigrateGroup": {
-        "type": "object",
         "properties": {
           "email": {
             "type": "string",
-            "title": "Email",
-            "format": "email"
+            "format": "email",
+            "title": "Email"
           },
           "identifier": {
             "anyOf": [
@@ -3933,21 +4962,21 @@
             "title": "Description"
           }
         },
-        "title": "MigrateGroup",
+        "type": "object",
         "required": [
           "email"
-        ]
+        ],
+        "title": "MigrateGroup"
       },
       "OperationType": {
         "type": "string",
-        "title": "OperationType",
         "enum": [
           "add",
           "remove"
-        ]
+        ],
+        "title": "OperationType"
       },
       "PFGroupItem": {
-        "type": "object",
         "properties": {
           "id": {
             "type": "string",
@@ -3977,32 +5006,32 @@
             "title": "Profile"
           }
         },
-        "title": "PFGroupItem",
+        "type": "object",
         "required": [
           "id",
           "name",
           "email",
           "profile"
-        ]
+        ],
+        "title": "PFGroupItem"
       },
       "PFGroupListResponse": {
-        "type": "object",
         "properties": {
           "items": {
-            "type": "array",
             "items": {
               "$ref": "#/components/schemas/PFGroupItem"
             },
+            "type": "array",
             "title": "Items"
           }
         },
-        "title": "PFGroupListResponse",
+        "type": "object",
         "required": [
           "items"
-        ]
+        ],
+        "title": "PFGroupListResponse"
       },
       "PJGroupItem": {
-        "type": "object",
         "properties": {
           "id": {
             "type": "string",
@@ -4028,31 +5057,31 @@
             "title": "Email"
           }
         },
-        "title": "PJGroupItem",
+        "type": "object",
         "required": [
           "id",
           "name",
           "email"
-        ]
+        ],
+        "title": "PJGroupItem"
       },
       "PJGroupListResponse": {
-        "type": "object",
         "properties": {
           "items": {
-            "type": "array",
             "items": {
               "$ref": "#/components/schemas/PJGroupItem"
             },
+            "type": "array",
             "title": "Items"
           }
         },
-        "title": "PJGroupListResponse",
+        "type": "object",
         "required": [
           "items"
-        ]
+        ],
+        "title": "PJGroupListResponse"
       },
       "PaginationMeta": {
-        "type": "object",
         "properties": {
           "page": {
             "type": "integer",
@@ -4071,16 +5100,16 @@
             "title": "Total Items"
           }
         },
-        "title": "PaginationMeta",
+        "type": "object",
         "required": [
           "page",
           "per_page",
           "total_pages",
           "total_items"
-        ]
+        ],
+        "title": "PaginationMeta"
       },
       "Permission": {
-        "type": "object",
         "properties": {
           "id": {
             "type": "string",
@@ -4095,23 +5124,23 @@
             "title": "Description"
           }
         },
-        "title": "Permission",
+        "type": "object",
         "required": [
           "id",
           "name",
           "description"
-        ]
+        ],
+        "title": "Permission"
       },
       "Privileges": {
-        "type": "object",
         "properties": {
           "roles": {
             "anyOf": [
               {
-                "type": "array",
                 "items": {
                   "type": "string"
-                }
+                },
+                "type": "array"
               },
               {
                 "type": "null"
@@ -4123,10 +5152,10 @@
           "permissions": {
             "anyOf": [
               {
-                "type": "array",
                 "items": {
                   "type": "string"
-                }
+                },
+                "type": "array"
               },
               {
                 "type": "null"
@@ -4136,10 +5165,10 @@
             "default": []
           }
         },
+        "type": "object",
         "title": "Privileges"
       },
       "Product": {
-        "type": "object",
         "properties": {
           "id": {
             "type": "string",
@@ -4150,22 +5179,22 @@
             "title": "Name"
           },
           "permissions": {
-            "type": "array",
             "items": {
               "$ref": "#/components/schemas/Permission"
             },
+            "type": "array",
             "title": "Permissions"
           }
         },
-        "title": "Product",
+        "type": "object",
         "required": [
           "id",
           "name",
           "permissions"
-        ]
+        ],
+        "title": "Product"
       },
       "Role": {
-        "type": "object",
         "properties": {
           "name": {
             "type": "string",
@@ -4187,13 +5216,13 @@
             "title": "Origin"
           }
         },
-        "title": "Role",
+        "type": "object",
         "required": [
           "name"
-        ]
+        ],
+        "title": "Role"
       },
       "RolePermissions": {
-        "type": "object",
         "properties": {
           "name": {
             "type": "string",
@@ -4215,21 +5244,21 @@
             "title": "Origin"
           },
           "permissions": {
-            "type": "array",
             "items": {
               "type": "string"
             },
+            "type": "array",
             "title": "Permissions"
           }
         },
-        "title": "RolePermissions",
+        "type": "object",
         "required": [
           "name",
           "permissions"
-        ]
+        ],
+        "title": "RolePermissions"
       },
       "RoleUser": {
-        "type": "object",
         "properties": {
           "member_uuid": {
             "type": "string",
@@ -4266,23 +5295,23 @@
             "title": "Profile Image Url"
           },
           "roles": {
-            "type": "array",
             "items": {
               "type": "string"
             },
+            "type": "array",
             "title": "Roles"
           }
         },
-        "title": "RoleUser",
+        "type": "object",
         "required": [
           "member_uuid",
           "name",
           "email",
           "roles"
-        ]
+        ],
+        "title": "RoleUser"
       },
       "Scope": {
-        "type": "object",
         "properties": {
           "uuid": {
             "type": "string",
@@ -4297,15 +5326,15 @@
             "title": "Title"
           }
         },
-        "title": "Scope",
+        "type": "object",
         "required": [
           "uuid",
           "name",
           "title"
-        ]
+        ],
+        "title": "Scope"
       },
       "ScopeGroup": {
-        "type": "object",
         "properties": {
           "uuid": {
             "type": "string",
@@ -4316,22 +5345,22 @@
             "title": "Name"
           },
           "api_products": {
-            "type": "array",
             "items": {
               "$ref": "#/components/schemas/ApiProducts"
             },
+            "type": "array",
             "title": "Api Products"
           }
         },
-        "title": "ScopeGroup",
+        "type": "object",
         "required": [
           "uuid",
           "name",
           "api_products"
-        ]
+        ],
+        "title": "ScopeGroup"
       },
       "ServiceAccountCreate": {
-        "type": "object",
         "properties": {
           "name": {
             "type": "string",
@@ -4346,15 +5375,15 @@
             "title": "Email"
           }
         },
-        "title": "ServiceAccountCreate",
+        "type": "object",
         "required": [
           "name",
           "description",
           "email"
-        ]
+        ],
+        "title": "ServiceAccountCreate"
       },
       "ServiceAccountDetail": {
-        "type": "object",
         "properties": {
           "uuid": {
             "type": "string",
@@ -4383,16 +5412,16 @@
             "$ref": "#/components/schemas/Tenant"
           }
         },
-        "title": "ServiceAccountDetail",
+        "type": "object",
         "required": [
           "uuid",
           "name",
           "email",
           "tenant"
-        ]
+        ],
+        "title": "ServiceAccountDetail"
       },
       "ServiceAccountEdit": {
-        "type": "object",
         "properties": {
           "name": {
             "anyOf": [
@@ -4417,10 +5446,10 @@
             "title": "Description"
           }
         },
+        "type": "object",
         "title": "ServiceAccountEdit"
       },
       "Tenant": {
-        "type": "object",
         "properties": {
           "uuid": {
             "type": "string",
@@ -4431,14 +5460,14 @@
             "title": "Legal Name"
           }
         },
-        "title": "Tenant",
+        "type": "object",
         "required": [
           "uuid",
           "legal_name"
-        ]
+        ],
+        "title": "Tenant"
       },
       "UpdateGroup": {
-        "type": "object",
         "properties": {
           "description": {
             "anyOf": [
@@ -4452,25 +5481,25 @@
             "title": "Description"
           }
         },
+        "type": "object",
         "title": "UpdateGroup"
       },
       "User": {
-        "type": "object",
         "properties": {
           "tenant_id": {
             "type": "string",
-            "title": "Tenant Id",
-            "format": "uuid"
+            "format": "uuid",
+            "title": "Tenant Id"
           },
           "uuid": {
             "type": "string",
-            "title": "Uuid",
-            "format": "uuid"
+            "format": "uuid",
+            "title": "Uuid"
           },
           "email": {
             "type": "string",
-            "title": "Email",
-            "format": "email"
+            "format": "email",
+            "title": "Email"
           },
           "name": {
             "type": "string",
@@ -4489,18 +5518,17 @@
             "title": "Profile"
           }
         },
-        "title": "User",
+        "type": "object",
         "required": [
           "tenant_id",
           "uuid",
           "email"
-        ]
+        ],
+        "title": "User"
       },
       "ValidationError": {
-        "type": "object",
         "properties": {
           "loc": {
-            "type": "array",
             "items": {
               "anyOf": [
                 {
@@ -4511,6 +5539,7 @@
                 }
               ]
             },
+            "type": "array",
             "title": "Location"
           },
           "msg": {
@@ -4522,20 +5551,21 @@
             "title": "Error Type"
           }
         },
-        "title": "ValidationError",
+        "type": "object",
         "required": [
           "loc",
           "msg",
           "type"
-        ]
+        ],
+        "title": "ValidationError"
       }
     },
     "securitySchemes": {
       "OAuth2": {
         "type": "http",
-        "description": "Insira o token JWT com o prefixo 'Bearer '.",
         "scheme": "bearer",
-        "bearerFormat": "JWT"
+        "bearerFormat": "JWT",
+        "description": "Insira o token JWT com o prefixo 'Bearer '."
       }
     }
   },
@@ -4586,6 +5616,10 @@
       "name": "Users",
       "description": "Users management.",
       "x-mgc-hidden": true
+    },
+    {
+      "name": "Domains",
+      "description": "Domains Federations of organization."
     }
   ]
 }

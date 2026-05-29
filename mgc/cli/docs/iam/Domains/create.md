@@ -1,21 +1,19 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
-# List
+# Create
 
-Read Federation Collection
+Create Domain
 
 ## Usage:
 ```
-mgc federation list [domain-id] [flags]
+mgc iam domains create [flags]
 ```
 
 ## Flags:
 ```
-    --domain-id uuid   Domain Id (required)
--h, --help             help for list
-    --limit integer    Limit (max: 100)
-    --offset integer   Offset
+    --domain string   Domain (required)
+-h, --help            help for create
 ```
 
 ## Global Flags:

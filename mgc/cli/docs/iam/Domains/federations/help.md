@@ -1,19 +1,27 @@
 ---
-sidebar_position: 3
+sidebar_position: 0
 ---
-# Check-Dns
+# Federations
 
-Run this after configuring the txt_name / txt_value pair on your DNS provider.
+Domains Federations of organization. | federations
 
 ## Usage:
 ```
-mgc federation domains check-dns [domain-id] [flags]
+mgc iam domains federations [flags]
+mgc iam domains federations [command]
+```
+
+## Commands:
+```
+list        List Federation
+oidc        Create Domain Federation Oidc
+saml        Create Domain Federation Saml
+update      Update Domain Federation Resource
 ```
 
 ## Flags:
 ```
-    --domain-id uuid   Domain Id (required)
--h, --help             help for check-dns
+-h, --help   help for federations
 ```
 
 ## Global Flags:
@@ -25,10 +33,8 @@ mgc federation domains check-dns [domain-id] [flags]
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
-    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --server-url uri           Manually specify the server to use
 ```
 

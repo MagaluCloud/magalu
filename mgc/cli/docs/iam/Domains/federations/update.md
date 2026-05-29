@@ -3,15 +3,21 @@ sidebar_position: 5
 ---
 # Update
 
-Edit Federation Resource
+Update Domain Federation Resource
 
 ## Usage:
 ```
-mgc federation update [domain-id] [federation-id] [flags]
+mgc iam domains federations update [domain-id] [federation-id] [flags]
+```
+
+## Examples:
+```
+
 ```
 
 ## Flags:
 ```
+    --cli.list-links enum[=table]          List all available links for this command (one of "json", "table" or "yaml")
     --domain-id uuid                       Domain Id (required)
     --federation-id uuid                   Federation Id (required)
 -h, --help                                 help for update

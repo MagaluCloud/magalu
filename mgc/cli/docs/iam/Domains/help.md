@@ -1,27 +1,27 @@
 ---
-sidebar_position: 3
+sidebar_position: 0
 ---
-# Oidc
+# Domains
 
-Create Federation
+Domains Federations of organization.
 
 ## Usage:
 ```
-mgc federation oidc [domain-id] [flags]
+mgc iam domains [flags]
+mgc iam domains [command]
+```
+
+## Commands:
+```
+check-dns   Run this after configuring the txt_name / txt_value pair on your DNS provider.
+create      Create Domain
+federations federations
+list        Read Domain Collection
 ```
 
 ## Flags:
 ```
-    --authorization-endpoint string   Authorization Endpoint (required)
-    --client-id string                Client Id (required)
-    --client-secret string            Client Secret (required)
-    --domain-id uuid                  Domain Id (required)
--h, --help                            help for oidc
-    --jwks-uri string                 Jwks Uri (required)
-    --name string                     Name (required)
-    --scopes array(string)            Scopes (required)
-    --token-endpoint string           Token Endpoint (required)
-    --userinfo-endpoint string        Userinfo Endpoint (required)
+-h, --help   help for domains
 ```
 
 ## Global Flags:
@@ -33,10 +33,8 @@ mgc federation oidc [domain-id] [flags]
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
-    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --server-url uri           Manually specify the server to use
 ```
 
