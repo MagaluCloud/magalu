@@ -9,7 +9,7 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage/common"
 )
 
-type enableBucketVersioningParams struct {
+type EnableBucketVersioningParams struct {
 	Bucket common.BucketName `json:"bucket" jsonschema:"description=Bucket name to enable versioning" mgc:"positional"`
 }
 
@@ -19,7 +19,7 @@ var getEnable = utils.NewLazyLoader(func() core.Executor {
 			Name:        "enable",
 			Description: "Enable versioning for a Bucket",
 		},
-		enableBucketVersioning,
+		EnableBucketVersioning,
 	)
 
 	return core.NewExecuteResultOutputOptions(exec, func(exec core.Executor, result core.Result) string {
@@ -27,7 +27,7 @@ var getEnable = utils.NewLazyLoader(func() core.Executor {
 	})
 })
 
-func enableBucketVersioning(ctx context.Context, params enableBucketVersioningParams, cfg common.Config) (core.Value, error) {
+func EnableBucketVersioning(ctx context.Context, params EnableBucketVersioningParams, cfg common.Config) (core.Value, error) {
 	req, err := newEnableBucketVersioningRequest(ctx, params.Bucket, cfg)
 	if err != nil {
 		return nil, err

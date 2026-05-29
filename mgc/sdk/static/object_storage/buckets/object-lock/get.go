@@ -11,7 +11,7 @@ import (
 )
 
 type GetBucketObjectLockResponse struct {
-	ObjectLockEnabled string
+	ObjectLockEnabled string `xml:"ObjectLockEnabled"`
 	Rule              common.ObjectLockRule
 }
 
@@ -50,9 +50,10 @@ func GetObjectLocking(ctx context.Context, params GetBucketObjectLockParams, cfg
 	// Como precisamos tratar esse caso de maneira específica, usamos um erro com tipo específico.
 	if res.StatusCode == 400 {
 		err = ErrBucketMissingObjectLockConfiguration
+		return
 	}
 
-	return
+	return common.UnwrapResponse[GetBucketObjectLockResponse](res, req)
 }
 
 func newGetObjectLockingRequest(ctx context.Context, cfg common.Config, bucketName common.BucketName) (*http.Request, error) {
