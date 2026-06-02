@@ -244,25 +244,22 @@ func TestGetCommands(t *testing.T) {
 	}
 }
 
-func TestLoadExistingTranslations(t *testing.T) {
-	withTranslations, _ := json.Marshal(map[string]commandResult{
+func TestLoadExistingOutput(t *testing.T) {
+	validContent, _ := json.Marshal(map[string]commandResult{
 		"vm.create": {Flags: []flagResult{
 			{Name: "name", Description: "Nome", OriginalDescription: "Name"},
 			{Name: "region", Description: "Região", OriginalDescription: "Region"},
 		}},
 	})
-	withEmptyOriginal, _ := json.Marshal(map[string]commandResult{
-		"vm.create": {Flags: []flagResult{
-			{Name: "name", Description: "Nome", OriginalDescription: ""},
-		}},
-	})
 
 	tests := []struct {
-		name      string
-		content   []byte
-		noFile    bool
-		wantNil   bool
-		wantCache map[string]string
+		name         string
+		content      []byte
+		noFile       bool
+		wantNil      bool
+		wantKey      string
+		wantFlagDesc string
+		wantFlagOrig string
 	}{
 		{
 			name:    "file does not exist",
@@ -275,14 +272,11 @@ func TestLoadExistingTranslations(t *testing.T) {
 			wantNil: true,
 		},
 		{
-			name:      "builds cache from original_description",
-			content:   withTranslations,
-			wantCache: map[string]string{"Name": "Nome", "Region": "Região"},
-		},
-		{
-			name:      "skips flags with empty original_description",
-			content:   withEmptyOriginal,
-			wantCache: map[string]string{},
+			name:         "returns full command result map",
+			content:      validContent,
+			wantKey:      "vm.create",
+			wantFlagDesc: "Nome",
+			wantFlagOrig: "Name",
 		},
 	}
 	for _, tt := range tests {
@@ -294,21 +288,24 @@ func TestLoadExistingTranslations(t *testing.T) {
 				path = writeTempFile(t, tt.content)
 			}
 
-			cache := loadExistingTranslations(path)
+			result := loadExistingOutput(path)
 
 			if tt.wantNil {
-				if cache != nil {
+				if result != nil {
 					t.Error("expected nil")
 				}
 				return
 			}
-			if len(cache) != len(tt.wantCache) {
-				t.Fatalf("cache has %d entries, want %d", len(cache), len(tt.wantCache))
+			entry, ok := result[tt.wantKey]
+			if !ok {
+				t.Fatalf("missing key %q", tt.wantKey)
 			}
-			for k, v := range tt.wantCache {
-				if cache[k] != v {
-					t.Errorf("cache[%q] = %q, want %q", k, cache[k], v)
-				}
+			flags := flagsByName(entry.Flags)
+			if flags["name"].Description != tt.wantFlagDesc {
+				t.Errorf("Description = %q, want %q", flags["name"].Description, tt.wantFlagDesc)
+			}
+			if flags["name"].OriginalDescription != tt.wantFlagOrig {
+				t.Errorf("OriginalDescription = %q, want %q", flags["name"].OriginalDescription, tt.wantFlagOrig)
 			}
 		})
 	}
@@ -399,7 +396,7 @@ func TestApplyTranslations(t *testing.T) {
 		wantOriginalDesc string
 	}{
 		{
-			name: "uses cache for already-translated descriptions",
+			name: "unchanged description keeps existing translation",
 			existingFlags: []flagResult{
 				{Name: "name", Description: "Nome", OriginalDescription: "Name"},
 			},
@@ -408,10 +405,28 @@ func TestApplyTranslations(t *testing.T) {
 			wantOriginalDesc: "Name",
 		},
 		{
-			name:             "keeps original description when API fails",
+			name: "changed description triggers retranslation (API fail fallback)",
+			existingFlags: []flagResult{
+				{Name: "name", Description: "Nome", OriginalDescription: "Name"},
+			},
+			inputDesc:        "New Name",
+			wantDesc:         "New Name",
+			wantOriginalDesc: "New Name",
+		},
+		{
+			name:             "new flag with no existing entry marks original on API failure",
 			existingFlags:    nil,
 			inputDesc:        "Create a VM",
 			wantDesc:         "Create a VM",
+			wantOriginalDesc: "Create a VM",
+		},
+		{
+			name: "empty description is skipped entirely",
+			existingFlags: []flagResult{
+				{Name: "name", Description: "Nome", OriginalDescription: "Name"},
+			},
+			inputDesc:        "",
+			wantDesc:         "",
 			wantOriginalDesc: "",
 		},
 	}

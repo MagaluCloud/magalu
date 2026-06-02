@@ -135,7 +135,7 @@ func (t *deeplTranslator) translateAll(texts []string) ([]string, error) {
 	return all, nil
 }
 
-func loadExistingTranslations(outputFile string) map[string]string {
+func loadExistingOutput(outputFile string) map[string]commandResult {
 	data, err := os.ReadFile(outputFile)
 	if err != nil {
 		return nil
@@ -144,40 +144,40 @@ func loadExistingTranslations(outputFile string) map[string]string {
 	if err := json.Unmarshal(data, &existing); err != nil {
 		return nil
 	}
-	cache := make(map[string]string)
-	for _, entry := range existing {
-		for _, flag := range entry.Flags {
-			if flag.OriginalDescription != "" && flag.Description != "" {
-				cache[flag.OriginalDescription] = flag.Description
-			}
-		}
+	return existing
+}
+
+func flagsByName(flags []flagResult) map[string]flagResult {
+	m := make(map[string]flagResult, len(flags))
+	for _, f := range flags {
+		m[f.Name] = f
 	}
-	return cache
+	return m
 }
 
 func applyTranslations(result map[string]commandResult, apiKey, outputFile string) error {
-	cache := loadExistingTranslations(outputFile)
-	translationMap := make(map[string]string)
+	existing := loadExistingOutput(outputFile)
+
 	seen := make(map[string]struct{})
 	var toTranslate []string
 
-	for _, entry := range result {
+	for key, entry := range result {
+		existingFlags := flagsByName(existing[key].Flags)
 		for _, flag := range entry.Flags {
 			if flag.Description == "" {
 				continue
 			}
-			if _, ok := seen[flag.Description]; ok {
+			if ex, ok := existingFlags[flag.Name]; ok && ex.OriginalDescription == flag.Description {
 				continue
 			}
-			seen[flag.Description] = struct{}{}
-			if cached, ok := cache[flag.Description]; ok {
-				translationMap[flag.Description] = cached
-			} else {
+			if _, ok := seen[flag.Description]; !ok {
+				seen[flag.Description] = struct{}{}
 				toTranslate = append(toTranslate, flag.Description)
 			}
 		}
 	}
 
+	translationMap := make(map[string]string)
 	if len(toTranslate) == 0 {
 		fmt.Println("All descriptions already translated, skipping API call.")
 	} else {
@@ -193,10 +193,20 @@ func applyTranslations(result map[string]commandResult, apiKey, outputFile strin
 	}
 
 	for key, entry := range result {
+		existingFlags := flagsByName(existing[key].Flags)
 		for i, flag := range entry.Flags {
-			if translated, ok := translationMap[flag.Description]; ok {
+			if flag.Description == "" {
+				continue
+			}
+			ex, unchanged := existingFlags[flag.Name]
+			if unchanged && ex.OriginalDescription == flag.Description {
+				entry.Flags[i].OriginalDescription = ex.OriginalDescription
+				entry.Flags[i].Description = ex.Description
+			} else if pt, ok := translationMap[flag.Description]; ok {
 				entry.Flags[i].OriginalDescription = flag.Description
-				entry.Flags[i].Description = translated
+				entry.Flags[i].Description = pt
+			} else {
+				entry.Flags[i].OriginalDescription = flag.Description
 			}
 		}
 		result[key] = entry

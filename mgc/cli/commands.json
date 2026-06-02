@@ -12,7 +12,7 @@
       },
       {
         "name": "control.offset",
-        "description": "Deslocamento para paginação",
+        "description": "Offset para paginação",
         "original_description": "Offset for pagination",
         "type": "integer",
         "required": false,
@@ -41,7 +41,7 @@
       },
       {
         "name": "control.offset",
-        "description": "Deslocamento para paginação",
+        "description": "Offset para paginação",
         "original_description": "Offset for pagination",
         "type": "integer",
         "required": false,
@@ -65,7 +65,7 @@
       },
       {
         "name": "product--like",
-        "description": "Em qual produto do produtor ocorreu um evento (operação do tipo “curtir”)",
+        "description": "Em qual produto ocorreu um evento (operação do tipo 'like')",
         "original_description": "In which producer product an event occurred ('like' operation)",
         "type": "string",
         "required": false,
@@ -73,7 +73,7 @@
       },
       {
         "name": "source--like",
-        "description": "Contexto em que o evento ocorreu (operação \"curtir\")",
+        "description": "Contexto em que o evento ocorreu (operação 'like')",
         "original_description": "Context in which the event occurred ('like' operation)",
         "type": "string",
         "required": false,
@@ -81,7 +81,7 @@
       },
       {
         "name": "time",
-        "description": "Data e hora em que o evento ocorreu",
+        "description": "Data e hora em que a ocorrência aconteceu",
         "original_description": "Timestamp of when the occurrence happened",
         "type": "string",
         "required": false,
@@ -89,7 +89,7 @@
       },
       {
         "name": "type--like",
-        "description": "Tipo de evento relacionado ao fato que deu origem (operação do tipo “curtir”)",
+        "description": "Tipo de evento relacionado ao fato que deu origem (operação do tipo 'like')",
         "original_description": "Type of event related to the originating occurrence ('like' operation)",
         "type": "string",
         "required": false,
@@ -102,7 +102,7 @@
     "flags": [
       {
         "name": "Validate",
-        "description": "Valide o token, atualizando-o se necessário",
+        "description": "Valida o token, atualizando-o se necessário",
         "original_description": "Validate the token, refreshing if needed",
         "type": "boolean",
         "required": false,
@@ -123,7 +123,7 @@
       },
       {
         "name": "expiration",
-        "description": "Data de validade da nova API (AAAA-MM-DD)",
+        "description": "Data de expiração da nova API (YYYY-MM-DD)",
         "original_description": "Date to expire new api (YYYY-MM-DD)",
         "type": "string",
         "required": false,
@@ -164,7 +164,7 @@
     "flags": [
       {
         "name": "invalid-keys",
-        "description": "Incluir chaves inválidas e expiradas",
+        "description": "Incluir chaves inválidas, revogadas e expiradas",
         "original_description": "Include Invalid Rekove and Expired Keys",
         "type": "boolean",
         "required": true,
@@ -177,7 +177,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "ID da chave da API a ser revogada",
+        "description": "ID da chave de API a ser revogada",
         "original_description": "ID of api key to revoke",
         "type": "string",
         "required": true,
@@ -190,7 +190,7 @@
     "flags": [
       {
         "name": "access-token-expiration",
-        "description": "Prazo de validade do token de acesso (em segundos)",
+        "description": "Tempo de expiração do token de acesso (em segundos)",
         "original_description": "Access token expiration (in seconds)",
         "type": "integer",
         "required": false,
@@ -198,7 +198,7 @@
       },
       {
         "name": "always-require-login",
-        "description": "É necessário ignorar a sessão ativa do Magalu ID e exigir sempre o login",
+        "description": "Ignorar a sessão ativa do Magalu ID e sempre exigir o login",
         "original_description": "Must ignore active Magalu ID session and always require login",
         "type": "boolean",
         "required": false,
@@ -206,7 +206,7 @@
       },
       {
         "name": "audiences",
-        "description": "Público-alvo dos clientes (separado por espaço)",
+        "description": "Públicos-alvo do cliente (separados por espaço)",
         "original_description": "Client audiences (separated by space)",
         "type": "string",
         "required": false,
@@ -214,7 +214,7 @@
       },
       {
         "name": "backchannel-logout-session",
-        "description": "O cliente precisa de uma sessão de logout por canal secundário",
+        "description": "O cliente precisa de uma sessão de logout via backchannel",
         "original_description": "Client requires backchannel logout session",
         "type": "boolean",
         "required": false,
@@ -222,7 +222,7 @@
       },
       {
         "name": "backchannel-logout-uri",
-        "description": "URI de logout do canal secundário",
+        "description": "URI de logout via backchannel",
         "original_description": "Backchannel logout URI",
         "type": "string",
         "required": false,
@@ -230,7 +230,7 @@
       },
       {
         "name": "client-privacy-term-url",
-        "description": "URL da política de privacidade",
+        "description": "URL dos termos de política de privacidade",
         "original_description": "URL to privacy term",
         "type": "string",
         "required": true,
@@ -262,7 +262,7 @@
       },
       {
         "name": "grant-types",
-        "description": "Tipos de concessão que o cliente pode solicitar para a geração de tokens (separados por espaço)",
+        "description": "Tipos de concessão (grant types) que o cliente pode solicitar para a geração de tokens (separados por espaço)",
         "original_description": "Grant types the client can request for token generation (separated by space)",
         "type": "string",
         "required": false,
@@ -286,7 +286,7 @@
       },
       {
         "name": "oidc-audience",
-        "description": "Público do OIDC (separado por espaço)",
+        "description": "Público-alvo do OIDC (separado por espaço)",
         "original_description": "OIDC audience (separated by space)",
         "type": "string",
         "required": false,
@@ -302,7 +302,7 @@
       },
       {
         "name": "refresh-token-custom-expires-enabled",
-        "description": "Usar um valor personalizado para a expiração do token de atualização",
+        "description": "Usar um valor personalizado para a expiração do token de atualização (refresh token)",
         "original_description": "Use custom value for refresh token expiration",
         "type": "boolean",
         "required": false,
@@ -310,7 +310,7 @@
       },
       {
         "name": "refresh-token-exp",
-        "description": "Valor personalizado de validade do token de atualização (em segundos)",
+        "description": "Valor personalizado de expiração do token de atualização (em segundos)",
         "original_description": "Custom refresh token expiration value (in seconds)",
         "type": "integer",
         "required": false,
@@ -318,7 +318,7 @@
       },
       {
         "name": "request-reason",
-        "description": "Nota para informar o motivo da criação do cliente. Isso ajudará no processo de aprovação do pedido",
+        "description": "Nota para informar o motivo da criação do cliente. Ajudará no processo de aprovação do pedido",
         "original_description": "Note to inform the reason for creating the client. Will help with the application approval process",
         "type": "string",
         "required": false,
@@ -343,7 +343,7 @@
     "flags": [
       {
         "name": "access-token-expiration",
-        "description": "Prazo de validade do token de acesso (em segundos)",
+        "description": "Tempo de expiração do token de acesso (em segundos)",
         "original_description": "Access token expiration (in seconds)",
         "type": "integer",
         "required": false,
@@ -351,7 +351,7 @@
       },
       {
         "name": "always-require-login",
-        "description": "É necessário ignorar a sessão ativa do Magalu ID e exigir sempre o login",
+        "description": "Ignorar a sessão ativa do Magalu ID e sempre exigir o login",
         "original_description": "Must ignore active Magalu ID session and always require login",
         "type": "boolean",
         "required": false,
@@ -359,7 +359,7 @@
       },
       {
         "name": "audiences",
-        "description": "Público-alvo dos clientes (separado por espaço)",
+        "description": "Públicos-alvo do cliente (separados por espaço)",
         "original_description": "Client audiences (separated by space)",
         "type": "string",
         "required": false,
@@ -367,7 +367,7 @@
       },
       {
         "name": "backchannel-logout-session",
-        "description": "O cliente precisa de uma sessão de logout por canal secundário",
+        "description": "O cliente precisa de uma sessão de logout via backchannel",
         "original_description": "Client requires backchannel logout session",
         "type": "boolean",
         "required": false,
@@ -375,7 +375,7 @@
       },
       {
         "name": "backchannel-logout-uri",
-        "description": "URI de logout do canal secundário",
+        "description": "URI de logout via backchannel",
         "original_description": "Backchannel logout URI",
         "type": "string",
         "required": false,
@@ -383,7 +383,7 @@
       },
       {
         "name": "client-privacy-term-url",
-        "description": "URL da política de privacidade",
+        "description": "URL dos termos de política de privacidade",
         "original_description": "URL to privacy term",
         "type": "string",
         "required": false,
@@ -431,7 +431,7 @@
       },
       {
         "name": "oidc-audience",
-        "description": "Públicos para o token de identificação",
+        "description": "Públicos-alvo para o token de identificação (ID token)",
         "original_description": "Audiences for ID token",
         "type": "string",
         "required": false,
@@ -447,7 +447,7 @@
       },
       {
         "name": "refresh-token-custom-expires-enabled",
-        "description": "Usar um valor personalizado para a expiração do token de atualização",
+        "description": "Usar um valor personalizado para a expiração do token de atualização (refresh token)",
         "original_description": "Use custom value for refresh token expiration",
         "type": "boolean",
         "required": false,
@@ -455,7 +455,7 @@
       },
       {
         "name": "refresh-token-exp",
-        "description": "Valor personalizado de validade do token de atualização (em segundos)",
+        "description": "Valor personalizado de expiração do token de atualização (em segundos)",
         "original_description": "Custom refresh token expiration value (in seconds)",
         "type": "integer",
         "required": false,
@@ -463,7 +463,7 @@
       },
       {
         "name": "request-reason",
-        "description": "Nota para informar o motivo da criação do cliente. Isso ajudará no processo de aprovação do pedido",
+        "description": "Nota para informar o motivo da criação do cliente. Ajudará no processo de aprovação do pedido",
         "original_description": "Note to inform the reason for creating the client. Will help with the application approval process",
         "type": "string",
         "required": false,
@@ -471,7 +471,7 @@
       },
       {
         "name": "support-url",
-        "description": "URL para suporte ao cliente",
+        "description": "URL para suporte do cliente",
         "original_description": "URL for client support",
         "type": "string",
         "required": false,
@@ -513,7 +513,7 @@
     "flags": [
       {
         "name": "Validate",
-        "description": "Valide o token, atualizando-o se necessário",
+        "description": "Valida o token, atualizando-o se necessário",
         "original_description": "Validate the token, refreshing if needed",
         "type": "boolean",
         "required": false,
@@ -534,7 +534,7 @@
     "flags": [
       {
         "name": "uuid",
-        "description": "O UUID do locatário desejado. Para listar todos os IDs possíveis, execute o comando `auth tenant list`",
+        "description": "O UUID do tenant desejado. Para listar todos os IDs possíveis, execute o comando `auth tenant list`",
         "original_description": "The UUID of the desired Tenant. To list all possible IDs, run auth tenant list",
         "type": "string",
         "required": true,
@@ -547,7 +547,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -592,7 +592,7 @@
       },
       {
         "name": "snapshot",
-        "description": "Resumo",
+        "description": "Snapshot",
         "original_description": "Snapshot",
         "type": "object",
         "required": true,
@@ -605,7 +605,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -618,7 +618,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -647,7 +647,7 @@
       },
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -660,7 +660,7 @@
     "flags": [
       {
         "name": "control.limit",
-        "description": " Limite",
+        "description": "Limite",
         "original_description": " Limit",
         "type": "integer",
         "required": false,
@@ -668,7 +668,7 @@
       },
       {
         "name": "control.offset",
-        "description": " Deslocamento",
+        "description": "Offset",
         "original_description": " Offset",
         "type": "integer",
         "required": false,
@@ -676,7 +676,7 @@
       },
       {
         "name": "control.sort",
-        "description": " Sorte",
+        "description": "Ordenação",
         "original_description": " Sort",
         "type": "string",
         "required": false,
@@ -705,7 +705,7 @@
       },
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -734,7 +734,7 @@
       },
       {
         "name": "source-snapshot",
-        "description": "Instantâneo da fonte",
+        "description": "Snapshot de origem",
         "original_description": "Source Snapshot",
         "type": "object",
         "required": false,
@@ -742,7 +742,7 @@
       },
       {
         "name": "type",
-        "description": "Tipo de instantâneo",
+        "description": "Tipo de snapshot",
         "original_description": "SnapshotType",
         "type": "string",
         "required": false,
@@ -763,7 +763,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -784,7 +784,7 @@
       },
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -797,7 +797,7 @@
     "flags": [
       {
         "name": "control.limit",
-        "description": " Limite",
+        "description": "Limite",
         "original_description": " Limit",
         "type": "integer",
         "required": false,
@@ -805,7 +805,7 @@
       },
       {
         "name": "control.offset",
-        "description": " Deslocamento",
+        "description": "Offset",
         "original_description": " Offset",
         "type": "integer",
         "required": false,
@@ -813,7 +813,7 @@
       },
       {
         "name": "control.sort",
-        "description": " Sorte",
+        "description": "Ordenação",
         "original_description": " Sort",
         "type": "string",
         "required": false,
@@ -850,7 +850,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -900,7 +900,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -953,7 +953,7 @@
       },
       {
         "name": "snapshot",
-        "description": "Resumo",
+        "description": "Snapshot",
         "original_description": "Snapshot",
         "type": "object",
         "required": false,
@@ -974,7 +974,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -987,7 +987,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -1000,7 +1000,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -1029,7 +1029,7 @@
       },
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -1042,7 +1042,7 @@
     "flags": [
       {
         "name": "control.limit",
-        "description": " Limite",
+        "description": "Limite",
         "original_description": " Limit",
         "type": "integer",
         "required": false,
@@ -1050,7 +1050,7 @@
       },
       {
         "name": "control.offset",
-        "description": " Deslocamento",
+        "description": "Offset",
         "original_description": " Offset",
         "type": "integer",
         "required": false,
@@ -1058,7 +1058,7 @@
       },
       {
         "name": "control.sort",
-        "description": " Sorte",
+        "description": "Ordenação",
         "original_description": " Sort",
         "type": "string",
         "required": false,
@@ -1087,7 +1087,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -1108,7 +1108,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -1179,7 +1179,7 @@
       },
       {
         "name": "value",
-        "description": "Novo valor do sinalizador",
+        "description": "Novo valor da flag",
         "original_description": "New flag value",
         "type": "object",
         "required": true,
@@ -1200,7 +1200,7 @@
     "flags": [
       {
         "name": "digest-or-tag",
-        "description": "Resumo ou tag de uma imagem",
+        "description": "Digest ou tag de uma imagem",
         "original_description": "Digest or tag of an image",
         "type": "string",
         "required": true,
@@ -1229,7 +1229,7 @@
     "flags": [
       {
         "name": "digest-or-tag",
-        "description": "Resumo ou tag de uma imagem.",
+        "description": "Digest ou tag de uma imagem.",
         "original_description": "Digest or tag of an image.",
         "type": "string",
         "required": true,
@@ -1266,7 +1266,7 @@
       },
       {
         "name": "control.offset",
-        "description": "Deslocamento",
+        "description": "Offset",
         "original_description": "Offset",
         "type": "integer",
         "required": false,
@@ -1290,7 +1290,7 @@
       },
       {
         "name": "name",
-        "description": "Usado para filtrar imagens em resposta",
+        "description": "Usado para filtrar imagens na resposta",
         "original_description": "Used to filter images in response",
         "type": "string",
         "required": false,
@@ -1327,7 +1327,7 @@
       },
       {
         "name": "control.offset",
-        "description": "Deslocamento.",
+        "description": "Offset.",
         "original_description": "Offset.",
         "type": "integer",
         "required": false,
@@ -1343,7 +1343,7 @@
       },
       {
         "name": "digest-or-tag",
-        "description": "Resumo ou tag de uma imagem.",
+        "description": "Digest ou tag de uma imagem.",
         "original_description": "Digest or tag of an image.",
         "type": "string",
         "required": true,
@@ -1367,7 +1367,7 @@
       },
       {
         "name": "status",
-        "description": "Filtrar varreduras por status.",
+        "description": "Filtrar varreduras (scans) por status.",
         "original_description": "Filter scans by status.",
         "type": "string",
         "required": false,
@@ -1380,7 +1380,7 @@
     "flags": [
       {
         "name": "digest-or-tag",
-        "description": "Resumo ou tag de uma imagem.",
+        "description": "Digest ou tag de uma imagem.",
         "original_description": "Digest or tag of an image.",
         "type": "string",
         "required": true,
@@ -1417,7 +1417,7 @@
       },
       {
         "name": "role",
-        "description": "A função a ser atribuída ao membro. Se não for especificada, será usado \"convidado\" por padrão.\n- desenvolvedor: Pode enviar e baixar imagens\n- convidado: Acesso somente para leitura (baixar imagens)\n",
+        "description": "A função (role) a ser atribuída ao membro. Se não for especificada, será usado \"guest\" por padrão.\n- developer: Pode enviar (push) e baixar (pull) imagens\n- guest: Acesso somente para leitura (baixar imagens)\n",
         "original_description": "The role to assign to the member. If not provided, 'guest' will be used by default.\n- developer: Can push and pull images\n- guest: Read-only access (pull images)\n",
         "type": "string",
         "required": false,
@@ -1425,7 +1425,7 @@
       },
       {
         "name": "user-id",
-        "description": "O UUID do usuário deve ser adicionado ao Registro.",
+        "description": "O UUID do usuário a ser adicionado ao Registro.",
         "original_description": "User's UUID to be added to the registry.",
         "type": "string",
         "required": true,
@@ -1488,7 +1488,7 @@
       },
       {
         "name": "control.offset",
-        "description": "Deslocamento.",
+        "description": "Offset.",
         "original_description": "Offset.",
         "type": "integer",
         "required": false,
@@ -1533,7 +1533,7 @@
       },
       {
         "name": "role",
-        "description": "A nova função a ser atribuída ao membro.",
+        "description": "A nova função (role) a ser atribuída ao membro.",
         "original_description": "The new role to assign to the member.",
         "type": "string",
         "required": true,
@@ -1554,7 +1554,7 @@
       },
       {
         "name": "access-secret",
-        "description": "Uma sequência de caracteres que corresponde ao segredo de acesso do provedor.",
+        "description": "Uma sequência de caracteres que corresponde ao segredo de acesso (access_secret) do provedor.",
         "original_description": "A string consistent with provider access_secret.",
         "type": "string",
         "required": false,
@@ -1562,7 +1562,7 @@
       },
       {
         "name": "description",
-        "description": "Uma sequência de caracteres.",
+        "description": "Uma string de descrição.",
         "original_description": "A string.",
         "type": "string",
         "required": false,
@@ -1570,7 +1570,7 @@
       },
       {
         "name": "name",
-        "description": "Um nome exclusivo para cada usuário, utilizado para o cache do proxy. Deve ser escrito em letras minúsculas e consistir apenas em números e letras, com um limite máximo de 63 caracteres.",
+        "description": "Um nome exclusivo para cada tenant, utilizado para o cache do proxy. Deve ser escrito em letras minúsculas e consistir apenas em números e letras, com um limite máximo de 63 caracteres.",
         "original_description": "A unique name for each tenant, used for the proxy-cache. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters.",
         "type": "string",
         "required": true,
@@ -1586,7 +1586,7 @@
       },
       {
         "name": "url",
-        "description": "Um URL de endpoint para o registro proxy. É possível consultar exemplos de URLs de provedores disponíveis por meio do mcr-api ou do mgccli.",
+        "description": "Uma URL de endpoint para o registro proxy. É possível consultar exemplos de URLs de provedores disponíveis por meio do mcr-api ou do mgccli.",
         "original_description": "An Endpoint URL for the proxied registry. Example URL for available providers can be checked through mcr-api or mgccli.",
         "type": "string",
         "required": true,
@@ -1633,7 +1633,7 @@
       },
       {
         "name": "control.offset",
-        "description": "Deslocamento",
+        "description": "Offset",
         "original_description": "Offset",
         "type": "integer",
         "required": false,
@@ -1662,7 +1662,7 @@
       },
       {
         "name": "access-secret",
-        "description": "Senha ou código de acesso para autenticação",
+        "description": "Senha ou chave secreta para autenticação",
         "original_description": "Secret or password for authentication",
         "type": "string",
         "required": true,
@@ -1670,7 +1670,7 @@
       },
       {
         "name": "provider",
-        "description": "Tipo do repositório remoto (por exemplo, Harbor, Docker Hub)",
+        "description": "Tipo do registro remoto (por exemplo, Harbor, Docker Hub)",
         "original_description": "Type of the remote registry (e.g., harbor, dockerhub)",
         "type": "string",
         "required": true,
@@ -1678,7 +1678,7 @@
       },
       {
         "name": "url",
-        "description": "URL de destino do registro remoto",
+        "description": "URL de endpoint do registro remoto",
         "original_description": "Endpoint URL of the remote registry",
         "type": "string",
         "required": true,
@@ -1712,7 +1712,7 @@
       },
       {
         "name": "access-secret",
-        "description": "Uma sequência de caracteres que corresponde ao segredo de acesso do provedor.",
+        "description": "Uma sequência de caracteres que corresponde ao segredo de acesso (access_secret) do provedor.",
         "original_description": "A string consistent with provider access_secret.",
         "type": "string",
         "required": false,
@@ -1720,7 +1720,7 @@
       },
       {
         "name": "description",
-        "description": "Uma sequência de caracteres.",
+        "description": "Uma string de descrição.",
         "original_description": "A string.",
         "type": "string",
         "required": false,
@@ -1728,7 +1728,7 @@
       },
       {
         "name": "name",
-        "description": "Um nome exclusivo para cada usuário, utilizado para o cache do proxy. Deve ser escrito em letras minúsculas e consistir apenas em números e letras, com um limite máximo de 63 caracteres.",
+        "description": "Um nome exclusivo para cada tenant, utilizado para o cache do proxy. Deve ser escrito em letras minúsculas e consistir apenas em números e letras, com um limite máximo de 63 caracteres.",
         "original_description": "A unique name for each tenant, used for the proxy-cache. It must be written in lowercase letters and consists only of numbers and letters, up to a limit of 63 characters.",
         "type": "string",
         "required": false,
@@ -1744,7 +1744,7 @@
       },
       {
         "name": "url",
-        "description": "Um URL de endpoint para o registro proxy. É possível consultar exemplos de URLs de provedores disponíveis por meio do mcr-api ou do mgccli.",
+        "description": "Uma URL de endpoint para o registro proxy. É possível consultar exemplos de URLs de provedores disponíveis por meio do mcr-api ou do mgccli.",
         "original_description": "An Endpoint URL for the proxied registry. Example URL for available providers can be checked through mcr-api or mgccli.",
         "type": "string",
         "required": false,
@@ -1765,7 +1765,7 @@
       },
       {
         "name": "proxy-cache-id",
-        "description": "UUID do cache do proxy.",
+        "description": "UUID do Proxy Cache.",
         "original_description": "Proxy Cache UUID.",
         "type": "string",
         "required": false,
@@ -1812,7 +1812,7 @@
       },
       {
         "name": "control.offset",
-        "description": "Deslocamento",
+        "description": "Offset",
         "original_description": "Offset",
         "type": "integer",
         "required": false,
@@ -1891,7 +1891,7 @@
       },
       {
         "name": "control.offset",
-        "description": "Deslocamento",
+        "description": "Offset",
         "original_description": "Offset",
         "type": "integer",
         "required": false,
@@ -1928,7 +1928,7 @@
     "flags": [
       {
         "name": "scan-id",
-        "description": "Digitalize o UUID.",
+        "description": "UUID do scan.",
         "original_description": "Scan UUID.",
         "type": "string",
         "required": true,
@@ -1941,7 +1941,7 @@
     "flags": [
       {
         "name": "scan-id",
-        "description": "Identificador único do trabalho de digitalização (UUID)",
+        "description": "Identificador único do job de varredura (UUID)",
         "original_description": "Unique identifier of the scan job (UUID)",
         "type": "string",
         "required": true,
@@ -1962,7 +1962,7 @@
       },
       {
         "name": "control.offset",
-        "description": "Deslocamento.",
+        "description": "Offset.",
         "original_description": "Offset.",
         "type": "integer",
         "required": false,
@@ -2002,7 +2002,7 @@
       },
       {
         "name": "scan-id",
-        "description": "Digitalize o UUID.",
+        "description": "UUID do scan.",
         "original_description": "Scan UUID.",
         "type": "string",
         "required": true,
@@ -2010,7 +2010,7 @@
       },
       {
         "name": "severity",
-        "description": "Filtrar vulnerabilidades por gravidade.",
+        "description": "Filtrar vulnerabilidades por gravidade (severity).",
         "original_description": "Filter vulnerabilities by severity.",
         "type": "array(string)",
         "required": false,
@@ -2044,7 +2044,7 @@
     "flags": [
       {
         "name": "backup-retention-days",
-        "description": "Período de retenção de backups",
+        "description": "Dias de retenção de backup",
         "original_description": "Backup Retention Days",
         "type": "integer",
         "required": false,
@@ -2052,7 +2052,7 @@
       },
       {
         "name": "backup-start-at",
-        "description": "Iniciar backup",
+        "description": "Horário de início do backup",
         "original_description": "Backup Start At",
         "type": "string",
         "required": false,
@@ -2060,7 +2060,7 @@
       },
       {
         "name": "deletion-protected",
-        "description": "Exclusão protegida",
+        "description": "Proteção contra exclusão",
         "original_description": "Deletion Pprotected",
         "type": "boolean",
         "required": false,
@@ -2068,7 +2068,7 @@
       },
       {
         "name": "engine-id",
-        "description": "Número de identificação do motor",
+        "description": "ID do Engine",
         "original_description": "Engine Id",
         "type": "string",
         "required": true,
@@ -2116,7 +2116,7 @@
       },
       {
         "name": "volume",
-        "description": "Solicitação de volume de cluster",
+        "description": "Solicitação de volume do cluster",
         "original_description": "Cluster Volume Request",
         "type": "object",
         "required": true,
@@ -2179,7 +2179,7 @@
       },
       {
         "name": "engine-id",
-        "description": "Valor referente ao ID do motor.",
+        "description": "Valor referente ao ID do engine.",
         "original_description": "Value referring to engine Id.",
         "type": "string",
         "required": false,
@@ -2211,7 +2211,7 @@
       },
       {
         "name": "volume.size--gt",
-        "description": "Valor referente a um volume superior a.",
+        "description": "Valor referente a um volume maior que.",
         "original_description": "Value referring to volume size greater than.",
         "type": "integer",
         "required": false,
@@ -2219,7 +2219,7 @@
       },
       {
         "name": "volume.size--gte",
-        "description": "Valor que se refere a um volume maior ou igual a.",
+        "description": "Valor referente a um volume maior ou igual a.",
         "original_description": "Value referring to volume size greater than or equal to.",
         "type": "integer",
         "required": false,
@@ -2227,7 +2227,7 @@
       },
       {
         "name": "volume.size--lt",
-        "description": "Valor referente a um volume inferior a.",
+        "description": "Valor referente a um volume menor que.",
         "original_description": "Value referring to volume size less than.",
         "type": "integer",
         "required": false,
@@ -2235,7 +2235,7 @@
       },
       {
         "name": "volume.size--lte",
-        "description": "Valor que se refere a um volume menor ou igual a.",
+        "description": "Valor referente a um volume menor ou igual a.",
         "original_description": "Value referring to volume size less than or equal to.",
         "type": "integer",
         "required": false,
@@ -2264,7 +2264,7 @@
       },
       {
         "name": "volume",
-        "description": "Solicitação de volume de cluster",
+        "description": "Solicitação de volume do cluster",
         "original_description": "Cluster Volume Request",
         "type": "object",
         "required": false,
@@ -2374,7 +2374,7 @@
     "flags": [
       {
         "name": "engine-id",
-        "description": "Valor referente ao ID do motor.",
+        "description": "Valor referente ao ID do engine.",
         "original_description": "Value referring to engine Id.",
         "type": "string",
         "required": true,
@@ -2403,7 +2403,7 @@
       },
       {
         "name": "status",
-        "description": "Valor referente ao estado do motor.",
+        "description": "Valor referente ao estado do engine.",
         "original_description": "Value referring to engine status.",
         "type": "string",
         "required": false,
@@ -2432,7 +2432,7 @@
       },
       {
         "name": "dynamic",
-        "description": "Parâmetros que podem ser modificados enquanto o banco de dados está em execução.  \nAs alterações nesses parâmetros entram em vigor imediatamente, sem a necessidade de reiniciar o serviço.\n",
+        "description": "Parâmetros que podem ser modificados enquanto o banco de dados está em execução.\nAs alterações nesses parâmetros entram em vigor imediatamente, sem a necessidade de reiniciar o serviço.\n",
         "original_description": "Parameters that can be modified while the database is running.  \nChanges to these parameters take effect immediately without requiring a service restart.\n",
         "type": "boolean",
         "required": false,
@@ -2440,7 +2440,7 @@
       },
       {
         "name": "engine-id",
-        "description": "Valor referente ao ID do motor.",
+        "description": "Valor referente ao ID do engine.",
         "original_description": "Value referring to engine Id.",
         "type": "string",
         "required": true,
@@ -2448,7 +2448,7 @@
       },
       {
         "name": "modifiable",
-        "description": "Parâmetros que influenciam o processo de criação da máquina.  \nEsses parâmetros são definidos durante o provisionamento da instância e tornam-se imutáveis após a criação da máquina.\n",
+        "description": "Parâmetros que influenciam o processo de criação da máquina.\nEsses parâmetros são definidos durante o provisionamento da instância e tornam-se imutáveis após a criação da máquina.\n",
         "original_description": "Parameters that influence the machine creation process.  \nThese parameters are set during instance provisioning and become immutable after the machine is created.\n",
         "type": "boolean",
         "required": false,
@@ -2456,7 +2456,7 @@
       },
       {
         "name": "name",
-        "description": "Valor referente ao nome do parâmetro do motor.",
+        "description": "Valor referente ao nome do parâmetro do engine.",
         "original_description": "Value referring to engine parameter name.",
         "type": "string",
         "required": false,
@@ -2506,7 +2506,7 @@
       },
       {
         "name": "engine-id",
-        "description": "Valor referente ao ID do motor.",
+        "description": "Valor referente ao ID do engine.",
         "original_description": "Value referring to engine Id.",
         "type": "string",
         "required": false,
@@ -2514,7 +2514,7 @@
       },
       {
         "name": "status",
-        "description": "Uma enumeração.",
+        "description": "Status.",
         "original_description": "An enumeration.",
         "type": "string",
         "required": false,
@@ -2559,7 +2559,7 @@
       },
       {
         "name": "engine-id",
-        "description": "Número de identificação do motor",
+        "description": "ID do Engine",
         "original_description": "Engine Id",
         "type": "string",
         "required": true,
@@ -2694,7 +2694,7 @@
       },
       {
         "name": "engine-id",
-        "description": "Valor referente ao ID do motor.",
+        "description": "Valor referente ao ID do engine.",
         "original_description": "Value referring to engine Id.",
         "type": "string",
         "required": false,
@@ -2726,7 +2726,7 @@
       },
       {
         "name": "volume.size--gt",
-        "description": "Valor referente a um volume superior a.",
+        "description": "Valor referente a um volume maior que.",
         "original_description": "Value referring to volume size greater than.",
         "type": "integer",
         "required": false,
@@ -2734,7 +2734,7 @@
       },
       {
         "name": "volume.size--gte",
-        "description": "Valor que se refere a um volume maior ou igual a.",
+        "description": "Valor referente a um volume maior ou igual a.",
         "original_description": "Value referring to volume size greater than or equal to.",
         "type": "integer",
         "required": false,
@@ -2742,7 +2742,7 @@
       },
       {
         "name": "volume.size--lt",
-        "description": "Valor referente a um volume inferior a.",
+        "description": "Valor referente a um volume menor que.",
         "original_description": "Value referring to volume size less than.",
         "type": "integer",
         "required": false,
@@ -2750,7 +2750,7 @@
       },
       {
         "name": "volume.size--lte",
-        "description": "Valor que se refere a um volume menor ou igual a.",
+        "description": "Valor referente a um volume menor ou igual a.",
         "original_description": "Value referring to volume size less than or equal to.",
         "type": "integer",
         "required": false,
@@ -2871,7 +2871,7 @@
       },
       {
         "name": "engine-id",
-        "description": "Número de identificação do motor",
+        "description": "ID do Engine",
         "original_description": "Engine Id",
         "type": "string",
         "required": true,
@@ -2934,7 +2934,7 @@
       },
       {
         "name": "engine-id",
-        "description": "Valor referente ao ID do motor.",
+        "description": "Valor referente ao ID do engine.",
         "original_description": "Value referring to engine Id.",
         "type": "string",
         "required": false,
@@ -2992,7 +2992,7 @@
       },
       {
         "name": "parameter-id",
-        "description": "Parâmetro Id.",
+        "description": "ID do parâmetro.",
         "original_description": "Parameter Id.",
         "type": "string",
         "required": true,
@@ -3042,7 +3042,7 @@
       },
       {
         "name": "parameter-id",
-        "description": "Parâmetro Id.",
+        "description": "ID do parâmetro.",
         "original_description": "Parameter Id.",
         "type": "string",
         "required": true,
@@ -3116,7 +3116,7 @@
       },
       {
         "name": "source-id",
-        "description": "ID da fonte",
+        "description": "ID de origem (source ID)",
         "original_description": "Source Id",
         "type": "string",
         "required": true,
@@ -3171,7 +3171,7 @@
       },
       {
         "name": "source-id",
-        "description": "Valor referente ao ID da fonte.",
+        "description": "Valor referente ao ID de origem (source ID).",
         "original_description": "Value referring to source Id.",
         "type": "string",
         "required": false,
@@ -3247,7 +3247,7 @@
       },
       {
         "name": "description",
-        "description": "A descrição do instantâneo.",
+        "description": "A descrição do snapshot.",
         "original_description": "The description of the snapshot.",
         "type": "string",
         "required": false,
@@ -3255,7 +3255,7 @@
       },
       {
         "name": "name",
-        "description": "O nome do instantâneo.",
+        "description": "O nome do snapshot.",
         "original_description": "The name of the snapshot.",
         "type": "string",
         "required": true,
@@ -3276,7 +3276,7 @@
       },
       {
         "name": "snapshot-id",
-        "description": "Valor referente ao ID do instantâneo.",
+        "description": "Valor referente ao ID do snapshot.",
         "original_description": "Value referring to snapshot Id.",
         "type": "string",
         "required": true,
@@ -3297,7 +3297,7 @@
       },
       {
         "name": "snapshot-id",
-        "description": "Valor referente ao ID do instantâneo.",
+        "description": "Valor referente ao ID do snapshot.",
         "original_description": "Value referring to snapshot Id.",
         "type": "string",
         "required": true,
@@ -3334,7 +3334,7 @@
       },
       {
         "name": "status",
-        "description": "Valor referente ao status do instantâneo.",
+        "description": "Valor referente ao status do snapshot.",
         "original_description": "Value referring to snapshot status.",
         "type": "string",
         "required": false,
@@ -3342,7 +3342,7 @@
       },
       {
         "name": "type",
-        "description": "Valor referente ao tipo de instantâneo.",
+        "description": "Valor referente ao tipo de snapshot.",
         "original_description": "Value referring to snapshot type.",
         "type": "string",
         "required": false,
@@ -3395,7 +3395,7 @@
       },
       {
         "name": "snapshot-id",
-        "description": "Valor referente ao ID do instantâneo.",
+        "description": "Valor referente ao ID do snapshot.",
         "original_description": "Value referring to snapshot Id.",
         "type": "string",
         "required": true,
@@ -3403,7 +3403,7 @@
       },
       {
         "name": "volume",
-        "description": "Solicitação de volume de cluster",
+        "description": "Solicitação de volume do cluster",
         "original_description": "Cluster Volume Request",
         "type": "object",
         "required": false,
@@ -3424,7 +3424,7 @@
       },
       {
         "name": "description",
-        "description": "Descrição do instantâneo.",
+        "description": "Descrição do snapshot.",
         "original_description": "Snapshot description.",
         "type": "string",
         "required": false,
@@ -3432,7 +3432,7 @@
       },
       {
         "name": "name",
-        "description": "Nome exclusivo do instantâneo.",
+        "description": "Nome exclusivo do snapshot.",
         "original_description": "Snapshot unique name.",
         "type": "string",
         "required": false,
@@ -3440,7 +3440,7 @@
       },
       {
         "name": "snapshot-id",
-        "description": "Valor referente ao ID do instantâneo.",
+        "description": "Valor referente ao ID do snapshot.",
         "original_description": "Value referring to snapshot Id.",
         "type": "string",
         "required": true,
@@ -3453,7 +3453,7 @@
     "flags": [
       {
         "name": "description",
-        "description": "Descrição do instantâneo.",
+        "description": "Descrição do snapshot.",
         "original_description": "Snapshot description.",
         "type": "string",
         "required": false,
@@ -3469,7 +3469,7 @@
       },
       {
         "name": "name",
-        "description": "Nome exclusivo do instantâneo.",
+        "description": "Nome exclusivo do snapshot.",
         "original_description": "Snapshot unique name.",
         "type": "string",
         "required": true,
@@ -3490,7 +3490,7 @@
       },
       {
         "name": "snapshot-id",
-        "description": "Valor referente ao ID do instantâneo.",
+        "description": "Valor referente ao ID do snapshot.",
         "original_description": "Value referring to snapshot Id.",
         "type": "string",
         "required": true,
@@ -3511,7 +3511,7 @@
       },
       {
         "name": "snapshot-id",
-        "description": "Valor referente ao ID do instantâneo.",
+        "description": "Valor referente ao ID do snapshot.",
         "original_description": "Value referring to snapshot Id.",
         "type": "string",
         "required": true,
@@ -3548,7 +3548,7 @@
       },
       {
         "name": "status",
-        "description": "Valor referente ao status do instantâneo.",
+        "description": "Valor referente ao status do snapshot.",
         "original_description": "Value referring to snapshot status.",
         "type": "string",
         "required": false,
@@ -3556,7 +3556,7 @@
       },
       {
         "name": "type",
-        "description": "Valor referente ao tipo de instantâneo.",
+        "description": "Valor referente ao tipo de snapshot.",
         "original_description": "Value referring to snapshot type.",
         "type": "string",
         "required": false,
@@ -3609,7 +3609,7 @@
       },
       {
         "name": "snapshot-id",
-        "description": "Valor referente ao ID do instantâneo.",
+        "description": "Valor referente ao ID do snapshot.",
         "original_description": "Value referring to snapshot Id.",
         "type": "string",
         "required": true,
@@ -3630,7 +3630,7 @@
     "flags": [
       {
         "name": "description",
-        "description": "Descrição do instantâneo.",
+        "description": "Descrição do snapshot.",
         "original_description": "Snapshot description.",
         "type": "string",
         "required": false,
@@ -3646,7 +3646,7 @@
       },
       {
         "name": "name",
-        "description": "Nome exclusivo do instantâneo.",
+        "description": "Nome exclusivo do snapshot.",
         "original_description": "Snapshot unique name.",
         "type": "string",
         "required": false,
@@ -3654,7 +3654,7 @@
       },
       {
         "name": "snapshot-id",
-        "description": "Valor referente ao ID do instantâneo.",
+        "description": "Valor referente ao ID do snapshot.",
         "original_description": "Value referring to snapshot Id.",
         "type": "string",
         "required": true,
@@ -3692,7 +3692,7 @@
     "flags": [
       {
         "name": "enforce-mfa",
-        "description": "Aplicar o Mfa",
+        "description": "Impor MFA (Multi-Factor Authentication)",
         "original_description": "Enforce Mfa",
         "type": "boolean",
         "required": false,
@@ -3713,7 +3713,7 @@
     "flags": [
       {
         "name": "domain-id",
-        "description": "Domínio Id",
+        "description": "ID do domínio",
         "original_description": "Domain Id",
         "type": "string",
         "required": true,
@@ -3739,7 +3739,7 @@
     "flags": [
       {
         "name": "domain-id",
-        "description": "Domínio Id",
+        "description": "ID do domínio",
         "original_description": "Domain Id",
         "type": "string",
         "required": true,
@@ -3752,7 +3752,7 @@
     "flags": [
       {
         "name": "authorization-endpoint",
-        "description": "Ponto de extremidade de autorização",
+        "description": "Endpoint de autorização",
         "original_description": "Authorization Endpoint",
         "type": "string",
         "required": true,
@@ -3768,7 +3768,7 @@
       },
       {
         "name": "client-secret",
-        "description": "Cliente Secreto",
+        "description": "Secret do cliente",
         "original_description": "Client Secret",
         "type": "string",
         "required": true,
@@ -3776,7 +3776,7 @@
       },
       {
         "name": "domain-id",
-        "description": "Domínio Id",
+        "description": "ID do domínio",
         "original_description": "Domain Id",
         "type": "string",
         "required": true,
@@ -3784,7 +3784,7 @@
       },
       {
         "name": "jwks-uri",
-        "description": "Bom dia",
+        "description": "URI do JWKS",
         "original_description": "Jwks Uri",
         "type": "string",
         "required": true,
@@ -3800,7 +3800,7 @@
       },
       {
         "name": "scopes",
-        "description": "Âmbitos",
+        "description": "Escopos",
         "original_description": "Scopes",
         "type": "array(string)",
         "required": true,
@@ -3808,7 +3808,7 @@
       },
       {
         "name": "token-endpoint",
-        "description": "Ponto de extremidade do token",
+        "description": "Endpoint do token",
         "original_description": "Token Endpoint",
         "type": "string",
         "required": true,
@@ -3816,7 +3816,7 @@
       },
       {
         "name": "userinfo-endpoint",
-        "description": "Informações do usuário - Endpoint",
+        "description": "Endpoint do Userinfo",
         "original_description": "Userinfo Endpoint",
         "type": "string",
         "required": true,
@@ -3829,7 +3829,7 @@
     "flags": [
       {
         "name": "domain-id",
-        "description": "Domínio Id",
+        "description": "ID do domínio",
         "original_description": "Domain Id",
         "type": "string",
         "required": true,
@@ -3845,7 +3845,7 @@
       },
       {
         "name": "idp-certificate",
-        "description": "Certificado Idp",
+        "description": "Certificado do IdP",
         "original_description": "Idp Certificate",
         "type": "string",
         "required": true,
@@ -3861,7 +3861,7 @@
       },
       {
         "name": "sso-url",
-        "description": "Então, URL",
+        "description": "URL do SSO",
         "original_description": "Sso Url",
         "type": "string",
         "required": true,
@@ -3874,7 +3874,7 @@
     "flags": [
       {
         "name": "domain-id",
-        "description": "Domínio Id",
+        "description": "ID do domínio",
         "original_description": "Domain Id",
         "type": "string",
         "required": true,
@@ -3917,7 +3917,7 @@
       },
       {
         "name": "offset",
-        "description": "Deslocamento",
+        "description": "Offset",
         "original_description": "Offset",
         "type": "integer",
         "required": false,
@@ -3938,7 +3938,7 @@
       },
       {
         "name": "identifier",
-        "description": "Identificar",
+        "description": "Identificador",
         "original_description": "Identifier",
         "type": "string",
         "required": true,
@@ -4022,7 +4022,7 @@
       },
       {
         "name": "member-id",
-        "description": "ID de membro",
+        "description": "ID do membro",
         "original_description": "Member Id",
         "type": "string",
         "required": true,
@@ -4051,7 +4051,7 @@
       },
       {
         "name": "per-page",
-        "description": "Itens por página (Max 20)",
+        "description": "Itens por página (Máx. 20)",
         "original_description": "Itens por página (Max 20)",
         "type": "integer",
         "required": false,
@@ -4072,7 +4072,7 @@
       },
       {
         "name": "member-id",
-        "description": "ID de membro",
+        "description": "ID do membro",
         "original_description": "Member Id",
         "type": "string",
         "required": true,
@@ -4127,7 +4127,7 @@
     "flags": [
       {
         "name": "status",
-        "description": "Enumeração de status de convite",
+        "description": "Enumeração de status do convite",
         "original_description": "InviteStatusEnum",
         "type": "string",
         "required": false,
@@ -4169,7 +4169,7 @@
       },
       {
         "name": "roles",
-        "description": "Funções",
+        "description": "Funções (roles)",
         "original_description": "Roles",
         "type": "array(string)",
         "required": false,
@@ -4182,7 +4182,7 @@
     "flags": [
       {
         "name": "uuid",
-        "description": "Novidades",
+        "description": "UUID do membro",
         "original_description": "Uuid",
         "type": "string",
         "required": true,
@@ -4195,7 +4195,7 @@
     "flags": [
       {
         "name": "member-ids",
-        "description": "Números de identificação dos membros",
+        "description": "IDs dos membros",
         "original_description": "Member Ids",
         "type": "array(string)",
         "required": true,
@@ -4219,7 +4219,7 @@
       },
       {
         "name": "role-names",
-        "description": "Nomes das funções",
+        "description": "Nomes das funções (roles)",
         "original_description": "Role Names",
         "type": "array(string)",
         "required": false,
@@ -4232,7 +4232,7 @@
     "flags": [
       {
         "name": "uuid",
-        "description": "Novidades",
+        "description": "UUID do membro",
         "original_description": "Uuid",
         "type": "string",
         "required": true,
@@ -4261,7 +4261,7 @@
       },
       {
         "name": "roles",
-        "description": "Funções",
+        "description": "Funções (roles)",
         "original_description": "Roles",
         "type": "array(string)",
         "required": false,
@@ -4269,7 +4269,7 @@
       },
       {
         "name": "uuid",
-        "description": "Novidades",
+        "description": "UUID do membro",
         "original_description": "Uuid",
         "type": "string",
         "required": true,
@@ -4295,7 +4295,7 @@
     "flags": [
       {
         "name": "case-sensitive",
-        "description": "Distingue maiúsculas de minúsculas",
+        "description": "Distingue maiúsculas de minúsculas (case-sensitive)",
         "original_description": "Case Sensitive",
         "type": "boolean",
         "required": false,
@@ -4303,7 +4303,7 @@
       },
       {
         "name": "partial-match",
-        "description": "Correspondência parcial",
+        "description": "Correspondência parcial (partial match)",
         "original_description": "Partial Match",
         "type": "boolean",
         "required": false,
@@ -4324,7 +4324,7 @@
     "flags": [
       {
         "name": "based-role",
-        "description": "Função baseada",
+        "description": "Função baseada em (based role)",
         "original_description": "Based Role",
         "type": "string",
         "required": false,
@@ -4361,7 +4361,7 @@
     "flags": [
       {
         "name": "role-name",
-        "description": "Nome da função",
+        "description": "Nome da função (role)",
         "original_description": "Role Name",
         "type": "string",
         "required": true,
@@ -4374,7 +4374,7 @@
     "flags": [
       {
         "name": "role-name",
-        "description": "Nome da função",
+        "description": "Nome da função (role)",
         "original_description": "Role Name",
         "type": "string",
         "required": false,
@@ -4387,7 +4387,7 @@
     "flags": [
       {
         "name": "role-name",
-        "description": "Nome da função",
+        "description": "Nome da função (role)",
         "original_description": "Role Name",
         "type": "string",
         "required": true,
@@ -4400,7 +4400,7 @@
     "flags": [
       {
         "name": "role-name",
-        "description": "Nome da função",
+        "description": "Nome da função (role)",
         "original_description": "Role Name",
         "type": "string",
         "required": true,
@@ -4429,7 +4429,7 @@
       },
       {
         "name": "role-name",
-        "description": "Nome da função",
+        "description": "Nome da função (role)",
         "original_description": "Role Name",
         "type": "string",
         "required": true,
@@ -4462,7 +4462,7 @@
       },
       {
         "name": "sa-uuid",
-        "description": "O Uuid",
+        "description": "UUID da Conta de Serviço (SA)",
         "original_description": "Sa Uuid",
         "type": "string",
         "required": true,
@@ -4470,7 +4470,7 @@
       },
       {
         "name": "scopes",
-        "description": "Âmbitos",
+        "description": "Escopos",
         "original_description": "Scopes",
         "type": "array(string)",
         "required": false,
@@ -4483,7 +4483,7 @@
     "flags": [
       {
         "name": "apikey-uuid",
-        "description": "Por favor, Uuid",
+        "description": "UUID da Chave de API",
         "original_description": "Apikey Uuid",
         "type": "string",
         "required": true,
@@ -4491,7 +4491,7 @@
       },
       {
         "name": "sa-uuid",
-        "description": "O Uuid",
+        "description": "UUID da Conta de Serviço (SA)",
         "original_description": "Sa Uuid",
         "type": "string",
         "required": true,
@@ -4504,7 +4504,7 @@
     "flags": [
       {
         "name": "sa-uuid",
-        "description": "O Uuid",
+        "description": "UUID da Conta de Serviço (SA)",
         "original_description": "Sa Uuid",
         "type": "string",
         "required": true,
@@ -4512,7 +4512,7 @@
       },
       {
         "name": "status",
-        "description": "APIKeyStatusEnum",
+        "description": "Status",
         "original_description": "APIKeyStatusEnum",
         "type": "string",
         "required": false,
@@ -4525,7 +4525,7 @@
     "flags": [
       {
         "name": "apikey-uuid",
-        "description": "Por favor, Uuid",
+        "description": "UUID da Chave de API",
         "original_description": "Apikey Uuid",
         "type": "string",
         "required": true,
@@ -4549,7 +4549,7 @@
       },
       {
         "name": "sa-uuid",
-        "description": "O Uuid",
+        "description": "UUID da Conta de Serviço (SA)",
         "original_description": "Sa Uuid",
         "type": "string",
         "required": true,
@@ -4557,7 +4557,7 @@
       },
       {
         "name": "scopes",
-        "description": "Âmbitos",
+        "description": "Escopos",
         "original_description": "Scopes",
         "type": "array(string)",
         "required": false,
@@ -4599,7 +4599,7 @@
     "flags": [
       {
         "name": "sa-uuid",
-        "description": "O Uuid",
+        "description": "UUID da Conta de Serviço (SA)",
         "original_description": "Sa Uuid",
         "type": "string",
         "required": true,
@@ -4632,7 +4632,7 @@
       },
       {
         "name": "sa-uuid",
-        "description": "O Uuid",
+        "description": "UUID da Conta de Serviço (SA)",
         "original_description": "Sa Uuid",
         "type": "string",
         "required": true,
@@ -4669,7 +4669,7 @@
       },
       {
         "name": "enabled-bastion",
-        "description": "Este parâmetro está obsoleto e seu uso não criará um servidor bastion\nHabilita o uso de um host bastion para acesso seguro ao cluster.\n",
+        "description": "Este parâmetro está descontinuado (deprecated) e seu uso não criará um servidor bastion.\nHabilita o uso de um host bastion para acesso seguro ao cluster.\n",
         "original_description": "This parameter is deprecated and its use won't create a bastion server\nEnables the use of a bastion host for secure access to the cluster.\n",
         "type": "boolean",
         "required": false,
@@ -4677,7 +4677,7 @@
       },
       {
         "name": "enabled-server-group",
-        "description": "Permite o uso de um grupo de servidores com política de anti-afinidade durante a criação do cluster e de seus conjuntos de nós.\n",
+        "description": "Permite o uso de um grupo de servidores com política de anti-afinidade durante a criação do cluster e de seus pools de nós (node pools).\n",
         "original_description": "Enables the use of a server group with anti-affinity policy during the creation of the cluster and its node pools.\n",
         "type": "boolean",
         "required": false,
@@ -4693,7 +4693,7 @@
       },
       {
         "name": "network",
-        "description": "Objeto de solicitação para a solicitação de recurso de rede dos clusters do Kubernetes.\n",
+        "description": "Objeto de solicitação para o recurso de rede dos clusters do Kubernetes.\n",
         "original_description": "Request object for the Kubernetes clusters network resource request.\n",
         "type": "object",
         "required": false,
@@ -4701,7 +4701,7 @@
       },
       {
         "name": "node-pools",
-        "description": "Uma matriz que representa um conjunto de nós dentro de um cluster do Kubernetes.\n",
+        "description": "Um vetor que representa um conjunto de nós (node pools) dentro de um cluster do Kubernetes.\n",
         "original_description": "An array representing a set of nodes within a Kubernetes cluster.\n",
         "type": "array(object)",
         "required": false,
@@ -4725,7 +4725,7 @@
       },
       {
         "name": "zone",
-        "description": "Este parâmetro está obsoleto e seu uso não criará um cluster na zona solicitada.\nIdentificador da zona onde o cluster do Kubernetes será localizado.\n",
+        "description": "Este parâmetro está descontinuado (deprecated) e seu uso não criará um cluster na zona solicitada.\nIdentificador da zona onde o cluster do Kubernetes será localizado.\n",
         "original_description": "This parameter is deprecated and its use won't create a cluster at requested zone.\nIdentifier of the zone where the Kubernetes cluster will be located.\n",
         "type": "string",
         "required": false,
@@ -4764,7 +4764,7 @@
     "flags": [
       {
         "name": "cluster-id",
-        "description": "Esquema para obter o arquivo kubeconfig do cluster.",
+        "description": "Schema para obter o arquivo kubeconfig do cluster.",
         "original_description": "Schema to get the cluster's kubeconfig file.",
         "type": "string",
         "required": true,
@@ -6303,7 +6303,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -6316,7 +6316,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -8633,7 +8633,7 @@
     "flags": [
       {
         "name": "control.limit",
-        "description": " Limite",
+        "description": "Limite",
         "original_description": " Limit",
         "type": "integer",
         "required": false,
@@ -8641,7 +8641,7 @@
       },
       {
         "name": "control.offset",
-        "description": " Deslocamento",
+        "description": "Offset",
         "original_description": " Offset",
         "type": "integer",
         "required": false,
@@ -8649,7 +8649,7 @@
       },
       {
         "name": "control.sort",
-        "description": " Sorte",
+        "description": "Ordenação",
         "original_description": " Sort",
         "type": "string",
         "required": false,
@@ -8739,7 +8739,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -8752,7 +8752,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -8765,7 +8765,7 @@
     "flags": [
       {
         "name": "control.limit",
-        "description": " Limite",
+        "description": "Limite",
         "original_description": " Limit",
         "type": "integer",
         "required": false,
@@ -8773,7 +8773,7 @@
       },
       {
         "name": "control.offset",
-        "description": " Deslocamento",
+        "description": "Offset",
         "original_description": " Offset",
         "type": "integer",
         "required": false,
@@ -8781,7 +8781,7 @@
       },
       {
         "name": "control.sort",
-        "description": " Sorte",
+        "description": "Ordenação",
         "original_description": " Sort",
         "type": "string",
         "required": false,
@@ -8810,7 +8810,7 @@
       },
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -8846,7 +8846,7 @@
       },
       {
         "name": "control.limit",
-        "description": " Limite",
+        "description": "Limite",
         "original_description": " Limit",
         "type": "integer",
         "required": false,
@@ -8854,7 +8854,7 @@
       },
       {
         "name": "control.offset",
-        "description": " Deslocamento",
+        "description": "Offset",
         "original_description": " Offset",
         "type": "integer",
         "required": false,
@@ -8862,7 +8862,7 @@
       },
       {
         "name": "control.sort",
-        "description": " Sorte",
+        "description": "Ordenação",
         "original_description": " Sort",
         "type": "string",
         "required": false,
@@ -8980,7 +8980,7 @@
     "flags": [
       {
         "name": "expand",
-        "description": "Você pode obter informações mais detalhadas sobre: ['imagem', 'tipo de máquina', 'tipos de máquina', 'rede', 'rótulos'] ",
+        "description": "Você pode obter informações mais detalhadas sobre: ['image', 'machine-type', 'machine-types', 'network', 'labels'] ",
         "original_description": "You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels'] ",
         "type": "array(string)",
         "required": true,
@@ -9005,7 +9005,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -9113,7 +9113,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -9273,7 +9273,7 @@
       },
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -9307,7 +9307,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -9328,7 +9328,7 @@
       },
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -9386,7 +9386,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -9415,7 +9415,7 @@
       },
       {
         "name": "id",
-        "description": "A mão",
+        "description": "ID",
         "original_description": "Id",
         "type": "string",
         "required": true,
