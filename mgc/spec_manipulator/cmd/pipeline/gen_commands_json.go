@@ -178,9 +178,12 @@ func applyTranslations(result map[string]commandResult, apiKey, outputFile strin
 	}
 
 	translationMap := make(map[string]string)
-	if len(toTranslate) == 0 {
+	switch {
+	case len(toTranslate) == 0:
 		fmt.Println("All descriptions already translated, skipping API call.")
-	} else {
+	case apiKey == "":
+		fmt.Fprintf(os.Stderr, "warning: %d description(s) need translation but no API key available, skipping\n", len(toTranslate))
+	default:
 		fmt.Printf("Translating %d new/changed descriptions via DeepL...\n", len(toTranslate))
 		translated, err := newDeeplTranslator(apiKey).translateAll(toTranslate)
 		if err != nil {
@@ -319,9 +322,7 @@ func runGenCommandsJSON(params genCommandsJSONParams) error {
 	if params.translate {
 		apiKey := deeplAPIKey(params)
 
-		if apiKey == "" {
-			fmt.Fprintln(os.Stderr, "warning: DeepL API key not found (--deepl-key, DEEPL_API_KEY env var, or .env file), skipping translation")
-		} else if err := applyTranslations(result, apiKey, params.outputFile); err != nil {
+		if err := applyTranslations(result, apiKey, params.outputFile); err != nil {
 			return fmt.Errorf("translating descriptions: %w", err)
 		}
 	}
