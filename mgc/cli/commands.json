@@ -152,7 +152,8 @@
     "flags": [
       {
         "name": "id",
-        "description": "",
+        "description": "ID",
+        "original_description": "",
         "type": "string",
         "required": true,
         "default_value": null
@@ -560,6 +561,22 @@
         "type": "object",
         "required": true,
         "default_value": null
+      },
+      {
+        "name": "volume.id",
+        "description": "ID do volume",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "volume.name",
+        "description": "Nome do volume",
+        "original_description": "Name",
+        "type": "string",
+        "required": false,
+        "default_value": null
       }
     ]
   },
@@ -591,11 +608,35 @@
         "default_value": null
       },
       {
+        "name": "policy.frequency",
+        "description": "Frequência",
+        "original_description": "Frequency",
+        "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "policy.retention-in-days",
+        "description": "Permanência em dias",
+        "original_description": "Retention In Days",
+        "type": "integer",
+        "required": false,
+        "default_value": null
+      },
+      {
         "name": "snapshot",
         "description": "Snapshot",
         "original_description": "Snapshot",
         "type": "object",
         "required": true,
+        "default_value": null
+      },
+      {
+        "name": "snapshot.type",
+        "description": "Tipo do snapshot",
+        "original_description": "SnapshotType",
+        "type": "string",
+        "required": false,
         "default_value": null
       }
     ]
@@ -630,6 +671,22 @@
         "original_description": "Volume",
         "type": "object",
         "required": true,
+        "default_value": null
+      },
+      {
+        "name": "volume.id",
+        "description": "ID do volume",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "volume.name",
+        "description": "Nome",
+        "original_description": "Name",
+        "type": "string",
+        "required": false,
         "default_value": null
       }
     ]
@@ -741,6 +798,22 @@
         "default_value": null
       },
       {
+        "name": "source-snapshot.id",
+        "description": "ID do snapshot de origem",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "source-snapshot.name",
+        "description": "Nome do snapshot de origem",
+        "original_description": "Name",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
         "name": "type",
         "description": "Tipo de snapshot",
         "original_description": "SnapshotType",
@@ -753,6 +826,22 @@
         "description": "Volume",
         "original_description": "Volume",
         "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "volume.id",
+        "description": "ID do volume",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "volume.name",
+        "description": "Nome",
+        "original_description": "Name",
+        "type": "string",
         "required": false,
         "default_value": null
       }
@@ -960,11 +1049,43 @@
         "default_value": null
       },
       {
+        "name": "snapshot.id",
+        "description": "ID do snapshot",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "snapshot.name",
+        "description": "Nome",
+        "original_description": "Name",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
         "name": "type",
         "description": "Tipo",
         "original_description": "Type",
         "type": "object",
         "required": true,
+        "default_value": null
+      },
+      {
+        "name": "type.id",
+        "description": "ID",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "type.name",
+        "description": "Nome",
+        "original_description": "Name",
+        "type": "string",
+        "required": false,
         "default_value": null
       }
     ]
@@ -1121,6 +1242,22 @@
         "type": "object",
         "required": true,
         "default_value": null
+      },
+      {
+        "name": "new-type.id",
+        "description": "ID",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "new-type.name",
+        "description": "Nome",
+        "original_description": "Name",
+        "type": "string",
+        "required": false,
+        "default_value": null
       }
     ]
   },
@@ -1155,7 +1292,8 @@
     "flags": [
       {
         "name": "key",
-        "description": "",
+        "description": "Nome da configuração desejada",
+        "original_description": "",
         "type": "string",
         "required": true,
         "default_value": null
@@ -2121,6 +2259,22 @@
         "type": "object",
         "required": true,
         "default_value": null
+      },
+      {
+        "name": "volume.size",
+        "description": "O tamanho do volume (em GiB).",
+        "original_description": "The size of the volume (in GiB).",
+        "type": "integer",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "volume.type",
+        "description": "O tipo do volume.\nObservação: os tipos de volume de pré-visualização CLOUD_NVME30K, CLOUD_NVME40K e CLOUD_NVME50K exigem permissão do tenant.\n",
+        "original_description": "The type of the volume.\nNote: Preview volume types CLOUD_NVME30K, CLOUD_NVME40K, and CLOUD_NVME50K require tenant permission.\n",
+        "type": "string",
+        "required": false,
+        "default_value": null
       }
     ]
   },
@@ -2267,6 +2421,14 @@
         "description": "Solicitação de volume do cluster",
         "original_description": "Cluster Volume Request",
         "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "volume.size",
+        "description": "O tamanho do volume (em GiB).",
+        "original_description": "The size of the volume (in GiB).",
+        "type": "integer",
         "required": false,
         "default_value": null
       }
@@ -2620,6 +2782,22 @@
         "type": "object",
         "required": true,
         "default_value": null
+      },
+      {
+        "name": "volume.size",
+        "description": "O tamanho do volume (em GiB).",
+        "original_description": "The size of the volume (in GiB).",
+        "type": "integer",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "volume.type",
+        "description": "O tipo do volume.\nObservação: os tipos de volume de pré-visualização CLOUD_NVME30K, CLOUD_NVME40K e CLOUD_NVME50K exigem permissão do tenant.\n",
+        "original_description": "The type of the volume.\nNote: Preview volume types CLOUD_NVME30K, CLOUD_NVME40K, and CLOUD_NVME50K require tenant permission.\n",
+        "type": "string",
+        "required": false,
+        "default_value": null
       }
     ]
   },
@@ -2782,6 +2960,14 @@
         "description": "Solicitação de volume de instância",
         "original_description": "Instance Volume Request",
         "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "volume.size",
+        "description": "O tamanho do volume (em GiB).",
+        "original_description": "The size of the volume (in GiB).",
+        "type": "integer",
         "required": false,
         "default_value": null
       }
@@ -3205,6 +3391,14 @@
         "type": "object",
         "required": false,
         "default_value": null
+      },
+      {
+        "name": "volume.size",
+        "description": "O tamanho do volume (em GiB).",
+        "original_description": "The size of the volume (in GiB).",
+        "type": "integer",
+        "required": false,
+        "default_value": null
       }
     ]
   },
@@ -3406,6 +3600,22 @@
         "description": "Solicitação de volume do cluster",
         "original_description": "Cluster Volume Request",
         "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "volume.size",
+        "description": "O tamanho do volume (em GiB).",
+        "original_description": "The size of the volume (in GiB).",
+        "type": "integer",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "volume.type",
+        "description": "O tipo do volume.\nObservação: os tipos de volume de pré-visualização CLOUD_NVME30K, CLOUD_NVME40K e CLOUD_NVME50K exigem permissão do tenant.\n",
+        "original_description": "The type of the volume.\nNote: Preview volume types CLOUD_NVME30K, CLOUD_NVME40K, and CLOUD_NVME50K require tenant permission.\n",
+        "type": "string",
         "required": false,
         "default_value": null
       }
@@ -3620,6 +3830,22 @@
         "description": "Solicitação de volume de instância",
         "original_description": "Instance Volume Request",
         "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "volume.size",
+        "description": "O tamanho do volume (em GiB).",
+        "original_description": "The size of the volume (in GiB).",
+        "type": "integer",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "volume.type",
+        "description": "O tipo do volume.\nObservação: os tipos de volume de pré-visualização CLOUD_NVME30K, CLOUD_NVME40K e CLOUD_NVME50K exigem permissão do tenant.\n",
+        "original_description": "The type of the volume.\nNote: Preview volume types CLOUD_NVME30K, CLOUD_NVME40K, and CLOUD_NVME50K require tenant permission.\n",
+        "type": "string",
         "required": false,
         "default_value": null
       }
@@ -3890,15 +4116,113 @@
       },
       {
         "name": "oidc",
-        "description": "",
+        "description": "OIDC",
+        "original_description": "",
         "type": "object",
         "required": false,
         "default_value": null
       },
       {
+        "name": "oidc.authorization-endpoint",
+        "description": "Endpoint de autorização",
+        "original_description": "Authorization Endpoint",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "oidc.client-id",
+        "description": "ID do cliente",
+        "original_description": "Client Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "oidc.client-secret",
+        "description": "Secret do cliente",
+        "original_description": "Client Secret",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "oidc.jwks-uri",
+        "description": "URI do Jwks",
+        "original_description": "Jwks Uri",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "oidc.name",
+        "description": "Nome",
+        "original_description": "Name",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "oidc.scopes",
+        "description": "Escopos",
+        "original_description": "Scopes",
+        "type": "array(string)",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "oidc.token-endpoint",
+        "description": "Endpoint do token",
+        "original_description": "Token Endpoint",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "oidc.userinfo-endpoint",
+        "description": "Endpoint das informações do usuário",
+        "original_description": "Userinfo Endpoint",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
         "name": "saml",
-        "description": "",
+        "description": "SAML",
+        "original_description": "",
         "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "saml.entity-id",
+        "description": "ID da entidade",
+        "original_description": "Entity Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "saml.idp-certificate",
+        "description": "Certificado Idp",
+        "original_description": "Idp Certificate",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "saml.name",
+        "description": "Nome",
+        "original_description": "Name",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "saml.sso-url",
+        "description": "URL do SSO",
+        "original_description": "Sso Url",
+        "type": "string",
         "required": false,
         "default_value": null
       }
@@ -4700,6 +5024,14 @@
         "default_value": null
       },
       {
+        "name": "network.subnet-ids",
+        "description": "Lista de IDs das subnets",
+        "original_description": "",
+        "type": "array(string)",
+        "required": false,
+        "default_value": null
+      },
+      {
         "name": "node-pools",
         "description": "Um vetor que representa um conjunto de nós (node pools) dentro de um cluster do Kubernetes.\n",
         "original_description": "An array representing a set of nodes within a Kubernetes cluster.\n",
@@ -4782,6 +5114,7 @@
       {
         "name": "allowed-cidrs",
         "description": "",
+        "original_description": "",
         "type": "array(string)",
         "required": false,
         "default_value": null
@@ -4824,6 +5157,22 @@
         "description": "Objeto que especifica propriedades para a atualização de recursos de carga de trabalho no cluster do Kubernetes.\n",
         "original_description": "Object specifying properties for updating workload resources in the Kubernetes cluster.\n",
         "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "auto-scale.max-replicas",
+        "description": "Número máximo de réplicas para o autoescalonamento. Se não for especificado, o valor de autoescalonamento será determinado com base no campo \"réplicas\".\n",
+        "original_description": "Maximum number of replicas for autoscaling. If not provided, the autoscale value will be assumed based on the \"replicas\" field.\n",
+        "type": "integer",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "auto-scale.min-replicas",
+        "description": "Número mínimo de réplicas para o autoescalonamento. Se não for especificado, o valor de autoescalonamento será determinado com base no campo \"réplicas\".\n",
+        "original_description": "Minimum number of replicas for autoscaling. If not provided, the autoscale value will be assumed based on the \"replicas\" field.\n",
+        "type": "integer",
         "required": false,
         "default_value": null
       },
@@ -4872,6 +5221,14 @@
         "description": "Objeto de solicitação para a solicitação de recurso de rede de conjuntos de nós do Kubernetes.\n",
         "original_description": "Request object for the Kubernetes nodepools network resource request.\n",
         "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "network.subnet-ids",
+        "description": "Lista de IDs das subnets",
+        "original_description": "",
+        "type": "array(string)",
         "required": false,
         "default_value": null
       },
@@ -4985,6 +5342,22 @@
         "description": "Objeto que especifica propriedades para a atualização de recursos de carga de trabalho no cluster do Kubernetes.\n",
         "original_description": "Object specifying properties for updating workload resources in the Kubernetes cluster.\n",
         "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "auto-scale.max-replicas",
+        "description": "Número máximo de réplicas para o autoescalonamento. Se não for especificado, o valor de autoescalonamento será determinado com base no campo \"réplicas\".\n",
+        "original_description": "Maximum number of replicas for autoscaling. If not provided, the autoscale value will be assumed based on the \"replicas\" field.\n",
+        "type": "integer",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "auto-scale.min-replicas",
+        "description": "Número mínimo de réplicas para o autoescalonamento. Se não for especificado, o valor de autoescalonamento será determinado com base no campo \"réplicas\".\n",
+        "original_description": "Minimum number of replicas for autoscaling. If not provided, the autoscale value will be assumed based on the \"replicas\" field.\n",
+        "type": "integer",
         "required": false,
         "default_value": null
       },
@@ -7406,7 +7779,8 @@
     "flags": [
       {
         "name": "uuid",
-        "description": "",
+        "description": "UUID",
+        "original_description": "",
         "type": "string",
         "required": true,
         "default_value": null
@@ -7470,6 +7844,7 @@
       {
         "name": "aws-exec-read",
         "description": "",
+        "original_description": "",
         "type": "boolean",
         "required": false,
         "default_value": null
@@ -7609,6 +7984,7 @@
       {
         "name": "aws-exec-read",
         "description": "",
+        "original_description": "",
         "type": "boolean",
         "required": false,
         "default_value": null
@@ -7972,6 +8348,7 @@
       {
         "name": "aws-exec-read",
         "description": "",
+        "original_description": "",
         "type": "boolean",
         "required": false,
         "default_value": null
@@ -7979,6 +8356,7 @@
       {
         "name": "bucket-owner-full-control",
         "description": "",
+        "original_description": "",
         "type": "boolean",
         "required": false,
         "default_value": null
@@ -7986,6 +8364,7 @@
       {
         "name": "bucket-owner-read",
         "description": "",
+        "original_description": "",
         "type": "boolean",
         "required": false,
         "default_value": null
@@ -8434,6 +8813,7 @@
       {
         "name": "method",
         "description": "",
+        "original_description": "",
         "type": "string",
         "required": true,
         "default_value": "GET"
@@ -8709,8 +9089,32 @@
         "default_value": null
       },
       {
+        "name": "requirements.disk",
+        "description": "Disk",
+        "original_description": "Disk",
+        "type": "integer",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "requirements.ram",
+        "description": "RAM",
+        "original_description": "Ram",
+        "type": "integer",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "requirements.vcpu",
+        "description": "VCPU",
+        "original_description": "Vcpu",
+        "type": "integer",
+        "required": false,
+        "default_value": null
+      },
+      {
         "name": "uefi",
-        "description": "Bem-vindo",
+        "description": "Uefi",
         "original_description": "Uefi",
         "type": "boolean",
         "required": false,
@@ -8819,7 +9223,32 @@
       {
         "name": "requirements",
         "description": "",
+        "original_description": "",
         "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "requirements.disk",
+        "description": "Disk",
+        "original_description": "Disk",
+        "type": "integer",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "requirements.ram",
+        "description": "RAM",
+        "original_description": "Ram",
+        "type": "integer",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "requirements.vcpu",
+        "description": "VCPU",
+        "original_description": "Vcpu",
+        "type": "integer",
         "required": false,
         "default_value": null
       },
@@ -8891,10 +9320,26 @@
       },
       {
         "name": "image",
-        "description": "Imagem",
+        "description": "Nome ou ID da imagem",
         "original_description": "Image",
         "type": "object",
         "required": true,
+        "default_value": null
+      },
+      {
+        "name": "image.id",
+        "description": "ID",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "image.name",
+        "description": "Nome",
+        "original_description": "Name",
+        "type": "string",
+        "required": false,
         "default_value": null
       },
       {
@@ -8907,15 +9352,31 @@
       },
       {
         "name": "machine-type",
-        "description": "Tipo de máquina",
+        "description": "Nome ou ID do tipo de instância",
         "original_description": "Machine Type",
         "type": "object",
         "required": true,
         "default_value": null
       },
       {
-        "name": "name",
+        "name": "machine-type.id",
+        "description": "ID",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "machine-type.name",
         "description": "Nome",
+        "original_description": "Name",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "name",
+        "description": "Nome da instância",
         "original_description": "Name",
         "type": "string",
         "required": true,
@@ -8924,6 +9385,31 @@
       {
         "name": "network",
         "description": "",
+        "original_description": "",
+        "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "network.associate-public-ip",
+        "description": "IP público associado",
+        "original_description": "Associate Public Ip",
+        "type": "boolean",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "network.interface",
+        "description": "Interface",
+        "original_description": "Interface",
+        "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "network.vpc",
+        "description": "Vpc",
+        "original_description": "Vpc",
         "type": "object",
         "required": false,
         "default_value": null
@@ -8959,7 +9445,7 @@
     "flags": [
       {
         "name": "delete-public-ip",
-        "description": "O valor padrão do sinalizador é false.",
+        "description": "Escolha deletar simultaneamente o IP público associado a sua instância",
         "original_description": "Flag default value false.",
         "type": "boolean",
         "required": false,
@@ -8967,7 +9453,7 @@
       },
       {
         "name": "id",
-        "description": "ID da instância — para obter ajuda, use ./mgc virtual-machines instances list .",
+        "description": "ID da instância",
         "original_description": "Instance id - for help use ./mgc virtual-machines instances list .",
         "type": "string",
         "required": true,
@@ -8992,7 +9478,7 @@
       },
       {
         "name": "id",
-        "description": "ID da instância — para obter ajuda, use ./mgc virtual-machines instances list .",
+        "description": "ID da instância",
         "original_description": "Instance id - for help use ./mgc virtual-machines instances list .",
         "type": "string",
         "required": true,
@@ -9026,7 +9512,7 @@
     "flags": [
       {
         "name": "control.limit",
-        "description": "limitar o número de resultados",
+        "description": "Limitar o número de resultados",
         "original_description": "limit the number of the results",
         "type": "integer",
         "required": false,
@@ -9034,7 +9520,7 @@
       },
       {
         "name": "control.offset",
-        "description": "paginação para os resultados limitados",
+        "description": "Offset para paginação",
         "original_description": "pagination for the results limited",
         "type": "integer",
         "required": false,
@@ -9042,7 +9528,7 @@
       },
       {
         "name": "control.sort",
-        "description": "ordenação dos resultados com base nos campos especificados",
+        "description": "Ordenação dos resultados com base nos campos especificados",
         "original_description": "order of the results using informed fields",
         "type": "string",
         "required": false,
@@ -9050,7 +9536,7 @@
       },
       {
         "name": "expand",
-        "description": "Você pode obter informações mais detalhadas sobre: ['imagem', 'tipo de máquina', 'tipos de máquina', 'rede', 'rótulos'] ",
+        "description": "Você pode obter informações mais detalhadas sobre: ['image', 'machine-type', 'machine-types', 'network', 'labels'] ",
         "original_description": "You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels'] ",
         "type": "array(string)",
         "required": false,
@@ -9058,7 +9544,7 @@
       },
       {
         "name": "name",
-        "description": "nome da instância",
+        "description": "Filtra pelo nome da instância",
         "original_description": "name of the instance",
         "type": "string",
         "required": false,
@@ -9078,11 +9564,35 @@
         "default_value": null
       },
       {
+        "name": "instance.id",
+        "description": "ID",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "instance.name",
+        "description": "Nome",
+        "original_description": "Name",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
         "name": "network",
         "description": "NICRequestInterfaceField",
         "original_description": "NICRequestInterfaceField",
         "type": "object",
         "required": true,
+        "default_value": null
+      },
+      {
+        "name": "network.interface",
+        "description": "Interface",
+        "original_description": "ID",
+        "type": "object",
+        "required": false,
         "default_value": null
       }
     ]
@@ -9099,11 +9609,35 @@
         "default_value": null
       },
       {
+        "name": "instance.id",
+        "description": "ID",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "instance.name",
+        "description": "Nome",
+        "original_description": "Name",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
         "name": "network",
         "description": "NICRequestInterfaceField",
         "original_description": "NICRequestInterfaceField",
         "type": "object",
         "required": true,
+        "default_value": null
+      },
+      {
+        "name": "network.interface",
+        "description": "Interface",
+        "original_description": "ID",
+        "type": "object",
+        "required": false,
         "default_value": null
       }
     ]
@@ -9126,7 +9660,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "ID da instância — para obter ajuda, use ./mgc virtual-machines instances list .",
+        "description": "ID da instância",
         "original_description": "Instance id - for help use ./mgc virtual-machines instances list .",
         "type": "string",
         "required": true,
@@ -9139,7 +9673,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "ID da instância — para obter ajuda, use ./mgc virtual-machines instances list .",
+        "description": "ID da instância",
         "original_description": "Instance id - for help use ./mgc virtual-machines instances list .",
         "type": "string",
         "required": true,
@@ -9160,7 +9694,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "ID da instância — para obter ajuda, use ./mgc virtual-machines instances list .",
+        "description": "ID da instância",
         "original_description": "Instance id - for help use ./mgc virtual-machines instances list .",
         "type": "string",
         "required": true,
@@ -9173,6 +9707,22 @@
         "type": "object",
         "required": true,
         "default_value": null
+      },
+      {
+        "name": "machine-type.id",
+        "description": "ID",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "machine-type.name",
+        "description": "Nome",
+        "original_description": "Name",
+        "type": "string",
+        "required": false,
+        "default_value": null
       }
     ]
   },
@@ -9181,7 +9731,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "ID da instância — para obter ajuda, use ./mgc virtual-machines instances list .",
+        "description": "ID da instância",
         "original_description": "Instance id - for help use ./mgc virtual-machines instances list .",
         "type": "string",
         "required": true,
@@ -9194,7 +9744,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "ID da instância — para obter ajuda, use ./mgc virtual-machines instances list .",
+        "description": "ID da instância",
         "original_description": "Instance id - for help use ./mgc virtual-machines instances list .",
         "type": "string",
         "required": true,
@@ -9207,7 +9757,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "ID da instância — para obter ajuda, use ./mgc virtual-machines instances list .",
+        "description": "ID da instância",
         "original_description": "Instance id - for help use ./mgc virtual-machines instances list .",
         "type": "string",
         "required": true,
@@ -9220,7 +9770,7 @@
     "flags": [
       {
         "name": "availability-zone",
-        "description": "Campeonato Nacional Britânico 1A",
+        "description": "Zona de disponibilidade",
         "original_description": "br-ne1-a",
         "type": "string",
         "required": false,
@@ -9228,7 +9778,7 @@
       },
       {
         "name": "control.limit",
-        "description": "limitar o número de resultados",
+        "description": "Limitar o número de resultados",
         "original_description": "limit the number of the results",
         "type": "integer",
         "required": false,
@@ -9236,7 +9786,7 @@
       },
       {
         "name": "control.offset",
-        "description": "paginação para os resultados limitados",
+        "description": "Offset para paginação",
         "original_description": "pagination for the results limited",
         "type": "integer",
         "required": false,
@@ -9244,7 +9794,7 @@
       },
       {
         "name": "control.sort",
-        "description": "ordenação dos resultados com base nos campos especificados",
+        "description": "Ordenação dos resultados com base nos campos especificados",
         "original_description": "order of the results using informed fields",
         "type": "string",
         "required": false,
@@ -9252,7 +9802,7 @@
       },
       {
         "name": "name",
-        "description": "nome do tipo de instância",
+        "description": "Filtra pelo nome do tipo de instância",
         "original_description": "name of the instance type",
         "type": "string",
         "required": false,
@@ -9290,6 +9840,22 @@
         "original_description": "Instance",
         "type": "object",
         "required": true,
+        "default_value": null
+      },
+      {
+        "name": "instance.id",
+        "description": "ID",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "instance.name",
+        "description": "Nome",
+        "original_description": "Name",
+        "type": "string",
+        "required": false,
         "default_value": null
       },
       {
@@ -9430,6 +9996,22 @@
         "default_value": null
       },
       {
+        "name": "machine-type.id",
+        "description": "ID",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "machine-type.name",
+        "description": "Nome",
+        "original_description": "Name",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
         "name": "name",
         "description": "Nome",
         "original_description": "Name",
@@ -9440,6 +10022,31 @@
       {
         "name": "network",
         "description": "",
+        "original_description": "",
+        "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "network.associate-public-ip",
+        "description": "IP público associado",
+        "original_description": "Associate Public Ip",
+        "type": "boolean",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "network.interface",
+        "description": "Interface",
+        "original_description": "Interface",
+        "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "network.vpc",
+        "description": "Vpc",
+        "original_description": "Vpc",
         "type": "object",
         "required": false,
         "default_value": null

@@ -28,13 +28,14 @@ type nodeParams struct {
 }
 
 type paramProperty struct {
-	Type        string          `json:"type"`
-	Description string          `json:"description"`
-	Title       string          `json:"title"`
-	Default     any             `json:"default"`
-	Items       *propertyItems  `json:"items"`
-	AnyOf       json.RawMessage `json:"anyOf"`
-	OneOf       json.RawMessage `json:"oneOf"`
+	Type        string                   `json:"type"`
+	Description string                   `json:"description"`
+	Title       string                   `json:"title"`
+	Default     any                      `json:"default"`
+	Items       *propertyItems           `json:"items"`
+	AnyOf       json.RawMessage          `json:"anyOf"`
+	OneOf       json.RawMessage          `json:"oneOf"`
+	Properties  map[string]paramProperty `json:"properties"`
 }
 
 type propertyItems struct {
@@ -49,7 +50,7 @@ type commandResult struct {
 type flagResult struct {
 	Name                string `json:"name"`
 	Description         string `json:"description"`
-	OriginalDescription string `json:"original_description,omitempty"`
+	OriginalDescription string `json:"original_description"`
 	Type                string `json:"type"`
 	Required            bool   `json:"required"`
 	DefaultValue        any    `json:"default_value"`
@@ -199,6 +200,10 @@ func applyTranslations(result map[string]commandResult, apiKey, outputFile strin
 		existingFlags := flagsByName(existing[key].Flags)
 		for i, flag := range entry.Flags {
 			if flag.Description == "" {
+				if ex, ok := existingFlags[flag.Name]; ok && ex.Description != "" {
+					entry.Flags[i].Description = ex.Description
+					entry.Flags[i].OriginalDescription = ex.OriginalDescription
+				}
 				continue
 			}
 			ex, unchanged := existingFlags[flag.Name]
@@ -216,6 +221,31 @@ func applyTranslations(result map[string]commandResult, apiKey, outputFile strin
 	}
 
 	return nil
+}
+
+func collectObjectSubProperties(prop paramProperty) map[string]paramProperty {
+	if len(prop.Properties) > 0 {
+		return prop.Properties
+	}
+	merged := make(map[string]paramProperty)
+	for _, raw := range []json.RawMessage{prop.AnyOf, prop.OneOf} {
+		if raw == nil {
+			continue
+		}
+		var schemas []paramProperty
+		if err := json.Unmarshal(raw, &schemas); err != nil {
+			continue
+		}
+		for _, schema := range schemas {
+			if schema.Type != "object" {
+				continue
+			}
+			for k, v := range schema.Properties {
+				merged[k] = v
+			}
+		}
+	}
+	return merged
 }
 
 func resolveType(prop paramProperty) string {
@@ -247,18 +277,41 @@ func extractFlags(params *nodeParams) []flagResult {
 		if strings.HasPrefix(flagName, "-") {
 			flagName = "control." + strings.TrimLeft(flagName, "-")
 		}
+
 		desc := prop.Description
 		if desc == "" {
 			desc = prop.Title
 		}
+
+		flagType := resolveType(prop)
+
 		flags = append(flags, flagResult{
 			Name:         flagName,
 			Description:  desc,
-			Type:         resolveType(prop),
+			Type:         flagType,
 			Required:     required[name],
 			DefaultValue: prop.Default,
 		})
+
+		if flagType == "object" {
+			for subName, subProp := range collectObjectSubProperties(prop) {
+				subFlagName := flagName + "." + strings.ReplaceAll(subName, "_", "-")
+				subDesc := subProp.Description
+
+				if subDesc == "" {
+					subDesc = subProp.Title
+				}
+
+				flags = append(flags, flagResult{
+					Name:        subFlagName,
+					Description: subDesc,
+					Type:        resolveType(subProp),
+					Required:    false,
+				})
+			}
+		}
 	}
+
 	sort.Slice(flags, func(i, j int) bool { return flags[i].Name < flags[j].Name })
 	return flags
 }
