@@ -616,6 +616,22 @@
         "default_value": null
       },
       {
+        "name": "policy.frequency.daily",
+        "description": "Frequência diária",
+        "original_description": "DailyFrequency",
+        "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "policy.frequency.daily.start-time",
+        "description": "Hora de início",
+        "original_description": "Start Time",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
         "name": "policy.retention-in-days",
         "description": "Permanência em dias",
         "original_description": "Retention In Days",
@@ -9320,7 +9336,7 @@
       },
       {
         "name": "image",
-        "description": "Nome ou ID da imagem",
+        "description": "Nome ou ID da imagem ou ID do snapshot",
         "original_description": "Image",
         "type": "object",
         "required": true,
@@ -9328,7 +9344,7 @@
       },
       {
         "name": "image.id",
-        "description": "ID",
+        "description": "ID da imagem ou ID do snapshot",
         "original_description": "Id",
         "type": "string",
         "required": false,
@@ -9336,7 +9352,7 @@
       },
       {
         "name": "image.name",
-        "description": "Nome",
+        "description": "Nome da imagem",
         "original_description": "Name",
         "type": "string",
         "required": false,
@@ -9360,7 +9376,7 @@
       },
       {
         "name": "machine-type.id",
-        "description": "ID",
+        "description": "ID do tipo de instância",
         "original_description": "Id",
         "type": "string",
         "required": false,
@@ -9368,7 +9384,7 @@
       },
       {
         "name": "machine-type.name",
-        "description": "Nome",
+        "description": "Nome do tipo de instância",
         "original_description": "Name",
         "type": "string",
         "required": false,
@@ -9384,7 +9400,7 @@
       },
       {
         "name": "network",
-        "description": "",
+        "description": "Propriedades de associação de IP público e/ou VPC (Para mais detalhes acessar documentação de Network)",
         "original_description": "",
         "type": "object",
         "required": false,
@@ -9392,7 +9408,7 @@
       },
       {
         "name": "network.associate-public-ip",
-        "description": "IP público associado",
+        "description": "Associação de IP público (Default é \"true\")",
         "original_description": "Associate Public Ip",
         "type": "boolean",
         "required": false,
@@ -9407,10 +9423,42 @@
         "default_value": null
       },
       {
+        "name": "network.interface.id",
+        "description": "ID da interface",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "network.interface.security-groups",
+        "description": "Grupos de segurança",
+        "original_description": "Security Groups",
+        "type": "array(object)",
+        "required": false,
+        "default_value": null
+      },
+      {
         "name": "network.vpc",
-        "description": "Vpc",
+        "description": "Nome ou ID da VPC",
         "original_description": "Vpc",
         "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "network.vpc.id",
+        "description": "ID da VPC",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "network.vpc.name",
+        "description": "Nome da VPC",
+        "original_description": "Name",
+        "type": "string",
         "required": false,
         "default_value": null
       },
@@ -9594,6 +9642,14 @@
         "type": "object",
         "required": false,
         "default_value": null
+      },
+      {
+        "name": "network.interface.id",
+        "description": "ID da interface",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
       }
     ]
   },
@@ -9637,6 +9693,14 @@
         "description": "Interface",
         "original_description": "ID",
         "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "network.interface.id",
+        "description": "ID da interface",
+        "original_description": "Id",
+        "type": "string",
         "required": false,
         "default_value": null
       }
@@ -10044,10 +10108,42 @@
         "default_value": null
       },
       {
+        "name": "network.interface.id",
+        "description": "ID da interface",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "network.interface.security-groups",
+        "description": "Grupos de segurança",
+        "original_description": "Security Groups",
+        "type": "array(object)",
+        "required": false,
+        "default_value": null
+      },
+      {
         "name": "network.vpc",
         "description": "Vpc",
         "original_description": "Vpc",
         "type": "object",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "network.vpc.id",
+        "description": "ID da VPC",
+        "original_description": "Id",
+        "type": "string",
+        "required": false,
+        "default_value": null
+      },
+      {
+        "name": "network.vpc.name",
+        "description": "Nome da VPC",
+        "original_description": "Name",
+        "type": "string",
         "required": false,
         "default_value": null
       },

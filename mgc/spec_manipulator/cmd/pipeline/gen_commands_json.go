@@ -248,6 +248,28 @@ func collectObjectSubProperties(prop paramProperty) map[string]paramProperty {
 	return merged
 }
 
+func expandObjectFlags(prefix string, prop paramProperty) []flagResult {
+	var flags []flagResult
+	for subName, subProp := range collectObjectSubProperties(prop) {
+		subFlagName := prefix + "." + strings.ReplaceAll(subName, "_", "-")
+		subDesc := subProp.Description
+		if subDesc == "" {
+			subDesc = subProp.Title
+		}
+		subType := resolveType(subProp)
+		flags = append(flags, flagResult{
+			Name:        subFlagName,
+			Description: subDesc,
+			Type:        subType,
+			Required:    false,
+		})
+		if subType == "object" {
+			flags = append(flags, expandObjectFlags(subFlagName, subProp)...)
+		}
+	}
+	return flags
+}
+
 func resolveType(prop paramProperty) string {
 	if prop.Type == "" {
 		if prop.AnyOf != nil || prop.OneOf != nil {
@@ -294,21 +316,7 @@ func extractFlags(params *nodeParams) []flagResult {
 		})
 
 		if flagType == "object" {
-			for subName, subProp := range collectObjectSubProperties(prop) {
-				subFlagName := flagName + "." + strings.ReplaceAll(subName, "_", "-")
-				subDesc := subProp.Description
-
-				if subDesc == "" {
-					subDesc = subProp.Title
-				}
-
-				flags = append(flags, flagResult{
-					Name:        subFlagName,
-					Description: subDesc,
-					Type:        resolveType(subProp),
-					Required:    false,
-				})
-			}
+			flags = append(flags, expandObjectFlags(flagName, prop)...)
 		}
 	}
 
