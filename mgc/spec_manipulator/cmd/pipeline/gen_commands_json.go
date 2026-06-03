@@ -330,7 +330,9 @@ func getCommands(nodes []treeNode, path []string, result map[string]commandResul
 			continue
 		}
 
-		currentPath := append(path[:len(path):len(path)], node.Name)
+		name := strings.ReplaceAll(node.Name, "_", "-")
+
+		currentPath := append(path[:len(path):len(path)], name)
 		if node.Parameters != nil {
 			flags := extractFlags(node.Parameters)
 			command := "mgc " + strings.Join(currentPath, " ")

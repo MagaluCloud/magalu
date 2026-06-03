@@ -97,12 +97,12 @@
       }
     ]
   },
-  "auth.access_token": {
-    "command": "mgc auth access_token [flags]",
+  "auth.access-token": {
+    "command": "mgc auth access-token [flags]",
     "flags": [
       {
         "name": "Validate",
-        "description": "Valida o token, atualizando-o se necessário",
+        "description": "Valide o token, atualizando-o se necessário",
         "original_description": "Validate the token, refreshing if needed",
         "type": "boolean",
         "required": false,
@@ -2642,8 +2642,8 @@
       }
     ]
   },
-  "dbaas.instance_types.get": {
-    "command": "mgc dbaas instance_types get [flags]",
+  "dbaas.instance-types.get": {
+    "command": "mgc dbaas instance-types get [flags]",
     "flags": [
       {
         "name": "instance-type-id",
@@ -2655,8 +2655,8 @@
       }
     ]
   },
-  "dbaas.instance_types.list": {
-    "command": "mgc dbaas instance_types list [flags]",
+  "dbaas.instance-types.list": {
+    "command": "mgc dbaas instance-types list [flags]",
     "flags": [
       {
         "name": "compatible-product",
@@ -2692,7 +2692,7 @@
       },
       {
         "name": "status",
-        "description": "Status.",
+        "description": "Status",
         "original_description": "An enumeration.",
         "type": "string",
         "required": false,
@@ -6650,8 +6650,8 @@
       }
     ]
   },
-  "network.nat_gateways.create": {
-    "command": "mgc network nat_gateways create [flags]",
+  "network.nat-gateways.create": {
+    "command": "mgc network nat-gateways create [flags]",
     "flags": [
       {
         "name": "description",
@@ -6687,8 +6687,8 @@
       }
     ]
   },
-  "network.nat_gateways.delete": {
-    "command": "mgc network nat_gateways delete [flags]",
+  "network.nat-gateways.delete": {
+    "command": "mgc network nat-gateways delete [flags]",
     "flags": [
       {
         "name": "id",
@@ -6700,8 +6700,8 @@
       }
     ]
   },
-  "network.nat_gateways.get": {
-    "command": "mgc network nat_gateways get [flags]",
+  "network.nat-gateways.get": {
+    "command": "mgc network nat-gateways get [flags]",
     "flags": [
       {
         "name": "id",
@@ -6713,8 +6713,8 @@
       }
     ]
   },
-  "network.nat_gateways.list": {
-    "command": "mgc network nat_gateways list [flags]",
+  "network.nat-gateways.list": {
+    "command": "mgc network nat-gateways list [flags]",
     "flags": [
       {
         "name": "items-per-page",
@@ -6852,8 +6852,8 @@
       }
     ]
   },
-  "network.public_ips.attach": {
-    "command": "mgc network public_ips attach [flags]",
+  "network.public-ips.attach": {
+    "command": "mgc network public-ips attach [flags]",
     "flags": [
       {
         "name": "port-id",
@@ -6873,8 +6873,8 @@
       }
     ]
   },
-  "network.public_ips.delete": {
-    "command": "mgc network public_ips delete [flags]",
+  "network.public-ips.delete": {
+    "command": "mgc network public-ips delete [flags]",
     "flags": [
       {
         "name": "public-ip-id",
@@ -6886,8 +6886,8 @@
       }
     ]
   },
-  "network.public_ips.detach": {
-    "command": "mgc network public_ips detach [flags]",
+  "network.public-ips.detach": {
+    "command": "mgc network public-ips detach [flags]",
     "flags": [
       {
         "name": "port-id",
@@ -6907,8 +6907,8 @@
       }
     ]
   },
-  "network.public_ips.get": {
-    "command": "mgc network public_ips get [flags]",
+  "network.public-ips.get": {
+    "command": "mgc network public-ips get [flags]",
     "flags": [
       {
         "name": "public-ip-id",
@@ -6920,8 +6920,8 @@
       }
     ]
   },
-  "network.public_ips.list": {
-    "command": "mgc network public_ips list",
+  "network.public-ips.list": {
+    "command": "mgc network public-ips list",
     "flags": []
   },
   "network.rules.delete": {
@@ -6950,8 +6950,8 @@
       }
     ]
   },
-  "network.security_groups.create": {
-    "command": "mgc network security_groups create [flags]",
+  "network.security-groups.create": {
+    "command": "mgc network security-groups create [flags]",
     "flags": [
       {
         "name": "description",
@@ -7003,8 +7003,8 @@
       }
     ]
   },
-  "network.security_groups.delete": {
-    "command": "mgc network security_groups delete [flags]",
+  "network.security-groups.delete": {
+    "command": "mgc network security-groups delete [flags]",
     "flags": [
       {
         "name": "security-group-id",
@@ -7016,8 +7016,8 @@
       }
     ]
   },
-  "network.security_groups.get": {
-    "command": "mgc network security_groups get [flags]",
+  "network.security-groups.get": {
+    "command": "mgc network security-groups get [flags]",
     "flags": [
       {
         "name": "security-group-id",
@@ -7029,12 +7029,12 @@
       }
     ]
   },
-  "network.security_groups.list": {
-    "command": "mgc network security_groups list",
+  "network.security-groups.list": {
+    "command": "mgc network security-groups list",
     "flags": []
   },
-  "network.security_groups.rules.create": {
-    "command": "mgc network security_groups rules create [flags]",
+  "network.security-groups.rules.create": {
+    "command": "mgc network security-groups rules create [flags]",
     "flags": [
       {
         "name": "description",
@@ -7126,8 +7126,8 @@
       }
     ]
   },
-  "network.security_groups.rules.list": {
-    "command": "mgc network security_groups rules list [flags]",
+  "network.security-groups.rules.list": {
+    "command": "mgc network security-groups rules list [flags]",
     "flags": [
       {
         "name": "security-group-id",
@@ -8973,12 +8973,12 @@
       }
     ]
   },
-  "profile.availability_zones.list": {
-    "command": "mgc profile availability_zones list",
+  "profile.availability-zones.list": {
+    "command": "mgc profile availability-zones list",
     "flags": []
   },
-  "profile.ssh_keys.create": {
-    "command": "mgc profile ssh_keys create [flags]",
+  "profile.ssh-keys.create": {
+    "command": "mgc profile ssh-keys create [flags]",
     "flags": [
       {
         "name": "key",
@@ -8998,8 +8998,8 @@
       }
     ]
   },
-  "profile.ssh_keys.delete": {
-    "command": "mgc profile ssh_keys delete [flags]",
+  "profile.ssh-keys.delete": {
+    "command": "mgc profile ssh-keys delete [flags]",
     "flags": [
       {
         "name": "key-id",
@@ -9011,8 +9011,8 @@
       }
     ]
   },
-  "profile.ssh_keys.get": {
-    "command": "mgc profile ssh_keys get [flags]",
+  "profile.ssh-keys.get": {
+    "command": "mgc profile ssh-keys get [flags]",
     "flags": [
       {
         "name": "key-id",
@@ -9024,8 +9024,8 @@
       }
     ]
   },
-  "profile.ssh_keys.list": {
-    "command": "mgc profile ssh_keys list [flags]",
+  "profile.ssh-keys.list": {
+    "command": "mgc profile ssh-keys list [flags]",
     "flags": [
       {
         "name": "control.limit",
@@ -9283,7 +9283,7 @@
     "flags": [
       {
         "name": "availability-zone",
-        "description": "Campeonato Nacional Britânico 1A",
+        "description": "Zona de disponibilidade",
         "original_description": "br-ne1-a",
         "type": "string",
         "required": false,
@@ -9315,7 +9315,7 @@
       },
       {
         "name": "name",
-        "description": "nome da imagem",
+        "description": "Nome da imagem",
         "original_description": "name of the image",
         "type": "string",
         "required": false,
@@ -9539,7 +9539,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "ID",
+        "description": "ID da instância virtual",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -9547,7 +9547,7 @@
       },
       {
         "name": "max-lines-count",
-        "description": "número máximo de linhas retornadas para registros mais recentes até os mais antigos",
+        "description": "Número máximo de linhas retornadas dos logs mais recentes até os mais antigos",
         "original_description": "max lines returned for newly until older logs",
         "type": "integer",
         "required": false,
@@ -9605,7 +9605,7 @@
     "flags": [
       {
         "name": "instance",
-        "description": "Instância",
+        "description": "ID ou nome da instância",
         "original_description": "Instance",
         "type": "object",
         "required": true,
@@ -9613,7 +9613,7 @@
       },
       {
         "name": "instance.id",
-        "description": "ID",
+        "description": "ID da instância",
         "original_description": "Id",
         "type": "string",
         "required": false,
@@ -9621,7 +9621,7 @@
       },
       {
         "name": "instance.name",
-        "description": "Nome",
+        "description": "Nome da instância",
         "original_description": "Name",
         "type": "string",
         "required": false,
@@ -9629,7 +9629,7 @@
       },
       {
         "name": "network",
-        "description": "NICRequestInterfaceField",
+        "description": "Objeto que recebe a interface",
         "original_description": "NICRequestInterfaceField",
         "type": "object",
         "required": true,
@@ -9637,7 +9637,7 @@
       },
       {
         "name": "network.interface",
-        "description": "Interface",
+        "description": "Objeto que recebe o ID do NIC",
         "original_description": "ID",
         "type": "object",
         "required": false,
@@ -9645,7 +9645,7 @@
       },
       {
         "name": "network.interface.id",
-        "description": "ID da interface",
+        "description": "ID do NIC (Network Interface)",
         "original_description": "Id",
         "type": "string",
         "required": false,
@@ -9658,7 +9658,7 @@
     "flags": [
       {
         "name": "instance",
-        "description": "Instância",
+        "description": "ID ou nome da instância",
         "original_description": "Instance",
         "type": "object",
         "required": true,
@@ -9666,7 +9666,7 @@
       },
       {
         "name": "instance.id",
-        "description": "ID",
+        "description": "ID da instância",
         "original_description": "Id",
         "type": "string",
         "required": false,
@@ -9674,7 +9674,7 @@
       },
       {
         "name": "instance.name",
-        "description": "Nome",
+        "description": "Nome da instância",
         "original_description": "Name",
         "type": "string",
         "required": false,
@@ -9682,7 +9682,7 @@
       },
       {
         "name": "network",
-        "description": "NICRequestInterfaceField",
+        "description": "Objeto que recebe a interface",
         "original_description": "NICRequestInterfaceField",
         "type": "object",
         "required": true,
@@ -9690,7 +9690,7 @@
       },
       {
         "name": "network.interface",
-        "description": "Interface",
+        "description": "Objeto que recebe o ID do NIC",
         "original_description": "ID",
         "type": "object",
         "required": false,
@@ -9698,7 +9698,7 @@
       },
       {
         "name": "network.interface.id",
-        "description": "ID da interface",
+        "description": "ID do NIC (Network Interface)",
         "original_description": "Id",
         "type": "string",
         "required": false,
@@ -9766,7 +9766,7 @@
       },
       {
         "name": "machine-type",
-        "description": "Tipo de máquina",
+        "description": "Nome ou ID do tipo de máquina",
         "original_description": "Machine Type",
         "type": "object",
         "required": true,
@@ -9774,7 +9774,7 @@
       },
       {
         "name": "machine-type.id",
-        "description": "ID",
+        "description": "ID do tipo de máquina",
         "original_description": "Id",
         "type": "string",
         "required": false,
@@ -9782,7 +9782,7 @@
       },
       {
         "name": "machine-type.name",
-        "description": "Nome",
+        "description": "Nome do tipo de máquina",
         "original_description": "Name",
         "type": "string",
         "required": false,
