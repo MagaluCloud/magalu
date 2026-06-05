@@ -108,8 +108,8 @@ func (t *deeplTranslator) translateChunk(texts []string) ([]string, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-		return nil, fmt.Errorf("deepl API returned status %d: %s", resp.StatusCode, bytes.TrimSpace(body))
+		errBody, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("deepl API returned status %d: %s", resp.StatusCode, bytes.TrimSpace(errBody))
 	}
 
 	var result deeplResponse
@@ -223,6 +223,13 @@ func applyTranslations(result map[string]commandResult, apiKey, outputFile strin
 	return nil
 }
 
+func flagDescription(prop paramProperty) string {
+	if prop.Description != "" {
+		return prop.Description
+	}
+	return prop.Title
+}
+
 func collectObjectSubProperties(prop paramProperty) map[string]paramProperty {
 	if len(prop.Properties) > 0 {
 		return prop.Properties
@@ -252,10 +259,7 @@ func expandObjectFlags(prefix string, prop paramProperty) []flagResult {
 	var flags []flagResult
 	for subName, subProp := range collectObjectSubProperties(prop) {
 		subFlagName := prefix + "." + strings.ReplaceAll(subName, "_", "-")
-		subDesc := subProp.Description
-		if subDesc == "" {
-			subDesc = subProp.Title
-		}
+		subDesc := flagDescription(subProp)
 		subType := resolveType(subProp)
 		flags = append(flags, flagResult{
 			Name:        subFlagName,
@@ -300,11 +304,7 @@ func extractFlags(params *nodeParams) []flagResult {
 			flagName = "control." + strings.TrimLeft(flagName, "-")
 		}
 
-		desc := prop.Description
-		if desc == "" {
-			desc = prop.Title
-		}
-
+		desc := flagDescription(prop)
 		flagType := resolveType(prop)
 
 		flags = append(flags, flagResult{
@@ -368,6 +368,14 @@ func deeplAPIKey(params genCommandsJSONParams) string {
 	return apiKey
 }
 
+func writeJSON(f *os.File, v any) error {
+	defer f.Close()
+	enc := json.NewEncoder(f)
+	enc.SetIndent("", "  ")
+	enc.SetEscapeHTML(false)
+	return enc.Encode(v)
+}
+
 func runGenCommandsJSON(params genCommandsJSONParams) error {
 	data, err := os.ReadFile(params.dumpFile)
 	if err != nil {
@@ -397,13 +405,7 @@ func runGenCommandsJSON(params genCommandsJSONParams) error {
 	tmpPath := tmp.Name()
 	defer os.Remove(tmpPath)
 
-	if err := func() error {
-		defer tmp.Close()
-		enc := json.NewEncoder(tmp)
-		enc.SetIndent("", "  ")
-		enc.SetEscapeHTML(false)
-		return enc.Encode(result)
-	}(); err != nil {
+	if err := writeJSON(tmp, result); err != nil {
 		return fmt.Errorf("encoding JSON: %w", err)
 	}
 
