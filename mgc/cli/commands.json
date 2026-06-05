@@ -9879,7 +9879,7 @@
     "flags": [
       {
         "name": "destination-region",
-        "description": "Regiões",
+        "description": "Regiões (\"br-mgl1\", \"br-se1\", \"br-ne1\")",
         "original_description": "Regions",
         "type": "string",
         "required": true,
@@ -9887,7 +9887,7 @@
       },
       {
         "name": "id",
-        "description": "ID",
+        "description": "ID do snapshot",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -9908,7 +9908,7 @@
       },
       {
         "name": "instance.id",
-        "description": "ID",
+        "description": "ID da instância",
         "original_description": "Id",
         "type": "string",
         "required": false,
@@ -9916,7 +9916,7 @@
       },
       {
         "name": "instance.name",
-        "description": "Nome",
+        "description": "Nome da instância",
         "original_description": "Name",
         "type": "string",
         "required": false,
@@ -9924,7 +9924,7 @@
       },
       {
         "name": "name",
-        "description": "Nome",
+        "description": "Nome do snapshot",
         "original_description": "Name",
         "type": "string",
         "required": true,
@@ -9937,7 +9937,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "ID",
+        "description": "ID do snapshot",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -9950,7 +9950,7 @@
     "flags": [
       {
         "name": "expand",
-        "description": "Você pode obter informações mais detalhadas sobre: ['imagem', 'tipo de máquina'] ",
+        "description": "Você pode obter informações mais detalhadas sobre: ['image', 'machine-type'] ",
         "original_description": "You can get more detailed info about: ['image', 'machine-type'] ",
         "type": "array(string)",
         "required": false,
@@ -9958,7 +9958,7 @@
       },
       {
         "name": "id",
-        "description": "ID",
+        "description": "ID do snapshot",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -9971,7 +9971,7 @@
     "flags": [
       {
         "name": "control.limit",
-        "description": "limitar o número de resultados",
+        "description": "Limitar o número de resultados",
         "original_description": "limit the number of the results",
         "type": "integer",
         "required": false,
@@ -9979,7 +9979,7 @@
       },
       {
         "name": "control.offset",
-        "description": "paginação para os resultados limitados",
+        "description": "Paginação para os resultados limitados",
         "original_description": "pagination for the results limited",
         "type": "integer",
         "required": false,
@@ -9987,7 +9987,7 @@
       },
       {
         "name": "control.sort",
-        "description": "ordenação dos resultados com base nos campos especificados",
+        "description": "Ordenação dos resultados com base nos campos especificados",
         "original_description": "order of the results using informed fields",
         "type": "string",
         "required": false,
@@ -9995,7 +9995,7 @@
       },
       {
         "name": "expand",
-        "description": "Você pode obter informações mais detalhadas sobre: ['imagem', 'tipo de máquina'] ",
+        "description": "Você pode obter informações mais detalhadas sobre: ['image', 'machine_type'] ",
         "original_description": "You can get more detailed info about: ['image', 'machine-type'] ",
         "type": "array(string)",
         "required": false,
@@ -10003,7 +10003,7 @@
       },
       {
         "name": "name",
-        "description": "nome do instantâneo",
+        "description": "Nome do snapshot",
         "original_description": "name of the snapshot",
         "type": "string",
         "required": false,
@@ -10016,7 +10016,7 @@
     "flags": [
       {
         "name": "id",
-        "description": "ID",
+        "description": "ID do snapshot",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -10024,7 +10024,7 @@
       },
       {
         "name": "name",
-        "description": "Nome",
+        "description": "Novo nome",
         "original_description": "Name",
         "type": "string",
         "required": true,
@@ -10045,7 +10045,7 @@
       },
       {
         "name": "id",
-        "description": "ID",
+        "description": "ID do snapshot a ser restaurado",
         "original_description": "Id",
         "type": "string",
         "required": true,
@@ -10053,7 +10053,7 @@
       },
       {
         "name": "machine-type",
-        "description": "Tipo de máquina",
+        "description": "ID ou nome do tipo de instância",
         "original_description": "Machine Type",
         "type": "object",
         "required": true,
@@ -10061,7 +10061,7 @@
       },
       {
         "name": "machine-type.id",
-        "description": "ID",
+        "description": "ID do tipo de instância",
         "original_description": "Id",
         "type": "string",
         "required": false,
@@ -10069,7 +10069,7 @@
       },
       {
         "name": "machine-type.name",
-        "description": "Nome",
+        "description": "Nome do tipo de instância",
         "original_description": "Name",
         "type": "string",
         "required": false,
@@ -10077,7 +10077,7 @@
       },
       {
         "name": "name",
-        "description": "Nome",
+        "description": "Nome da nova instância",
         "original_description": "Name",
         "type": "string",
         "required": true,
@@ -10085,7 +10085,7 @@
       },
       {
         "name": "network",
-        "description": "",
+        "description": "Configuração da rede",
         "original_description": "",
         "type": "object",
         "required": false,
@@ -10093,7 +10093,7 @@
       },
       {
         "name": "network.associate-public-ip",
-        "description": "IP público associado",
+        "description": "Define se a instância terá IP público associado",
         "original_description": "Associate Public Ip",
         "type": "boolean",
         "required": false,
@@ -10101,7 +10101,7 @@
       },
       {
         "name": "network.interface",
-        "description": "Interface",
+        "description": "Configuração da interface de rede",
         "original_description": "Interface",
         "type": "object",
         "required": false,
@@ -10109,7 +10109,7 @@
       },
       {
         "name": "network.interface.id",
-        "description": "ID da interface",
+        "description": "ID da interface de rede",
         "original_description": "Id",
         "type": "string",
         "required": false,
@@ -10117,7 +10117,7 @@
       },
       {
         "name": "network.interface.security-groups",
-        "description": "Grupos de segurança",
+        "description": "Lista de security groups",
         "original_description": "Security Groups",
         "type": "array(object)",
         "required": false,
@@ -10125,7 +10125,7 @@
       },
       {
         "name": "network.vpc",
-        "description": "Vpc",
+        "description": "ID ou nome da VPC",
         "original_description": "Vpc",
         "type": "object",
         "required": false,
