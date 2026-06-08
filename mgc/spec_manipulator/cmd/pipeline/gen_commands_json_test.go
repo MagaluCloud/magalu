@@ -421,13 +421,13 @@ func TestApplyTranslations(t *testing.T) {
 			wantOriginalDesc: "Create a VM",
 		},
 		{
-			name: "empty description is skipped entirely",
+			name: "empty description restores existing translation",
 			existingFlags: []flagResult{
 				{Name: "name", Description: "Nome", OriginalDescription: "Name"},
 			},
 			inputDesc:        "",
-			wantDesc:         "",
-			wantOriginalDesc: "",
+			wantDesc:         "Nome",
+			wantOriginalDesc: "Name",
 		},
 	}
 	for _, tt := range tests {
