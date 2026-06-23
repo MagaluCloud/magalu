@@ -20,7 +20,7 @@ var createLogger = utils.NewLazyLoader(func() *zap.SugaredLogger {
 type createParams struct {
 	BucketName            common.BucketName `json:"bucket" jsonschema:"description=Name of the bucket to be created" mgc:"positional"`
 	IsPrefix              bool              `json:"bucket_is_prefix,omitempty" jsonschema:"description=Use bucket name as prefix value to generate a unique bucket name (default false)"`
-	EnableVersioning      *bool             `json:"enable_versioning,omitempty" jsonschema:"description=Enable versioning for this bucket (default true)"`
+	EnableVersioning      *bool             `json:"enable_versioning,omitempty" jsonschema:"description=Enable versioning for this bucket (default false)"`
 	common.ACLPermissions `json:",squash"`  // nolint
 }
 
@@ -119,7 +119,7 @@ func create(ctx context.Context, params createParams, cfg common.Config) (*creat
 
 	logger.Info("bucket created successfully")
 
-	enableVersioning := true
+	enableVersioning := false
 	if params.EnableVersioning == nil {
 		params.EnableVersioning = &enableVersioning
 	}
