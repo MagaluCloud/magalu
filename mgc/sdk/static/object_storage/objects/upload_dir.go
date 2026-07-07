@@ -188,7 +188,18 @@ func walkDir(ctx context.Context, root string, shallow bool) ([]string, error) {
 						return err
 					}
 				}
+			} else if entry.Type().IsRegular() {
+				files = append(files, path)
 			} else {
+				fi, err := os.Stat(path)
+				if err != nil {
+					pterm.Warning.Printfln("Skipping inaccessible file %q: %s", path, err)
+					continue
+				}
+				if fi.IsDir() {
+					pterm.Warning.Printfln("Skipping symlink to directory %q", path)
+					continue
+				}
 				files = append(files, path)
 			}
 		}
