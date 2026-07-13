@@ -448,15 +448,13 @@ paths:
             -   name: x-api-version
                 in: header
                 description: api version
-                required: true
+                required: false
                 schema:
                     anyOf:
                     -   type: string
                     title: X-Api-Version
                     description: api version
                     nullable: true
-                    type: string
-                    default: '1.1'
             responses:
                 '200':
                     description: Successful Response
@@ -840,7 +838,7 @@ paths:
                 in: query
                 description: 'You can get more detailed info about: [''image'', ''machine-type'',
                     ''machine-types'', ''network'', ''labels''] '
-                required: true
+                required: false
                 schema:
                     type: array
                     items:
@@ -848,22 +846,17 @@ paths:
                     title: Expand
                     description: 'You can get more detailed info about: [''image'',
                         ''machine-type'', ''machine-types'', ''network'', ''labels''] '
-                    default:
-                    - network
-                    - image
-                    - machine-type
+                    default: []
             -   name: x-api-version
                 in: header
                 description: api version
-                required: true
+                required: false
                 schema:
                     anyOf:
                     -   type: string
                     title: X-Api-Version
                     description: api version
                     nullable: true
-                    type: string
-                    default: '1.1'
             responses:
                 '200':
                     description: Successful Response
@@ -1135,7 +1128,6 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.read
-            x-mgc-name: init-logs
     /v1/instances/{id}/reboot:
         post:
             tags:
@@ -5051,11 +5043,11 @@ servers:
             default: api.magalu.cloud
             enum:
             - api.magalu.cloud
-            - api.pre-prod.jaxyendy.com
+            - api.pre-prod.jaxyendy.com:8443
             x-mgc-transforms:
             -   type: translate
                 translations:
                 -   from: prod
                     to: api.magalu.cloud
                 -   from: pre-prod
-                    to: api.pre-prod.jaxyendy.com
+                    to: api.pre-prod.jaxyendy.com:8443

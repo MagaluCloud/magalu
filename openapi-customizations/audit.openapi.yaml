@@ -1,4 +1,4 @@
-# This file is to be merged on top of mgc/cli/openapis/audit.openapi.yaml
+# This file is to be merged on top of mgc/sdk/openapi/openapis/audit.openapi.yaml
 # using yaml_merge.py
 # NOTE: Lists are merged by their indexes, be careful with parameters, tags and such!
 # to keep it sane, keep some list item identifier (ex: "name") and add extra properties,
@@ -14,32 +14,22 @@ servers:
             - br-ne1
             - br-se1
             - br-mgl1
-            - global
             x-mgc-transforms:
             -   type: translate
                 allowMissing: true
                 translations:
                 -   from: br-mgl1
                     to: br-se-1
-                -   from: global
-                    to: global
         env:
             description: Environment to use
             default: api.magalu.cloud
             enum:
             - api.magalu.cloud
-            - api.pre-prod.jaxyendy.com
+            - api.pre-prod.jaxyendy.com:8443
             x-mgc-transforms:
             -   type: translate
                 translations:
                 -   from: prod
                     to: api.magalu.cloud
                 -   from: pre-prod
-                    to: api.pre-prod.jaxyendy.com
-paths:
-    /v0/events:
-        get:
-            x-mgc-output-flag: table
-    /v0/event-types:
-        get:
-            x-mgc-output-flag: table
+                    to: api.pre-prod.jaxyendy.com:8443

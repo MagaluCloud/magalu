@@ -1,46 +1,9 @@
-# This file is to be merged on top of mgc/cli/openapis/vpc.openapi.yaml
+# This file is to be merged on top of mgc/sdk/openapi/openapis/virtual-machine.openapi.yaml
 # using yaml_merge.py
 # NOTE: Lists are merged by their indexes, be careful with parameters, tags and such!
 # to keep it sane, keep some list item identifier (ex: "name") and add extra properties,
 # such as "x-mgc-name" or "x-mgc-description"
 
-paths:
-    /v1/instances:
-        get:
-            parameters:
-              - name: _limit
-              - name: _offset
-              - name: _sort
-              - name: name
-              - name: expand
-              - name: x-api-version
-                required: true
-                in: header
-                schema:
-                    type: string
-                    default: "1.1"
-    /v1/instances/{id}:
-        get:
-            parameters:
-                -   name: id
-                -   name: expand
-                    in: query
-                    required: true
-                    schema:
-                        type: array
-                        default: [network, image, machine-type]
-                -   name: x-api-version
-                    in: header
-                    required: true
-                    schema:
-                        type: string
-                        default: "1.1"
-    /v1/snapshots/{id}:
-        post:
-            x-mgc-name: restore
-    /v1/instances/{id}/init-logs:
-        get:
-            x-mgc-name: init-logs
 servers:
 -   url: https://{env}/{region}/compute
     variables:
@@ -62,11 +25,11 @@ servers:
             default: api.magalu.cloud
             enum:
             - api.magalu.cloud
-            - api.pre-prod.jaxyendy.com
+            - api.pre-prod.jaxyendy.com:8443
             x-mgc-transforms:
             -   type: translate
                 translations:
                 -   from: prod
                     to: api.magalu.cloud
                 -   from: pre-prod
-                    to: api.pre-prod.jaxyendy.com
+                    to: api.pre-prod.jaxyendy.com:8443

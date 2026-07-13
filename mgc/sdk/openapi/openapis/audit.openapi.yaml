@@ -18,28 +18,25 @@ servers:
             - br-ne1
             - br-se1
             - br-mgl1
-            - global
             x-mgc-transforms:
             -   type: translate
                 allowMissing: true
                 translations:
                 -   from: br-mgl1
                     to: br-se-1
-                -   from: global
-                    to: global
         env:
             description: Environment to use
             default: api.magalu.cloud
             enum:
             - api.magalu.cloud
-            - api.pre-prod.jaxyendy.com
+            - api.pre-prod.jaxyendy.com:8443
             x-mgc-transforms:
             -   type: translate
                 translations:
                 -   from: prod
                     to: api.magalu.cloud
                 -   from: pre-prod
-                    to: api.pre-prod.jaxyendy.com
+                    to: api.pre-prod.jaxyendy.com:8443
 -   url: https://api.magalu.cloud/br-se-1/audit
     description: Server for br-se-1 region
 -   url: https://api.magalu.cloud/br-se1/audit
@@ -160,7 +157,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-mgc-output-flag: table
+            x-mgc-output-flag: default=table;allowfields=ID:$.results[*].id,SOURCE:$.results[*].source,TYPE:$.results[*].type,SPECVERSION:$.results[*].specversion,SUBJECT:$.results[*].subject,TIME:$.results[*].time,AUTHID:$.results[*].authid,AUTHTYPE:$.results[*].authtype,PRODUCT:$.results[*].product,REGION:$.results[*].region
     /v0/event-types:
         get:
             tags:
@@ -209,7 +206,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-mgc-output-flag: table
+            x-mgc-output-flag: default=table;allowfields=TYPE:$.results[*].type
 components:
     schemas:
         Event:

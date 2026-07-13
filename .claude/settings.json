@@ -1,0 +1,49 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(go get *)",
+      "Bash(openssl s_client -connect tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com:443 -servername tags.csre-plat-prod.1.yel.se1.br.jaxyendy.com)",
+      "Bash(openssl x509 *)",
+      "Bash(awk '/^tags:/{flag=1; next} /^[a-z]/{flag=0} flag' /home/onofre.matheus/mgc_development/magalu/mgc/sdk/openapi/openapis/kubernetes.openapi.yaml)",
+      "Bash(awk '/^tags:/{flag=1; next} /^[a-z]/{flag=0} flag' /home/onofre.matheus/mgc_development/magalu/mgc/sdk/openapi/openapis/network.openapi.yaml)",
+      "Bash(grep -vE '\\\\.\\(md|yaml\\)$')",
+      "Bash(python3 -c \"import yaml,sys; yaml.safe_load\\(open\\('mgc/sdk/openapi/openapis/container-registry.openapi.yaml'\\)\\); print\\('YAML OK'\\)\")",
+      "Bash(/tmp/mgc_test container-registry *)",
+      "Bash(/tmp/mgc_test --debug container-registry images scans schedule)",
+      "Bash(grep -iA1 \"wait\")",
+      "Bash(/tmp/mgc_test --help)",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 /tmp/mock_cr.py)",
+      "Bash(MGC_SERVERURL=http://127.0.0.1:8799 /tmp/mgc_test container-registry images scans schedule r repo latest --api-key dummy --cli.watch)",
+      "Bash(:)",
+      "Bash(MGC_SERVERURL=http://127.0.0.1:8799 /tmp/mgc_test container-registry images scans schedule r repo latest --cli.watch)",
+      "Bash(MGC_SERVERURL=http://127.0.0.1:8799 /tmp/mgc_test container-registry images scans schedule r repo latest --cli.watch --debug)",
+      "Bash(timeout 60 ./mgc cr images scans schedule --digest-or-tag sha256:6b3de2e6b4ccfc5fae404042cb1a025b1de13c73458e50455e3143bf12e98eae --registry-id 229a0988-c5c3-4bf6-8335-d2ee000ad2fe --repository-id 794d667e-95c3-4939-b509-72e51195184f --cli.watch)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(timeout 40 ./mgc cr images scans schedule --digest-or-tag sha256:6b3de2e6b4ccfc5fae404042cb1a025b1de13c73458e50455e3143bf12e98eae --registry-id 229a0988-c5c3-4bf6-8335-d2ee000ad2fe --repository-id 794d667e-95c3-4939-b509-72e51195184f --cli.watch --debug)",
+      "Bash(timeout 30 /tmp/mgc_dbg cr images scans schedule --digest-or-tag sha256:6b3de2e6b4ccfc5fae404042cb1a025b1de13c73458e50455e3143bf12e98eae --registry-id 229a0988-c5c3-4bf6-8335-d2ee000ad2fe --repository-id 794d667e-95c3-4939-b509-72e51195184f --cli.watch --debug)",
+      "Bash(timeout 40 /tmp/mgc_dbg cr images scans schedule --digest-or-tag sha256:6b3de2e6b4ccfc5fae404042cb1a025b1de13c73458e50455e3143bf12e98eae --registry-id 229a0988-c5c3-4bf6-8335-d2ee000ad2fe --repository-id 794d667e-95c3-4939-b509-72e51195184f --cli.watch --debug)",
+      "Bash(echo \"---EXIT $?\")",
+      "Bash(timeout 30 /tmp/mgc_dbg cr images scans schedule --digest-or-tag sha256:6b3de2e6b4ccfc5fae404042cb1a025b1de13c73458e50455e3143bf12e98eae --registry-id 229a0988-c5c3-4bf6-8335-d2ee000ad2fe --repository-id 794d667e-95c3-4939-b509-72e51195184f ! get)",
+      "Bash(grep -c -P '^\\\\s+- Domains$')",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\([p for p in d['paths'] if 'domain' in p.lower\\(\\)]\\)\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\([s for s in d.get\\('components',{}\\).get\\('schemas',{}\\) if 'domain' in s.lower\\(\\)]\\)\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('paths:',[p for p in d['paths'] if 'domain' in p.lower\\(\\)]\\); print\\('schemas:',[s for s in d.get\\('components',{}\\).get\\('schemas',{}\\) if 'domain' in s.lower\\(\\)]\\)\")",
+      "Bash(xxd)",
+      "Bash(sed -n '3479,3483p' specs/iam.jaxyendy.openapi.json)",
+      "Bash(sed -n '4364,4369p' specs/iam.jaxyendy.openapi.json)",
+      "Bash(python3 -c \"import json;json.load\\(open\\('specs/iam.jaxyendy.openapi.json'\\)\\);print\\('JSON válido'\\)\")",
+      "Bash(python3 -c \"import json;d=json.load\\(open\\('specs/iam.jaxyendy.openapi.json'\\)\\);print\\('JSON válido'\\);import re;t=open\\('specs/iam.jaxyendy.openapi.json'\\).read\\(\\);print\\('refs Domain restantes:',len\\(re.findall\\(r'schemas/Domain',t\\)\\)\\);print\\('paths domains restantes:',t.count\\('\\\\\"/api/v1/domains'\\)\\)\")",
+      "Bash(python3 -c \"import json,sys;d=json.load\\(sys.stdin\\);print\\(json.dumps\\(d['paths'].get\\('/api/v1/users',{}\\).get\\('get',{}\\).get\\('parameters','SEM PARAMETERS'\\)\\)\\)\")",
+      "Bash(./dist/mgc_linux_amd64_v1/mgc --help)",
+      "Bash(./dist/mgc_linux_amd64_v1/mgc object-storage *)",
+      "Bash(python3 -c \"import json; json.load\\(open\\('/home/onofre.matheus/mgc_development/magalu/specs/iam.jaxyendy.openapi.json'\\)\\)\")",
+      "Bash(git ls-tree *)",
+      "WebFetch(domain:api.dev34.movestax.com)"
+    ],
+    "additionalDirectories": [
+      "/tmp",
+      "/home/onofre.matheus/scripts/mgc_gzip_proxy"
+    ]
+  }
+}

@@ -11,15 +11,13 @@ servers:
             description: Region to reach the service
             default: br-se1
             enum:
-            - br-ne-1
+            - br-ne1
             - br-se1
             - br-mgl1
             x-mgc-transforms:
             -   type: translate
                 allowMissing: true
                 translations:
-                -   from: br-ne1
-                    to: br-ne-1
                 -   from: br-mgl1
                     to: br-se-1
         env:
@@ -27,11 +25,11 @@ servers:
             default: api.magalu.cloud
             enum:
             - api.magalu.cloud
-            - api.pre-prod.jaxyendy.com
+            - api.pre-prod.jaxyendy.com:8443
             x-mgc-transforms:
             -   type: translate
                 translations:
                 -   from: prod
                     to: api.magalu.cloud
                 -   from: pre-prod
-                    to: api.pre-prod.jaxyendy.com
+                    to: api.pre-prod.jaxyendy.com:8443
