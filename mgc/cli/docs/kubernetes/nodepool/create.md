@@ -12,7 +12,7 @@ mgc kubernetes nodepool create [cluster-id] [flags]
 
 ## Examples:
 ```
-mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --flavor="BV2-4-40" --max-pods-per-node=32 --name="nodepool-example" --network.subnet-ids='["627c1f78-f9a6-4419-b582-a982144ff6bc","57b69486-e800-4cc3-92e2-6037b4cafe35"]' --replicas=3
+mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-replicas=2 --flavor="BV2-4-40" --labels='{"label-key":"value"}' --max-pods-per-node=32 --name="nodepool-example" --network.subnet-ids='["627c1f78-f9a6-4419-b582-a982144ff6bc","57b69486-e800-4cc3-92e2-6037b4cafe35"]' --replicas=3
 ```
 
 ## Flags:
@@ -36,6 +36,8 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
                                         
                                         For V1 Clusters, the list of available flavors can be retrieved using the /v1/flavors endpoint (deprecated) or via the MGC CLI with the command 'kubernetes flavors list'. (required)
 -h, --help                              help for create
+    --labels object                     Key/value pairs attached to the node pool nodes.
+                                        Use --labels=help for more details
     --max-pods-per-node integer         Maximum number of Pods allowed per node.
                                          (range: 8 - 110)
     --name string                       Name of the node pool. The name is primarily for idempotence and must be unique within a namespace. The name cannot be changed.

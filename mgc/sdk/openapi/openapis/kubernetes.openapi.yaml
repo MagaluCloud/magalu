@@ -1010,19 +1010,20 @@ paths:
                     \ \\\n  --header 'content-type: application/json' \\\n  --header\
                     \ 'x-tenant-id: SOME_STRING_VALUE' \\\n  --data '{\"name\":\"\
                     nodepool-example\",\"flavor\":\"BV2-4-40\",\"replicas\":3,\"tags\"\
-                    :[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\"\
-                    :\"value1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\"\
-                    :2,\"max_replicas\":5},\"max_pods_per_node\":32,\"availability_zones\"\
-                    :[\"a\",\"b\",\"c\"],\"network\":{\"subnet_ids\":[[\"11111111-1111-1111-1111-111111111111\"\
+                    :[\"tag-value1\"],\"labels\":{\"label-key\":\"value\"},\"taints\"\
+                    :[{\"key\":\"example-key\",\"value\":\"value1\",\"effect\":\"\
+                    NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\"\
+                    :5},\"max_pods_per_node\":32,\"availability_zones\":[\"a\",\"\
+                    b\",\"c\"],\"network\":{\"subnet_ids\":[[\"11111111-1111-1111-1111-111111111111\"\
                     ]]}}'"
             -   lang: Shell + Httpie
                 source: "echo '{\"name\":\"nodepool-example\",\"flavor\":\"BV2-4-40\"\
-                    ,\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\"\
-                    :\"example-key\",\"value\":\"value1\",\"effect\":\"NoSchedule\"\
-                    }],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5},\"max_pods_per_node\"\
-                    :32,\"availability_zones\":[\"a\",\"b\",\"c\"],\"network\":{\"\
-                    subnet_ids\":[[\"11111111-1111-1111-1111-111111111111\"]]}}' |\
-                    \  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\
+                    ,\"replicas\":3,\"tags\":[\"tag-value1\"],\"labels\":{\"label-key\"\
+                    :\"value\"},\"taints\":[{\"key\":\"example-key\",\"value\":\"\
+                    value1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\"\
+                    :2,\"max_replicas\":5},\"max_pods_per_node\":32,\"availability_zones\"\
+                    :[\"a\",\"b\",\"c\"],\"network\":{\"subnet_ids\":[[\"11111111-1111-1111-1111-111111111111\"\
+                    ]]}}' |  \\\n  http POST https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\
                     \ \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json\
                     \ \\\n  x-tenant-id:SOME_STRING_VALUE"
             -   lang: Go + Native
@@ -1031,11 +1032,12 @@ paths:
                     https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v0/clusters/%7Bcluster_id%7D/node_pools\"\
                     \n\n\tpayload := strings.NewReader(\"{\\\"name\\\":\\\"nodepool-example\\\
                     \",\\\"flavor\\\":\\\"BV2-4-40\\\",\\\"replicas\\\":3,\\\"tags\\\
-                    \":[\\\"tag-value1\\\"],\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\
-                    \",\\\"value\\\":\\\"value1\\\",\\\"effect\\\":\\\"NoSchedule\\\
-                    \"}],\\\"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\
-                    \":5},\\\"max_pods_per_node\\\":32,\\\"availability_zones\\\"\
-                    :[\\\"a\\\",\\\"b\\\",\\\"c\\\"],\\\"network\\\":{\\\"subnet_ids\\\
+                    \":[\\\"tag-value1\\\"],\\\"labels\\\":{\\\"label-key\\\":\\\"\
+                    value\\\"},\\\"taints\\\":[{\\\"key\\\":\\\"example-key\\\",\\\
+                    \"value\\\":\\\"value1\\\",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\
+                    \"auto_scale\\\":{\\\"min_replicas\\\":2,\\\"max_replicas\\\"\
+                    :5},\\\"max_pods_per_node\\\":32,\\\"availability_zones\\\":[\\\
+                    \"a\\\",\\\"b\\\",\\\"c\\\"],\\\"network\\\":{\\\"subnet_ids\\\
                     \":[[\\\"11111111-1111-1111-1111-111111111111\\\"]]}}\")\n\n\t\
                     req, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"\
                     content-type\", \"application/json\")\n\treq.Header.Add(\"x-tenant-id\"\
@@ -1047,12 +1049,13 @@ paths:
                 source: "import http.client\n\nconn = http.client.HTTPSConnection(\"\
                     api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\npayload = \"{\\\"\
                     name\\\":\\\"nodepool-example\\\",\\\"flavor\\\":\\\"BV2-4-40\\\
-                    \",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"taints\\\
-                    \":[{\\\"key\\\":\\\"example-key\\\",\\\"value\\\":\\\"value1\\\
-                    \",\\\"effect\\\":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"\
-                    min_replicas\\\":2,\\\"max_replicas\\\":5},\\\"max_pods_per_node\\\
-                    \":32,\\\"availability_zones\\\":[\\\"a\\\",\\\"b\\\",\\\"c\\\"\
-                    ],\\\"network\\\":{\\\"subnet_ids\\\":[[\\\"11111111-1111-1111-1111-111111111111\\\
+                    \",\\\"replicas\\\":3,\\\"tags\\\":[\\\"tag-value1\\\"],\\\"labels\\\
+                    \":{\\\"label-key\\\":\\\"value\\\"},\\\"taints\\\":[{\\\"key\\\
+                    \":\\\"example-key\\\",\\\"value\\\":\\\"value1\\\",\\\"effect\\\
+                    \":\\\"NoSchedule\\\"}],\\\"auto_scale\\\":{\\\"min_replicas\\\
+                    \":2,\\\"max_replicas\\\":5},\\\"max_pods_per_node\\\":32,\\\"\
+                    availability_zones\\\":[\\\"a\\\",\\\"b\\\",\\\"c\\\"],\\\"network\\\
+                    \":{\\\"subnet_ids\\\":[[\\\"11111111-1111-1111-1111-111111111111\\\
                     \"]]}}\"\n\nheaders = {\n    'content-type': \"application/json\"\
                     ,\n    'x-tenant-id': \"SOME_STRING_VALUE\",\n    'Authorization':\
                     \ \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\nconn.request(\"POST\"\
@@ -1071,11 +1074,11 @@ paths:
                     end\", function () {\n    const body = Buffer.concat(chunks);\n\
                     \    console.log(body.toString());\n  });\n});\n\nreq.write(JSON.stringify({\n\
                     \  name: 'nodepool-example',\n  flavor: 'BV2-4-40',\n  replicas:\
-                    \ 3,\n  tags: ['tag-value1'],\n  taints: [{key: 'example-key',\
-                    \ value: 'value1', effect: 'NoSchedule'}],\n  auto_scale: {min_replicas:\
-                    \ 2, max_replicas: 5},\n  max_pods_per_node: 32,\n  availability_zones:\
-                    \ ['a', 'b', 'c'],\n  network: {subnet_ids: [['11111111-1111-1111-1111-111111111111']]}\n\
-                    }));\nreq.end();"
+                    \ 3,\n  tags: ['tag-value1'],\n  labels: {'label-key': 'value'},\n\
+                    \  taints: [{key: 'example-key', value: 'value1', effect: 'NoSchedule'}],\n\
+                    \  auto_scale: {min_replicas: 2, max_replicas: 5},\n  max_pods_per_node:\
+                    \ 32,\n  availability_zones: ['a', 'b', 'c'],\n  network: {subnet_ids:\
+                    \ [['11111111-1111-1111-1111-111111111111']]}\n}));\nreq.end();"
             -   lang: Ruby + Native
                 source: 'require ''uri''
 
@@ -1102,7 +1105,7 @@ paths:
 
                     request["Authorization"] = ''Bearer REPLACE_BEARER_TOKEN''
 
-                    request.body = "{\"name\":\"nodepool-example\",\"flavor\":\"BV2-4-40\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"taints\":[{\"key\":\"example-key\",\"value\":\"value1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5},\"max_pods_per_node\":32,\"availability_zones\":[\"a\",\"b\",\"c\"],\"network\":{\"subnet_ids\":[[\"11111111-1111-1111-1111-111111111111\"]]}}"
+                    request.body = "{\"name\":\"nodepool-example\",\"flavor\":\"BV2-4-40\",\"replicas\":3,\"tags\":[\"tag-value1\"],\"labels\":{\"label-key\":\"value\"},\"taints\":[{\"key\":\"example-key\",\"value\":\"value1\",\"effect\":\"NoSchedule\"}],\"auto_scale\":{\"min_replicas\":2,\"max_replicas\":5},\"max_pods_per_node\":32,\"availability_zones\":[\"a\",\"b\",\"c\"],\"network\":{\"subnet_ids\":[[\"11111111-1111-1111-1111-111111111111\"]]}}"
 
 
                     response = http.request(request)
@@ -2489,10 +2492,10 @@ components:
             - network
         CreateNodePoolRequest:
             type: object
-            description: Object of the node pool request
             properties:
                 name:
                     type: string
+                    maxLength: 63
                     description: "Name of the node pool. The name is primarily for\
                         \ idempotence and must be unique within a namespace. The name\
                         \ cannot be changed.\nThe name must follow the following rules:\n\
@@ -2501,44 +2504,45 @@ components:
                         \ start with an alphabetic character\n  - Must end with an\
                         \ alphanumeric character\n"
                     example: nodepool-example
-                    maxLength: 63
                 flavor:
                     $ref: '#/components/schemas/NodePoolFlavor'
                 replicas:
                     type: integer
                     description: Number of replicas of the nodes in the node pool.
-                    example: 3
                     default: 1
                     nullable: true
+                    example: 3
                     x-oapi-codegen-extra-tags:
                         binding: required
                 tags:
                     type: array
-                    description: List of tags applied to the node pool.
                     items:
                         type: string
                         description: Items from the list of tags applied to the node
                             pool.
                         example: tag-value1
+                    description: List of tags applied to the node pool.
                     deprecated: true
+                labels:
+                    $ref: '#/components/schemas/NodePoolLabels'
                 taints:
                     type: array
-                    description: Property associating a set of nodes.
                     items:
                         $ref: '#/components/schemas/Taint'
+                    description: Property associating a set of nodes.
                 auto_scale:
                     $ref: '#/components/schemas/AutoScale'
                 max_pods_per_node:
                     $ref: '#/components/schemas/MaxPodsPerNode'
                 availability_zones:
                     $ref: '#/components/schemas/AvailabilityZones'
-                    deprecated: true
                 network:
                     $ref: '#/components/schemas/NodePoolNetworkRequest'
             required:
             - name
             - flavor
             - replicas
+            description: Object of the node pool request
         NodePoolFlavor:
             type: string
             description: 'Name of the machine type. The machine type defines the CPU,
@@ -2554,6 +2558,13 @@ components:
                 the /v1/flavors endpoint (deprecated) or via the MGC CLI with the
                 command `kubernetes flavors list`.'
             example: BV2-4-40
+        NodePoolLabels:
+            type: object
+            additionalProperties:
+                type: string
+            description: Key/value pairs attached to the node pool nodes.
+            example:
+                label-key: value
         PatchNodePoolRequest:
             type: object
             description: Object of the node pool modification request.
