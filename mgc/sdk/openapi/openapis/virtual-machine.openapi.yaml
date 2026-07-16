@@ -72,11 +72,11 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-output-flag: table=ID:$.images[*].id,NAME:$.images[*].name,VERSION:$.images[*].version,PLATFORM:$.images[*].platform,END_STANDARD_SUPPORT_AT:$.images[*].end_standard_support_at,STATUS:$.images[*].status,AVAILABILITY_ZONES:$.images[*].availability_zones
             security:
             -   OAuth2:
                 - virtual-machine.read
+            x-viveiro: true
+            x-mgc-output-flag: table=ID:$.images[*].id,NAME:$.images[*].name,VERSION:$.images[*].version,PLATFORM:$.images[*].platform,END_STANDARD_SUPPORT_AT:$.images[*].end_standard_support_at,STATUS:$.images[*].status,AVAILABILITY_ZONES:$.images[*].availability_zones
     /v1/images/custom:
         get:
             tags:
@@ -133,10 +133,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
             security:
             -   OAuth2:
                 - virtual-machine.read
+            x-viveiro: true
         post:
             tags:
             - images
@@ -178,10 +178,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
     /v1/images/custom/{id}:
         get:
             tags:
@@ -220,10 +220,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
             security:
             -   OAuth2:
                 - virtual-machine.read
+            x-viveiro: true
         delete:
             tags:
             - images
@@ -247,10 +247,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
         patch:
             tags:
             - images
@@ -291,10 +291,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
     /v1/instance-types:
         get:
             tags:
@@ -368,12 +368,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-mgc-hidden: true
-            x-viveiro: true
-            x-mgc-output-flag: table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu
             security:
             -   OAuth2:
                 - virtual-machine.read
+            x-mgc-hidden: true
+            x-viveiro: true
+            x-mgc-output-flag: table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu
     /v1/instances:
         get:
             tags:
@@ -494,12 +494,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-output-flag: table=ID:$.instances[*].id,NAME:$.instances[*].name,STATE:$.instances[*].state,STATUS:$.instances[*].status,MACHINE_TYPE:$.instances[*].machine_type,IMAGE:$.instances[*].image,
-                CREATED_AT:$.instances[*].created_at, SSH_KEY_NAME:$.instances[*].ssh_key_name
             security:
             -   OAuth2:
                 - virtual-machine.read
+            x-viveiro: true
+            x-mgc-output-flag: table=ID:$.instances[*].id,NAME:$.instances[*].name,STATE:$.instances[*].state,STATUS:$.instances[*].status,MACHINE_TYPE:$.instances[*].machine_type,IMAGE:$.instances[*].image,
+                CREATED_AT:$.instances[*].created_at, SSH_KEY_NAME:$.instances[*].ssh_key_name
         post:
             tags:
             - instances
@@ -619,11 +619,11 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-output-flag: table=ID:$.id
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
+            x-mgc-output-flag: table=ID:$.id
     /v1/instances/config/{id}/first-windows-password:
         get:
             tags:
@@ -749,10 +749,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
     /v1/instances/network-interface/detach:
         post:
             tags:
@@ -800,10 +800,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
     /v1/instances/{id}:
         get:
             tags:
@@ -959,12 +959,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-output-flag: table=ID:$.id,NAME:$.name,STATE:$.state,STATUS:$..status,MACHINE_TYPE:$.machine_type,IMAGE:$.image,
-                CREATED_AT:$.created_at, SSH_KEY_NAME:$.ssh_key_name
             security:
             -   OAuth2:
                 - virtual-machine.read
+            x-viveiro: true
+            x-mgc-output-flag: table=ID:$.id,NAME:$.name,STATE:$.state,STATUS:$..status,MACHINE_TYPE:$.machine_type,IMAGE:$.image,
+                CREATED_AT:$.created_at, SSH_KEY_NAME:$.ssh_key_name
         delete:
             tags:
             - instances
@@ -1043,10 +1043,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
     /v1/instances/{id}/init-logs:
         get:
             tags:
@@ -1224,11 +1224,11 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-name: reboot
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
+            x-mgc-name: reboot
     /v1/instances/{id}/rename:
         patch:
             tags:
@@ -1345,10 +1345,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
     /v1/instances/{id}/retype:
         post:
             tags:
@@ -1484,11 +1484,11 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-name: retype
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
+            x-mgc-name: retype
     /v1/instances/{id}/start:
         post:
             tags:
@@ -1575,11 +1575,11 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-name: start
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
+            x-mgc-name: start
     /v1/instances/{id}/stop:
         post:
             tags:
@@ -1667,11 +1667,11 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-name: stop
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
+            x-mgc-name: stop
     /v1/instances/{id}/suspend:
         post:
             tags:
@@ -1760,11 +1760,11 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-name: suspend
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
+            x-mgc-name: suspend
     /v1/machine-types:
         get:
             tags:
@@ -1838,11 +1838,11 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-output-flag: table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu
             security:
             -   OAuth2:
                 - virtual-machine.read
+            x-viveiro: true
+            x-mgc-output-flag: table=ID:$.instance_types[*].id,NAME:$.instance_types[*].name,STATUS:$.instance_types[*].status,VCPUS:$.instance_types[*].vcpus,RAM:$.instance_types[*].ram,DISK:$.instance_types[*].disk,GPU:$.instance_types[*].gpu
     /v1/snapshots:
         get:
             tags:
@@ -1950,12 +1950,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-output-flag: table=ID:$.snapshots[*].id,NAME:$.snapshots[*].name,STATE:$.snapshots[*].state,STATUS:$.snapshots[*].status,SIZE:$.snapshots[*].size,INSTANCE:$.snapshots[*].instance,
-                CREATED_AT:$.snapshots[*].created_at
             security:
             -   OAuth2:
                 - virtual-machine.read
+            x-viveiro: true
+            x-mgc-output-flag: table=ID:$.snapshots[*].id,NAME:$.snapshots[*].name,STATE:$.snapshots[*].state,STATUS:$.snapshots[*].status,SIZE:$.snapshots[*].size,INSTANCE:$.snapshots[*].instance,
+                CREATED_AT:$.snapshots[*].created_at
         post:
             tags:
             - snapshots
@@ -2052,11 +2052,11 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-output-flag: table=ID:$.id
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
+            x-mgc-output-flag: table=ID:$.id
     /v1/snapshots/{id}:
         get:
             tags:
@@ -2162,12 +2162,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-output-flag: table=ID:$.id,NAME:$.name,STATE:$.state,STATUS:$.status,SIZE:$.size,INSTANCE:$.instance,
-                CREATED_AT:$.created_at
             security:
             -   OAuth2:
                 - virtual-machine.read
+            x-viveiro: true
+            x-mgc-output-flag: table=ID:$.id,NAME:$.name,STATE:$.state,STATUS:$.status,SIZE:$.size,INSTANCE:$.instance,
+                CREATED_AT:$.created_at
         post:
             tags:
             - snapshots
@@ -2265,12 +2265,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
-            x-mgc-name: restore
-            x-mgc-output-flag: table=ID:$.id
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
+            x-mgc-name: restore
+            x-mgc-output-flag: table=ID:$.id
         delete:
             tags:
             - snapshots
@@ -2329,10 +2329,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
     /v1/snapshots/{id}/copy:
         post:
             tags:
@@ -2409,10 +2409,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: false
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: false
     /v1/snapshots/{id}/rename:
         patch:
             tags:
@@ -2501,10 +2501,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            x-viveiro: true
             security:
             -   OAuth2:
                 - virtual-machine.write
+            x-viveiro: true
 components:
     schemas:
         Architecture:
@@ -2583,9 +2583,9 @@ components:
                 name: my-linux-image-3
                 platform: linux
                 requirements:
-                    disk: 100
-                    ram: 8
-                    vcpu: 4
+                    disk: 10
+                    ram: 1
+                    vcpu: 1
                 uefi: true
                 url: https://br-se1.magaluobjects.com/bucket/image.qcow2
                 version: '2.1'
@@ -2671,6 +2671,8 @@ components:
                     - pending
                     - creating
                     - importing
+                    - importing_error
+                    - invalid_image
                     - error
                 description:
                     anyOf:
@@ -2823,6 +2825,8 @@ components:
                     - pending
                     - creating
                     - importing
+                    - importing_error
+                    - invalid_image
                     - error
                 version:
                     anyOf:
@@ -2931,6 +2935,8 @@ components:
             - pending
             - creating
             - importing
+            - importing_error
+            - invalid_image
             - error
         InstanceAccessResponseWithPass:
             type: object
@@ -3030,6 +3036,10 @@ components:
                     anyOf:
                     -   $ref: '#/components/schemas/InstanceCreateRequestV1NetworkDefault'
                     nullable: true
+                network_profile:
+                    anyOf:
+                    -   $ref: '#/components/schemas/InstanceCreateRequestV2NetworkBase'
+                    nullable: true
                 user_data:
                     anyOf:
                     -   type: string
@@ -3074,8 +3084,22 @@ components:
                         security_groups:
                         -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                         -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
+                        subnets:
+                        -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                     vpc:
                         id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+                network_profile:
+                    interfaces:
+                    -   associate_public_ip: true
+                        name: nic-name
+                        security_groups:
+                        -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
+                        -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
+                        subnets:
+                        -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
+                        tag: primary
+                        vpc:
+                            id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                 ssh_key_name: keypair_name_here
                 user_data: some_base64_script
                 volumes:
@@ -3094,7 +3118,7 @@ components:
                 interface:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
-                    -   $ref: '#/components/schemas/SecurityGroups'
+                    -   $ref: '#/components/schemas/Interface'
                     title: Interface
                     nullable: true
                 associate_public_ip:
@@ -3108,8 +3132,109 @@ components:
                     security_groups:
                     -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                     -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
+                    subnets:
+                    -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                 vpc:
                     id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
+        InstanceCreateRequestV2NetworkBase:
+            type: object
+            properties:
+                interfaces:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                anyOf:
+                                -   $ref: '#/components/schemas/ID'
+                                description: The unique identifier of the network
+                                    interface.
+                                nullable: true
+                            name:
+                                anyOf:
+                                -   type: string
+                                title: Name
+                                description: A human-readable name assigned to the
+                                    network interface.
+                                nullable: true
+                            vpc:
+                                anyOf:
+                                -   $ref: '#/components/schemas/ID'
+                                -   $ref: '#/components/schemas/Name'
+                                title: Vpc
+                                description: The Virtual Private Cloud (VPC) where
+                                    this interface will be attached.
+                                default:
+                                    name: vpc_default
+                                nullable: true
+                            subnets:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: string
+                                            title: Id
+                                            maxLength: 255
+                                            minLength: 1
+                                    title: ID
+                                    required:
+                                    - id
+                                    example:
+                                        id: 9ec75090-2872-4f51-8111-53d05d96d2c6
+                                title: Subnets
+                                maxItems: 1
+                                description: A list containing the subnet ID associated
+                                    with this interface (maximum of 1 subnet).
+                            security_groups:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: string
+                                            title: Id
+                                            maxLength: 255
+                                            minLength: 1
+                                    title: ID
+                                    required:
+                                    - id
+                                    example:
+                                        id: 9ec75090-2872-4f51-8111-53d05d96d2c6
+                                title: Security Groups
+                                description: A list of security group IDs applied
+                                    to this network interface for traffic filtering.
+                                default: []
+                            associate_public_ip:
+                                type: boolean
+                                title: Associate Public Ip
+                                description: Indicates whether a public IP address
+                                    should be automatically assigned to this interface.
+                                default: false
+                            tag:
+                                anyOf:
+                                -   type: string
+                                title: Tag
+                                description: An optional device role tag exposed to
+                                    the guest OS via metadata. It ensures reliable
+                                    interface identification, as network device order
+                                    is not guaranteed.
+                                nullable: true
+                        title: NetworkInterfaceAttachment
+                    title: Interfaces
+                    maxItems: 3
+            title: InstanceCreateRequestV2NetworkBase
+            example:
+                interfaces:
+                -   associate_public_ip: true
+                    security_groups:
+                    -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
+                    -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
+                    subnets:
+                    -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
+                    tag: primary
+                    vpc:
+                        id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
         InstanceResponseSnapshotV1:
             type: object
             properties:
@@ -3390,6 +3515,7 @@ components:
                     - creating
                     - creating_error
                     - creating_error_gpu
+                    - creating_error_capacity
                     - creating_network_error
                     - creating_error_quota
                     - creating_error_quota_ram
@@ -3406,6 +3532,7 @@ components:
                     - retyping_error_quota_ram
                     - retyping_error_quota_vcpu
                     - retyping_error_quota
+                    - retyping_error_capacity
                     - stopping_pending
                     - stopping
                     - stopping_error
@@ -3533,6 +3660,7 @@ components:
             - creating
             - creating_error
             - creating_error_gpu
+            - creating_error_capacity
             - creating_network_error
             - creating_error_quota
             - creating_error_quota_ram
@@ -3549,6 +3677,7 @@ components:
             - retyping_error_quota_ram
             - retyping_error_quota_vcpu
             - retyping_error_quota
+            - retyping_error_capacity
             - stopping_pending
             - stopping
             - stopping_error
@@ -3580,6 +3709,44 @@ components:
             - name
             example:
                 name: new-instance-name
+        Interface:
+            type: object
+            properties:
+                security_groups:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                                maxLength: 255
+                                minLength: 1
+                        title: ID
+                        required:
+                        - id
+                        example:
+                            id: 9ec75090-2872-4f51-8111-53d05d96d2c6
+                    title: Security Groups
+                    default: []
+                subnets:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                                maxLength: 255
+                                minLength: 1
+                        title: ID
+                        required:
+                        - id
+                        example:
+                            id: 9ec75090-2872-4f51-8111-53d05d96d2c6
+                    title: Subnets
+                    maxItems: 1
+            title: Interface
         IpAddressExpand:
             type: object
             properties:
@@ -3645,6 +3812,8 @@ components:
                                 - pending
                                 - creating
                                 - importing
+                                - importing_error
+                                - invalid_image
                                 - error
                             description:
                                 anyOf:
@@ -3892,6 +4061,83 @@ components:
             - name
             example:
                 name: some_resource_name
+        NetworkInterfaceAttachment:
+            type: object
+            properties:
+                id:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ID'
+                    description: The unique identifier of the network interface.
+                    nullable: true
+                name:
+                    anyOf:
+                    -   type: string
+                    title: Name
+                    description: A human-readable name assigned to the network interface.
+                    nullable: true
+                vpc:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ID'
+                    -   $ref: '#/components/schemas/Name'
+                    title: Vpc
+                    description: The Virtual Private Cloud (VPC) where this interface
+                        will be attached.
+                    default:
+                        name: vpc_default
+                    nullable: true
+                subnets:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                                maxLength: 255
+                                minLength: 1
+                        title: ID
+                        required:
+                        - id
+                        example:
+                            id: 9ec75090-2872-4f51-8111-53d05d96d2c6
+                    title: Subnets
+                    maxItems: 1
+                    description: A list containing the subnet ID associated with this
+                        interface (maximum of 1 subnet).
+                security_groups:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                                maxLength: 255
+                                minLength: 1
+                        title: ID
+                        required:
+                        - id
+                        example:
+                            id: 9ec75090-2872-4f51-8111-53d05d96d2c6
+                    title: Security Groups
+                    description: A list of security group IDs applied to this network
+                        interface for traffic filtering.
+                    default: []
+                associate_public_ip:
+                    type: boolean
+                    title: Associate Public Ip
+                    description: Indicates whether a public IP address should be automatically
+                        assigned to this interface.
+                    default: false
+                tag:
+                    anyOf:
+                    -   type: string
+                    title: Tag
+                    description: An optional device role tag exposed to the guest
+                        OS via metadata. It ensures reliable interface identification,
+                        as network device order is not guaranteed.
+                    nullable: true
+            title: NetworkInterfaceAttachment
         NetworkPortsNew:
             type: object
             properties:
@@ -3950,6 +4196,11 @@ components:
                                     anyOf:
                                     -   $ref: '#/components/schemas/IpAddressNewExpand'
                                     nullable: true
+                                mac_address:
+                                    anyOf:
+                                    -   type: string
+                                    title: Mac Address
+                                    nullable: true
                             title: PortNewExpand
                             required:
                             - id
@@ -3996,6 +4247,11 @@ components:
                                 name:
                                     type: string
                                     title: Name
+                                vpc_id:
+                                    anyOf:
+                                    -   type: string
+                                    title: Vpc Id
+                                    nullable: true
                                 ipAddresses:
                                     type: object
                                     properties:
@@ -4015,6 +4271,11 @@ components:
                                             title: Ipv6Address
                                             nullable: true
                                     title: IpAddressExpand
+                                mac_address:
+                                    anyOf:
+                                    -   type: string
+                                    title: Mac Address
+                                    nullable: true
                             title: PortV1Expand
                             required:
                             - id
@@ -4211,6 +4472,8 @@ components:
                                 - pending
                                 - creating
                                 - importing
+                                - importing_error
+                                - invalid_image
                                 - error
                             version:
                                 anyOf:
@@ -4396,6 +4659,7 @@ components:
                                 - creating
                                 - creating_error
                                 - creating_error_gpu
+                                - creating_error_capacity
                                 - creating_network_error
                                 - creating_error_quota
                                 - creating_error_quota_ram
@@ -4412,6 +4676,7 @@ components:
                                 - retyping_error_quota_ram
                                 - retyping_error_quota_vcpu
                                 - retyping_error_quota
+                                - retyping_error_capacity
                                 - stopping_pending
                                 - stopping
                                 - stopping_error
@@ -4709,7 +4974,9 @@ components:
                 requirements:
                     anyOf:
                     -   $ref: '#/components/schemas/CustomImageRequirements'
+                    description: 'Deprecated: this field is ignored.'
                     nullable: true
+                    deprecated: true
             title: PatchCustomImageRequest
             example:
                 description: A customized image for specific workloads.
@@ -4763,6 +5030,11 @@ components:
                     anyOf:
                     -   $ref: '#/components/schemas/IpAddressNewExpand'
                     nullable: true
+                mac_address:
+                    anyOf:
+                    -   type: string
+                    title: Mac Address
+                    nullable: true
             title: PortNewExpand
             required:
             - id
@@ -4776,6 +5048,11 @@ components:
                 name:
                     type: string
                     title: Name
+                vpc_id:
+                    anyOf:
+                    -   type: string
+                    title: Vpc Id
+                    nullable: true
                 ipAddresses:
                     type: object
                     properties:
@@ -4795,6 +5072,11 @@ components:
                             title: Ipv6Address
                             nullable: true
                     title: IpAddressExpand
+                mac_address:
+                    anyOf:
+                    -   type: string
+                    title: Mac Address
+                    nullable: true
             title: PortV1Expand
             required:
             - id
@@ -4807,27 +5089,6 @@ components:
             - br-se1
             - br-mgl1
             - br-ne1
-        SecurityGroups:
-            type: object
-            properties:
-                security_groups:
-                    type: array
-                    items:
-                        type: object
-                        properties:
-                            id:
-                                type: string
-                                title: Id
-                                maxLength: 255
-                                minLength: 1
-                        title: ID
-                        required:
-                        - id
-                        example:
-                            id: 9ec75090-2872-4f51-8111-53d05d96d2c6
-                    title: Security Groups
-                    default: []
-            title: SecurityGroups
         SnapshotCopyRequest:
             type: object
             properties:
@@ -4985,6 +5246,8 @@ components:
                         security_groups:
                         -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                         -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
+                        subnets:
+                        -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                     vpc:
                         id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                 ssh_key_name: keypair_name_here

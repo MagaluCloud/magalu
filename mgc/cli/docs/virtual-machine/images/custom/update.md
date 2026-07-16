@@ -16,13 +16,13 @@ mgc virtual-machine images custom update [id] [flags]
     --description string            Description
 -h, --help                          help for update
     --id uuid                       Id (required)
-    --requirements object           (properties: disk, ram and vcpu)
+    --requirements object           [Deprecated] Deprecated: this field is ignored. (properties: disk, ram and vcpu) 
                                     Use --requirements=help for more details
-    --requirements.disk integer     requirements's disk property: Disk
+    --requirements.disk integer     Deprecated: Disk
                                     This is the same as '--requirements=disk:integer'.
-    --requirements.ram integer      requirements's ram property: Ram
+    --requirements.ram integer      Deprecated: Ram
                                     This is the same as '--requirements=ram:integer'.
-    --requirements.vcpu integer     requirements's vcpu property: Vcpu
+    --requirements.vcpu integer     Deprecated: Vcpu
                                     This is the same as '--requirements=vcpu:integer'.
     --version string                Version
 ```

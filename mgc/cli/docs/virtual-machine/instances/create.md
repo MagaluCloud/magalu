@@ -12,7 +12,7 @@ mgc virtual-machine instances create [flags]
 
 ## Examples:
 ```
-mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --image.name="some_resource_name" --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.interface.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.interface.security-groups='[{"id":"9ec75090-2872-4f51-8111-53d05d96d2c6"}]' --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name" --volumes='[{"id":"a46594d1-9dc3-4c36-8eb3-071259513854"}]'
+mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --image.name="some_resource_name" --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network-profile.interfaces='[{"associate_public_ip":true,"security_groups":[{"id":"f273fbde-2ddf-4dcd-8c41-342671ac0d17"},{"id":"02a2acf3-d6db-4424-ac97-0254cb9c329e"}],"subnets":[{"id":"f273fbde-2ddf-4dcd-8c41-342671ac0d17"}],"tag":"primary","vpc":{"id":"2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6"}}]' --network.associate-public-ip=true --network.interface.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.interface.security-groups='[{"id":"9ec75090-2872-4f51-8111-53d05d96d2c6"}]' --network.interface.subnets='[{"id":"9ec75090-2872-4f51-8111-53d05d96d2c6"}]' --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name" --volumes='[{"id":"a46594d1-9dc3-4c36-8eb3-071259513854"}]'
 ```
 
 ## Flags:
@@ -36,9 +36,14 @@ mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d9
     --name string                               Name (between 1 and 255 characters) (required)
     --network object                            (properties: associate_public_ip, interface and vpc)
                                                 Use --network=help for more details
+    --network-profile object                    (single property: interfaces)
+                                                Use --network-profile=help for more details
+    --network-profile.interfaces array          network-profile's interfaces property: Interfaces (at most 3 items)
+                                                Use --network-profile.interfaces=help for more details
+                                                This is the same as '--network-profile=interfaces:array'.
     --network.associate-public-ip boolean       network's associate_public_ip property: Associate Public Ip
                                                 This is the same as '--network=associate_public_ip:boolean'.
-    --network.interface object                  network's interface property: Interface (at least one of: single property: id or single property: security_groups)
+    --network.interface object                  network's interface property: Interface (at least one of: single property: id or properties: security_groups and subnets)
                                                 Use --network.interface=help for more details
                                                 This is the same as '--network=interface:object'.
     --network.interface.id string               Interface: Id (between 1 and 255 characters)
@@ -46,6 +51,9 @@ mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d9
     --network.interface.security-groups array   Interface: Security Groups
                                                 Use --network.interface.security-groups=help for more details
                                                 This is the same as '--network.interface=security_groups:array'.
+    --network.interface.subnets array           Interface: Subnets (at most 1 item)
+                                                Use --network.interface.subnets=help for more details
+                                                This is the same as '--network.interface=subnets:array'.
     --network.vpc object                        network's vpc property: Vpc (at least one of: single property: id or single property: name)
                                                 Use --network.vpc=help for more details
                                                 This is the same as '--network=vpc:object'.
