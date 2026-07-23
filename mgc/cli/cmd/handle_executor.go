@@ -182,6 +182,7 @@ func handleExecutor(
 	setDefaultRegion(sdk)
 	setApiKey(cmd, sdk)
 	setKeyPair(sdk)
+	setXTenantID(sdk)
 
 	result, err := handleExecutorPre(ctx, sdk, cmd, exec, parameters, configs)
 	err = handleExecutorResult(ctx, sdk, cmd, result, err)
