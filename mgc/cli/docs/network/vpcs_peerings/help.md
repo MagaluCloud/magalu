@@ -1,32 +1,26 @@
 ---
 sidebar_position: 0
 ---
-# Network
+# Vpcs_peerings
 
-VPC Api Product
+Operations related to VPC Peerings
 
 ## Usage:
 ```
-mgc network [flags]
-mgc network [command]
+mgc network vpcs-peerings [flags]
+mgc network vpcs-peerings [command]
 ```
 
 ## Commands:
 ```
-nat-gateways    Operations related to Nat Gateway
-ports           Operations related to Ports
-public-ips      Operations related to Public IPs
-rules           Operations related to Rules
-security-groups Operations related to Security Groups
-subnetpools     Operations related to Subnet Pools
-subnets         Operations related to Subnets
-vpcs            Operations related to VPCs
-vpcs-peerings   Operations related to VPC Peerings
+create      Create a new Virtual Private Cloud (VPC) Peering
+delete      Delete a Virtual Private Cloud (VPC) Peering
+get         Get VPC peering members by peering ID
 ```
 
 ## Flags:
 ```
--h, --help   help for network
+-h, --help   help for vpcs-peerings
 ```
 
 ## Global Flags:

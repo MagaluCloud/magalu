@@ -1,32 +1,19 @@
 ---
-sidebar_position: 0
+sidebar_position: 3
 ---
-# Network
+# Delete
 
-VPC Api Product
+Delete a Virtual Private Cloud (VPC) Peering.
 
 ## Usage:
 ```
-mgc network [flags]
-mgc network [command]
-```
-
-## Commands:
-```
-nat-gateways    Operations related to Nat Gateway
-ports           Operations related to Ports
-public-ips      Operations related to Public IPs
-rules           Operations related to Rules
-security-groups Operations related to Security Groups
-subnetpools     Operations related to Subnet Pools
-subnets         Operations related to Subnets
-vpcs            Operations related to VPCs
-vpcs-peerings   Operations related to VPC Peerings
+mgc network vpcs-peerings delete [vpc-peering-id] [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for network
+-h, --help                    help for delete
+    --vpc-peering-id string   Vpc Peering Id (required)
 ```
 
 ## Global Flags:
@@ -38,8 +25,11 @@ vpcs-peerings   Operations related to VPC Peerings
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
+    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+    --server-url uri           Manually specify the server to use
 ```
 
