@@ -1,27 +1,19 @@
 ---
-sidebar_position: 0
+sidebar_position: 1
 ---
-# Vpcs_peerings
+# List
 
-Operations related to VPC Peerings
+Returns the VPC peerings associated with the current tenant.
 
 ## Usage:
 ```
-mgc network vpcs-peerings [flags]
-mgc network vpcs-peerings [command]
-```
-
-## Commands:
-```
-create      Create a new Virtual Private Cloud (VPC) Peering
-delete      Delete a Virtual Private Cloud (VPC) Peering
-get         Get VPC peering members by peering ID
-list        List VPC peerings by tenant
+mgc network vpcs-peerings list [flags]
 ```
 
 ## Flags:
 ```
--h, --help   help for vpcs-peerings
+-h, --help            help for list
+    --vpc-id string   Vpc Id
 ```
 
 ## Global Flags:
@@ -33,8 +25,11 @@ list        List VPC peerings by tenant
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
+    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+    --server-url uri           Manually specify the server to use
 ```
 

@@ -3746,312 +3746,420 @@
             }
         },
         "/v1/vpcs_peerings": {
-      "post": {
-        "tags": [
-          "vpcs_peerings"
-        ],
-        "summary": "Create a new Virtual Private Cloud (VPC) Peering",
-        "description": "Create a new Virtual Private Cloud (VPC) Peering.",
-        "operationId": "v1_create_vpc_peering_v1_vpcs_peerings_post",
-        "security": [
-          {
-            "OAuth2": [
-              "network.write"
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "Tenant id of the project",
-              "title": "X-Tenant-Id"
+            "get": {
+                "tags": [
+                    "vpcs_peerings"
+                ],
+                "summary": "List VPC peerings by tenant",
+                "description": "Returns the VPC peerings associated with the current tenant.",
+                "operationId": "v1_list_vpc_peerings_v1_vpcs_peerings_get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "vpc_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Vpc Id"
+                        }
+                    },
+                    {
+                        "name": "x-tenant-id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Tenant id of the project",
+                            "title": "X-Tenant-Id"
+                        },
+                        "description": "Tenant id of the project"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VpcPeeringListResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode400BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode409Conflict"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Exception",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode500InternalServerError"
+                                }
+                            }
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Timeout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode504GatewayTimeout"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-viveiro": true,
+                "x-mgc-hidden": false
             },
-            "description": "Tenant id of the project"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VpcPeeringCreatePayload"
-              }
+            "post": {
+                "tags": [
+                    "vpcs_peerings"
+                ],
+                "summary": "Create a new Virtual Private Cloud (VPC) Peering",
+                "description": "Create a new Virtual Private Cloud (VPC) Peering.",
+                "operationId": "v1_create_vpc_peering_v1_vpcs_peerings_post",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "x-tenant-id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Tenant id of the project",
+                            "title": "X-Tenant-Id"
+                        },
+                        "description": "Tenant id of the project"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VpcPeeringCreatePayload"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/vpc_api_product__v1__vpcs__schemas__VpcCreateResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode400BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode409Conflict"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Exception",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode500InternalServerError"
+                                }
+                            }
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Timeout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode504GatewayTimeout"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-viveiro": true,
+                "x-mgc-hidden": false
             }
-          }
-        },
-        "responses": {
-          "202": {
-            "description": "Accepted",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/vpc_api_product__v1__vpcs__schemas__VpcCreateResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StatusCode400BadRequest"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StatusCode409Conflict"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Exception",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StatusCode500InternalServerError"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Gateway Timeout",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StatusCode504GatewayTimeout"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "x-viveiro": true,
-        "x-mgc-hidden": false
-      }
         },
         "/v1/vpcs_peerings/{vpc_peering_id}": {
-        "delete": {
-            "tags": [
-            "vpcs_peerings"
-            ],
-            "summary": "Delete a Virtual Private Cloud (VPC) Peering",
-            "description": "Delete a Virtual Private Cloud (VPC) Peering.",
-            "operationId": "v1_delete_vpc_peering_v1_vpcs_peerings__vpc_peering_id__delete",
-            "security": [
-            {
-                "OAuth2": [
-                "network.write"
-                ]
-            }
-            ],
-            "parameters": [
-            {
-                "name": "vpc_peering_id",
-                "in": "path",
-                "required": true,
-                "schema": {
-                "type": "string",
-                "title": "Vpc Peering Id"
-                }
-            },
-            {
-                "name": "x-tenant-id",
-                "in": "header",
-                "required": true,
-                "schema": {
-                "type": "string",
-                "description": "Tenant id of the project",
-                "title": "X-Tenant-Id"
+            "delete": {
+                "tags": [
+                    "vpcs_peerings"
+                ],
+                "summary": "Delete a Virtual Private Cloud (VPC) Peering",
+                "description": "Delete a Virtual Private Cloud (VPC) Peering.",
+                "operationId": "v1_delete_vpc_peering_v1_vpcs_peerings__vpc_peering_id__delete",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.write"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "vpc_peering_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Vpc Peering Id"
+                        }
+                    },
+                    {
+                        "name": "x-tenant-id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Tenant id of the project",
+                            "title": "X-Tenant-Id"
+                        },
+                        "description": "Tenant id of the project"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/vpc_api_product__v1__vpcs__schemas__VpcCreateResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode400BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode409Conflict"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Exception",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode500InternalServerError"
+                                }
+                            }
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Timeout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode504GatewayTimeout"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
                 },
-                "description": "Tenant id of the project"
-            }
-            ],
-            "responses": {
-            "202": {
-                "description": "Accepted",
-                "content": {
-                "application/json": {
-                    "schema": {
-                    "$ref": "#/components/schemas/vpc_api_product__v1__vpcs__schemas__VpcCreateResponse"
+                "x-viveiro": true,
+                "x-mgc-hidden": false
+            },
+            "get": {
+                "tags": [
+                    "vpcs_peerings"
+                ],
+                "summary": "Get VPC peering members by peering ID",
+                "description": "Returns all members associated with the provided VPC peering ID.",
+                "operationId": "v1_list_peering_members_v1_vpcs_peerings__vpc_peering_id__get",
+                "security": [
+                    {
+                        "OAuth2": [
+                            "network.read"
+                        ]
                     }
-                }
-                }
-            },
-            "400": {
-                "description": "Bad Request",
-                "content": {
-                "application/json": {
-                    "schema": {
-                    "$ref": "#/components/schemas/StatusCode400BadRequest"
+                ],
+                "parameters": [
+                    {
+                        "name": "vpc_peering_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Vpc Peering Id"
+                        }
+                    },
+                    {
+                        "name": "x-tenant-id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Tenant id of the project",
+                            "title": "X-Tenant-Id"
+                        },
+                        "description": "Tenant id of the project"
                     }
-                }
-                }
-            },
-            "409": {
-                "description": "Conflict",
-                "content": {
-                "application/json": {
-                    "schema": {
-                    "$ref": "#/components/schemas/StatusCode409Conflict"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VpcPeeringMembersListResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode400BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode409Conflict"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Exception",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode500InternalServerError"
+                                }
+                            }
+                        }
+                    },
+                    "504": {
+                        "description": "Gateway Timeout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCode504GatewayTimeout"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
                     }
-                }
-                }
-            },
-            "500": {
-                "description": "Internal Exception",
-                "content": {
-                "application/json": {
-                    "schema": {
-                    "$ref": "#/components/schemas/StatusCode500InternalServerError"
-                    }
-                }
-                }
-            },
-            "504": {
-                "description": "Gateway Timeout",
-                "content": {
-                "application/json": {
-                    "schema": {
-                    "$ref": "#/components/schemas/StatusCode504GatewayTimeout"
-                    }
-                }
-                }
-            },
-            "422": {
-                "description": "Validation Error",
-                "content": {
-                "application/json": {
-                    "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                    }
-                }
-                }
-            }
-            },
-            "x-viveiro": true,
-            "x-mgc-hidden": false
-        },
-        "get": {
-            "tags": [
-            "vpcs_peerings"
-            ],
-            "summary": "Get VPC peering members by peering ID",
-            "description": "Returns all members associated with the provided VPC peering ID.",
-            "operationId": "v1_list_peering_members_v1_vpcs_peerings__vpc_peering_id__get",
-            "security": [
-            {
-                "OAuth2": [
-                "network.read"
-                ]
-            }
-            ],
-            "parameters": [
-            {
-                "name": "vpc_peering_id",
-                "in": "path",
-                "required": true,
-                "schema": {
-                "type": "string",
-                "title": "Vpc Peering Id"
-                }
-            },
-            {
-                "name": "x-tenant-id",
-                "in": "header",
-                "required": true,
-                "schema": {
-                "type": "string",
-                "description": "Tenant id of the project",
-                "title": "X-Tenant-Id"
                 },
-                "description": "Tenant id of the project"
+                "x-viveiro": true,
+                "x-mgc-hidden": false
             }
-            ],
-            "responses": {
-            "200": {
-                "description": "Successful Response",
-                "content": {
-                "application/json": {
-                    "schema": {
-                    "$ref": "#/components/schemas/VpcPeeringMembersListResponse"
-                    }
-                }
-                }
-            },
-            "400": {
-                "description": "Bad Request",
-                "content": {
-                "application/json": {
-                    "schema": {
-                    "$ref": "#/components/schemas/StatusCode400BadRequest"
-                    }
-                }
-                }
-            },
-            "409": {
-                "description": "Conflict",
-                "content": {
-                "application/json": {
-                    "schema": {
-                    "$ref": "#/components/schemas/StatusCode409Conflict"
-                    }
-                }
-                }
-            },
-            "500": {
-                "description": "Internal Exception",
-                "content": {
-                "application/json": {
-                    "schema": {
-                    "$ref": "#/components/schemas/StatusCode500InternalServerError"
-                    }
-                }
-                }
-            },
-            "504": {
-                "description": "Gateway Timeout",
-                "content": {
-                "application/json": {
-                    "schema": {
-                    "$ref": "#/components/schemas/StatusCode504GatewayTimeout"
-                    }
-                }
-                }
-            },
-            "422": {
-                "description": "Validation Error",
-                "content": {
-                "application/json": {
-                    "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                    }
-                }
-                }
-            }
-            },
-            "x-viveiro": true,
-            "x-mgc-hidden": false
-        }
         },
         "/v1/nat_gateways": {
             "get": {
@@ -4630,7 +4738,7 @@
                     "name": {
                         "type": "string",
                         "title": "Name",
-                        "description": "Nome do Peering. Deve ser alfanum\u00e9rico ou h\u00edfens, max 50 chars.",
+                        "description": "Nome do Peering. Deve ser alfanumérico ou hífens, max 50 chars.",
                         "examples": [
                             "peering-prod-to-db"
                         ]
@@ -4645,9 +4753,9 @@
                             }
                         ],
                         "title": "Description",
-                        "description": "Descri\u00e7\u00e3o opcional do Peering.",
+                        "description": "Descrição opcional do Peering.",
                         "examples": [
-                            "Conex\u00e3o entre a VPC de produ\u00e7\u00e3o e a VPC de banco de dados"
+                            "Conexão entre a VPC de produção e a VPC de banco de dados"
                         ]
                     },
                     "vpcs": {
@@ -4767,6 +4875,149 @@
                     "accepter"
                 ],
                 "title": "DirectRole"
+            },
+            "VpcPeeringGetResponse": {
+                "properties": {
+                    "vpc_peering_id": {
+                        "type": "string",
+                        "title": "Vpc Peering Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Description"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/Status"
+                    },
+                    "created_at": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Created At"
+                    },
+                    "updated": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Updated"
+                    },
+                    "members": {
+                        "items": {
+                            "$ref": "#/components/schemas/VpcPeeringMemberResponse"
+                        },
+                        "type": "array",
+                        "title": "Members"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "vpc_peering_id",
+                    "name",
+                    "status",
+                    "members"
+                ],
+                "title": "VpcPeeringGetResponse",
+                "example": {
+                    "created_at": "YYYY-MM-DD HH:mm:SS",
+                    "description": "peering description",
+                    "members": [
+                        {
+                            "direct_role": "requester",
+                            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                            "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                        },
+                        {
+                            "direct_role": "accepter",
+                            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                            "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                        }
+                    ],
+                    "name": "peering-name",
+                    "status": "pending",
+                    "updated": "YYYY-MM-DD HH:mm:SS",
+                    "vpc_peering_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                }
+            },
+            "VpcPeeringListResponse": {
+                "properties": {
+                    "meta": {
+                        "$ref": "#/components/schemas/Meta"
+                    },
+                    "result": {
+                        "items": {
+                            "$ref": "#/components/schemas/VpcPeeringGetResponse"
+                        },
+                        "type": "array",
+                        "title": "Result"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "meta",
+                    "result"
+                ],
+                "title": "VpcPeeringListResponse",
+                "example": {
+                    "meta": {
+                        "links": {
+                            "next": "?_offset=30\u0026_limit=10",
+                            "previous": "?_offset=10\u0026_limit=10",
+                            "self": "?_offset=20\u0026_limit=10"
+                        },
+                        "page": {
+                            "count": 10,
+                            "limit": 10,
+                            "max_items_per_page": 100,
+                            "offset": 20,
+                            "total": 112
+                        }
+                    },
+                    "result": [
+                        {
+                            "created_at": "YYYY-MM-DD HH:mm:SS",
+                            "description": "peering description",
+                            "members": [
+                                {
+                                    "direct_role": "requester",
+                                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                                    "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                                },
+                                {
+                                    "direct_role": "accepter",
+                                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                                    "vpc_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                                }
+                            ],
+                            "name": "peering-name",
+                            "status": "pending",
+                            "updated": "YYYY-MM-DD HH:mm:SS",
+                            "vpc_peering_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                        }
+                    ]
+                }
             },
             "BookCidrRequest": {
                 "properties": {
