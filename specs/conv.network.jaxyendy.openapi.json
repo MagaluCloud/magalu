@@ -4800,7 +4800,7 @@
                     "name": {
                         "type": "string",
                         "title": "Name",
-                        "description": "Nome do Peering. Deve ser alfanumérico ou hífens, max 50 chars.",
+                        "description": "Name of the peering. Use only letters, numbers and hyphens, up to 50 characters.",
                         "example": "peering-prod-to-db"
                     },
                     "description": {
@@ -4810,9 +4810,9 @@
                             }
                         ],
                         "title": "Description",
-                        "description": "Descrição opcional do Peering.",
+                        "description": "Optional description of the peering.",
                         "nullable": true,
-                        "example": "Conexão entre a VPC de produção e a VPC de banco de dados"
+                        "example": "Connection between the production VPC and the database VPC"
                     },
                     "vpcs": {
                         "type": "object",
@@ -4820,21 +4820,22 @@
                             "requester_vpc_id": {
                                 "type": "string",
                                 "title": "Requester Vpc Id",
-                                "description": "ID da VPC que esta solicitando o peering (Requester).",
+                                "description": "Requester VPC ID, the VPC that requests the peering.",
                                 "example": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                             },
                             "accepter_vpc_id": {
                                 "type": "string",
                                 "title": "Accepter Vpc Id",
-                                "description": "ID da VPC que recebera o convite de peering (Accepter).",
+                                "description": "Accepter VPC ID, the VPC that receives the peering request.",
                                 "example": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                             }
                         },
-                        "title": "VpcPeeringCreateVpcsPayload",
+                        "title": "VPCs",
                         "required": [
                             "requester_vpc_id",
                             "accepter_vpc_id"
-                        ]
+                        ],
+                        "description": "VPCs to connect"
                     }
                 },
                 "title": "VpcPeeringCreatePayload",
@@ -4857,21 +4858,22 @@
                     "requester_vpc_id": {
                         "type": "string",
                         "title": "Requester Vpc Id",
-                        "description": "ID da VPC que esta solicitando o peering (Requester).",
+                        "description": "Requester VPC ID, the VPC that requests the peering.",
                         "example": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                     },
                     "accepter_vpc_id": {
                         "type": "string",
                         "title": "Accepter Vpc Id",
-                        "description": "ID da VPC que recebera o convite de peering (Accepter).",
+                        "description": "Accepter VPC ID, the VPC that receives the peering request.",
                         "example": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                     }
                 },
-                "title": "VpcPeeringCreateVpcsPayload",
+                "title": "VPCs",
                 "required": [
                     "requester_vpc_id",
                     "accepter_vpc_id"
-                ]
+                ],
+                "description": "VPCs to connect"
             },
             "VpcPeeringMembersListResponse": {
                 "type": "object",
@@ -4912,7 +4914,7 @@
                                 "vpc_id",
                                 "direct_role"
                             ],
-                            "description": "Modelo para representar cada VPC dentro do peering"
+                            "description": "Represents each VPC that takes part in the peering"
                         },
                         "title": "Members"
                     }
@@ -4966,7 +4968,7 @@
                     "vpc_id",
                     "direct_role"
                 ],
-                "description": "Modelo para representar cada VPC dentro do peering"
+                "description": "Represents each VPC that takes part in the peering"
             },
             "DirectRole": {
                 "type": "string",
@@ -5057,7 +5059,7 @@
                                 "vpc_id",
                                 "direct_role"
                             ],
-                            "description": "Modelo para representar cada VPC dentro do peering"
+                            "description": "Represents each VPC that takes part in the peering"
                         },
                         "title": "Members"
                     }
@@ -5248,7 +5250,7 @@
                                             "vpc_id",
                                             "direct_role"
                                         ],
-                                        "description": "Modelo para representar cada VPC dentro do peering"
+                                        "description": "Represents each VPC that takes part in the peering"
                                     },
                                     "title": "Members"
                                 }

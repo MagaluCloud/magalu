@@ -12,19 +12,19 @@ mgc network vpcs-peerings create [flags]
 
 ## Examples:
 ```
-mgc network vpcs-peerings create --description="Conexão entre a VPC de produção e a VPC de banco de dados" --name="peering-prod-to-db" --vpcs.accepter-vpc-id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --vpcs.requester-vpc-id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+mgc network vpcs-peerings create --description="Connection between the production VPC and the database VPC" --name="peering-prod-to-db" --vpcs.accepter-vpc-id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --vpcs.requester-vpc-id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 ```
 
 ## Flags:
 ```
-    --description string             Description: Descrição opcional do Peering.
+    --description string             Optional description of the peering.
 -h, --help                           help for create
-    --name string                    Name: Nome do Peering. Deve ser alfanumérico ou hífens, max 50 chars. (required)
-    --vpcs object                    VpcPeeringCreateVpcsPayload (properties: accepter_vpc_id and requester_vpc_id)
+    --name string                    Name of the peering. Use only letters, numbers and hyphens, up to 50 characters. (required)
+    --vpcs object                    VPCs to connect (properties: accepter_vpc_id and requester_vpc_id)
                                      Use --vpcs=help for more details (required)
-    --vpcs.accepter-vpc-id string    VpcPeeringCreateVpcsPayload: Accepter Vpc Id: ID da VPC que recebera o convite de peering (Accepter).
+    --vpcs.accepter-vpc-id string    VPCs: Accepter VPC ID, the VPC that receives the peering request.
                                      This is the same as '--vpcs=accepter_vpc_id:string'.
-    --vpcs.requester-vpc-id string   VpcPeeringCreateVpcsPayload: Requester Vpc Id: ID da VPC que esta solicitando o peering (Requester).
+    --vpcs.requester-vpc-id string   VPCs: Requester VPC ID, the VPC that requests the peering.
                                      This is the same as '--vpcs=requester_vpc_id:string'.
 ```
 
