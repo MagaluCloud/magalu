@@ -12,7 +12,7 @@ mgc virtual-machine snapshots restore [id] [flags]
 
 ## Examples:
 ```
-mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.interface.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.interface.security-groups='[{"id":"9ec75090-2872-4f51-8111-53d05d96d2c6"}]' --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name"
+mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --machine-type.name="some_resource_name" --network.associate-public-ip=true --network.interface.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.interface.security-groups='[{"id":"9ec75090-2872-4f51-8111-53d05d96d2c6"}]' --network.interface.subnets='[{"id":"9ec75090-2872-4f51-8111-53d05d96d2c6"}]' --network.vpc.id="9ec75090-2872-4f51-8111-53d05d96d2c6" --network.vpc.name="some_resource_name"
 ```
 
 ## Flags:
@@ -32,7 +32,7 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
                                                 Use --network=help for more details
     --network.associate-public-ip boolean       network's associate_public_ip property: Associate Public Ip
                                                 This is the same as '--network=associate_public_ip:boolean'.
-    --network.interface object                  network's interface property: Interface (at least one of: single property: id or single property: security_groups)
+    --network.interface object                  network's interface property: Interface (at least one of: single property: id or properties: security_groups and subnets)
                                                 Use --network.interface=help for more details
                                                 This is the same as '--network=interface:object'.
     --network.interface.id string               Interface: Id (between 1 and 255 characters)
@@ -40,6 +40,9 @@ mgc virtual-machine snapshots restore --machine-type.id="9ec75090-2872-4f51-8111
     --network.interface.security-groups array   Interface: Security Groups
                                                 Use --network.interface.security-groups=help for more details
                                                 This is the same as '--network.interface=security_groups:array'.
+    --network.interface.subnets array           Interface: Subnets (at most 1 item)
+                                                Use --network.interface.subnets=help for more details
+                                                This is the same as '--network.interface=subnets:array'.
     --network.vpc object                        network's vpc property: Vpc (at least one of: single property: id or single property: name)
                                                 Use --network.vpc=help for more details
                                                 This is the same as '--network=vpc:object'.
