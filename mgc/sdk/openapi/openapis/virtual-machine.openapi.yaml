@@ -3074,6 +3074,8 @@ components:
                         security_groups:
                         -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                         -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
+                        subnets:
+                        -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                     vpc:
                         id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                 ssh_key_name: keypair_name_here
@@ -3094,7 +3096,7 @@ components:
                 interface:
                     anyOf:
                     -   $ref: '#/components/schemas/ID'
-                    -   $ref: '#/components/schemas/SecurityGroups'
+                    -   $ref: '#/components/schemas/Interface'
                     title: Interface
                     nullable: true
                 associate_public_ip:
@@ -3108,6 +3110,8 @@ components:
                     security_groups:
                     -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                     -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
+                    subnets:
+                    -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                 vpc:
                     id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
         InstanceResponseSnapshotV1:
@@ -3580,6 +3584,44 @@ components:
             - name
             example:
                 name: new-instance-name
+        Interface:
+            type: object
+            properties:
+                security_groups:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                                maxLength: 255
+                                minLength: 1
+                        title: ID
+                        required:
+                        - id
+                        example:
+                            id: 9ec75090-2872-4f51-8111-53d05d96d2c6
+                    title: Security Groups
+                    default: []
+                subnets:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                                maxLength: 255
+                                minLength: 1
+                        title: ID
+                        required:
+                        - id
+                        example:
+                            id: 9ec75090-2872-4f51-8111-53d05d96d2c6
+                    title: Subnets
+                    maxItems: 1
+            title: Interface
         IpAddressExpand:
             type: object
             properties:
@@ -4807,27 +4849,6 @@ components:
             - br-se1
             - br-mgl1
             - br-ne1
-        SecurityGroups:
-            type: object
-            properties:
-                security_groups:
-                    type: array
-                    items:
-                        type: object
-                        properties:
-                            id:
-                                type: string
-                                title: Id
-                                maxLength: 255
-                                minLength: 1
-                        title: ID
-                        required:
-                        - id
-                        example:
-                            id: 9ec75090-2872-4f51-8111-53d05d96d2c6
-                    title: Security Groups
-                    default: []
-            title: SecurityGroups
         SnapshotCopyRequest:
             type: object
             properties:
@@ -4985,6 +5006,8 @@ components:
                         security_groups:
                         -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                         -   id: 02a2acf3-d6db-4424-ac97-0254cb9c329e
+                        subnets:
+                        -   id: f273fbde-2ddf-4dcd-8c41-342671ac0d17
                     vpc:
                         id: 2ae0b896-855c-456c-b4a5-c8f4e6d2f4f6
                 ssh_key_name: keypair_name_here
