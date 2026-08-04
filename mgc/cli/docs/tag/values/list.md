@@ -13,7 +13,7 @@ mgc tag values list [tag-name] [flags]
 ## Flags:
 ```
     --control.limit integer    Maximum number of items to return per page (range: 1 - 100)
-    --control.offset integer   Number of items to skip before the first result (min: 0)
+    --control.offset integer   Number of items to skip before the first result
     --control.sort string      Sort criteria for the result
 -h, --help                     help for list
     --name string              Name of the value to filter by (between 1 and 255 characters and pattern: ^[\w\ \-\[\]\(\)\.\:]+$)

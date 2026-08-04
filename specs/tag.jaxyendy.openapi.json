@@ -12,9 +12,8 @@
   "paths": {
     "/v0/tags": {
       "post": {
-        "tags": [],
         "summary": "Create a tag",
-        "description": "Create a tag that can be attached to cloud resources.\n\nValues can be created along with the tag. A single request accepts at most\n100 values.\n\nRelated commands:\n  mgc tag values create --tag-name <name>  add more values to the tag\n  mgc tag resources tags attach            attach the tag to a resource",
+        "description": "Create a tag that can be attached to cloud resources.\n\nValues can be created along with the tag. A single request accepts at most\n100 values.\n\nRelated commands:\n  mgc tag values create --tag-name \u003cname\u003e  add more values to the tag\n  mgc tag resources tags attach            attach the tag to a resource",
         "operationId": "create_tags_public",
         "security": [
           {
@@ -74,7 +73,6 @@
         }
       },
       "get": {
-        "tags": [],
         "summary": "List all tags",
         "operationId": "list_tags_public",
         "security": [
@@ -238,7 +236,6 @@
     },
     "/v0/tags/{name}": {
       "patch": {
-        "tags": [],
         "summary": "Update a tag",
         "operationId": "update_tags_public",
         "security": [
@@ -314,7 +311,6 @@
         "description": "Update the color, kinds or description of a tag.\n\nThe tag name cannot be changed. To use a different name, create a new tag\nand attach it to the resources."
       },
       "delete": {
-        "tags": [],
         "summary": "Delete a tag",
         "operationId": "delete_tags_public",
         "security": [
@@ -378,10 +374,9 @@
             }
           }
         },
-        "description": "Delete a tag by name.\n\nDeletion cannot be undone.\n\nRelated commands:\n  mgc tag get --name <name>  check the tag before deleting it"
+        "description": "Delete a tag by name.\n\nDeletion cannot be undone.\n\nRelated commands:\n  mgc tag get --name \u003cname\u003e  check the tag before deleting it"
       },
       "get": {
-        "tags": [],
         "summary": "Get details of a tag",
         "operationId": "get_tags_public",
         "security": [
@@ -940,7 +935,6 @@
             "schema": {
               "type": "string",
               "description": "Sort criteria for the result",
-              "examples": "created_at:asc\ncreate_at:asc,updated_at:desc",
               "default": ""
             },
             "description": "Sort criteria for the result"
@@ -1321,7 +1315,7 @@
             }
           }
         },
-        "description": "Attach one or more tag/value pairs to a resource.\n\nBoth the tag and the value must already exist.\n\nRelated commands:\n  mgc tag create                           create the tag first\n  mgc tag values create --tag-name <name>  create the value first"
+        "description": "Attach one or more tag/value pairs to a resource.\n\nBoth the tag and the value must already exist.\n\nRelated commands:\n  mgc tag create                           create the tag first\n  mgc tag values create --tag-name \u003cname\u003e  create the value first"
       }
     },
     "/v0/resources/{external_id}/tags/{tag_name}": {
@@ -2401,8 +2395,8 @@
         "description": "OAuth2 by IDPA (Identity Provider Authentication)",
         "flows": {
           "authorizationCode": {
-            "authorizationUrl": "https://idpa-api-preprod.luizalabs.com/oauth/authorize",
-            "tokenUrl": "https://idpa-api-preprod.luizalabs.com/oauth/token",
+            "authorizationUrl": "https://idmagalu-preprod.luizalabs.com/oauth/authorize",
+            "tokenUrl": "https://autoseg-idp.luizalabs.com/oauth/token",
             "scopes": {
               "tags:tags-tr": "Allow read operations on tags",
               "tags:tags-tw": "Allow write operations on tags"

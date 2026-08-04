@@ -17,9 +17,10 @@ mgc tag values get --tag-name="kubernetes-expenses" --value-name="test-labs"
 
 ## Flags:
 ```
--h, --help                help for get
-    --tag-name string     Tag name that owns the value (required)
-    --value-name string   Value name to operate on (required)
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+-h, --help                          help for get
+    --tag-name string               Tag name that owns the value (required)
+    --value-name string             Value name to operate on (required)
 ```
 
 ## Global Flags:

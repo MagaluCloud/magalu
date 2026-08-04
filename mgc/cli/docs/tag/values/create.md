@@ -12,10 +12,11 @@ mgc tag values create [tag-name] [flags]
 
 ## Flags:
 ```
-    --description string   Description of the value (max character count: 500)
--h, --help                 help for create
-    --name string          Name of the value, unique within the tag (required)
-    --tag-name string      Tag name that will own the value (required)
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --description string            Description of the value (max character count: 500)
+-h, --help                          help for create
+    --name string                   Name of the value, unique within the tag (required)
+    --tag-name string               Tag name that will own the value (required)
 ```
 
 ## Global Flags:

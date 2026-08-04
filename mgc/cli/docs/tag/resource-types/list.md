@@ -14,10 +14,10 @@ mgc tag resource-types list [flags]
 ## Flags:
 ```
     --control.limit integer    Maximum number of items to return per page (range: 1 - 100)
-    --control.offset integer   Number of items to skip before the first result (min: 0)
+    --control.offset integer   Number of items to skip before the first result
     --control.sort string      Sort criteria for the result
 -h, --help                     help for list
-    --name enum                Resource type to filter by, prefixed by its product (one of "bs.snapshot", "bs.volume", "cr.registry", "cr.repository", "db.cluster", "db.instance", "db.parameter-group", "db.replica", "db.snapshot", "k8s.cluster", "k8s.nodepool", "lb.network-acl", "lb.network-backend", "lb.network-certificate", "lb.network-healthcheck", "lb.network-listener", "lb.network-loadbalancer", "net.nat-gateway", "net.port", "net.public-ip", "net.rule", "net.security-group", "net.subnet", "net.vpc", "os.bucket", "os.object", "un.unknown", "vm.image", "vm.instance" or "vm.snapshot")
+    --name enum                Name: Resource type to filter by, prefixed by its product (one of "bs.snapshot", "bs.volume", "cr.registry", "cr.repository", "db.cluster", "db.instance", "db.parameter-group", "db.replica", "db.snapshot", "k8s.cluster", "k8s.nodepool", "lb.network-acl", "lb.network-backend", "lb.network-certificate", "lb.network-healthcheck", "lb.network-listener", "lb.network-loadbalancer", "net.nat-gateway", "net.port", "net.public-ip", "net.rule", "net.security-group", "net.subnet", "net.vpc", "os.bucket", "os.object", "un.unknown", "vm.image", "vm.instance" or "vm.snapshot")
     --product enum             Product that owns the resource type (one of "block-storage", "container-registry", "database", "kubernetes", "load-balancer", "network", "object-storage", "unknown" or "virtual-machine")
 ```
 

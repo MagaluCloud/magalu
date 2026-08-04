@@ -19,7 +19,7 @@ mgc tag list --color="ffffff" --kinds='["finops"]'
 ```
     --color string             Color to filter by, as a 6-digit hex RGB code without the '#' prefix (between 6 and 6 characters and pattern: ^[0-9a-fA-F]+$)
     --control.limit integer    Maximum number of items to return per page (range: 1 - 100)
-    --control.offset integer   Number of items to skip before the first result (min: 0)
+    --control.offset integer   Number of items to skip before the first result
     --control.sort string      Sort criteria for the result
 -h, --help                     help for list
     --kinds array(enum)        Kinds to filter by, such as finops

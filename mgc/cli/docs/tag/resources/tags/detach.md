@@ -17,9 +17,10 @@ mgc tag resources tags detach --external-id="31201f93-f5f4-4cf1-ba9c-bfed0717f4a
 
 ## Flags:
 ```
-    --external-id string   External ID of the resource, as used by its own product (required)
--h, --help                 help for detach
-    --tag-name string      Tag name to detach from the resource (required)
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --external-id string            External ID of the resource, as used by its own product (required)
+-h, --help                          help for detach
+    --tag-name string               Tag name to detach from the resource (required)
 ```
 
 ## Global Flags:

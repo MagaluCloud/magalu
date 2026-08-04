@@ -9,7 +9,6 @@ info:
 paths:
     /v0/tags:
         post:
-            tags: []
             summary: Create a tag
             description: "Create a tag that can be attached to cloud resources.\n\n\
                 Values can be created along with the tag. A single request accepts\
@@ -40,7 +39,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
         get:
-            tags: []
             summary: List all tags
             operationId: list_tags_public
             security:
@@ -51,26 +49,28 @@ paths:
                 in: query
                 required: false
                 schema:
-                    description: Name of the tag to filter by
+                    anyOf:
+                    -   type: string
+                        maxLength: 255
+                        minLength: 1
+                        pattern: ^[\w\ \-\[\]\(\)\.\:]+$
                     title: Name
+                    description: Name of the tag to filter by
                     nullable: true
-                    type: string
-                    minLength: 1
-                    maxLength: 255
-                    pattern: ^[\w\ \-\[\]\(\)\.\:]+$
                 description: Name of the tag to filter by
             -   name: color
                 in: query
                 required: false
                 schema:
+                    anyOf:
+                    -   type: string
+                        maxLength: 6
+                        minLength: 6
+                        pattern: ^[0-9a-fA-F]+$
+                    title: Color
                     description: Color to filter by, as a 6-digit hex RGB code without
                         the '#' prefix
-                    title: Color
                     nullable: true
-                    type: string
-                    minLength: 6
-                    maxLength: 6
-                    pattern: ^[0-9a-fA-F]+$
                     example: ffffff
                 description: Color to filter by, as a 6-digit hex RGB code without
                     the '#' prefix
@@ -78,12 +78,16 @@ paths:
                 in: query
                 required: false
                 schema:
-                    description: Kinds to filter by, such as finops
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
+                            title: TagKinds
+                            enum:
+                            - finops
                     title: Kinds
+                    description: Kinds to filter by, such as finops
                     nullable: true
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/TagKinds'
                     example:
                     - finops
                 description: Kinds to filter by, such as finops
@@ -94,25 +98,24 @@ paths:
                     type: integer
                     maximum: 100
                     minimum: 1
-                    default: 20
                     description: Maximum number of items to return per page
+                    default: 20
                 description: Maximum number of items to return per page
             -   name: _offset
                 in: query
                 required: false
                 schema:
                     type: integer
-                    minimum: 0
-                    default: 0
                     description: Number of items to skip before the first result
+                    default: 0
                 description: Number of items to skip before the first result
             -   name: _sort
                 in: query
                 required: false
                 schema:
                     type: string
-                    default: ''
                     description: Sort criteria for the result
+                    default: ''
                 description: Sort criteria for the result
             responses:
                 '200':
@@ -135,7 +138,6 @@ paths:
                 with --control.offset to page through it.'
     /v0/tags/{name}:
         patch:
-            tags: []
             summary: Update a tag
             operationId: update_tags_public
             security:
@@ -147,8 +149,8 @@ paths:
                 required: true
                 schema:
                     type: string
-                    description: Name of the tag
                     title: Name
+                    description: Name of the tag
                     example: kubernetes-expenses
                 description: Name of the tag
             requestBody:
@@ -177,7 +179,6 @@ paths:
 
                 and attach it to the resources.'
         delete:
-            tags: []
             summary: Delete a tag
             operationId: delete_tags_public
             security:
@@ -189,8 +190,8 @@ paths:
                 required: true
                 schema:
                     type: string
-                    description: Name of the tag
                     title: Name
+                    description: Name of the tag
                     example: kubernetes-expenses
                 description: Name of the tag
             responses:
@@ -210,7 +211,6 @@ paths:
                 Related commands:\n  mgc tag get --name <name>  check the tag before\
                 \ deleting it"
         get:
-            tags: []
             summary: Get details of a tag
             operationId: get_tags_public
             security:
@@ -222,8 +222,8 @@ paths:
                 required: true
                 schema:
                     type: string
-                    description: Name of the tag
                     title: Name
+                    description: Name of the tag
                     example: kubernetes-expenses
                 description: Name of the tag
             responses:
@@ -255,8 +255,8 @@ paths:
                 required: true
                 schema:
                     type: string
-                    description: Tag name that will own the value
                     title: Tag Name
+                    description: Tag name that will own the value
                 description: Tag name that will own the value
             requestBody:
                 required: true
@@ -319,20 +319,21 @@ paths:
                 required: true
                 schema:
                     type: string
-                    description: Tag name that owns the value
                     title: Tag Name
+                    description: Tag name that owns the value
                 description: Tag name that owns the value
             -   name: name
                 in: query
                 required: false
                 schema:
-                    description: Name of the value to filter by
+                    anyOf:
+                    -   type: string
+                        maxLength: 255
+                        minLength: 1
+                        pattern: ^[\w\ \-\[\]\(\)\.\:]+$
                     title: Name
+                    description: Name of the value to filter by
                     nullable: true
-                    type: string
-                    minLength: 1
-                    maxLength: 255
-                    pattern: ^[\w\ \-\[\]\(\)\.\:]+$
                 description: Name of the value to filter by
             -   name: _limit
                 in: query
@@ -341,25 +342,24 @@ paths:
                     type: integer
                     maximum: 100
                     minimum: 1
-                    default: 20
                     description: Maximum number of items to return per page
+                    default: 20
                 description: Maximum number of items to return per page
             -   name: _offset
                 in: query
                 required: false
                 schema:
                     type: integer
-                    minimum: 0
-                    default: 0
                     description: Number of items to skip before the first result
+                    default: 0
                 description: Number of items to skip before the first result
             -   name: _sort
                 in: query
                 required: false
                 schema:
                     type: string
-                    default: ''
                     description: Sort criteria for the result
+                    default: ''
                 description: Sort criteria for the result
             responses:
                 '200':
@@ -395,8 +395,8 @@ paths:
                 required: true
                 schema:
                     type: string
-                    description: Tag name that owns the value
                     title: Tag Name
+                    description: Tag name that owns the value
                     example: kubernetes-expenses
                 description: Tag name that owns the value
             -   name: value_name
@@ -404,8 +404,8 @@ paths:
                 required: true
                 schema:
                     type: string
-                    description: Value name to operate on
                     title: Value Name
+                    description: Value name to operate on
                     example: test-labs
                 description: Value name to operate on
             responses:
@@ -439,8 +439,8 @@ paths:
                 required: true
                 schema:
                     type: string
-                    description: Tag name that owns the value
                     title: Tag Name
+                    description: Tag name that owns the value
                     example: kubernetes-expenses
                 description: Tag name that owns the value
             -   name: value_name
@@ -448,8 +448,8 @@ paths:
                 required: true
                 schema:
                     type: string
-                    description: Value name to operate on
                     title: Value Name
+                    description: Value name to operate on
                     example: test-labs
                 description: Value name to operate on
             requestBody:
@@ -527,8 +527,8 @@ paths:
                 required: true
                 schema:
                     type: string
-                    description: Tag name that owns the value
                     title: Tag Name
+                    description: Tag name that owns the value
                     example: kubernetes-expenses
                 description: Tag name that owns the value
             -   name: value_name
@@ -536,8 +536,8 @@ paths:
                 required: true
                 schema:
                     type: string
-                    description: Value name to operate on
                     title: Value Name
+                    description: Value name to operate on
                     example: test-labs
                 description: Value name to operate on
             responses:
@@ -609,7 +609,6 @@ paths:
                 required: false
                 schema:
                     type: integer
-                    minimum: 0
                     description: Number of items to skip before the first result
                     default: 0
                 description: Number of items to skip before the first result
@@ -619,28 +618,27 @@ paths:
                 schema:
                     type: string
                     description: Sort criteria for the result
-                    examples: 'created_at:asc
-
-                        create_at:asc,updated_at:desc'
                     default: ''
                 description: Sort criteria for the result
             -   name: name
                 in: query
                 required: false
                 schema:
-                    description: Resource type to filter by, prefixed by its product
+                    anyOf:
+                    -   $ref: '#/components/schemas/ResourceEnum'
                     title: Name
+                    description: Resource type to filter by, prefixed by its product
                     nullable: true
-                    $ref: '#/components/schemas/ResourceEnum'
                 description: Resource type to filter by, prefixed by its product
             -   name: product
                 in: query
                 required: false
                 schema:
-                    description: Product that owns the resource type
+                    anyOf:
+                    -   $ref: '#/components/schemas/ProductEnum'
                     title: Product
+                    description: Product that owns the resource type
                     nullable: true
-                    $ref: '#/components/schemas/ProductEnum'
                 description: Product that owns the resource type
             responses:
                 '200':
@@ -677,8 +675,8 @@ paths:
                 required: true
                 schema:
                     type: string
-                    description: External ID of the resource, as used by its own product
                     title: External Id
+                    description: External ID of the resource, as used by its own product
                     example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
                 description: External ID of the resource, as used by its own product
             responses:
@@ -711,8 +709,8 @@ paths:
                 required: false
                 schema:
                     type: string
-                    description: External ID of the resource to filter by
                     title: External Id
+                    description: External ID of the resource to filter by
                     example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
                 description: External ID of the resource to filter by
             -   name: resource_type_name
@@ -738,25 +736,24 @@ paths:
                     type: integer
                     maximum: 100
                     minimum: 1
-                    default: 20
                     description: Maximum number of items to return per page
+                    default: 20
                 description: Maximum number of items to return per page
             -   name: _offset
                 in: query
                 required: false
                 schema:
                     type: integer
-                    minimum: 0
-                    default: 0
                     description: Number of items to skip before the first result
+                    default: 0
                 description: Number of items to skip before the first result
             -   name: _sort
                 in: query
                 required: false
                 schema:
                     type: string
-                    default: ''
                     description: Sort criteria for the result
+                    default: ''
                 description: Sort criteria for the result
             responses:
                 '200':
@@ -791,8 +788,8 @@ paths:
                 required: true
                 schema:
                     type: string
-                    description: External ID of the resource, as used by its own product
                     title: External Id
+                    description: External ID of the resource, as used by its own product
                     example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
                 description: External ID of the resource, as used by its own product
             requestBody:
@@ -852,8 +849,8 @@ paths:
                 required: true
                 schema:
                     type: string
-                    description: External ID of the resource, as used by its own product
                     title: External Id
+                    description: External ID of the resource, as used by its own product
                     example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
                 description: External ID of the resource, as used by its own product
             responses:
@@ -882,133 +879,171 @@ paths:
 components:
     schemas:
         Body_create_tag_values_v0_tags__tag_name__values_post:
+            type: object
             properties:
                 name:
                     type: string
                     title: Name
                     description: Name of the value, unique within the tag
                 description:
+                    anyOf:
+                    -   type: string
+                        maxLength: 500
                     title: Description
                     description: Description of the value
                     nullable: true
-                    type: string
-                    maxLength: 500
-            type: object
+            title: Body_create_tag_values_v0_tags__tag_name__values_post
             required:
             - name
-            title: Body_create_tag_values_v0_tags__tag_name__values_post
         Body_create_tags_public:
+            type: object
             properties:
                 values:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                    title: Name
+                                    maxLength: 255
+                                    minLength: 1
+                                    pattern: ^[\w\ \-\[\]\(\)\.\:]+$
+                                    description: tag value name, is allowed only one
+                                        name per tag_id
+                                    example: test-labs
+                                description:
+                                    anyOf:
+                                    -   type: string
+                                        maxLength: 500
+                                    title: Description
+                                    description: description for this tag value
+                                    nullable: true
+                                    example: tag value to monitor expenses with test-labs
+                            title: ComposedTagValuesInput
+                            required:
+                            - name
+                        maxItems: 100
                     title: Values
                     description: Values to create along with the tag
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/ComposedTagValuesInput'
-                    type: array
-                    maxItems: 100
                 name:
                     type: string
                     title: Name
                     description: Name of the tag
                     example: kubernetes-expenses
                 color:
+                    anyOf:
+                    -   type: string
+                        maxLength: 6
+                        minLength: 6
+                        pattern: ^[0-9a-fA-F]+$
                     title: Color
                     description: Color of the tag, as a 6-digit hex RGB code without
                         the '#' prefix
                     nullable: true
-                    type: string
-                    maxLength: 6
-                    minLength: 6
-                    pattern: ^[0-9a-fA-F]+$
                     example: ffffff
                 kinds:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
+                            title: TagKinds
+                            enum:
+                            - finops
                     title: Kinds
                     description: Kinds that describe what the tag is for, such as
                         finops
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/TagKinds'
-                    type: array
                     example:
                     - finops
                 description:
+                    anyOf:
+                    -   type: string
+                        maxLength: 500
                     title: Description
                     description: Description of the tag
                     nullable: true
-                    type: string
-                    maxLength: 500
                     example: tag to monitor expenses with environments
-            type: object
+            title: Body_create_tags_public
             required:
             - name
-            title: Body_create_tags_public
         Body_update_tag_values_v0_tags__tag_name__values__value_name__patch:
+            type: object
             properties:
                 description:
+                    anyOf:
+                    -   type: string
+                        maxLength: 500
                     title: Description
                     description: Description of the value
                     nullable: true
-                    type: string
-                    maxLength: 500
                     example: tag value to monitor expenses with test-labs
-            type: object
+            title: Body_update_tag_values_v0_tags__tag_name__values__value_name__patch
             required:
             - description
-            title: Body_update_tag_values_v0_tags__tag_name__values__value_name__patch
         Body_update_tags_public:
+            type: object
             properties:
                 color:
+                    anyOf:
+                    -   type: string
+                        maxLength: 6
+                        minLength: 6
+                        pattern: ^[0-9a-fA-F]+$
                     title: Color
                     description: Color of the tag, as a 6-digit hex RGB code without
                         the '#' prefix
                     nullable: true
-                    type: string
-                    maxLength: 6
-                    minLength: 6
-                    pattern: ^[0-9a-fA-F]+$
                     example: ffffff
                 kinds:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
+                            title: TagKinds
+                            enum:
+                            - finops
                     title: Kinds
                     description: Kinds that describe what the tag is for, such as
                         finops
                     nullable: true
-                    items:
-                        $ref: '#/components/schemas/TagKinds'
-                    type: array
                     example:
                     - finops
                 description:
+                    anyOf:
+                    -   type: string
+                        maxLength: 500
                     title: Description
                     description: Description of the tag
                     nullable: true
-                    type: string
-                    maxLength: 500
                     example: tag to monitor expenses with environments
-            type: object
             title: Body_update_tags_public
         ComposedTagValuesInput:
+            type: object
             properties:
                 name:
                     type: string
+                    title: Name
                     maxLength: 255
                     minLength: 1
                     pattern: ^[\w\ \-\[\]\(\)\.\:]+$
-                    title: Name
                     description: tag value name, is allowed only one name per tag_id
                     example: test-labs
                 description:
+                    anyOf:
+                    -   type: string
+                        maxLength: 500
                     title: Description
                     description: description for this tag value
                     nullable: true
-                    type: string
-                    maxLength: 500
                     example: tag value to monitor expenses with test-labs
-            type: object
+            title: ComposedTagValuesInput
             required:
             - name
-            title: ComposedTagValuesInput
         HTTPValidationError:
+            type: object
             properties:
                 message:
                     title: Message
@@ -1016,13 +1051,13 @@ components:
                 slug:
                     title: Slug
                     type: string
-            type: object
             title: HTTPValidationError
             example:
                 message: Unauthorized
                 slug: Unauthorized
         ProductEnum:
             type: string
+            title: Product
             enum:
             - unknown
             - object-storage
@@ -1033,16 +1068,16 @@ components:
             - container-registry
             - database
             - load-balancer
-            title: Product
         RegionEnum:
             type: string
+            title: Region
             enum:
             - br-se1
             - br-ne1
             - global
-            title: Region
         ResourceEnum:
             type: string
+            title: Resource type
             enum:
             - un.unknown
             - os.bucket
@@ -1074,79 +1109,360 @@ components:
             - lb.network-healthcheck
             - lb.network-listener
             - lb.network-loadbalancer
-            title: Resource type
         ResourceType:
+            type: object
             properties:
                 name:
-                    $ref: '#/components/schemas/ResourceEnum'
-                    description: resource type name, must be related to a product
-                    example: un.unknown
+                    type: string
+                    title: Resource type
+                    enum:
+                    - un.unknown
+                    - os.bucket
+                    - os.object
+                    - net.nat-gateway
+                    - net.port
+                    - net.public-ip
+                    - net.rule
+                    - net.security-group
+                    - net.subnet
+                    - net.vpc
+                    - vm.image
+                    - vm.instance
+                    - vm.snapshot
+                    - bs.snapshot
+                    - bs.volume
+                    - k8s.cluster
+                    - k8s.nodepool
+                    - cr.registry
+                    - cr.repository
+                    - db.cluster
+                    - db.instance
+                    - db.parameter-group
+                    - db.replica
+                    - db.snapshot
+                    - lb.network-acl
+                    - lb.network-backend
+                    - lb.network-certificate
+                    - lb.network-healthcheck
+                    - lb.network-listener
+                    - lb.network-loadbalancer
                 product:
-                    $ref: '#/components/schemas/ProductEnum'
-                    description: product owner of a resource
-                    example: unknown
-            type: object
+                    type: string
+                    title: Product
+                    enum:
+                    - unknown
+                    - object-storage
+                    - network
+                    - virtual-machine
+                    - block-storage
+                    - kubernetes
+                    - container-registry
+                    - database
+                    - load-balancer
+            title: ResourceType
             required:
             - name
             - product
-            title: ResourceType
         ResourceTypesOutputListPublic:
+            type: object
             properties:
                 results:
-                    items:
-                        $ref: '#/components/schemas/ResourceTypesOutputPublic'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                title: Resource type
+                                enum:
+                                - un.unknown
+                                - os.bucket
+                                - os.object
+                                - net.nat-gateway
+                                - net.port
+                                - net.public-ip
+                                - net.rule
+                                - net.security-group
+                                - net.subnet
+                                - net.vpc
+                                - vm.image
+                                - vm.instance
+                                - vm.snapshot
+                                - bs.snapshot
+                                - bs.volume
+                                - k8s.cluster
+                                - k8s.nodepool
+                                - cr.registry
+                                - cr.repository
+                                - db.cluster
+                                - db.instance
+                                - db.parameter-group
+                                - db.replica
+                                - db.snapshot
+                                - lb.network-acl
+                                - lb.network-backend
+                                - lb.network-certificate
+                                - lb.network-healthcheck
+                                - lb.network-listener
+                                - lb.network-loadbalancer
+                            product:
+                                type: string
+                                title: Product
+                                enum:
+                                - unknown
+                                - object-storage
+                                - network
+                                - virtual-machine
+                                - block-storage
+                                - kubernetes
+                                - container-registry
+                                - database
+                                - load-balancer
+                            created_at:
+                                type: string
+                                title: Created At
+                                format: date-time
+                                description: element creation date
+                                example: '2025-06-20T18:36:18.919454'
+                            updated_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated At
+                                description: element last update date, None if never
+                                    updated
+                                nullable: true
+                                example: '2025-06-21T18:36:18.919454'
+                        title: ResourceTypesOutputPublic
+                        required:
+                        - name
+                        - product
+                        - created_at
                     title: Results
-            type: object
+            title: ResourceTypesOutputListPublic
             required:
             - results
-            title: ResourceTypesOutputListPublic
         ResourceTypesOutputPublic:
+            type: object
             properties:
                 name:
-                    $ref: '#/components/schemas/ResourceEnum'
-                    description: resource type name, must be related to a product
-                    example: un.unknown
+                    type: string
+                    title: Resource type
+                    enum:
+                    - un.unknown
+                    - os.bucket
+                    - os.object
+                    - net.nat-gateway
+                    - net.port
+                    - net.public-ip
+                    - net.rule
+                    - net.security-group
+                    - net.subnet
+                    - net.vpc
+                    - vm.image
+                    - vm.instance
+                    - vm.snapshot
+                    - bs.snapshot
+                    - bs.volume
+                    - k8s.cluster
+                    - k8s.nodepool
+                    - cr.registry
+                    - cr.repository
+                    - db.cluster
+                    - db.instance
+                    - db.parameter-group
+                    - db.replica
+                    - db.snapshot
+                    - lb.network-acl
+                    - lb.network-backend
+                    - lb.network-certificate
+                    - lb.network-healthcheck
+                    - lb.network-listener
+                    - lb.network-loadbalancer
                 product:
-                    $ref: '#/components/schemas/ProductEnum'
-                    description: product owner of a resource
-                    example: unknown
+                    type: string
+                    title: Product
+                    enum:
+                    - unknown
+                    - object-storage
+                    - network
+                    - virtual-machine
+                    - block-storage
+                    - kubernetes
+                    - container-registry
+                    - database
+                    - load-balancer
                 created_at:
                     type: string
-                    format: date-time
                     title: Created At
+                    format: date-time
                     description: element creation date
                     example: '2025-06-20T18:36:18.919454'
                 updated_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated At
                     description: element last update date, None if never updated
                     nullable: true
-                    type: string
-                    format: date-time
                     example: '2025-06-21T18:36:18.919454'
-            type: object
+            title: ResourceTypesOutputPublic
             required:
             - name
             - product
             - created_at
-            title: ResourceTypesOutputPublic
         ResourcesOutputListPublic:
+            type: object
             properties:
                 results:
-                    items:
-                        $ref: '#/components/schemas/ResourcesOutputPublic'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                                format: uuid
+                                description: id of the enrolled resource (vm, database,
+                                    etc.)
+                                example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                            external_id:
+                                type: string
+                                title: External Id
+                                description: id of the resource in the source api
+                                example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                            resource_type:
+                                type: object
+                                properties:
+                                    name:
+                                        type: string
+                                        title: Resource type
+                                        enum:
+                                        - un.unknown
+                                        - os.bucket
+                                        - os.object
+                                        - net.nat-gateway
+                                        - net.port
+                                        - net.public-ip
+                                        - net.rule
+                                        - net.security-group
+                                        - net.subnet
+                                        - net.vpc
+                                        - vm.image
+                                        - vm.instance
+                                        - vm.snapshot
+                                        - bs.snapshot
+                                        - bs.volume
+                                        - k8s.cluster
+                                        - k8s.nodepool
+                                        - cr.registry
+                                        - cr.repository
+                                        - db.cluster
+                                        - db.instance
+                                        - db.parameter-group
+                                        - db.replica
+                                        - db.snapshot
+                                        - lb.network-acl
+                                        - lb.network-backend
+                                        - lb.network-certificate
+                                        - lb.network-healthcheck
+                                        - lb.network-listener
+                                        - lb.network-loadbalancer
+                                    product:
+                                        type: string
+                                        title: Product
+                                        enum:
+                                        - unknown
+                                        - object-storage
+                                        - network
+                                        - virtual-machine
+                                        - block-storage
+                                        - kubernetes
+                                        - container-registry
+                                        - database
+                                        - load-balancer
+                                title: ResourceType
+                                required:
+                                - name
+                                - product
+                            region:
+                                type: string
+                                title: Region
+                                enum:
+                                - br-se1
+                                - br-ne1
+                                - global
+                            created_at:
+                                type: string
+                                title: Created At
+                                format: date-time
+                                description: element creation date
+                                example: '2025-06-20T18:36:18.919454'
+                            updated_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated At
+                                description: element last update date, None if never
+                                    updated
+                                nullable: true
+                                example: '2025-06-21T18:36:18.919454'
+                            last_tag_associated_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Last Tag Associated At
+                                description: last time a tag was attached/detached
+                                    from this resource
+                                nullable: true
+                                example: '2025-06-23T18:36:18.919454'
+                            tags:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        name:
+                                            type: string
+                                            title: Name
+                                            description: name for tag
+                                            example: kubernetes-expenses
+                                        value:
+                                            type: string
+                                            title: Value
+                                            description: tag value name, is allowed
+                                                only one name per tag_id
+                                            example: test-labs
+                                    title: ResourcesTagValuesOutputPublic
+                                    required:
+                                    - name
+                                    - value
+                                title: Tags
+                                description: list of tag name, tag color, tag value
+                                    associated to a resource
+                                readOnly: true
+                                example:
+                                - kubernetes-expenses
+                                - ffffff
+                                - test-labs
+                        title: ResourcesOutputPublic
+                        required:
+                        - id
+                        - external_id
+                        - resource_type
+                        - region
+                        - created_at
+                        - tags
                     title: Results
-            type: object
+            title: ResourcesOutputListPublic
             required:
             - results
-            title: ResourcesOutputListPublic
         ResourcesOutputPublic:
+            type: object
             properties:
                 id:
                     type: string
-                    format: uuid
                     title: Id
+                    format: uuid
                     description: id of the enrolled resource (vm, database, etc.)
                     example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
                 external_id:
@@ -1155,35 +1471,108 @@ components:
                     description: id of the resource in the source api
                     example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
                 resource_type:
-                    $ref: '#/components/schemas/ResourceType'
+                    type: object
+                    properties:
+                        name:
+                            type: string
+                            title: Resource type
+                            enum:
+                            - un.unknown
+                            - os.bucket
+                            - os.object
+                            - net.nat-gateway
+                            - net.port
+                            - net.public-ip
+                            - net.rule
+                            - net.security-group
+                            - net.subnet
+                            - net.vpc
+                            - vm.image
+                            - vm.instance
+                            - vm.snapshot
+                            - bs.snapshot
+                            - bs.volume
+                            - k8s.cluster
+                            - k8s.nodepool
+                            - cr.registry
+                            - cr.repository
+                            - db.cluster
+                            - db.instance
+                            - db.parameter-group
+                            - db.replica
+                            - db.snapshot
+                            - lb.network-acl
+                            - lb.network-backend
+                            - lb.network-certificate
+                            - lb.network-healthcheck
+                            - lb.network-listener
+                            - lb.network-loadbalancer
+                        product:
+                            type: string
+                            title: Product
+                            enum:
+                            - unknown
+                            - object-storage
+                            - network
+                            - virtual-machine
+                            - block-storage
+                            - kubernetes
+                            - container-registry
+                            - database
+                            - load-balancer
+                    title: ResourceType
+                    required:
+                    - name
+                    - product
                 region:
-                    $ref: '#/components/schemas/RegionEnum'
-                    description: cloud region
-                    example: br-se1
+                    type: string
+                    title: Region
+                    enum:
+                    - br-se1
+                    - br-ne1
+                    - global
                 created_at:
                     type: string
-                    format: date-time
                     title: Created At
+                    format: date-time
                     description: element creation date
                     example: '2025-06-20T18:36:18.919454'
                 updated_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated At
                     description: element last update date, None if never updated
                     nullable: true
-                    type: string
-                    format: date-time
                     example: '2025-06-21T18:36:18.919454'
                 last_tag_associated_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Last Tag Associated At
                     description: last time a tag was attached/detached from this resource
                     nullable: true
-                    type: string
-                    format: date-time
                     example: '2025-06-23T18:36:18.919454'
                 tags:
-                    items:
-                        $ref: '#/components/schemas/ResourcesTagValuesOutputPublic'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                title: Name
+                                description: name for tag
+                                example: kubernetes-expenses
+                            value:
+                                type: string
+                                title: Value
+                                description: tag value name, is allowed only one name
+                                    per tag_id
+                                example: test-labs
+                        title: ResourcesTagValuesOutputPublic
+                        required:
+                        - name
+                        - value
                     title: Tags
                     description: list of tag name, tag color, tag value associated
                         to a resource
@@ -1192,7 +1581,7 @@ components:
                     - kubernetes-expenses
                     - ffffff
                     - test-labs
-            type: object
+            title: ResourcesOutputPublic
             required:
             - id
             - external_id
@@ -1200,8 +1589,8 @@ components:
             - region
             - created_at
             - tags
-            title: ResourcesOutputPublic
         ResourcesTagAndValueInputPublic:
+            type: object
             properties:
                 name:
                     type: string
@@ -1213,12 +1602,12 @@ components:
                     title: Value
                     description: Value of the tag to attach
                     example: test-labs
-            type: object
+            title: ResourcesTagAndValueInputPublic
             required:
             - name
             - value
-            title: ResourcesTagAndValueInputPublic
         ResourcesTagValuesOutputPublic:
+            type: object
             properties:
                 name:
                     type: string
@@ -1230,66 +1619,215 @@ components:
                     title: Value
                     description: tag value name, is allowed only one name per tag_id
                     example: test-labs
-            type: object
+            title: ResourcesTagValuesOutputPublic
             required:
             - name
             - value
-            title: ResourcesTagValuesOutputPublic
         ResourcesTagsInputPublic:
+            type: object
             properties:
                 tags:
-                    items:
-                        $ref: '#/components/schemas/ResourcesTagAndValueInputPublic'
                     type: array
-                    minItems: 1
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                title: Name
+                                description: Name of the tag
+                                example: kubernetes-expenses
+                            value:
+                                type: string
+                                title: Value
+                                description: Value of the tag to attach
+                                example: test-labs
+                        title: ResourcesTagAndValueInputPublic
+                        required:
+                        - name
+                        - value
                     title: Tags
+                    minItems: 1
                     description: Tags and values to attach to the resource
-            type: object
+            title: ResourcesTagsInputPublic
             required:
             - tags
-            title: ResourcesTagsInputPublic
         TagKinds:
             type: string
+            title: TagKinds
             enum:
             - finops
-            title: TagKinds
         TagOutputPublic:
+            type: object
             properties:
                 name:
                     type: string
                     title: Name
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     nullable: true
-                    type: string
-            type: object
+            title: TagOutputPublic
             required:
             - name
             - description
-            title: TagOutputPublic
         TagValuesOutputListPublic:
+            type: object
             properties:
                 results:
-                    items:
-                        $ref: '#/components/schemas/tags_api__api__schemas__public__tag_values__TagValuesOutputPublic'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                title: Name
+                                description: tag value name, is allowed only one name
+                                    per tag_id
+                                example: test-labs
+                            description:
+                                anyOf:
+                                -   type: string
+                                title: Description
+                                description: description for this tag value
+                                nullable: true
+                                example: tag value to monitor expenses with test-labs
+                            created_at:
+                                type: string
+                                title: Created At
+                                format: date-time
+                                description: element creation date
+                                example: '2025-06-20T18:36:18.919454'
+                            updated_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated At
+                                description: element last update date, None if never
+                                    updated
+                                nullable: true
+                                example: '2025-06-21T18:36:18.919454'
+                            tag:
+                                type: object
+                                properties:
+                                    name:
+                                        type: string
+                                        title: Name
+                                    description:
+                                        anyOf:
+                                        -   type: string
+                                        title: Description
+                                        nullable: true
+                                title: TagOutputPublic
+                                required:
+                                - name
+                                - description
+                        title: TagValuesOutputPublic
+                        required:
+                        - name
+                        - description
+                        - created_at
+                        - tag
                     title: Results
-            type: object
-            required:
-            - results
             title: TagValuesOutputListPublic
-        TagsOutputListPublic:
-            properties:
-                results:
-                    items:
-                        $ref: '#/components/schemas/TagsOutputPublic'
-                    type: array
-                    title: Results
-            type: object
             required:
             - results
+        TagsOutputListPublic:
+            type: object
+            properties:
+                results:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                title: Name
+                                description: name for tag
+                                example: kubernetes-expenses
+                            color:
+                                anyOf:
+                                -   type: string
+                                title: Color
+                                description: 6-character lowercase hexadecimal string
+                                    representing RGB, without '#' prefix.
+                                nullable: true
+                                example: ffffff
+                            kinds:
+                                type: array
+                                items:
+                                    type: string
+                                title: Kinds
+                                description: a tag kind describe the purpose for this
+                                    tag in mgc, the most common case is kind finops.
+                                example:
+                                - finops
+                            description:
+                                anyOf:
+                                -   type: string
+                                title: Description
+                                description: description for this tag
+                                nullable: true
+                                example: tag to monitor expenses with environments
+                            created_at:
+                                type: string
+                                title: Created At
+                                format: date-time
+                                description: element creation date
+                                example: '2025-06-20T18:36:18.919454'
+                            updated_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated At
+                                description: element last update date, None if never
+                                    updated
+                                nullable: true
+                                example: '2025-06-21T18:36:18.919454'
+                            values:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        name:
+                                            type: string
+                                            title: Name
+                                        description:
+                                            anyOf:
+                                            -   type: string
+                                            title: Description
+                                            nullable: true
+                                        created_at:
+                                            type: string
+                                            title: Created At
+                                            format: date-time
+                                        updated_at:
+                                            anyOf:
+                                            -   type: string
+                                                format: date-time
+                                            title: Updated At
+                                            nullable: true
+                                    title: TagValuesOutputPublic
+                                    required:
+                                    - name
+                                    - description
+                                    - created_at
+                                    - updated_at
+                                title: Values
+                                description: values are a tag specification
+                        title: TagsOutputPublic
+                        required:
+                        - name
+                        - kinds
+                        - description
+                        - created_at
+                        - values
+                    title: Results
             title: TagsOutputListPublic
+            required:
+            - results
         TagsOutputPublic:
+            type: object
             properties:
                 name:
                     type: string
@@ -1297,55 +1835,83 @@ components:
                     description: name for tag
                     example: kubernetes-expenses
                 color:
+                    anyOf:
+                    -   type: string
                     title: Color
                     description: 6-character lowercase hexadecimal string representing
                         RGB, without '#' prefix.
                     nullable: true
-                    type: string
                     example: ffffff
                 kinds:
+                    type: array
                     items:
                         type: string
-                    type: array
                     title: Kinds
                     description: a tag kind describe the purpose for this tag in mgc,
                         the most common case is kind finops.
                     example:
                     - finops
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     description: description for this tag
                     nullable: true
-                    type: string
                     example: tag to monitor expenses with environments
                 created_at:
                     type: string
-                    format: date-time
                     title: Created At
+                    format: date-time
                     description: element creation date
                     example: '2025-06-20T18:36:18.919454'
                 updated_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated At
                     description: element last update date, None if never updated
                     nullable: true
-                    type: string
-                    format: date-time
                     example: '2025-06-21T18:36:18.919454'
                 values:
-                    items:
-                        $ref: '#/components/schemas/tags_api__api__schemas__public__tags__TagValuesOutputPublic'
                     type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                title: Name
+                            description:
+                                anyOf:
+                                -   type: string
+                                title: Description
+                                nullable: true
+                            created_at:
+                                type: string
+                                title: Created At
+                                format: date-time
+                            updated_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated At
+                                nullable: true
+                        title: TagValuesOutputPublic
+                        required:
+                        - name
+                        - description
+                        - created_at
+                        - updated_at
                     title: Values
                     description: values are a tag specification
-            type: object
+            title: TagsOutputPublic
             required:
             - name
             - kinds
             - description
             - created_at
             - values
-            title: TagsOutputPublic
         ValidationError:
+            type: object
             properties:
                 message:
                     title: Message
@@ -1353,16 +1919,16 @@ components:
                 slug:
                     title: Slug
                     type: string
-            type: object
+            title: ValidationError
             required:
             - loc
             - msg
             - type
-            title: ValidationError
             example:
                 message: Unauthorized
                 slug: Unauthorized
         tags_api__api__schemas__public__tag_values__TagValuesOutputPublic:
+            type: object
             properties:
                 name:
                     type: string
@@ -1370,69 +1936,74 @@ components:
                     description: tag value name, is allowed only one name per tag_id
                     example: test-labs
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     description: description for this tag value
                     nullable: true
-                    type: string
                     example: tag value to monitor expenses with test-labs
                 created_at:
                     type: string
-                    format: date-time
                     title: Created At
+                    format: date-time
                     description: element creation date
                     example: '2025-06-20T18:36:18.919454'
                 updated_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated At
                     description: element last update date, None if never updated
                     nullable: true
-                    type: string
-                    format: date-time
                     example: '2025-06-21T18:36:18.919454'
                 tag:
-                    $ref: '#/components/schemas/TagOutputPublic'
-            type: object
+                    type: object
+                    properties:
+                        name:
+                            type: string
+                            title: Name
+                        description:
+                            anyOf:
+                            -   type: string
+                            title: Description
+                            nullable: true
+                    title: TagOutputPublic
+                    required:
+                    - name
+                    - description
+            title: TagValuesOutputPublic
             required:
             - name
             - description
             - created_at
             - tag
-            title: TagValuesOutputPublic
         tags_api__api__schemas__public__tags__TagValuesOutputPublic:
+            type: object
             properties:
                 name:
                     type: string
                     title: Name
                 description:
+                    anyOf:
+                    -   type: string
                     title: Description
                     nullable: true
-                    type: string
                 created_at:
                     type: string
-                    format: date-time
                     title: Created At
+                    format: date-time
                 updated_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
                     title: Updated At
                     nullable: true
-                    type: string
-                    format: date-time
-            type: object
+            title: TagValuesOutputPublic
             required:
             - name
             - description
             - created_at
             - updated_at
-            title: TagValuesOutputPublic
-    securitySchemes:
-        OAuth2:
-            type: oauth2
-            description: OAuth2 by IDPA (Identity Provider Authentication)
-            flows:
-                authorizationCode:
-                    authorizationUrl: https://idpa-api-preprod.luizalabs.com/oauth/authorize
-                    tokenUrl: https://idpa-api-preprod.luizalabs.com/oauth/token
-                    scopes:
-                        tags:tags-tr: Allow read operations on tags
-                        tags:tags-tw: Allow write operations on tags
 tags:
 -   name: resource-types
     description: List the resource types that support tags

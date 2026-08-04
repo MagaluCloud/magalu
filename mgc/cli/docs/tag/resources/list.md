@@ -18,7 +18,7 @@ mgc tag resources list --external-id="31201f93-f5f4-4cf1-ba9c-bfed0717f4ac"
 ## Flags:
 ```
     --control.limit integer     Maximum number of items to return per page (range: 1 - 100)
-    --control.offset integer    Number of items to skip before the first result (min: 0)
+    --control.offset integer    Number of items to skip before the first result
     --control.sort string       Sort criteria for the result
     --external-id string        External ID of the resource to filter by
 -h, --help                      help for list
