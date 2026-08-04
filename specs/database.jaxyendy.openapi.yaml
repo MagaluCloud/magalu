@@ -4406,8 +4406,8 @@ components:
     OAuth2PreProd:
       flows:
         authorizationCode:
-          authorizationUrl: https://idpa-api-preprod.luizalabs.com/oauth/authorize
-          tokenUrl: https://idpa-api-preprod.luizalabs.com/oauth/token
+          authorizationUrl: https://idmagalu-preprod.luizalabs.com/oauth/authorize
+          tokenUrl: https://idmagalu-preprod.luizalabs.com/oauth/token
           scopes:
             dbaas.read: Read DBaaS resources
             dbaas.write: Write DBaaS resources
