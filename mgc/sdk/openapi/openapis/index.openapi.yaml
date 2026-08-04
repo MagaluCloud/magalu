@@ -54,6 +54,12 @@ modules:
       version: 0.1.0
       description: Manage users global data
       summary: Manage users global data
+    - name: tag
+      url: https://tag.jaxyendy.com/openapi.json
+      path: tag.openapi.yaml
+      version: 0.1.0
+      description: Organize your cloud resources with tags
+      summary: Organize your cloud resources with tags
     - name: virtual-machine
       url: https://virtual-machine.jaxyendy.com/openapi.json
       path: virtual-machine.openapi.yaml
