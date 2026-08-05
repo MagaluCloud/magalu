@@ -5,6 +5,7 @@ CICD_DIR ?= mgc/spec_manipulator/
 SPECS_DIR ?= specs/
 DUMP_TREE = mgc/cli/cli-dump-tree.json
 OUT_DIR = mgc/cli/docs
+COMMANDS_JSON = mgc/cli/commands.json
 OAPIDIR=mgc/sdk/openapi/openapis
 
 build-local:
@@ -92,3 +93,9 @@ format:
 
 # Combined check
 check: format vet lint test
+
+generate-commands-json: dump-tree
+	@echo "generating $(COMMANDS_JSON)..."
+	$(CICD_DIR)cicd pipeline gen-commands-json -d "$(DUMP_TREE)" -o "$(COMMANDS_JSON)" --translate
+	@echo "generating $(COMMANDS_JSON): done"
+	@echo "ENDING $@"
