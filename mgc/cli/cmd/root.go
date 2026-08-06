@@ -19,6 +19,7 @@ const (
 	loggerConfigKey = "logging"
 	defaultRegion   = "br-se1"
 	apiKeyEnvVar    = "MGC_API_KEY"
+	xTenantIDEnvVar = "MGC_X_TENANT_ID"
 )
 
 var argParser = &osArgParser{}
@@ -143,6 +144,12 @@ func setApiKey(rootCmd *cobra.Command, sdk *mgcSdk.Sdk) {
 	if key := os.Getenv(apiKeyEnvVar); key != "" {
 		_ = sdk.Auth().SetAPIKey(key)
 		return
+	}
+}
+
+func setXTenantID(sdk *mgcSdk.Sdk) {
+	if tenantID := os.Getenv(xTenantIDEnvVar); tenantID != "" {
+		_ = sdk.Auth().SetXTenantID(tenantID)
 	}
 }
 

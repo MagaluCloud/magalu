@@ -1,33 +1,19 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
-# Create
+# Delete
 
-Create a new route.
+Delete a Virtual Private Cloud (VPC) Peering.
 
 ## Usage:
 ```
-mgc network vpcs route-table routes create [vpc-id] [flags]
-```
-
-## Examples:
-```
-mgc network vpcs route-table routes create --targets.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --targets.type="vpc_peering"
+mgc network vpcs peerings delete [vpc-peering-id] [flags]
 ```
 
 ## Flags:
 ```
-    --cidr-destination string       Cidr Destination (required)
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            Description
--h, --help                          help for create
-    --targets object                TargetSchema (properties: id and type)
-                                    Use --targets=help for more details (required)
-    --targets.id uuid4              TargetSchema: Id
-                                    This is the same as '--targets=id:uuid4'.
-    --targets.type enum             TargetSchema: RouteTargetType (one of "port_id" or "vpc_peering")
-                                    This is the same as '--targets=type:enum'.
-    --vpc-id string                 Vpc Id (required)
+-h, --help                    help for delete
+    --vpc-peering-id string   Vpc Peering Id (required)
 ```
 
 ## Global Flags:
