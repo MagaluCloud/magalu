@@ -3748,7 +3748,7 @@
         "/v1/vpcs_peerings": {
             "get": {
                 "tags": [
-                    "vpcs_peerings"
+                    "vpcs"
                 ],
                 "summary": "List VPC peerings by tenant",
                 "description": "Returns the VPC peerings associated with the current tenant.",
@@ -3775,6 +3775,54 @@
                                 }
                             ],
                             "title": "Vpc Id"
+                        }
+                    },
+                    {
+                        "name": "_offset",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "title": "Items Offset",
+                            "description": "Start item for pagination",
+                            "default": 0
+                        },
+                        "description": "Start item for pagination"
+                    },
+                    {
+                        "name": "_limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "title": "Pagination",
+                            "description": "Number of items per page",
+                            "default": 20
+                        },
+                        "description": "Number of items per page"
+                    },
+                    {
+                        "name": "_sort",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "Name of the field wich the list must be ordered by ending with :asc or :desc",
+                            "default": "created_at:desc",
+                            "title": " Sort"
+                        },
+                        "description": "Name of the field wich the list must be ordered by ending with :asc or :desc",
+                        "examples": {
+                            "example_created_at_desc": {
+                                "summary": "created_at:desc",
+                                "value": "created_at:desc"
+                            },
+                            "example_created_at_asc": {
+                                "summary": "created_at:asc",
+                                "value": "created_at:asc"
+                            }
                         }
                     },
                     {
@@ -3856,7 +3904,7 @@
             },
             "post": {
                 "tags": [
-                    "vpcs_peerings"
+                    "vpcs"
                 ],
                 "summary": "Create a new Virtual Private Cloud (VPC) Peering",
                 "description": "Create a new Virtual Private Cloud (VPC) Peering.",
@@ -3960,7 +4008,7 @@
         "/v1/vpcs_peerings/{vpc_peering_id}": {
             "delete": {
                 "tags": [
-                    "vpcs_peerings"
+                    "vpcs"
                 ],
                 "summary": "Delete a Virtual Private Cloud (VPC) Peering",
                 "description": "Delete a Virtual Private Cloud (VPC) Peering.",
@@ -4061,7 +4109,7 @@
             },
             "get": {
                 "tags": [
-                    "vpcs_peerings"
+                    "vpcs"
                 ],
                 "summary": "Get VPC peering members by peering ID",
                 "description": "Returns all members associated with the provided VPC peering ID.",
@@ -8357,10 +8405,6 @@
         {
             "name": "nat_gateways",
             "description": "Operations related to Nat Gateway"
-        },
-        {
-            "name": "vpcs_peerings",
-            "description": "Operations related to VPC Peerings"
         }
     ]
 }

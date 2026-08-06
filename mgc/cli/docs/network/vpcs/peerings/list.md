@@ -1,20 +1,22 @@
 ---
-sidebar_position: 4
+sidebar_position: 1
 ---
-# Get
+# List
 
-Returns all members associated with the provided VPC peering ID.
+Returns the VPC peerings associated with the current tenant.
 
 ## Usage:
 ```
-mgc network vpcs-peerings get [vpc-peering-id] [flags]
+mgc network vpcs peerings list [flags]
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for get
-    --vpc-peering-id string         Vpc Peering Id (required)
+    --control.limit integer    Pagination: Number of items per page (min: 1)
+    --control.offset integer   Items Offset: Start item for pagination
+    --control.sort string       Sort: Name of the field wich the list must be ordered by ending with :asc or :desc
+-h, --help                     help for list
+    --vpc-id string            Vpc Id
 ```
 
 ## Global Flags:

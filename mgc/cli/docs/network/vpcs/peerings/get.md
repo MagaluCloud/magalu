@@ -1,31 +1,20 @@
 ---
-sidebar_position: 2
+sidebar_position: 4
 ---
-# Create
+# Get
 
-Create a new Virtual Private Cloud (VPC) Peering.
+Returns all members associated with the provided VPC peering ID.
 
 ## Usage:
 ```
-mgc network vpcs-peerings create [flags]
-```
-
-## Examples:
-```
-mgc network vpcs-peerings create --description="Connection between the production VPC and the database VPC" --name="peering-prod-to-db" --vpcs.accepter-vpc-id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --vpcs.requester-vpc-id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+mgc network vpcs peerings get [vpc-peering-id] [flags]
 ```
 
 ## Flags:
 ```
-    --description string             Optional description of the peering.
--h, --help                           help for create
-    --name string                    Name of the peering. Use only letters, numbers and hyphens, up to 50 characters. (required)
-    --vpcs object                    VPCs to connect (properties: accepter_vpc_id and requester_vpc_id)
-                                     Use --vpcs=help for more details (required)
-    --vpcs.accepter-vpc-id string    VPCs: Accepter VPC ID, the VPC that receives the peering request.
-                                     This is the same as '--vpcs=accepter_vpc_id:string'.
-    --vpcs.requester-vpc-id string   VPCs: Requester VPC ID, the VPC that requests the peering.
-                                     This is the same as '--vpcs=requester_vpc_id:string'.
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+-h, --help                          help for get
+    --vpc-peering-id string         Vpc Peering Id (required)
 ```
 
 ## Global Flags:

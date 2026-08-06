@@ -2568,7 +2568,7 @@ paths:
     /v1/vpcs_peerings:
         get:
             tags:
-            - vpcs_peerings
+            - vpcs
             summary: List VPC peerings by tenant
             description: Returns the VPC peerings associated with the current tenant.
             operationId: v1_list_vpc_peerings_v1_vpcs_peerings_get
@@ -2584,6 +2584,43 @@ paths:
                     -   type: string
                     title: Vpc Id
                     nullable: true
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    title: Items Offset
+                    description: Start item for pagination
+                    default: 0
+                description: Start item for pagination
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    title: Pagination
+                    minimum: 1
+                    description: Number of items per page
+                    default: 20
+                description: Number of items per page
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    title: ' Sort'
+                    description: Name of the field wich the list must be ordered by
+                        ending with :asc or :desc
+                    default: created_at:desc
+                description: Name of the field wich the list must be ordered by ending
+                    with :asc or :desc
+                examples:
+                    example_created_at_desc:
+                        summary: created_at:desc
+                        value: created_at:desc
+                    example_created_at_asc:
+                        summary: created_at:asc
+                        value: created_at:asc
             responses:
                 '200':
                     description: Successful Response
@@ -2625,7 +2662,7 @@ paths:
             x-mgc-hidden: false
         post:
             tags:
-            - vpcs_peerings
+            - vpcs
             summary: Create a new Virtual Private Cloud (VPC) Peering
             description: Create a new Virtual Private Cloud (VPC) Peering.
             operationId: v1_create_vpc_peering_v1_vpcs_peerings_post
@@ -2680,7 +2717,7 @@ paths:
     /v1/vpcs_peerings/{vpc_peering_id}:
         delete:
             tags:
-            - vpcs_peerings
+            - vpcs
             summary: Delete a Virtual Private Cloud (VPC) Peering
             description: Delete a Virtual Private Cloud (VPC) Peering.
             operationId: v1_delete_vpc_peering_v1_vpcs_peerings__vpc_peering_id__delete
@@ -2735,7 +2772,7 @@ paths:
             x-mgc-hidden: false
         get:
             tags:
-            - vpcs_peerings
+            - vpcs
             summary: Get VPC peering members by peering ID
             description: Returns all members associated with the provided VPC peering
                 ID.
@@ -6665,8 +6702,6 @@ tags:
     description: Operations related to VPCs
 -   name: nat_gateways
     description: Operations related to Nat Gateway
--   name: vpcs_peerings
-    description: Operations related to VPC Peerings
 $id: https://network.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/network

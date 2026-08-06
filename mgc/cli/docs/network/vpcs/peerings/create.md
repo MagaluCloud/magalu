@@ -1,19 +1,31 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 ---
-# Delete
+# Create
 
-Delete a Virtual Private Cloud (VPC) Peering.
+Create a new Virtual Private Cloud (VPC) Peering.
 
 ## Usage:
 ```
-mgc network vpcs-peerings delete [vpc-peering-id] [flags]
+mgc network vpcs peerings create [flags]
+```
+
+## Examples:
+```
+mgc network vpcs peerings create --description="Connection between the production VPC and the database VPC" --name="peering-prod-to-db" --vpcs.accepter-vpc-id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --vpcs.requester-vpc-id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 ```
 
 ## Flags:
 ```
--h, --help                    help for delete
-    --vpc-peering-id string   Vpc Peering Id (required)
+    --description string             Optional description of the peering.
+-h, --help                           help for create
+    --name string                    Name of the peering. Use only letters, numbers and hyphens, up to 50 characters. (required)
+    --vpcs object                    VPCs to connect (properties: accepter_vpc_id and requester_vpc_id)
+                                     Use --vpcs=help for more details (required)
+    --vpcs.accepter-vpc-id string    VPCs: Accepter VPC ID, the VPC that receives the peering request.
+                                     This is the same as '--vpcs=accepter_vpc_id:string'.
+    --vpcs.requester-vpc-id string   VPCs: Requester VPC ID, the VPC that requests the peering.
+                                     This is the same as '--vpcs=requester_vpc_id:string'.
 ```
 
 ## Global Flags:

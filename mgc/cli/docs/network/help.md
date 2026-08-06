@@ -21,7 +21,6 @@ security-groups Operations related to Security Groups
 subnetpools     Operations related to Subnet Pools
 subnets         Operations related to Subnets
 vpcs            Operations related to VPCs
-vpcs-peerings   Operations related to VPC Peerings
 ```
 
 ## Flags:
