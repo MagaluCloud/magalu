@@ -3348,6 +3348,11 @@
                 {
                   "id": "02a2acf3-d6db-4424-ac97-0254cb9c329e"
                 }
+              ],
+              "subnets": [
+                {
+                  "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
+                }
               ]
             },
             "vpc": {
@@ -3389,7 +3394,7 @@
                 "$ref": "#/components/schemas/ID"
               },
               {
-                "$ref": "#/components/schemas/SecurityGroups"
+                "$ref": "#/components/schemas/Interface"
               },
               {
                 "type": "null"
@@ -3413,6 +3418,11 @@
               },
               {
                 "id": "02a2acf3-d6db-4424-ac97-0254cb9c329e"
+              }
+            ],
+            "subnets": [
+              {
+                "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
               }
             ]
           },
@@ -4043,6 +4053,28 @@
         "example": {
           "name": "new-instance-name"
         }
+      },
+      "Interface": {
+        "type": "object",
+        "properties": {
+          "security_groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ID"
+            },
+            "title": "Security Groups",
+            "default": []
+          },
+          "subnets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ID"
+            },
+            "title": "Subnets",
+            "maxItems": 1
+          }
+        },
+        "title": "Interface"
       },
       "IpAddressExpand": {
         "type": "object",
@@ -4811,20 +4843,6 @@
           "br-ne1"
         ]
       },
-      "SecurityGroups": {
-        "type": "object",
-        "properties": {
-          "security_groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ID"
-            },
-            "title": "Security Groups",
-            "default": []
-          }
-        },
-        "title": "SecurityGroups"
-      },
       "SnapshotCopyRequest": {
         "type": "object",
         "properties": {
@@ -5076,6 +5094,11 @@
                 },
                 {
                   "id": "02a2acf3-d6db-4424-ac97-0254cb9c329e"
+                }
+              ],
+              "subnets": [
+                {
+                  "id": "f273fbde-2ddf-4dcd-8c41-342671ac0d17"
                 }
               ]
             },
