@@ -7027,21 +7027,46 @@
                         "title": "Description",
                         "nullable": true
                     },
-                    "port_id": {
-                        "type": "string",
-                        "title": "Port Id",
-                        "format": "uuid4"
+                    "targets": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "title": "RouteTargetType",
+                                "enum": [
+                                    "vpc_peering",
+                                    "port_id"
+                                ]
+                            },
+                            "id": {
+                                "type": "string",
+                                "title": "Id",
+                                "format": "uuid4"
+                            }
+                        },
+                        "title": "TargetSchema",
+                        "required": [
+                            "type",
+                            "id"
+                        ],
+                        "example": {
+                            "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                            "type": "vpc_peering"
+                        }
                     }
                 },
                 "title": "RouteCreatePayload",
                 "required": [
                     "cidr_destination",
-                    "port_id"
+                    "targets"
                 ],
                 "example": {
                     "cidr_destination": "xxx.xxx.xxx.xxx/xx",
                     "description": "Description text",
-                    "port_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                    "targets": {
+                        "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                        "type": "vpc_peering"
+                    }
                 }
             },
             "RouteCreateResponse": {
@@ -7369,6 +7394,14 @@
                         }
                     ]
                 }
+            },
+            "RouteTargetType": {
+                "type": "string",
+                "title": "RouteTargetType",
+                "enum": [
+                    "vpc_peering",
+                    "port_id"
+                ]
             },
             "RuleCreateRequest": {
                 "type": "object",
@@ -9313,6 +9346,33 @@
                             "zone": "a"
                         }
                     ]
+                }
+            },
+            "TargetSchema": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "title": "RouteTargetType",
+                        "enum": [
+                            "vpc_peering",
+                            "port_id"
+                        ]
+                    },
+                    "id": {
+                        "type": "string",
+                        "title": "Id",
+                        "format": "uuid4"
+                    }
+                },
+                "title": "TargetSchema",
+                "required": [
+                    "type",
+                    "id"
+                ],
+                "example": {
+                    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    "type": "vpc_peering"
                 }
             },
             "UnbookCidrRequest": {

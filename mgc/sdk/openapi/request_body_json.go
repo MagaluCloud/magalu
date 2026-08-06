@@ -18,15 +18,17 @@ type requestBodyJSON struct {
 	extensionPrefix *string
 	logger          *zap.SugaredLogger
 	mt              *openapi3.MediaType
+	operationID     string
 }
 
 var _ requestBody = (*requestBodyJSON)(nil)
 
-func newRequestBodyJSON(mt *openapi3.MediaType, logger *zap.SugaredLogger, extensionPrefix *string) *requestBodyJSON {
+func newRequestBodyJSON(mt *openapi3.MediaType, operationID string, logger *zap.SugaredLogger, extensionPrefix *string) *requestBodyJSON {
 	return &requestBodyJSON{
 		extensionPrefix: extensionPrefix,
 		logger:          logger,
 		mt:              mt,
+		operationID:     operationID,
 	}
 }
 
@@ -104,6 +106,9 @@ func (o *requestBodyJSON) create(pValues core.Parameters) (mimeType string, size
 
 	if err != nil {
 		return
+	}
+	if shim := requestBodyCompatShims[o.operationID]; shim != nil {
+		shim(o.logger, body)
 	}
 
 	bodyBuf := new(bytes.Buffer)
