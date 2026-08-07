@@ -1244,6 +1244,7 @@
         "summary": "Attach tags to a resource",
         "operationId": "create_resources_tags_public",
         "x-mgc-name": "attach",
+        "x-cli-name": "attach",
         "security": [
           {
             "OAuth2": [
@@ -1326,6 +1327,7 @@
         "summary": "Detach a tag from a resource",
         "operationId": "delete_resources_tags_public",
         "x-mgc-name": "detach",
+        "x-cli-name": "detach",
         "security": [
           {
             "OAuth2": [

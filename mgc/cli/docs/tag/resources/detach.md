@@ -7,12 +7,12 @@ Detach a tag from a resource.
 
 ## Usage:
 ```
-mgc tag resources tags detach [external-id] [tag-name] [flags]
+mgc tag resources detach [external-id] [tag-name] [flags]
 ```
 
 ## Examples:
 ```
-mgc tag resources tags detach --external-id="31201f93-f5f4-4cf1-ba9c-bfed0717f4ac"
+mgc tag resources detach --external-id="31201f93-f5f4-4cf1-ba9c-bfed0717f4ac"
 ```
 
 ## Flags:

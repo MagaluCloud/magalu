@@ -11,14 +11,14 @@ servers:
             default: api.magalu.cloud
             enum:
             - api.magalu.cloud
-            - api.pre-prod.jaxyendy.com
+            - api.preprod.magalu.cloud
             x-mgc-transforms:
             -   type: translate
                 translations:
                 -   from: prod
                     to: api.magalu.cloud
                 -   from: pre-prod
-                    to: api.pre-prod.jaxyendy.com
+                    to: api.preprod.magalu.cloud
 paths:
     /api/v1/healthcheck:
         get:

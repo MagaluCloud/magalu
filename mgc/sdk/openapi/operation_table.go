@@ -168,7 +168,7 @@ func (t *operationTable) add(name, variables []string, desc *operationDesc) {
 		siblingWithoutCliNameExtension := sibling.desc.op == nil || sibling.desc.op.Extensions == nil || sibling.desc.op.Extensions["x-cli-name"] == nil
 		descWithoutCliNameExtension := desc == nil || desc.op == nil || desc.op.Extensions == nil || desc.op.Extensions["x-cli-name"] == nil
 
-		if (siblingWithoutCliNameExtension && descWithoutCliNameExtension) || (name[0] != "start" && name[0] != "stop") {
+		if (siblingWithoutCliNameExtension && descWithoutCliNameExtension) || !slices.Contains(flatNamesWithCliName, name[0]) {
 			childTable := &operationTable{name: name[0]}
 			childTable.add(sibling.name[1:], sibling.variables, sibling.desc)
 			childTable.add(name[1:], variables, desc)
@@ -219,6 +219,11 @@ func (t *operationTable) simplify(name string) {
 		entry.name = []string{getLastElem(entry.name)}
 	}
 }
+
+// Path entries that do NOT create a subtable (subcommand group) when the sibling
+// operations carry "x-cli-name": the operations stay flat in the parent table,
+// named by their extension. Increment array as needed
+var flatNamesWithCliName = []string{"start", "stop", "tags"}
 
 // Common path endings that need the full name ('list-all', 'delete-all'...). Increment array
 // as needed

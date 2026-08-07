@@ -7,12 +7,12 @@ Attach one or more tag/value pairs to a resource.
 
 ## Usage:
 ```
-mgc tag resources tags attach [external-id] [flags]
+mgc tag resources attach [external-id] [flags]
 ```
 
 ## Examples:
 ```
-mgc tag resources tags attach --external-id="31201f93-f5f4-4cf1-ba9c-bfed0717f4ac"
+mgc tag resources attach --external-id="31201f93-f5f4-4cf1-ba9c-bfed0717f4ac"
 ```
 
 ## Flags:

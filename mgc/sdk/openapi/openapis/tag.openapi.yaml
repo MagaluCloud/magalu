@@ -779,6 +779,7 @@ paths:
             summary: Attach tags to a resource
             operationId: create_resources_tags_public
             x-mgc-name: attach
+            x-cli-name: attach
             security:
             -   OAuth2:
                 - tags:tags-tw
@@ -832,6 +833,7 @@ paths:
             summary: Detach a tag from a resource
             operationId: delete_resources_tags_public
             x-mgc-name: detach
+            x-cli-name: detach
             security:
             -   OAuth2:
                 - tags:tags-tw

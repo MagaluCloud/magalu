@@ -13,9 +13,10 @@ mgc tag resources [command]
 
 ## Commands:
 ```
+attach      Attach tags to a resource
+detach      Detach a tag from a resource
 get         Get the tags attached to a resource
 list        List tagged resources
-tags        tags
 ```
 
 ## Flags:
