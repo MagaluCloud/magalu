@@ -205,12 +205,12 @@ func init() {
 			TokenUrl:              "https://idmagalu-preprod.luizalabs.com/oauth/token",
 			ValidationUrl:         "https://idmagalu-preprod.luizalabs.com/oauth/introspect",
 			RefreshUrl:            "https://idmagalu-preprod.luizalabs.com/oauth/token",
-			TenantsListUrl:        "https://platform-account-api-preprod.luizalabs.com/api/v2/whoami/tenants",
+			TenantsListUrl:        "https://idmagalu-preprod.luizalabs.com/api/v2/whoami/tenants",
 			TokenExchangeUrl:      "https://idmagalu-preprod.luizalabs.com/oauth/token/exchange",
-			ApiKeysUrlV1:          "https://platform-account-api-preprod.luizalabs.com/api/v1/api-keys",
-			ApiKeysUrlV2:          "https://platform-account-api-preprod.luizalabs.com/api/v2/api-keys",
-			PublicClientsUrl:      "https://platform-account-api-preprod.luizalabs.com/api/v1/external/clients",
-			ClientsV2Url:          "https://platform-account-api-preprod.luizalabs.com/api/v2/clients",
+			ApiKeysUrlV1:          "https://idmagalu-preprod.luizalabs.com/api/v1/api-keys",
+			ApiKeysUrlV2:          "https://idmagalu-preprod.luizalabs.com/api/v2/api-keys",
+			PublicClientsUrl:      "https://idmagalu-preprod.luizalabs.com/api/v1/external/clients",
+			ClientsV2Url:          "https://idmagalu-preprod.luizalabs.com/api/v2/clients",
 		},
 	}
 	authConfigMap["default"] = authConfigMap["prod"]
