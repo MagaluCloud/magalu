@@ -103,7 +103,7 @@ func mergeSpecs(specA, specB libopenapi.Document, options MergeSpecs) libopenapi
 	server.Variables.Set("region", regionVar)
 
 	envVar := &v3.ServerVariable{
-		Enum:       []string{"api.magalu.cloud", "api.pre-prod.jaxyendy.com"},
+		Enum:       []string{"api.magalu.cloud", "api.pre-prod.jaxyendy.com:8443"},
 		Extensions: orderedmap.New[string, *yaml.Node](),
 	}
 	envVar.Description = "Environment to use"
@@ -113,7 +113,7 @@ func mergeSpecs(specA, specB libopenapi.Document, options MergeSpecs) libopenapi
 			"type": "translate",
 			"translations": []map[string]string{
 				{"from": "prod", "to": "api.magalu.cloud"},
-				{"from": "pre-prod", "to": "api.pre-prod.jaxyendy.com"},
+				{"from": "pre-prod", "to": "api.pre-prod.jaxyendy.com:8443"},
 			},
 		},
 	}
