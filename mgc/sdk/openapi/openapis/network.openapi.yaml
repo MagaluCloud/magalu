@@ -2584,43 +2584,32 @@ paths:
                     -   type: string
                     title: Vpc Id
                     nullable: true
-            -   name: _offset
+            -   name: sort
+                in: query
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                    title: Sort
+                    default: name:asc
+                    nullable: true
+            -   name: page
                 in: query
                 required: false
                 schema:
                     type: integer
-                    title: Items Offset
-                    description: Start item for pagination
-                    default: 0
-                description: Start item for pagination
-            -   name: _limit
-                in: query
-                required: false
-                schema:
-                    type: integer
-                    title: Pagination
+                    title: Page
                     minimum: 1
-                    description: Number of items per page
-                    default: 20
-                description: Number of items per page
-            -   name: _sort
+                    default: 1
+            -   name: items_per_page
                 in: query
                 required: false
                 schema:
-                    type: string
-                    title: ' Sort'
-                    description: Name of the field wich the list must be ordered by
-                        ending with :asc or :desc
-                    default: created_at:desc
-                description: Name of the field wich the list must be ordered by ending
-                    with :asc or :desc
-                examples:
-                    example_created_at_desc:
-                        summary: created_at:desc
-                        value: created_at:desc
-                    example_created_at_asc:
-                        summary: created_at:asc
-                        value: created_at:asc
+                    type: integer
+                    title: Items Per Page
+                    maximum: 100
+                    minimum: 1
+                    default: 10
             responses:
                 '200':
                     description: Successful Response

@@ -12,10 +12,10 @@ mgc network vpcs peerings list [flags]
 
 ## Flags:
 ```
-    --control.limit integer    Pagination: Number of items per page (min: 1)
-    --control.offset integer   Items Offset: Start item for pagination
-    --control.sort string       Sort: Name of the field wich the list must be ordered by ending with :asc or :desc
 -h, --help                     help for list
+    --items-per-page integer   Items Per Page (range: 1 - 100)
+    --page integer             Page (min: 1)
+    --sort string              Sort
     --vpc-id string            Vpc Id
 ```
 
