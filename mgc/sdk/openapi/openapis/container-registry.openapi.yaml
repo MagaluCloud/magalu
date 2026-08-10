@@ -32,14 +32,14 @@ servers:
             default: api.magalu.cloud
             enum:
             - api.magalu.cloud
-            - api.pre-prod.jaxyendy.com
+            - api.pre-prod.jaxyendy.com:8443
             x-mgc-transforms:
             -   type: translate
                 translations:
                 -   from: prod
                     to: api.magalu.cloud
                 -   from: pre-prod
-                    to: api.pre-prod.jaxyendy.com
+                    to: api.pre-prod.jaxyendy.com:8443
 -   url: https://api-mcr.csre-plat-prod.1.yel.se1.br.jaxyendy.com
     description: SE1-YEL prod
 -   url: https://api-mcr.csre-plat-prod.1.gre.se1.br.jaxyendy.com
