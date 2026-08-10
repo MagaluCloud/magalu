@@ -1650,6 +1650,9 @@ components:
                     title: Tags
                     minItems: 1
                     description: Tags and values to attach to the resource
+                    example:
+                    -   name: kubernetes-expenses
+                        value: test-labs
             title: ResourcesTagsInputPublic
             required:
             - tags

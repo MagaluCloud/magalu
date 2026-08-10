@@ -4,6 +4,14 @@
 # to keep it sane, keep some list item identifier (ex: "name") and add extra properties,
 # such as "x-mgc-name" or "x-mgc-description"
 
+components:
+    schemas:
+        ResourcesTagsInputPublic:
+            properties:
+                tags:
+                    example:
+                    -   name: kubernetes-expenses
+                        value: test-labs
 servers:
 -   url: https://{env}/tags
     variables:
