@@ -3,7 +3,8 @@ sidebar_position: 2
 ---
 # Create
 
-Create a new Virtual Private Cloud (VPC) Peering.
+
+Create a peering connection between two VPCs of your tenant.
 
 ## Usage:
 ```
@@ -17,6 +18,8 @@ mgc network vpcs peerings create --description="Connection between the productio
 
 ## Flags:
 ```
+    --cli.list-links enum[=table]    List all available links for this command (one of "json", "table" or "yaml")
+    --cli.watch                      Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
     --description string             Optional description of the peering.
 -h, --help                           help for create
     --name string                    Name of the peering. Use only letters, numbers and hyphens, up to 50 characters. (required)

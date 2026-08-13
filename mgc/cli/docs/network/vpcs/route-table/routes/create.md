@@ -3,7 +3,7 @@ sidebar_position: 2
 ---
 # Create
 
-Create a new route.
+Add a route to a VPC's route table.
 
 ## Usage:
 ```
@@ -27,7 +27,7 @@ mgc network vpcs route-table routes create --targets.id="xxxxxxxx-xxxx-xxxx-xxxx
                                     This is the same as '--targets=id:uuid4'.
     --targets.type enum             TargetSchema: RouteTargetType (one of "port_id" or "vpc_peering")
                                     This is the same as '--targets=type:enum'.
-    --vpc-id string                 Vpc Id (required)
+    --vpc-id string                 Vpc Id: ID of the VPC whose route table receives this route (the source side of the traffic). (required)
 ```
 
 ## Global Flags:

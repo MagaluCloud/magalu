@@ -3,7 +3,8 @@ sidebar_position: 4
 ---
 # Get
 
-Returns all members associated with the provided VPC peering ID.
+Show a VPC peering by ID, including its current status and the two
+member VPCs (requester and accepter).
 
 ## Usage:
 ```
@@ -14,7 +15,7 @@ mgc network vpcs peerings get [vpc-peering-id] [flags]
 ```
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                          help for get
-    --vpc-peering-id string         Vpc Peering Id (required)
+    --vpc-peering-id string         Vpc Peering Id: ID of the VPC peering to retrieve. (required)
 ```
 
 ## Global Flags:

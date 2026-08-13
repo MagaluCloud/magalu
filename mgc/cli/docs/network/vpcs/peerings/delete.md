@@ -3,7 +3,9 @@ sidebar_position: 3
 ---
 # Delete
 
-Delete a Virtual Private Cloud (VPC) Peering.
+Delete a VPC peering. This tears down the connection between the two
+VPCs; remember to also remove the routes you created on each VPC's
+route table.
 
 ## Usage:
 ```
@@ -13,7 +15,7 @@ mgc network vpcs peerings delete [vpc-peering-id] [flags]
 ## Flags:
 ```
 -h, --help                    help for delete
-    --vpc-peering-id string   Vpc Peering Id (required)
+    --vpc-peering-id string   Vpc Peering Id: ID of the VPC peering to delete. (required)
 ```
 
 ## Global Flags:

@@ -51,7 +51,7 @@ func newRequestBody(method string, op *openapi3.Operation, logger *zap.SugaredLo
 	}
 
 	if mt := content.Get("application/json"); mt != nil {
-		return newRequestBodyJSON(mt, op.OperationID, logger, extensionPrefix)
+		return newRequestBodyJSON(mt, logger, extensionPrefix)
 	} else if mt := content.Get("multipart/form-data"); mt != nil {
 		return newRequestBodyMultipart(mt, logger, extensionPrefix)
 	} else if mt := content.Get("application/x-www-form-urlencoded"); mt != nil {

@@ -2131,6 +2131,8 @@ paths:
                 schema:
                     type: string
                     title: Vpc Id
+                x-mgc-description: ID of the VPC whose route table receives this route
+                    (the source side of the traffic).
             requestBody:
                 required: true
                 content:
@@ -2270,6 +2272,18 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
+            x-mgc-description: "Add a route to a VPC's route table.\n\nTo let two\
+                \ peered VPCs reach each other you create one route on EACH\nVPC,\
+                \ with the destinations crossed:\n\n  --vpc-id            the VPC\
+                \ being configured (the source side)\n  --targets.type      vpc_peering\n\
+                \  --targets.id        the VPC peering ID\n  --cidr-destination  the\
+                \ CIDR of the subnet in the OTHER VPC to reach\n\nExample (requester\
+                \ -> accepter, then accepter -> requester):\n  mgc network vpcs route-table\
+                \ routes create <requester-vpc-id> \\\n    --targets.type=vpc_peering\
+                \ --targets.id=<peering-id> \\\n    --cidr-destination=<accepter-subnet-cidr>\n\
+                \  mgc network vpcs route-table routes create <accepter-vpc-id> \\\
+                \n    --targets.type=vpc_peering --targets.id=<peering-id> \\\n  \
+                \  --cidr-destination=<requester-subnet-cidr>"
     /v1/vpcs/{vpc_id}/route_table/routes/{route_id}:
         delete:
             tags:
@@ -2584,6 +2598,8 @@ paths:
                     -   type: string
                     title: Vpc Id
                     nullable: true
+                x-mgc-description: Filter the result to peerings that this VPC takes
+                    part in.
             -   name: sort
                 in: query
                 required: false
@@ -2649,6 +2665,10 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
+            x-mgc-description: 'List the VPC peerings in your tenant. Use --vpc-id
+                to show only the
+
+                peerings a given VPC takes part in.'
         post:
             tags:
             - vpcs
@@ -2671,6 +2691,17 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/vpc_api_product__v1__vpcs__schemas__VpcCreateResponse'
+                    links:
+                        get:
+                            operationId: v1_list_peering_members_v1_vpcs_peerings__vpc_peering_id__get
+                            description: Get the created peering to poll its status.
+                            parameters:
+                                vpc_peering_id: $response.body#/id
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 20
+                                jsonPathQuery: $.result.status == "completed"
+                                errorJsonPathQuery: $.result.status == "error"
                 '400':
                     description: Bad Request
                     content:
@@ -2703,6 +2734,29 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
+            x-mgc-description: '
+
+                Create a peering connection between two VPCs of your tenant.
+
+
+                ▶ There is no invitation to accept: "requester" and "accepter" are
+                only
+
+                labels for the two sides (they reappear later as each member''s
+
+                direct_role). The connection is bidirectional and is provisioned as
+
+                soon as it is created — nothing has to be approved. Both VPCs must
+
+                belong to your tenant.
+
+
+                After that, enable traffic by adding one route on EACH VPC (see
+
+                ''mgc network vpcs route-table routes create''), each pointing to
+                the
+
+                CIDR of a subnet in the OTHER VPC.'
     /v1/vpcs_peerings/{vpc_peering_id}:
         delete:
             tags:
@@ -2720,6 +2774,7 @@ paths:
                 schema:
                     type: string
                     title: Vpc Peering Id
+                x-mgc-description: ID of the VPC peering to delete.
             responses:
                 '202':
                     description: Accepted
@@ -2759,6 +2814,12 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
+            x-mgc-description: 'Delete a VPC peering. This tears down the connection
+                between the two
+
+                VPCs; remember to also remove the routes you created on each VPC''s
+
+                route table.'
         get:
             tags:
             - vpcs
@@ -2776,6 +2837,7 @@ paths:
                 schema:
                     type: string
                     title: Vpc Peering Id
+                x-mgc-description: ID of the VPC peering to retrieve.
             responses:
                 '200':
                     description: Successful Response
@@ -2821,6 +2883,10 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
+            x-mgc-description: 'Show a VPC peering by ID, including its current status
+                and the two
+
+                member VPCs (requester and accepter).'
     /v1/nat_gateways:
         get:
             tags:

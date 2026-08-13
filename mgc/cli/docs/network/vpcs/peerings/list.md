@@ -3,7 +3,8 @@ sidebar_position: 1
 ---
 # List
 
-Returns the VPC peerings associated with the current tenant.
+List the VPC peerings in your tenant. Use --vpc-id to show only the
+peerings a given VPC takes part in.
 
 ## Usage:
 ```
@@ -16,7 +17,7 @@ mgc network vpcs peerings list [flags]
     --items-per-page integer   Items Per Page (range: 1 - 100)
     --page integer             Page (min: 1)
     --sort string              Sort
-    --vpc-id string            Vpc Id
+    --vpc-id string            Vpc Id: Filter the result to peerings that this VPC takes part in.
 ```
 
 ## Global Flags:

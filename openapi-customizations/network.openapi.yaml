@@ -3,6 +3,93 @@
 # NOTE: Lists are merged by their indexes, be careful with parameters, tags and such!
 # to keep it sane, keep some list item identifier (ex: "name") and add extra properties,
 # such as "x-mgc-name" or "x-mgc-description"
+#
+# VPC Peering help overlay
+# ------------------------
+# Limitation discovered while drafting this: the CLI only honors `x-mgc-description`
+# for OPERATIONS, PARAMETERS (path/query/header) and TAGS. It is IGNORED for request
+# body properties (e.g. --vpcs.requester-vpc-id, --cidr-destination, --targets.*),
+# and plain `description` on a schema property is rejected by yaml_merge's validator.
+# That is why the requester/accepter and cidr/targets guidance lives inside the
+# operation descriptions below (they render at the top of `--help`) instead of on
+# each flag.
+
+paths:
+    /v1/vpcs_peerings:
+        get:
+            x-mgc-description: |-
+                List the VPC peerings in your tenant. Use --vpc-id to show only the
+                peerings a given VPC takes part in.
+            parameters:
+              - name: vpc_id
+                x-mgc-description: Filter the result to peerings that this VPC takes part in.
+        post:
+            x-mgc-description: |-
+
+                        Create a peering connection between two VPCs of your tenant.
+                        
+                        ▶ There is no invitation to accept: "requester" and "accepter" are only
+                        labels for the two sides (they reappear later as each member's
+                        direct_role). The connection is bidirectional and is provisioned as
+                        soon as it is created — nothing has to be approved. Both VPCs must
+                        belong to your tenant.
+
+                        After that, enable traffic by adding one route on EACH VPC (see
+                        'mgc network vpcs route-table routes create'), each pointing to the
+                        CIDR of a subnet in the OTHER VPC.
+
+            responses:
+                '202':
+                    links:
+                        get:
+                            operationId: v1_list_peering_members_v1_vpcs_peerings__vpc_peering_id__get
+                            description: Get the created peering to poll its status.
+                            parameters:
+                                vpc_peering_id: $response.body#/id
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 20
+                                jsonPathQuery: $.result.status == "completed"
+                                errorJsonPathQuery: $.result.status == "error"
+    /v1/vpcs_peerings/{vpc_peering_id}:
+        get:
+            x-mgc-description: |-
+                Show a VPC peering by ID, including its current status and the two
+                member VPCs (requester and accepter).
+            parameters:
+              - name: vpc_peering_id
+                x-mgc-description: ID of the VPC peering to retrieve.
+        delete:
+            x-mgc-description: |-
+                Delete a VPC peering. This tears down the connection between the two
+                VPCs; remember to also remove the routes you created on each VPC's
+                route table.
+            parameters:
+              - name: vpc_peering_id
+                x-mgc-description: ID of the VPC peering to delete.
+    /v1/vpcs/{vpc_id}/route_table/routes:
+        post:
+            x-mgc-description: |-
+                Add a route to a VPC's route table.
+
+                To let two peered VPCs reach each other you create one route on EACH
+                VPC, with the destinations crossed:
+
+                  --vpc-id            the VPC being configured (the source side)
+                  --targets.type      vpc_peering
+                  --targets.id        the VPC peering ID
+                  --cidr-destination  the CIDR of the subnet in the OTHER VPC to reach
+
+                Example (requester -> accepter, then accepter -> requester):
+                  mgc network vpcs route-table routes create <requester-vpc-id> \
+                    --targets.type=vpc_peering --targets.id=<peering-id> \
+                    --cidr-destination=<accepter-subnet-cidr>
+                  mgc network vpcs route-table routes create <accepter-vpc-id> \
+                    --targets.type=vpc_peering --targets.id=<peering-id> \
+                    --cidr-destination=<requester-subnet-cidr>
+            parameters:
+              - name: vpc_id
+                x-mgc-description: ID of the VPC whose route table receives this route (the source side of the traffic).
 
 servers:
 -   url: https://{env}/{region}/network
@@ -33,4 +120,3 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com:8443
-
