@@ -1,33 +1,21 @@
 ---
-sidebar_position: 2
+sidebar_position: 4
 ---
-# Create
+# Get
 
-Add a route to a VPC's route table.
+Show a VPC peering by ID, including its current status and the two
+member VPCs (requester and accepter).
 
 ## Usage:
 ```
-mgc network vpcs route-table routes create [vpc-id] [flags]
-```
-
-## Examples:
-```
-mgc network vpcs route-table routes create --targets.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --targets.type="vpc_peering"
+mgc network vpcs peerings get [vpc-peering-id] [flags]
 ```
 
 ## Flags:
 ```
-    --cidr-destination string       Cidr Destination (required)
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            Description
--h, --help                          help for create
-    --targets object                TargetSchema (properties: id and type)
-                                    Use --targets=help for more details (required)
-    --targets.id uuid4              TargetSchema: Id
-                                    This is the same as '--targets=id:uuid4'.
-    --targets.type enum             TargetSchema: RouteTargetType (one of "port_id" or "vpc_peering")
-                                    This is the same as '--targets=type:enum'.
-    --vpc-id string                 Vpc Id: ID of the VPC whose route table receives this route (the source side of the traffic). (required)
+-h, --help                          help for get
+    --vpc-peering-id string         Vpc Peering Id: ID of the VPC peering to retrieve. (required)
 ```
 
 ## Global Flags:

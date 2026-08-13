@@ -1,32 +1,27 @@
 ---
 sidebar_position: 0
 ---
-# Vpcs
+# Peerings
 
-Operations related to VPCs
+Operations related to VPCs | peerings
 
 ## Usage:
 ```
-mgc network vpcs [flags]
-mgc network vpcs [command]
+mgc network vpcs peerings [flags]
+mgc network vpcs peerings [command]
 ```
 
 ## Commands:
 ```
-create      Create a new Virtual Private Cloud (VPC)
-delete      Delete VPC
-get         VPC Details
-list        List VPC
-peerings    peerings
-ports       ports
-public-ips  public-ips
-route-table route-table
-subnets     subnets
+create      Create a new Virtual Private Cloud (VPC) Peering
+delete      Delete a Virtual Private Cloud (VPC) Peering
+get         Get VPC peering members by peering ID
+list        List VPC peerings by tenant
 ```
 
 ## Flags:
 ```
--h, --help   help for vpcs
+-h, --help   help for peerings
 ```
 
 ## Global Flags:

@@ -3,31 +3,32 @@ sidebar_position: 2
 ---
 # Create
 
-Add a route to a VPC's route table.
+
+Create a peering connection between two VPCs of your tenant.
 
 ## Usage:
 ```
-mgc network vpcs route-table routes create [vpc-id] [flags]
+mgc network vpcs peerings create [flags]
 ```
 
 ## Examples:
 ```
-mgc network vpcs route-table routes create --targets.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --targets.type="vpc_peering"
+mgc network vpcs peerings create --description="Connection between the production VPC and the database VPC" --name="peering-prod-to-db" --vpcs.accepter-vpc-id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --vpcs.requester-vpc-id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 ```
 
 ## Flags:
 ```
-    --cidr-destination string       Cidr Destination (required)
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --description string            Description
--h, --help                          help for create
-    --targets object                TargetSchema (properties: id and type)
-                                    Use --targets=help for more details (required)
-    --targets.id uuid4              TargetSchema: Id
-                                    This is the same as '--targets=id:uuid4'.
-    --targets.type enum             TargetSchema: RouteTargetType (one of "port_id" or "vpc_peering")
-                                    This is the same as '--targets=type:enum'.
-    --vpc-id string                 Vpc Id: ID of the VPC whose route table receives this route (the source side of the traffic). (required)
+    --cli.list-links enum[=table]    List all available links for this command (one of "json", "table" or "yaml")
+    --cli.watch                      Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
+    --description string             Optional description of the peering.
+-h, --help                           help for create
+    --name string                    Name of the peering. Use only letters, numbers and hyphens, up to 50 characters. (required)
+    --vpcs object                    VPCs to connect (properties: accepter_vpc_id and requester_vpc_id)
+                                     Use --vpcs=help for more details (required)
+    --vpcs.accepter-vpc-id string    VPCs: Accepter VPC ID, the VPC that receives the peering request.
+                                     This is the same as '--vpcs=accepter_vpc_id:string'.
+    --vpcs.requester-vpc-id string   VPCs: Requester VPC ID, the VPC that requests the peering.
+                                     This is the same as '--vpcs=requester_vpc_id:string'.
 ```
 
 ## Global Flags:
