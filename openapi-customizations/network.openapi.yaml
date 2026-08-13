@@ -72,6 +72,8 @@ paths:
             x-mgc-description: |-
                 Add a route to a VPC's route table.
 
+                ▶ The peering must be in status "completed" before you add routes.
+
                 To let two peered VPCs reach each other you create one route on EACH
                 VPC, with the destinations crossed:
 
@@ -87,6 +89,9 @@ paths:
                   mgc network vpcs route-table routes create <accepter-vpc-id> \
                     --targets.type=vpc_peering --targets.id=<peering-id> \
                     --cidr-destination=<requester-subnet-cidr>
+
+                Note: after a route is created it can take a few minutes before the
+                connectivity is actually available.
             parameters:
               - name: vpc_id
                 x-mgc-description: ID of the VPC whose route table receives this route (the source side of the traffic).

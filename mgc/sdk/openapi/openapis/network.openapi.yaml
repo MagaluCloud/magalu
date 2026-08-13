@@ -2272,9 +2272,10 @@ paths:
                                 $ref: '#/components/schemas/HTTPValidationError'
             x-viveiro: true
             x-mgc-hidden: false
-            x-mgc-description: "Add a route to a VPC's route table.\n\nTo let two\
-                \ peered VPCs reach each other you create one route on EACH\nVPC,\
-                \ with the destinations crossed:\n\n  --vpc-id            the VPC\
+            x-mgc-description: "Add a route to a VPC's route table.\n\n▶ The peering\
+                \ must be in status \"completed\" before you add routes.\n\nTo let\
+                \ two peered VPCs reach each other you create one route on EACH\n\
+                VPC, with the destinations crossed:\n\n  --vpc-id            the VPC\
                 \ being configured (the source side)\n  --targets.type      vpc_peering\n\
                 \  --targets.id        the VPC peering ID\n  --cidr-destination  the\
                 \ CIDR of the subnet in the OTHER VPC to reach\n\nExample (requester\
@@ -2283,7 +2284,9 @@ paths:
                 \ --targets.id=<peering-id> \\\n    --cidr-destination=<accepter-subnet-cidr>\n\
                 \  mgc network vpcs route-table routes create <accepter-vpc-id> \\\
                 \n    --targets.type=vpc_peering --targets.id=<peering-id> \\\n  \
-                \  --cidr-destination=<requester-subnet-cidr>"
+                \  --cidr-destination=<requester-subnet-cidr>\n\nNote: after a route\
+                \ is created it can take a few minutes before the\nconnectivity is\
+                \ actually available."
     /v1/vpcs/{vpc_id}/route_table/routes/{route_id}:
         delete:
             tags:
