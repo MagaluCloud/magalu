@@ -17,7 +17,6 @@ create      Create a new Virtual Private Cloud (VPC)
 delete      Delete VPC
 get         VPC Details
 list        List VPC
-peerings    peerings
 ports       ports
 public-ips  public-ips
 route-table route-table
