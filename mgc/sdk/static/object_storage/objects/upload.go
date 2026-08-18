@@ -46,6 +46,15 @@ func upload(ctx context.Context, params uploadParams, cfg common.Config) (*uploa
 	fileName := common.ExtractFileName(srcPath)
 
 	if params.Destination.IsRoot() || strings.HasSuffix(fullDstPath.String(), "/") {
+		fixedFileName, converted, err := common.FixFilenameEncoding(fileName)
+		if err != nil {
+			return nil, &common.ObjectError{Url: mgcSchemaPkg.URI(fileName), Err: fmt.Errorf("skipping file: %w", err)}
+		}
+		if converted {
+			logger().Warnw("converted filename encoding for upload", "original", fileName, "converted", fixedFileName)
+		}
+		fileName = fixedFileName
+
 		fullDstPath = fullDstPath.JoinPath(fileName)
 	}
 
