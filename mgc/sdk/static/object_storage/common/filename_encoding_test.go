@@ -1,7 +1,6 @@
 package common
 
 import (
-	"strings"
 	"testing"
 )
 
@@ -83,21 +82,5 @@ func TestFixFilenameEncoding(t *testing.T) {
 				t.Errorf("FixFilenameEncoding(%q) converted = %v, want %v", tt.input, converted, tt.wantConverted)
 			}
 		})
-	}
-}
-
-func TestFixFilenameEncoding_ErrorReportsOffendingByte(t *testing.T) {
-	input := "broken-\x81\x01-name.txt"
-
-	_, _, err := FixFilenameEncoding(input)
-	if err == nil {
-		t.Fatalf("expected an error for %q, got none", input)
-	}
-
-	if !strings.Contains(err.Error(), "position 7") {
-		t.Errorf("error message = %q, want it to mention the offending byte position (7)", err.Error())
-	}
-	if !strings.Contains(err.Error(), "0x81") {
-		t.Errorf("error message = %q, want it to mention the offending byte (0x81)", err.Error())
 	}
 }

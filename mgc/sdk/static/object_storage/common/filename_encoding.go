@@ -31,8 +31,7 @@ func FixFilenameEncoding(name string) (fixed string, converted bool, err error) 
 		}
 	}
 
-	pos, b := firstInvalidByte(name)
-	return "", false, fmt.Errorf("filename contains invalid UTF-8 bytes (position %d, byte 0x%02X) — rename the file and try again", pos, b)
+	return "", false, fmt.Errorf("filename contains invalid UTF-8 bytes, rename the file and try again")
 }
 
 func hasUndecodableRune(s string) bool {
@@ -42,15 +41,4 @@ func hasUndecodableRune(s string) bool {
 		}
 	}
 	return false
-}
-
-func firstInvalidByte(s string) (int, byte) {
-	for i := 0; i < len(s); {
-		r, size := utf8.DecodeRuneInString(s[i:])
-		if r == utf8.RuneError && size <= 1 {
-			return i, s[i]
-		}
-		i += size
-	}
-	return -1, 0
 }
