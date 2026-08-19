@@ -30,3 +30,5 @@ container-registry:
 load-balancer:
   - lb
   - lbaas
+project:
+  - projects
