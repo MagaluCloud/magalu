@@ -18,6 +18,9 @@ Magalu Cloud IAM and require a user login (see 'mgc auth login')`,
 			return []core.Descriptor{
 				getList(),
 				getCreate(),
+				getSet(),
+				getCurrent(),
+				getUnset(),
 			}
 		},
 	)

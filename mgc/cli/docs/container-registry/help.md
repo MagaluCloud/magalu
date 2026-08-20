@@ -37,8 +37,10 @@ users        Routes related to creating and retrieving container registry users.
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
+    --iam-project-id string    Project scope for IAM commands only. Overrides the configured IAM project
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
+    --project-id string        Project to scope the requests. Overrides the configured project
 -r, --raw                      Output raw data, without any formatting or coloring
 ```
 

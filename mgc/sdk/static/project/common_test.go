@@ -1,6 +1,14 @@
 package project
 
-import "testing"
+import (
+	"context"
+	"strings"
+	"testing"
+
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcConfigPkg "github.com/MagaluCloud/magalu/mgc/core/config"
+	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
+)
 
 func TestHostForEnv(t *testing.T) {
 	tests := []struct {
@@ -68,5 +76,266 @@ func TestBuildProjectsURL(t *testing.T) {
 				t.Errorf("buildProjectsURL(%q, %q) = %q, expected %q", tt.serverUrl, tt.env, got, tt.expected)
 			}
 		})
+	}
+}
+
+func TestResolveProjectByIDAndName(t *testing.T) {
+	available := []projectResult{
+		{ID: "id-alpha", Name: "alpha", Type: "default"},
+		{ID: "id-beta", Name: "Beta", Type: "managed"},
+	}
+
+	cases := []struct {
+		name    string
+		query   string
+		wantID  string
+		wantErr string
+	}{
+		{name: "por id", query: "id-beta", wantID: "id-beta"},
+		{name: "por nome", query: "alpha", wantID: "id-alpha"},
+		{name: "nome ignora caixa", query: "BETA", wantID: "id-beta"},
+		{name: "desconhecido", query: "gama", wantErr: "not found"},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			got, err := resolveProject(available, c.query)
+			if c.wantErr != "" {
+				if err == nil || !strings.Contains(err.Error(), c.wantErr) {
+					t.Fatalf("erro = %v, quer conter %q", err, c.wantErr)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("resolveProject(%q): %v", c.query, err)
+			}
+			if got.ID != c.wantID {
+				t.Errorf("id = %q, quer %q", got.ID, c.wantID)
+			}
+		})
+	}
+}
+
+// Nome duplicado não pode escolher um "vencedor" arbitrário: erra pedindo o id.
+func TestResolveProjectAmbiguousName(t *testing.T) {
+	available := []projectResult{
+		{ID: "id-1", Name: "repetido"},
+		{ID: "id-2", Name: "Repetido"},
+	}
+
+	_, err := resolveProject(available, "repetido")
+	if err == nil {
+		t.Fatal("nome ambíguo deveria falhar")
+	}
+	for _, want := range []string{"id-1", "id-2"} {
+		if !strings.Contains(err.Error(), want) {
+			t.Errorf("erro deveria listar %q para desempate, veio: %v", want, err)
+		}
+	}
+}
+
+// Se um nome coincidir com o id de OUTRO projeto, o id vence — é o
+// identificador não-ambíguo.
+func TestResolveProjectIDWinsOverName(t *testing.T) {
+	available := []projectResult{
+		{ID: "colisao", Name: "alpha"},
+		{ID: "id-beta", Name: "colisao"},
+	}
+
+	got, err := resolveProject(available, "colisao")
+	if err != nil {
+		t.Fatalf("resolveProject: %v", err)
+	}
+	if got.ID != "colisao" {
+		t.Errorf("id = %q, quer colisao (match por id vence)", got.ID)
+	}
+}
+
+// Tenant sem projeto: a mensagem tem de dizer o que fazer.
+func TestResolveProjectEmptyList(t *testing.T) {
+	_, err := resolveProject(nil, "alpha")
+	if err == nil {
+		t.Fatal("lista vazia deveria falhar")
+	}
+	if !strings.Contains(err.Error(), "project create") {
+		t.Errorf("erro deveria sugerir criar um projeto, veio: %v", err)
+	}
+}
+
+func TestCurrentReadsConfig(t *testing.T) {
+	pm, _ := profile_manager.NewInMemoryProfileManager()
+	cfg := mgcConfigPkg.New(pm)
+	ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
+
+	got, err := current(ctx, struct{}{}, struct{}{})
+	if err != nil {
+		t.Fatalf("current sem projeto setado não é erro: %v", err)
+	}
+	if got.ID != "" {
+		t.Errorf("sem projeto o id deveria ser vazio, veio %q", got.ID)
+	}
+
+	if err := cfg.Set(mgcConfigPkg.ProjectKey, "id-alpha"); err != nil {
+		t.Fatal(err)
+	}
+	got, err = current(ctx, struct{}{}, struct{}{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got.ID != "id-alpha" {
+		t.Errorf("id = %q, quer id-alpha", got.ID)
+	}
+}
+
+// O unset precisa ser confirmável e a mensagem não pode ser vazia: mensagem
+// vazia faz o handleExecutor pular o prompt silenciosamente.
+func TestUnsetIsConfirmableAndExplainsFallback(t *testing.T) {
+	cExec, ok := core.ExecutorAs[core.ConfirmableExecutor](getUnset())
+	if !ok {
+		t.Fatal("unset deveria implementar ConfirmableExecutor")
+	}
+
+	msg := cExec.ConfirmPrompt(core.Parameters{}, core.Configs{})
+	if msg == "" {
+		t.Fatal("mensagem vazia pularia o prompt")
+	}
+	for _, want := range []string{"default project", "tenant"} {
+		if !strings.Contains(msg, want) {
+			t.Errorf("confirmação deveria mencionar %q, veio: %q", want, msg)
+		}
+	}
+}
+
+// Trocar de escopo é reversível; só a remoção pede confirmação.
+func TestSetAndCurrentAreNotConfirmable(t *testing.T) {
+	for name, exec := range map[string]core.Executor{"set": getSet(), "current": getCurrent()} {
+		if _, ok := core.ExecutorAs[core.ConfirmableExecutor](exec); ok {
+			t.Errorf("%s não deveria pedir confirmação", name)
+		}
+	}
+}
+
+// unset limpa o escopo da CLI e deixa o do IAM intacto.
+func TestUnsetClearsOnlyCliScope(t *testing.T) {
+	pm, _ := profile_manager.NewInMemoryProfileManager()
+	cfg := mgcConfigPkg.New(pm)
+	if err := cfg.Set(mgcConfigPkg.ProjectKey, "p"); err != nil {
+		t.Fatal(err)
+	}
+	if err := cfg.Set(mgcConfigPkg.IamProjectKey, "i"); err != nil {
+		t.Fatal(err)
+	}
+	ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
+
+	if _, err := unset(ctx, struct{}{}, struct{}{}); err != nil {
+		t.Fatalf("unset: %v", err)
+	}
+	if got := cfg.Project(); got != "" {
+		t.Errorf("project deveria estar limpo, veio %q", got)
+	}
+	if got := cfg.IamProject(); got != "i" {
+		t.Errorf("iamProject não podia ser tocado, veio %q", got)
+	}
+}
+
+// --- mgc iam project: o MESMO domínio, outra chave de config ---
+
+// O grupo do IAM precisa se chamar `iam` e ter um filho `project`, senão não
+// funde com o módulo `iam` que vem da spec e o comando não existe.
+func TestIamGroupShape(t *testing.T) {
+	g := GetIamGroup()
+	if g.Name() != "iam" {
+		t.Fatalf("grupo = %q, quer iam (senão não funde com o módulo da spec)", g.Name())
+	}
+
+	child, err := g.GetChildByName("project")
+	if err != nil {
+		t.Fatalf("grupo iam deveria ter filho `project`: %v", err)
+	}
+	sub, ok := child.(core.Grouper)
+	if !ok {
+		t.Fatal("`project` deveria ser um grupo")
+	}
+	for _, name := range []string{"set", "current", "unset"} {
+		if _, err := sub.GetChildByName(name); err != nil {
+			t.Errorf("faltou o comando %q: %v", name, err)
+		}
+	}
+}
+
+// A asserção central: o set do IAM grava iamProject e não encosta em project.
+func TestIamSetWritesOnlyIamScope(t *testing.T) {
+	pm, _ := profile_manager.NewInMemoryProfileManager()
+	cfg := mgcConfigPkg.New(pm)
+	if err := cfg.Set(mgcConfigPkg.ProjectKey, "escopo-da-cli"); err != nil {
+		t.Fatal(err)
+	}
+	ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
+	available := []projectResult{{ID: "id-alpha", Name: "alpha"}}
+
+	got, err := applyScope(ctx, mgcConfigPkg.IamProjectKey, "alpha", available)
+	if err != nil {
+		t.Fatalf("applyScope: %v", err)
+	}
+	if got.ID != "id-alpha" {
+		t.Errorf("id = %q, quer id-alpha", got.ID)
+	}
+	if cfg.IamProject() != "id-alpha" {
+		t.Errorf("iamProject = %q, quer id-alpha", cfg.IamProject())
+	}
+	if cfg.Project() != "escopo-da-cli" {
+		t.Errorf("o escopo da CLI não podia mudar, veio %q", cfg.Project())
+	}
+}
+
+func TestIamCurrentAndUnsetUseIamScope(t *testing.T) {
+	pm, _ := profile_manager.NewInMemoryProfileManager()
+	cfg := mgcConfigPkg.New(pm)
+	if err := cfg.Set(mgcConfigPkg.ProjectKey, "p"); err != nil {
+		t.Fatal(err)
+	}
+	if err := cfg.Set(mgcConfigPkg.IamProjectKey, "i"); err != nil {
+		t.Fatal(err)
+	}
+	ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
+
+	got, err := iamCurrent(ctx, struct{}{}, struct{}{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got.ID != "i" {
+		t.Errorf("iam current = %q, quer i (não o escopo da CLI)", got.ID)
+	}
+
+	if _, err := iamUnset(ctx, struct{}{}, struct{}{}); err != nil {
+		t.Fatal(err)
+	}
+	if cfg.IamProject() != "" {
+		t.Errorf("iamProject deveria estar limpo, veio %q", cfg.IamProject())
+	}
+	if cfg.Project() != "p" {
+		t.Errorf("o escopo da CLI não podia ser tocado, veio %q", cfg.Project())
+	}
+}
+
+// Sem projeto de IAM, a ação vale para o TENANT INTEIRO — a confirmação tem de
+// dizer isso, e é um aviso mais forte que o do unset da CLI.
+func TestIamUnsetConfirmWarnsAboutTenantWideScope(t *testing.T) {
+	g := GetIamGroup()
+	child, _ := g.GetChildByName("project")
+	unsetDesc, err := child.(core.Grouper).GetChildByName("unset")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cExec, ok := core.ExecutorAs[core.ConfirmableExecutor](unsetDesc.(core.Executor))
+	if !ok {
+		t.Fatal("iam project unset deveria pedir confirmação")
+	}
+	msg := cExec.ConfirmPrompt(core.Parameters{}, core.Configs{})
+	for _, want := range []string{"entire tenant", "IAM"} {
+		if !strings.Contains(msg, want) {
+			t.Errorf("confirmação deveria mencionar %q, veio: %q", want, msg)
+		}
 	}
 }

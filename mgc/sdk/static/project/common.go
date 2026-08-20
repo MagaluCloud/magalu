@@ -83,12 +83,6 @@ func authenticatedClient(ctx context.Context) (*mgcHttpPkg.Client, *mgcAuthPkg.A
 		return nil, nil, fmt.Errorf("programming error: unable to retrieve auth configuration from context")
 	}
 
-	// This command only speaks Bearer, so an API Key would silently fail further down
-	// with a confusing "unable to get access token" error.
-	if auth.CurrentSecurityMethod() == mgcAuthPkg.APIKey.String() {
-		return nil, nil, fmt.Errorf("API Key authentication is not supported by this command. To authenticate, please run 'mgc auth login'")
-	}
-
 	if _, err := auth.AccessToken(ctx); err != nil {
 		return nil, nil, fmt.Errorf("you are not logged in. To authenticate, please run 'mgc auth login'")
 	}
