@@ -2,6 +2,7 @@ package objects
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -247,10 +248,15 @@ func processSyncFiles(ctx context.Context, cfg common.Config, source, destinatio
 		close(results)
 	}()
 
+	var errs []error
 	for err := range results {
 		if err != nil {
-			return err
+			errs = append(errs, err)
 		}
+	}
+
+	if len(errs) > 0 {
+		return fmt.Errorf("%d of %d file(s) failed to sync:\n%w", len(errs), len(files), errors.Join(errs...))
 	}
 
 	return nil
@@ -285,6 +291,16 @@ func processSyncFile(ctx context.Context, cfg common.Config, source, destination
 	}
 
 	pathWithFolder := strings.TrimPrefix(file, basePath)
+
+	fixedPathWithFolder, converted, err := common.FixFilenameEncoding(pathWithFolder)
+	if err != nil {
+		return &common.ObjectError{Url: mgcSchemaPkg.URI(pathWithFolder), Err: fmt.Errorf("skipping file: %w", err)}
+	}
+	if converted {
+		logger().Warnw("converted filename encoding for sync", "original", pathWithFolder, "converted", fixedPathWithFolder)
+	}
+	pathWithFolder = fixedPathWithFolder
+
 	normalizedDestination := destination.JoinPath(pathWithFolder)
 
 	info, err := os.Stat(file)
