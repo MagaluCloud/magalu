@@ -12,7 +12,7 @@ mgc object-storage objects copy-all [src] [dst] [flags]
 
 ## Examples:
 ```
-mgc object-storage objects copy-all --dst="bucket2/dir/" --src="bucket1" --storage-class="cold"
+mgc object-storage objects copy-all --dst="bucket2/dir/" --src="bucket1" --storage-class="standard"
 ```
 
 ## Flags:
@@ -22,7 +22,7 @@ mgc object-storage objects copy-all --dst="bucket2/dir/" --src="bucket1" --stora
                              Use --filter=help for more details
 -h, --help                   help for copy-all
     --src uri                Path of objects in a bucket to be copied (required)
-    --storage-class enum     Copy objects to other storage classes (one of "", "cold", "cold_instant", "glacier_ir" or "standard")
+    --storage-class enum     Copy objects with storage-class setting (one of "" or "standard")
 ```
 
 ## Global Flags:
