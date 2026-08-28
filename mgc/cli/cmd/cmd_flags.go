@@ -613,6 +613,11 @@ func (cf *cmdFlags) addParametersFlags(
 	return nil
 }
 
+// Configs that must not be advertised in the command help. They keep working when
+// explicitly passed, but they point the CLI at internal environments, so listing
+// them in every command's help invites accidental use.
+var hiddenConfigFlags = []string{"env"}
+
 func (cf *cmdFlags) addConfigsFlags(
 	configsSchema *mgcSdk.Schema,
 	normalizeName func(name string) flag.NormalizedName,
@@ -625,7 +630,7 @@ func (cf *cmdFlags) addConfigsFlags(
 			normalizeName,
 			slices.Contains(configsSchema.Required, propName),
 			true,
-			false,
+			slices.Contains(hiddenConfigFlags, propName),
 		)
 	}
 }
