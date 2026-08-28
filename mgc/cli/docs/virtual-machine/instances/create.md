@@ -36,7 +36,7 @@ mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d9
     --name string                               Name (between 1 and 255 characters) (required)
     --network object                            (properties: associate_public_ip, interface and vpc)
                                                 Use --network=help for more details
-    --network.associate-public-ip boolean       network's associate_public_ip property: Associate Public Ip
+    --network.associate-public-ip boolean       network's associate_public_ip property: Associate Public IP
                                                 This is the same as '--network=associate_public_ip:boolean'.
     --network.interface object                  network's interface property: Interface (at least one of: single property: id or properties: security_groups and subnets)
                                                 Use --network.interface=help for more details

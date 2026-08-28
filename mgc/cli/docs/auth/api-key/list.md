@@ -13,7 +13,7 @@ mgc auth api-key list [flags]
 ## Flags:
 ```
 -h, --help           help for list
-    --invalid-keys   Include Invalid Rekove and Expired Keys (required)
+    --invalid-keys   Include Invalid Revoke and Expired Keys (required)
 ```
 
 ## Global Flags:

@@ -2796,7 +2796,7 @@
           },
           "remote_ip_prefix": {
             "type": "string",
-            "title": "Remote Ip Prefix"
+            "title": "Remote IP Prefix"
           },
           "action": {
             "type": "string",
@@ -3038,7 +3038,7 @@
           "remote_ip_prefix": {
             "type": "string",
             "format": "ipvanynetwork",
-            "title": "Remote Ip Prefix"
+            "title": "Remote IP Prefix"
           },
           "action": {
             "$ref": "#/components/schemas/AclActionType"
@@ -3787,7 +3787,7 @@
           },
           "ip_address": {
             "type": "string",
-            "title": "Ip Address",
+            "title": "IP Address",
             "nullable": true
           },
           "external_id": {
@@ -4185,7 +4185,7 @@
         "properties": {
           "ip_address": {
             "type": "string",
-            "title": "Ip Address",
+            "title": "IP Address",
             "description": "The IP address of the raw target"
           },
           "port": {
@@ -4583,7 +4583,7 @@
           },
           "ip_address": {
             "type": "string",
-            "title": "Ip Address",
+            "title": "IP Address",
             "nullable": true
           },
           "nic_id": {
@@ -4639,7 +4639,7 @@
           },
           "ip_address": {
             "type": "string",
-            "title": "Ip Address",
+            "title": "IP Address",
             "nullable": true
           },
           "port": {
@@ -4884,7 +4884,7 @@
           },
           "ip_address": {
             "type": "string",
-            "title": "Ip Address",
+            "title": "IP Address",
             "nullable": true
           },
           "vpc_id": {
@@ -5148,7 +5148,7 @@
         "properties": {
           "ip_address": {
             "type": "string",
-            "title": "Ip Address",
+            "title": "IP Address",
             "description": "The IP address of the raw target"
           }
         },
@@ -5548,7 +5548,7 @@
           },
           "ip_address": {
             "type": "string",
-            "title": "Ip Address",
+            "title": "IP Address",
             "nullable": true
           },
           "instance_id": {
@@ -5594,7 +5594,7 @@
           },
           "ip_address": {
             "type": "string",
-            "title": "Ip Address",
+            "title": "IP Address",
             "nullable": true
           },
           "created_at": {
@@ -5838,7 +5838,7 @@
           },
           "ip_address": {
             "type": "string",
-            "title": "Ip Address",
+            "title": "IP Address",
             "nullable": true
           },
           "vpc_id": {

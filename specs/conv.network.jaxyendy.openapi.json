@@ -5828,7 +5828,7 @@
                                 "type": "string"
                             }
                         ],
-                        "title": "Nat Gateway Ip"
+                        "title": "Nat Gateway IP"
                     },
                     "created_at": {
                         "anyOf": [
@@ -5998,7 +5998,7 @@
                                             "type": "string"
                                         }
                                     ],
-                                    "title": "Nat Gateway Ip"
+                                    "title": "Nat Gateway IP"
                                 },
                                 "created_at": {
                                     "anyOf": [
@@ -6363,7 +6363,7 @@
                 "properties": {
                     "ip_spoofing_guard": {
                         "type": "boolean",
-                        "title": "Ip Spoofing Guard",
+                        "title": "IP Spoofing Guard",
                         "description": "Activates (true) or deactivates (false) the IP Spoofing protection"
                     }
                 },
@@ -6390,7 +6390,7 @@
                             "properties": {
                                 "ip_address": {
                                     "type": "string",
-                                    "title": "Ip Address"
+                                    "title": "IP Address"
                                 },
                                 "subnet_id": {
                                     "type": "string",
@@ -6416,7 +6416,7 @@
                                 "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                             }
                         },
-                        "title": "Ip Address",
+                        "title": "IP Address",
                         "default": []
                     }
                 },
@@ -6537,7 +6537,7 @@
                                         "properties": {
                                             "ip_address": {
                                                 "type": "string",
-                                                "title": "Ip Address"
+                                                "title": "IP Address"
                                             },
                                             "subnet_id": {
                                                 "type": "string",
@@ -6563,7 +6563,7 @@
                                             "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                                         }
                                     },
-                                    "title": "Ip Address",
+                                    "title": "IP Address",
                                     "default": []
                                 },
                                 "created_at": {
@@ -6597,7 +6597,7 @@
                                             "type": "boolean"
                                         }
                                     ],
-                                    "title": "Ip Spoofing Guard"
+                                    "title": "IP Spoofing Guard"
                                 }
                             },
                             "title": "PortResponse",
@@ -6688,7 +6688,7 @@
                                         "properties": {
                                             "ip_address": {
                                                 "type": "string",
-                                                "title": "Ip Address"
+                                                "title": "IP Address"
                                             },
                                             "subnet_id": {
                                                 "type": "string",
@@ -6714,7 +6714,7 @@
                                             "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                                         }
                                     },
-                                    "title": "Ip Address",
+                                    "title": "IP Address",
                                     "default": []
                                 }
                             },
@@ -7480,7 +7480,7 @@
                                 "type": "string"
                             }
                         ],
-                        "title": "Remote Ip Prefix"
+                        "title": "Remote IP Prefix"
                     },
                     "ethertype": {
                         "type": "string",
@@ -7595,7 +7595,7 @@
                                 "type": "string"
                             }
                         ],
-                        "title": "Remote Ip Prefix"
+                        "title": "Remote IP Prefix"
                     },
                     "ethertype": {
                         "type": "string",
@@ -7697,7 +7697,7 @@
                                 "type": "string"
                             }
                         ],
-                        "title": "Remote Ip Prefix"
+                        "title": "Remote IP Prefix"
                     },
                     "status": {
                         "anyOf": [
@@ -7842,7 +7842,7 @@
                                             "type": "string"
                                         }
                                     ],
-                                    "title": "Remote Ip Prefix"
+                                    "title": "Remote IP Prefix"
                                 },
                                 "ethertype": {
                                     "type": "string",
@@ -8123,7 +8123,7 @@
                                                     "type": "string"
                                                 }
                                             ],
-                                            "title": "Remote Ip Prefix"
+                                            "title": "Remote IP Prefix"
                                         },
                                         "status": {
                                             "anyOf": [
@@ -8627,7 +8627,7 @@
                     },
                     "ip_version": {
                         "type": "integer",
-                        "title": "Ip Version"
+                        "title": "IP Version"
                     },
                     "dns_nameservers": {
                         "type": "array",
@@ -8724,7 +8724,7 @@
                     },
                     "ip_version": {
                         "type": "integer",
-                        "title": "Ip Version"
+                        "title": "IP Version"
                     },
                     "is_default": {
                         "type": "boolean",
@@ -9077,7 +9077,7 @@
                     },
                     "ip_version": {
                         "type": "string",
-                        "title": "Ip Version"
+                        "title": "IP Version"
                     },
                     "zone": {
                         "type": "string",
@@ -9164,7 +9164,7 @@
                     },
                     "ip_version": {
                         "type": "string",
-                        "title": "Ip Version"
+                        "title": "IP Version"
                     },
                     "zone": {
                         "type": "string",
@@ -9190,7 +9190,7 @@
                     },
                     "gateway_ip": {
                         "type": "string",
-                        "title": "Gateway Ip"
+                        "title": "Gateway IP"
                     },
                     "dns_nameservers": {
                         "type": "array",
@@ -9318,7 +9318,7 @@
                                 },
                                 "ip_version": {
                                     "type": "string",
-                                    "title": "Ip Version"
+                                    "title": "IP Version"
                                 },
                                 "zone": {
                                     "type": "string",
@@ -9980,7 +9980,7 @@
                             "properties": {
                                 "ip_address": {
                                     "type": "string",
-                                    "title": "Ip Address"
+                                    "title": "IP Address"
                                 },
                                 "subnet_id": {
                                     "type": "string",
@@ -10006,7 +10006,7 @@
                                 "subnet_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                             }
                         },
-                        "title": "Ip Address",
+                        "title": "IP Address",
                         "default": []
                     },
                     "created_at": {
@@ -10040,7 +10040,7 @@
                                 "type": "boolean"
                             }
                         ],
-                        "title": "Ip Spoofing Guard"
+                        "title": "IP Spoofing Guard"
                     }
                 },
                 "title": "PortResponse",
@@ -10075,7 +10075,7 @@
                 "properties": {
                     "ip_address": {
                         "type": "string",
-                        "title": "Ip Address"
+                        "title": "IP Address"
                     },
                     "subnet_id": {
                         "type": "string",

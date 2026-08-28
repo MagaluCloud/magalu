@@ -14,7 +14,7 @@ import (
 )
 
 type listKeysParams struct {
-	InvalidKeys bool `json:"invalid-keys" jsonschema:"description=Include Invalid Rekove and Expired Keys,default=false"`
+	InvalidKeys bool `json:"invalid-keys" jsonschema:"description=Include Invalid Revoke and Expired Keys,default=false"`
 }
 
 var getList = utils.NewLazyLoader[core.Executor](func() core.Executor {

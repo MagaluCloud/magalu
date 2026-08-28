@@ -13,7 +13,7 @@ mgc virtual-machine instances delete [id] [flags]
 
 ## Flags:
 ```
-    --delete-public-ip   Delete Public Ip: Flag default value false.
+    --delete-public-ip   Delete Public IP: Flag default value false.
 -h, --help               help for delete
     --id uuid            Instance id - for help use ./mgc virtual-machines instances list . (required)
 ```

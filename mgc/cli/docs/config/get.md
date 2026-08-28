@@ -4,7 +4,7 @@ sidebar_position: 5
 # Get
 
 Get a specific Config value that has been previously set. If there's an env variable
-matching the key (in uppercase and with the 'MGC_' prefix), it'll be retreived.
+matching the key (in uppercase and with the 'MGC_' prefix), it'll be retrieved.
 Otherwise, the value will be searched for in the YAML file
 
 ## Usage:

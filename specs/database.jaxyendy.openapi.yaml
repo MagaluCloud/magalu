@@ -2648,7 +2648,7 @@ components:
           type: string
           format: uuid
         deletion_protected:
-          title: Deletion Pprotected
+          title: Deletion protected
           type: boolean
           default: false
       required:
