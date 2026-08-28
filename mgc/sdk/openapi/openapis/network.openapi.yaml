@@ -3916,7 +3916,7 @@ components:
                 nat_gateway_ip:
                     anyOf:
                     -   type: string
-                    title: Nat Gateway Ip
+                    title: Nat Gateway IP
                 created_at:
                     anyOf:
                     -   type: string
@@ -4036,7 +4036,7 @@ components:
                             nat_gateway_ip:
                                 anyOf:
                                 -   type: string
-                                title: Nat Gateway Ip
+                                title: Nat Gateway IP
                             created_at:
                                 anyOf:
                                 -   type: string
@@ -4293,7 +4293,7 @@ components:
             properties:
                 ip_spoofing_guard:
                     type: boolean
-                    title: Ip Spoofing Guard
+                    title: IP Spoofing Guard
                     description: Activates (true) or deactivates (false) the IP Spoofing
                         protection
             title: PortPatchRequest
@@ -4313,7 +4313,7 @@ components:
                         properties:
                             ip_address:
                                 type: string
-                                title: Ip Address
+                                title: IP Address
                             subnet_id:
                                 type: string
                                 title: Subnet Id
@@ -4329,7 +4329,7 @@ components:
                             ethertype: IPv4
                             ip_address: 172.20.0.2
                             subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                    title: Ip Address
+                    title: IP Address
                     default: []
             title: PortSimpleResponse
             example:
@@ -4402,7 +4402,7 @@ components:
                                     properties:
                                         ip_address:
                                             type: string
-                                            title: Ip Address
+                                            title: IP Address
                                         subnet_id:
                                             type: string
                                             title: Subnet Id
@@ -4418,7 +4418,7 @@ components:
                                         ethertype: IPv4
                                         ip_address: 172.20.0.2
                                         subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                                title: Ip Address
+                                title: IP Address
                                 default: []
                             created_at:
                                 anyOf:
@@ -4436,7 +4436,7 @@ components:
                             ip_spoofing_guard:
                                 anyOf:
                                 -   type: boolean
-                                title: Ip Spoofing Guard
+                                title: IP Spoofing Guard
                         title: PortResponse
                         example:
                             created_at: '2022-01-01 00:00:00'
@@ -4497,7 +4497,7 @@ components:
                                     properties:
                                         ip_address:
                                             type: string
-                                            title: Ip Address
+                                            title: IP Address
                                         subnet_id:
                                             type: string
                                             title: Subnet Id
@@ -4513,7 +4513,7 @@ components:
                                         ethertype: IPv4
                                         ip_address: 172.20.0.2
                                         subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                                title: Ip Address
+                                title: IP Address
                                 default: []
                         title: PortSimpleResponse
                         example:
@@ -5020,7 +5020,7 @@ components:
                 remote_ip_prefix:
                     anyOf:
                     -   type: string
-                    title: Remote Ip Prefix
+                    title: Remote IP Prefix
                 ethertype:
                     type: string
                     title: Ethertype
@@ -5089,7 +5089,7 @@ components:
                 remote_ip_prefix:
                     anyOf:
                     -   type: string
-                    title: Remote Ip Prefix
+                    title: Remote IP Prefix
                 ethertype:
                     type: string
                     title: Ethertype
@@ -5152,7 +5152,7 @@ components:
                 remote_ip_prefix:
                     anyOf:
                     -   type: string
-                    title: Remote Ip Prefix
+                    title: Remote IP Prefix
                 status:
                     anyOf:
                     -   $ref: '#/components/schemas/RuleStatus'
@@ -5236,7 +5236,7 @@ components:
                             remote_ip_prefix:
                                 anyOf:
                                 -   type: string
-                                title: Remote Ip Prefix
+                                title: Remote IP Prefix
                             ethertype:
                                 type: string
                                 title: Ethertype
@@ -5406,7 +5406,7 @@ components:
                                 remote_ip_prefix:
                                     anyOf:
                                     -   type: string
-                                    title: Remote Ip Prefix
+                                    title: Remote IP Prefix
                                 status:
                                     anyOf:
                                     -   $ref: '#/components/schemas/RuleStatus'
@@ -5737,7 +5737,7 @@ components:
                     title: Cidr Block
                 ip_version:
                     type: integer
-                    title: Ip Version
+                    title: IP Version
                 dns_nameservers:
                     type: array
                     items:
@@ -5807,7 +5807,7 @@ components:
                     title: Tenant Id
                 ip_version:
                     type: integer
-                    title: Ip Version
+                    title: IP Version
                 is_default:
                     type: boolean
                     title: Is Default
@@ -6062,7 +6062,7 @@ components:
                     title: Subnetpool Id
                 ip_version:
                     type: string
-                    title: Ip Version
+                    title: IP Version
                 zone:
                     type: string
                     title: Zone
@@ -6120,7 +6120,7 @@ components:
                     title: Subnetpool Id
                 ip_version:
                     type: string
-                    title: Ip Version
+                    title: IP Version
                 zone:
                     type: string
                     title: Zone
@@ -6136,7 +6136,7 @@ components:
                     title: Updated
                 gateway_ip:
                     type: string
-                    title: Gateway Ip
+                    title: Gateway IP
                 dns_nameservers:
                     type: array
                     items:
@@ -6227,7 +6227,7 @@ components:
                                 title: Subnetpool Id
                             ip_version:
                                 type: string
-                                title: Ip Version
+                                title: IP Version
                             zone:
                                 type: string
                                 title: Zone
@@ -6654,7 +6654,7 @@ components:
                         properties:
                             ip_address:
                                 type: string
-                                title: Ip Address
+                                title: IP Address
                             subnet_id:
                                 type: string
                                 title: Subnet Id
@@ -6670,7 +6670,7 @@ components:
                             ethertype: IPv4
                             ip_address: 172.20.0.2
                             subnet_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                    title: Ip Address
+                    title: IP Address
                     default: []
                 created_at:
                     anyOf:
@@ -6688,7 +6688,7 @@ components:
                 ip_spoofing_guard:
                     anyOf:
                     -   type: boolean
-                    title: Ip Spoofing Guard
+                    title: IP Spoofing Guard
             title: PortResponse
             example:
                 created_at: '2022-01-01 00:00:00'
@@ -6712,7 +6712,7 @@ components:
             properties:
                 ip_address:
                     type: string
-                    title: Ip Address
+                    title: IP Address
                 subnet_id:
                     type: string
                     title: Subnet Id

@@ -25,7 +25,7 @@ mgc network security-groups rules create --description="Allow incoming SSH traff
     --port-range-max integer        Port Range Max
     --port-range-min integer        Port Range Min
     --protocol string               Protocol
-    --remote-ip-prefix string       Remote Ip Prefix
+    --remote-ip-prefix string       Remote IP Prefix
     --security-group-id string      Security Group ID: Id of the Security Group (required)
     --validate-quota                validateQuota: Validate the quota before creating Rule
     --wait                          The request will be asynchronous. The wait parameter tells the API that you want the request to simulate synchronous behavior (to maintain endpoint compatibility). You can set an approximate timeout with the waitTimeout parameter

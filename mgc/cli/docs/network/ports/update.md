@@ -15,7 +15,7 @@ mgc network ports update [port-id] [flags]
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
     --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
 -h, --help                          help for update
-    --ip-spoofing-guard             Ip Spoofing Guard: Activates (true) or deactivates (false) the IP Spoofing protection
+    --ip-spoofing-guard             IP Spoofing Guard: Activates (true) or deactivates (false) the IP Spoofing protection
     --port-id string                port_id: ID of the Port (required)
 ```
 

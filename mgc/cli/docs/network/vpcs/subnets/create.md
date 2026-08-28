@@ -17,7 +17,7 @@ mgc network vpcs subnets create [vpc-id] [flags]
     --description string                     Description
     --dns-nameservers array(ipvanyaddress)   Dns Nameservers
 -h, --help                                   help for create
-    --ip-version integer                     Ip Version (required)
+    --ip-version integer                     IP Version (required)
     --name string                            Name (required)
     --subnetpool-id string                   Subnetpool Id
     --vpc-id string                          Vpc Id: Id of the VPC to create Subnet (required)
