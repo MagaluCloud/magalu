@@ -25,7 +25,8 @@ type downloader interface {
 }
 
 func NewDownloadRequest(ctx context.Context, cfg Config, src mgcSchemaPkg.URI, version string) (*http.Request, error) {
-	host, err := BuildBucketHostWithPath(cfg, NewBucketNameFromURI(src), src.Path())
+	rawPath := ConvertVisibleToControlChars(src.Path())
+	host, err := BuildBucketHostWithPath(cfg, NewBucketNameFromURI(src), rawPath)
 	if err != nil {
 		return nil, core.UsageError{Err: err}
 	}
