@@ -70,16 +70,14 @@ var getIamSet = utils.NewLazyLoader[core.Executor](func() core.Executor {
 })
 
 var getIamCurrent = utils.NewLazyLoader[core.Executor](func() core.Executor {
-	return core.NewStaticExecuteSimple(
+	return core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:         "current",
 			Summary:      "Show the project IAM commands apply to",
-			Description:  "Reads the IAM scope from the local configuration. Does not reach the API, so it answers even without network or login",
+			Description:  "Resolves the IAM scope against the API to show its name. The id comes from the local configuration, so it is still reported when the API cannot be reached",
 			Observations: "An empty id means IAM commands apply to the entire tenant.",
 		},
-		func(ctx context.Context) (*currentResult, error) {
-			return iamCurrent(ctx, struct{}{}, struct{}{})
-		},
+		iamCurrent,
 	)
 })
 
@@ -104,8 +102,8 @@ func iamSet(ctx context.Context, params setParams, cfg projectConfig) (*setResul
 	return setScope(ctx, mgcConfigPkg.IamProjectKey, params.IDOrName, cfg)
 }
 
-func iamCurrent(ctx context.Context, _ struct{}, _ struct{}) (*currentResult, error) {
-	return currentScope(ctx, mgcConfigPkg.IamProjectKey)
+func iamCurrent(ctx context.Context, _ struct{}, cfg projectConfig) (*currentResult, error) {
+	return currentScope(ctx, mgcConfigPkg.IamProjectKey, cfg)
 }
 
 func iamUnset(ctx context.Context, _ struct{}, _ struct{}) (*unsetResult, error) {

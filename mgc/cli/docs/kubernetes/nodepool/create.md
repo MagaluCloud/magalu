@@ -52,6 +52,7 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
                                         Use --network=help for more details
     --network.subnet-ids array          Request object for the Kubernetes nodepools network resource request: 
                                         This is the same as '--network=subnet_ids:array'.
+    --project-id string                 Project to scope this command to. Overrides the configured project for this invocation
     --replicas integer                  Number of replicas of the nodes in the node pool. (required) (default 1)
     --tags array(string)                [Deprecated] List of tags applied to the node pool. 
     --taints array(object)              Property associating a set of nodes.
@@ -68,10 +69,8 @@ mgc kubernetes nodepool create --auto-scale.max-replicas=5 --auto-scale.min-repl
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
     --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
-    --iam-project-id string    Project scope for IAM commands only. Overrides the configured IAM project
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
-    --project-id string        Project to scope the requests. Overrides the configured project
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use

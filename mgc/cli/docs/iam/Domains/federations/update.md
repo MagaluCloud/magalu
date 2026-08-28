@@ -39,6 +39,7 @@ mgc iam domains federations update [domain-id] [federation-id] [flags]
                                            This is the same as '--oidc=token_endpoint:string'.
     --oidc.userinfo-endpoint string        oidc's userinfo_endpoint property: Userinfo Endpoint
                                            This is the same as '--oidc=userinfo_endpoint:string'.
+    --project-id string                    Project to scope this command to. Overrides the configured project for this invocation
     --saml object                          (properties: entity_id, idp_certificate, name and sso_url)
                                            Use --saml=help for more details
     --saml.entity-id string                saml's entity_id property: Entity Id
@@ -49,6 +50,7 @@ mgc iam domains federations update [domain-id] [federation-id] [flags]
                                            This is the same as '--saml=name:string'.
     --saml.sso-url string                  saml's sso_url property: Sso Url
                                            This is the same as '--saml=sso_url:string'.
+    --scope enum                           Scope this command applies to: 'default' for the tenant's default project, 'tenant' for the entire tenant. The IAM API encodes the default project as the tenant id (one of "default" or "tenant")
 ```
 
 ## Global Flags:
@@ -61,10 +63,8 @@ mgc iam domains federations update [domain-id] [federation-id] [flags]
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
     --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
-    --iam-project-id string    Project scope for IAM commands only. Overrides the configured IAM project
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
-    --project-id string        Project to scope the requests. Overrides the configured project
 -r, --raw                      Output raw data, without any formatting or coloring
     --server-url uri           Manually specify the server to use
 ```

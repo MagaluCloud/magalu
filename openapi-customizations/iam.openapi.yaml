@@ -6,6 +6,8 @@
 
 servers:
 -   url: https://{env}/iam
+    x-mgc-project-scope: iam
+    x-mgc-scope-required: [post, patch, put, delete]
     variables:
         env:
             description: Environment to use

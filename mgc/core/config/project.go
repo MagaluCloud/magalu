@@ -1,5 +1,25 @@
 package config
 
+import "context"
+
+// O escopo efetivo da request viaja no contexto, não é deduzido da URL. Quem
+// monta a request sabe de que produto ela é e qual chave de config vale; o
+// transport só carimba o que recebeu. É o único canal que chega intacto até o
+// RoundTripper, porque as requests são criadas com NewRequestWithContext.
+type projectScopeKey struct{}
+
+// NewProjectScopeContext carrega o id de projeto já resolvido para esta request.
+// String vazia significa "sem escopo": o header não é enviado.
+func NewProjectScopeContext(parent context.Context, projectID string) context.Context {
+	return context.WithValue(parent, projectScopeKey{}, projectID)
+}
+
+// ProjectScopeFromContext devolve o id resolvido, ou "" quando não há escopo.
+func ProjectScopeFromContext(ctx context.Context) string {
+	id, _ := ctx.Value(projectScopeKey{}).(string)
+	return id
+}
+
 const (
 	// ProjectKey é o projeto da CLI: vai como 'x-project-id' em toda request,
 	// exceto nas do IAM.

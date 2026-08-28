@@ -9,6 +9,7 @@ info:
     version: 1.87.0
 servers:
 -   url: https://{env}/{region}/load-balancer
+    x-mgc-project-scope: project
     variables:
         region:
             description: Region to reach the service

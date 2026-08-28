@@ -166,10 +166,8 @@ func (o *Sdk) HttpClient() *mgcHttpPkg.Client {
 		transport := o.addHttpRefreshHandler(newHttpTransport(o.version))
 		// Escopo de projeto só aqui, nunca no cliente do Auth: mandar
 		// 'x-project-id' para o IDP (login/refresh/introspect) não faria sentido.
-		transport = newProjectTransport(transport,
-			func() string { return o.Config().Project() },
-			func() string { return o.Config().IamProject() },
-		)
+		// O valor vem do contexto da request, resolvido por quem a monta.
+		transport = newProjectTransport(transport)
 		o.httpClient = mgcHttpPkg.NewClient(transport)
 	}
 	return o.httpClient

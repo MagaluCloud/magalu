@@ -23,6 +23,7 @@ var getSet = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:         "set",
+			ProjectScope: core.ProjectScopeIAM,
 			Summary:      "Set the project used by the CLI",
 			Description:  "All subsequent requests are scoped to this project. IAM commands are not affected: they use their own scope, set by 'mgc iam project set'",
 			Observations: "Changing the tenant clears the selected project.",

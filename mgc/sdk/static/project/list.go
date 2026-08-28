@@ -19,9 +19,10 @@ type listParams struct {
 var getList = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	var exec core.Executor = core.NewStaticExecute(
 		core.DescriptorSpec{
-			Name:        "list",
-			Summary:     "List the projects of your tenant",
-			Description: "List all projects available for the currently authenticated tenant",
+			Name:         "list",
+			ProjectScope: core.ProjectScopeIAM,
+			Summary:      "List the projects of your tenant",
+			Description:  "List all projects available for the currently authenticated tenant",
 		},
 		list,
 	)

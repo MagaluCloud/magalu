@@ -184,6 +184,11 @@ func handleExecutor(
 	setKeyPair(sdk)
 	applyProjectFlags(cmd, sdk.Config())
 
+	// O escopo é resolvido AQUI, onde se sabe qual comando é, qual produto ele
+	// serve e o que a configuração diz — e viaja no contexto até o transport.
+	// O transport não deduz nada da URL.
+	ctx = withProjectScope(ctx, sdk, cmd, exec)
+
 	result, err := handleExecutorPre(ctx, sdk, cmd, exec, parameters, configs)
 	err = handleExecutorResult(ctx, sdk, cmd, result, err)
 	if err != nil {

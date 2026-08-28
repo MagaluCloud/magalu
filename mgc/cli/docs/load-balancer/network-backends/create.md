@@ -22,6 +22,7 @@ mgc load-balancer network-backends create [load-balancer-id] [flags]
     --load-balancer-id uuid                      load_balancer_id: ID of the attached Load Balancer (required)
     --name string                                The unique name of the backend (max character count: 64) (required)
     --panic-threshold number                     Panic Threshold: Minimum percentage of failed upstreams that load balancer will consider to give an alert (range: 0 - 100)
+    --project-id string                          Project to scope this command to. Overrides the configured project for this invocation
     --targets array                              Targets: The list of target configurations for the backend (at least one of: array or array)
                                                  Use --targets=help for more details
     --targets-type enum                          Targets Type: The type of targets used by the backend (e.g., instance, raw) (one of "instance" or "raw") (required)
@@ -37,10 +38,8 @@ mgc load-balancer network-backends create [load-balancer-id] [flags]
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
     --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
-    --iam-project-id string    Project scope for IAM commands only. Overrides the configured IAM project
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
-    --project-id string        Project to scope the requests. Overrides the configured project
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use

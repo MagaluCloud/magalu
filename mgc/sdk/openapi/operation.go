@@ -73,6 +73,13 @@ func newOperation(
 			Version:     version,
 			Summary:     desc.op.Summary,
 			IsInternal:  utils.BoolPtr(getHiddenExtension(extensionPrefix, desc.op.Extensions)),
+			// Declarado uma vez por serviço, no bloco `servers` da customização.
+			// Ausente = produto não escopável: não recebe 'x-project-id' nem as
+			// flags de escopo. Opt-in porque só 5 dos 10 produtos participam.
+			ProjectScope: getProjectScopeExtension(extensionPrefix, servers),
+			// Escrita de IAM não age sem escopo explícito. Vale por método, e a
+			// operação pode se declarar isenta — nunca o contrário.
+			ScopeRequired: getScopeRequiredExtension(extensionPrefix, servers, desc.op.Extensions, method),
 		}},
 		key:             desc.pathKey,
 		method:          method,

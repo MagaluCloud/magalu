@@ -12,8 +12,9 @@ mgc kubernetes nodepool list [cluster-id] [flags]
 
 ## Flags:
 ```
-    --cluster-id uuid   Cluster's UUID. (required)
--h, --help              help for list
+    --cluster-id uuid     Cluster's UUID. (required)
+-h, --help                help for list
+    --project-id string   Project to scope this command to. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:
@@ -26,10 +27,8 @@ mgc kubernetes nodepool list [cluster-id] [flags]
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
     --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
-    --iam-project-id string    Project scope for IAM commands only. Overrides the configured IAM project
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
-    --project-id string        Project to scope the requests. Overrides the configured project
 -r, --raw                      Output raw data, without any formatting or coloring
     --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use

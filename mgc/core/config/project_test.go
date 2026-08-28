@@ -1,6 +1,9 @@
 package config
 
-import "testing"
+import (
+	"context"
+	"testing"
+)
 
 // Ausência é o caso normal: sem projeto configurado o header não é enviado, e
 // a API decide o escopo (projeto default do tenant).
@@ -159,5 +162,45 @@ func TestUnsetIamProjectKeepsProject(t *testing.T) {
 	}
 	if got, want := c.Project(), "p"; got != want {
 		t.Errorf("project não podia ser tocado: %q, quer %q", got, want)
+	}
+}
+
+// --- escopo efetivo viajando no contexto ---
+//
+// O transport nao decide mais nada: quem sabe qual produto e qual escopo e a
+// camada que monta a request. O contexto e o unico canal, porque e o que chega
+// intacto ate o RoundTripper (http.NewRequestWithContext).
+
+func TestProjectScopeContextRoundTrip(t *testing.T) {
+	ctx := context.Background()
+
+	if got := ProjectScopeFromContext(ctx); got != "" {
+		t.Errorf("contexto limpo deveria devolver vazio, veio %q", got)
+	}
+
+	ctx = NewProjectScopeContext(ctx, "id-alpha")
+	if got := ProjectScopeFromContext(ctx); got != "id-alpha" {
+		t.Errorf("escopo = %q, quer id-alpha", got)
+	}
+}
+
+// Escopo vazio nao pode virar header vazio: quem nao tem escopo nao carimba
+// nada, e o contexto tem de reportar isso como ausencia.
+func TestProjectScopeContextEmptyStaysEmpty(t *testing.T) {
+	ctx := NewProjectScopeContext(context.Background(), "")
+
+	if got := ProjectScopeFromContext(ctx); got != "" {
+		t.Errorf("escopo vazio = %q, quer vazio", got)
+	}
+}
+
+// Escopo mais interno vence: uma sub-request com escopo proprio nao herda o de
+// fora sem querer.
+func TestProjectScopeContextInnermostWins(t *testing.T) {
+	ctx := NewProjectScopeContext(context.Background(), "de-fora")
+	ctx = NewProjectScopeContext(ctx, "de-dentro")
+
+	if got := ProjectScopeFromContext(ctx); got != "de-dentro" {
+		t.Errorf("escopo = %q, quer de-dentro", got)
 	}
 }

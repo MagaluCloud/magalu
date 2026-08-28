@@ -2,6 +2,7 @@ package project
 
 import (
 	"context"
+	"errors"
 	"strings"
 	"testing"
 
@@ -167,7 +168,7 @@ func TestCurrentReadsConfig(t *testing.T) {
 	cfg := mgcConfigPkg.New(pm)
 	ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
 
-	got, err := current(ctx, struct{}{}, struct{}{})
+	got, err := current(ctx, struct{}{}, projectConfig{})
 	if err != nil {
 		t.Fatalf("current sem projeto setado não é erro: %v", err)
 	}
@@ -178,7 +179,7 @@ func TestCurrentReadsConfig(t *testing.T) {
 	if err := cfg.Set(mgcConfigPkg.ProjectKey, "id-alpha"); err != nil {
 		t.Fatal(err)
 	}
-	got, err = current(ctx, struct{}{}, struct{}{})
+	got, err = current(ctx, struct{}{}, projectConfig{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -299,7 +300,7 @@ func TestIamCurrentAndUnsetUseIamScope(t *testing.T) {
 	}
 	ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
 
-	got, err := iamCurrent(ctx, struct{}{}, struct{}{})
+	got, err := iamCurrent(ctx, struct{}{}, projectConfig{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -337,5 +338,96 @@ func TestIamUnsetConfirmWarnsAboutTenantWideScope(t *testing.T) {
 		if !strings.Contains(msg, want) {
 			t.Errorf("confirmação deveria mencionar %q, veio: %q", want, msg)
 		}
+	}
+}
+
+// --- current enriquecido: id da config + nome vindo da lista ---
+//
+// Nao ha GET /{id} na API de projects, entao "resolver o nome" e listar e
+// procurar. A decisao de o que devolver em cada desfecho fica isolada aqui,
+// testavel sem rede; currentScope so faz a ligacao.
+
+func TestResolveCurrentFound(t *testing.T) {
+	available := []projectResult{
+		{ID: "id-alpha", Name: "alpha", Type: "default"},
+		{ID: "id-beta", Name: "beta", Type: "managed"},
+	}
+
+	got := resolveCurrent("id-beta", available, nil)
+	if got.ID != "id-beta" || got.Name != "beta" || got.Type != "managed" {
+		t.Errorf("resolveCurrent = %+v, quer id-beta/beta/managed", got)
+	}
+	if got.Warning != "" {
+		t.Errorf("achou o projeto, nao deveria avisar nada: %q", got.Warning)
+	}
+}
+
+// Config apontando para projeto que nao existe mais (apagado, ou de outro
+// tenant) e informacao util — hoje isso so aparece como 403 em outro comando.
+func TestResolveCurrentNotInTenant(t *testing.T) {
+	got := resolveCurrent("id-fantasma", []projectResult{{ID: "id-alpha", Name: "alpha"}}, nil)
+
+	if got.ID != "id-fantasma" {
+		t.Errorf("o id da config tem de sobreviver: %q", got.ID)
+	}
+	if got.Name != "" {
+		t.Errorf("sem correspondencia nao ha nome: %q", got.Name)
+	}
+	if !strings.Contains(got.Warning, "not found") {
+		t.Errorf("deveria avisar que nao encontrou: %q", got.Warning)
+	}
+}
+
+// Nunca falhar: sem rede ou deslogado, o comando ainda responde o essencial —
+// o id, que e local. O nome e enriquecimento.
+func TestResolveCurrentLookupFailed(t *testing.T) {
+	got := resolveCurrent("id-alpha", nil, errors.New("no network"))
+
+	if got.ID != "id-alpha" {
+		t.Errorf("o id tem de sobreviver a falha de consulta: %q", got.ID)
+	}
+	if got.Warning == "" {
+		t.Error("degradar em silencio esconderia que a consulta falhou")
+	}
+	if strings.Contains(got.Warning, "not found") {
+		t.Errorf("falha de consulta nao e 'nao encontrado': %q", got.Warning)
+	}
+}
+
+// Sem projeto configurado nao ha o que resolver — e nao se gasta uma requisicao.
+func TestCurrentWithoutProjectDoesNotLookUp(t *testing.T) {
+	pm, _ := profile_manager.NewInMemoryProfileManager()
+	cfg := mgcConfigPkg.New(pm)
+	// Contexto SEM auth: se currentScope tentasse listar, viria erro.
+	ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
+
+	got, err := currentScope(ctx, mgcConfigPkg.ProjectKey, projectConfig{})
+	if err != nil {
+		t.Fatalf("sem projeto nao e erro: %v", err)
+	}
+	if got.ID != "" || got.Warning != "" {
+		t.Errorf("resultado deveria ser vazio, veio %+v", got)
+	}
+}
+
+// Com projeto setado e sem auth no contexto, a consulta falha — e mesmo assim
+// o comando responde, com aviso.
+func TestCurrentDegradesWithoutAuth(t *testing.T) {
+	pm, _ := profile_manager.NewInMemoryProfileManager()
+	cfg := mgcConfigPkg.New(pm)
+	if err := cfg.Set(mgcConfigPkg.ProjectKey, "id-alpha"); err != nil {
+		t.Fatal(err)
+	}
+	ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
+
+	got, err := currentScope(ctx, mgcConfigPkg.ProjectKey, projectConfig{})
+	if err != nil {
+		t.Fatalf("nunca falhar: %v", err)
+	}
+	if got.ID != "id-alpha" {
+		t.Errorf("id = %q, quer id-alpha", got.ID)
+	}
+	if got.Warning == "" {
+		t.Error("deveria avisar que nao conseguiu resolver o nome")
 	}
 }
