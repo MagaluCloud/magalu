@@ -12,7 +12,7 @@ mgc object-storage objects upload-dir [src] [dst] [flags]
 
 ## Examples:
 ```
-mgc object-storage objects upload-dir --dst="my-bucket/dir/" --src="path/to/folder" --storage-class="cold"
+mgc object-storage objects upload-dir --dst="my-bucket/dir/" --src="path/to/folder" --storage-class="standard"
 ```
 
 ## Flags:
@@ -23,7 +23,7 @@ mgc object-storage objects upload-dir --dst="my-bucket/dir/" --src="path/to/fold
 -h, --help                   help for upload-dir
     --shallow                Don't upload subdirectories
     --src directory          Source directory path for upload (required)
-    --storage-class enum     Type of Storage in which to store object (one of "", "cold", "cold_instant", "glacier_ir" or "standard")
+    --storage-class enum     Type of Storage in which to store object (one of "" or "standard")
 ```
 
 ## Global Flags:
