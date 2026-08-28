@@ -48,3 +48,7 @@ jaxyendy:
       file: iam.jaxyendy.openapi.json
       menu: iam
       enabled: true
+    - url: https://api.magalu.cloud/tag/openapi.json
+      file: tag.jaxyendy.openapi.json
+      menu: tag
+      enabled: true

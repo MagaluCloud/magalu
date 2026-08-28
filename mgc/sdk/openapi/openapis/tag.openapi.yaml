@@ -1,0 +1,2035 @@
+openapi: 3.0.3
+info:
+    title: Tags API
+    description: Organize your cloud resources with tags
+    contact:
+        name: XPNG.CAT
+        url: https://github.com/luizalabs
+    version: 0.1.0
+paths:
+    /v0/tags:
+        post:
+            summary: Create a tag
+            description: "Create a tag that can be attached to cloud resources.\n\n\
+                Values can be created along with the tag. A single request accepts\
+                \ at most\n100 values.\n\nRelated commands:\n  mgc tag values create\
+                \ --tag-name <name>  add more values to the tag\n  mgc tag resources\
+                \ tags attach            attach the tag to a resource"
+            operationId: create_tags_public
+            security:
+            -   OAuth2:
+                - tags:tags-tw
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Body_create_tags_public'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagsOutputPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+        get:
+            summary: List all tags
+            operationId: list_tags_public
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+            parameters:
+            -   name: name
+                in: query
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                        maxLength: 255
+                        minLength: 1
+                        pattern: ^[\w\ \-\[\]\(\)\.\:]+$
+                    title: Name
+                    description: Name of the tag to filter by
+                    nullable: true
+                description: Name of the tag to filter by
+            -   name: color
+                in: query
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                        maxLength: 6
+                        minLength: 6
+                        pattern: ^[0-9a-fA-F]+$
+                    title: Color
+                    description: Color to filter by, as a 6-digit hex RGB code without
+                        the '#' prefix
+                    nullable: true
+                    example: ffffff
+                description: Color to filter by, as a 6-digit hex RGB code without
+                    the '#' prefix
+            -   name: kinds
+                in: query
+                required: false
+                schema:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
+                            title: TagKinds
+                            enum:
+                            - finops
+                    title: Kinds
+                    description: Kinds to filter by, such as finops
+                    nullable: true
+                    example:
+                    - finops
+                description: Kinds to filter by, such as finops
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 100
+                    minimum: 1
+                    description: Maximum number of items to return per page
+                    default: 20
+                description: Maximum number of items to return per page
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    description: Number of items to skip before the first result
+                    default: 0
+                description: Number of items to skip before the first result
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    description: Sort criteria for the result
+                    default: ''
+                description: Sort criteria for the result
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagsOutputListPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: 'List all tags available to you.
+
+
+                Use --name, --color or --kinds to filter the result, and --control.limit
+
+                with --control.offset to page through it.'
+    /v0/tags/{name}:
+        patch:
+            summary: Update a tag
+            operationId: update_tags_public
+            security:
+            -   OAuth2:
+                - tags:tags-tw
+            parameters:
+            -   name: name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Name
+                    description: Name of the tag
+                    example: kubernetes-expenses
+                description: Name of the tag
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Body_update_tags_public'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagsOutputPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: 'Update the color, kinds or description of a tag.
+
+
+                The tag name cannot be changed. To use a different name, create a
+                new tag
+
+                and attach it to the resources.'
+        delete:
+            summary: Delete a tag
+            operationId: delete_tags_public
+            security:
+            -   OAuth2:
+                - tags:tags-tw
+            parameters:
+            -   name: name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Name
+                    description: Name of the tag
+                    example: kubernetes-expenses
+                description: Name of the tag
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagsOutputPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: "Delete a tag by name.\n\nDeletion cannot be undone.\n\n\
+                Related commands:\n  mgc tag get --name <name>  check the tag before\
+                \ deleting it"
+        get:
+            summary: Get details of a tag
+            operationId: get_tags_public
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+            parameters:
+            -   name: name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Name
+                    description: Name of the tag
+                    example: kubernetes-expenses
+                description: Name of the tag
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagsOutputPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: Get the details of a single tag, including its values.
+    /v0/tags/{tag_name}/values:
+        post:
+            tags:
+            - values
+            summary: Create a value for a tag
+            operationId: create_tag_values_v0_tags__tag_name__values_post
+            security:
+            -   OAuth2:
+                - tags:tags-tw
+            parameters:
+            -   name: tag_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Tag Name
+                    description: Tag name that will own the value
+                description: Tag name that will own the value
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Body_create_tag_values_v0_tags__tag_name__values_post'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/tags_api__api__schemas__public__tag_values__TagValuesOutputPublic'
+                    links:
+                        list:
+                            operationId: list_tag_values_v0_tags__tag_name__values_get
+                            description: List the values of a tag
+                            parameters:
+                                tag_name: $request.path.tag_name
+                        get:
+                            operationId: get_tag_values_v0_tags__tag_name__values__value_name__get
+                            description: Get details of a value
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $request.body#/name
+                        update:
+                            operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
+                            description: Update the description of a value
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $request.body#/name
+                        delete:
+                            operationId: delete_tag_values
+                            description: Delete a value from a tag
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $request.body#/name
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: 'Create a value for an existing tag.
+
+
+                The value name must be unique within the tag.'
+        get:
+            tags:
+            - values
+            summary: List the values of a tag
+            operationId: list_tag_values_v0_tags__tag_name__values_get
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+            parameters:
+            -   name: tag_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Tag Name
+                    description: Tag name that owns the value
+                description: Tag name that owns the value
+            -   name: name
+                in: query
+                required: false
+                schema:
+                    anyOf:
+                    -   type: string
+                        maxLength: 255
+                        minLength: 1
+                        pattern: ^[\w\ \-\[\]\(\)\.\:]+$
+                    title: Name
+                    description: Name of the value to filter by
+                    nullable: true
+                description: Name of the value to filter by
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 100
+                    minimum: 1
+                    description: Maximum number of items to return per page
+                    default: 20
+                description: Maximum number of items to return per page
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    description: Number of items to skip before the first result
+                    default: 0
+                description: Number of items to skip before the first result
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    description: Sort criteria for the result
+                    default: ''
+                description: Sort criteria for the result
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TagValuesOutputListPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: 'List every value of a tag.
+
+
+                Use --name to filter the result, and --control.limit with --control.offset
+
+                to page through it.'
+    /v0/tags/{tag_name}/values/{value_name}:
+        delete:
+            tags:
+            - values
+            summary: Delete a value from a tag
+            operationId: delete_tag_values
+            security:
+            -   OAuth2:
+                - tags:tags-tw
+            parameters:
+            -   name: tag_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Tag Name
+                    description: Tag name that owns the value
+                    example: kubernetes-expenses
+                description: Tag name that owns the value
+            -   name: value_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Value Name
+                    description: Value name to operate on
+                    example: test-labs
+                description: Value name to operate on
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/tags_api__api__schemas__public__tag_values__TagValuesOutputPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: 'Delete a single value from a tag, keeping the tag itself.
+
+
+                Deletion cannot be undone.'
+        patch:
+            tags:
+            - values
+            summary: Update the description of a value
+            operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
+            security:
+            -   OAuth2:
+                - tags:tags-tw
+            parameters:
+            -   name: tag_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Tag Name
+                    description: Tag name that owns the value
+                    example: kubernetes-expenses
+                description: Tag name that owns the value
+            -   name: value_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Value Name
+                    description: Value name to operate on
+                    example: test-labs
+                description: Value name to operate on
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Body_update_tag_values_v0_tags__tag_name__values__value_name__patch'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/tags_api__api__schemas__public__tag_values__TagValuesOutputPublic'
+                    links:
+                        list:
+                            operationId: list_tag_values_v0_tags__tag_name__values_get
+                            description: List the values of a tag
+                            parameters:
+                                tag_name: $request.path.tag_name
+                        create:
+                            operationId: create_tag_values_v0_tags__tag_name__values_post
+                            description: Create a value for a tag
+                            parameters:
+                                tag_name: $request.path.tag_name
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.description == $.owner.parameters.description
+                        get:
+                            operationId: get_tag_values_v0_tags__tag_name__values__value_name__get
+                            description: Get details of a value
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $response.body#/name
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.description == $.owner.parameters.description
+                        delete:
+                            operationId: delete_tag_values
+                            description: Delete a value from a tag
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $response.body#/name
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.description == $.owner.parameters.description
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: 'Update the description of a value.
+
+
+                The value name cannot be changed. To use a different name, create
+                a new
+
+                value and delete the old one.'
+        get:
+            tags:
+            - values
+            summary: Get details of a value
+            operationId: get_tag_values_v0_tags__tag_name__values__value_name__get
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+            parameters:
+            -   name: tag_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Tag Name
+                    description: Tag name that owns the value
+                    example: kubernetes-expenses
+                description: Tag name that owns the value
+            -   name: value_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Value Name
+                    description: Value name to operate on
+                    example: test-labs
+                description: Value name to operate on
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/tags_api__api__schemas__public__tag_values__TagValuesOutputPublic'
+                    links:
+                        list:
+                            operationId: list_tag_values_v0_tags__tag_name__values_get
+                            description: List the values of a tag
+                            parameters:
+                                tag_name: $request.path.tag_name
+                        create:
+                            operationId: create_tag_values_v0_tags__tag_name__values_post
+                            description: Create a value for a tag
+                            parameters:
+                                tag_name: $request.path.tag_name
+                        update:
+                            operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
+                            description: Update the description of a value
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $response.body#/name
+                        update/description:
+                            operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
+                            description: Update the description of a value
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $response.body#/name
+                            x-mgc-hidden: true
+                        delete:
+                            operationId: delete_tag_values
+                            description: Delete a value from a tag
+                            parameters:
+                                tag_name: $request.path.tag_name
+                                value_name: $response.body#/name
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: Get the details of a single value of a tag.
+    /v0/resource-types:
+        get:
+            tags:
+            - resource-types
+            summary: List all resource types and their products
+            operationId: list_resource_types
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+            parameters:
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 100
+                    minimum: 1
+                    description: Maximum number of items to return per page
+                    default: 20
+                description: Maximum number of items to return per page
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    description: Number of items to skip before the first result
+                    default: 0
+                description: Number of items to skip before the first result
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    description: Sort criteria for the result
+                    default: ''
+                description: Sort criteria for the result
+            -   name: name
+                in: query
+                required: false
+                schema:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ResourceEnum'
+                    title: Name
+                    description: Resource type to filter by, prefixed by its product
+                    nullable: true
+                description: Resource type to filter by, prefixed by its product
+            -   name: product
+                in: query
+                required: false
+                schema:
+                    anyOf:
+                    -   $ref: '#/components/schemas/ProductEnum'
+                    title: Product
+                    description: Product that owns the resource type
+                    nullable: true
+                description: Product that owns the resource type
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ResourceTypesOutputListPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: 'List every resource type that can be tagged, along with
+                the product that
+
+                owns it.
+
+
+                Use one of these values in --resource-type-name when listing resources.'
+    /v0/resources/{external_id}:
+        get:
+            tags:
+            - resources
+            summary: Get the tags attached to a resource
+            operationId: get_resources_public
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+            parameters:
+            -   name: external_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: External Id
+                    description: External ID of the resource, as used by its own product
+                    example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                description: External ID of the resource, as used by its own product
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ResourcesOutputPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: Get a single resource with the tags and values currently
+                attached to it.
+    /v0/resources:
+        get:
+            tags:
+            - resources
+            summary: List tagged resources
+            operationId: list_resources_public
+            security:
+            -   OAuth2:
+                - tags:tags-tr
+            parameters:
+            -   name: external_id
+                in: query
+                required: false
+                schema:
+                    type: string
+                    title: External Id
+                    description: External ID of the resource to filter by
+                    example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                description: External ID of the resource to filter by
+            -   name: resource_type_name
+                in: query
+                required: false
+                schema:
+                    $ref: '#/components/schemas/ResourceEnum'
+                    description: Resource type to filter by, prefixed by its product
+                    example: un.unknown
+                description: Resource type to filter by, prefixed by its product
+            -   name: region
+                in: query
+                required: false
+                schema:
+                    $ref: '#/components/schemas/RegionEnum'
+                    description: Region to filter by
+                    example: br-se1
+                description: Region to filter by
+            -   name: _limit
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    maximum: 100
+                    minimum: 1
+                    description: Maximum number of items to return per page
+                    default: 20
+                description: Maximum number of items to return per page
+            -   name: _offset
+                in: query
+                required: false
+                schema:
+                    type: integer
+                    description: Number of items to skip before the first result
+                    default: 0
+                description: Number of items to skip before the first result
+            -   name: _sort
+                in: query
+                required: false
+                schema:
+                    type: string
+                    description: Sort criteria for the result
+                    default: ''
+                description: Sort criteria for the result
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ResourcesOutputListPublic'
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: "List the resources you have access to, with the tags attached\
+                \ to each one.\n\nUse --resource-type-name, --region or --external-id\
+                \ to filter the result.\n\nRelated commands:\n  mgc tag resource-types\
+                \ list  see the values accepted by --resource-type-name"
+    /v0/resources/{external_id}/tags:
+        post:
+            tags:
+            - resources
+            summary: Attach tags to a resource
+            operationId: create_resources_tags_public
+            x-mgc-name: attach
+            x-cli-name: attach
+            security:
+            -   OAuth2:
+                - tags:tags-tw
+            parameters:
+            -   name: external_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: External Id
+                    description: External ID of the resource, as used by its own product
+                    example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                description: External ID of the resource, as used by its own product
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ResourcesTagsInputPublic'
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ResourcesOutputPublic'
+                    links:
+                        detach:
+                            operationId: delete_resources_tags_public
+                            description: Detach a tag from a resource
+                            parameters:
+                                external_id: $request.path.external_id
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 10
+                                jsonPathQuery: $.result.tags == $.owner.parameters.tags
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: "Attach one or more tag/value pairs to a resource.\n\nBoth\
+                \ the tag and the value must already exist.\n\nRelated commands:\n\
+                \  mgc tag create                           create the tag first\n\
+                \  mgc tag values create --tag-name <name>  create the value first"
+    /v0/resources/{external_id}/tags/{tag_name}:
+        delete:
+            tags:
+            - resources
+            summary: Detach a tag from a resource
+            operationId: delete_resources_tags_public
+            x-mgc-name: detach
+            x-cli-name: detach
+            security:
+            -   OAuth2:
+                - tags:tags-tw
+            parameters:
+            -   name: tag_name
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: Tag Name
+                    description: Tag name to detach from the resource
+                description: Tag name to detach from the resource
+            -   name: external_id
+                in: path
+                required: true
+                schema:
+                    type: string
+                    title: External Id
+                    description: External ID of the resource, as used by its own product
+                    example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                description: External ID of the resource, as used by its own product
+            responses:
+                '200':
+                    description: Successful Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ResourcesOutputPublic'
+                    links:
+                        attach:
+                            operationId: create_resources_tags_public
+                            description: Attach tags to a resource
+                            parameters:
+                                external_id: $request.path.external_id
+                '422':
+                    description: Validation Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HTTPValidationError'
+            description: 'Detach a tag from a resource.
+
+
+                The tag itself is not deleted and stays attached to any other resource.'
+components:
+    schemas:
+        Body_create_tag_values_v0_tags__tag_name__values_post:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                    description: Name of the value, unique within the tag
+                description:
+                    anyOf:
+                    -   type: string
+                        maxLength: 500
+                    title: Description
+                    description: Description of the value
+                    nullable: true
+            title: Body_create_tag_values_v0_tags__tag_name__values_post
+            required:
+            - name
+        Body_create_tags_public:
+            type: object
+            properties:
+                values:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                    title: Name
+                                    maxLength: 255
+                                    minLength: 1
+                                    pattern: ^[\w\ \-\[\]\(\)\.\:]+$
+                                    description: tag value name, is allowed only one
+                                        name per tag_id
+                                    example: test-labs
+                                description:
+                                    anyOf:
+                                    -   type: string
+                                        maxLength: 500
+                                    title: Description
+                                    description: description for this tag value
+                                    nullable: true
+                                    example: tag value to monitor expenses with test-labs
+                            title: ComposedTagValuesInput
+                            required:
+                            - name
+                        maxItems: 100
+                    title: Values
+                    description: Values to create along with the tag
+                    nullable: true
+                name:
+                    type: string
+                    title: Name
+                    description: Name of the tag
+                    example: kubernetes-expenses
+                color:
+                    anyOf:
+                    -   type: string
+                        maxLength: 6
+                        minLength: 6
+                        pattern: ^[0-9a-fA-F]+$
+                    title: Color
+                    description: Color of the tag, as a 6-digit hex RGB code without
+                        the '#' prefix
+                    nullable: true
+                    example: ffffff
+                kinds:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
+                            title: TagKinds
+                            enum:
+                            - finops
+                    title: Kinds
+                    description: Kinds that describe what the tag is for, such as
+                        finops
+                    nullable: true
+                    example:
+                    - finops
+                description:
+                    anyOf:
+                    -   type: string
+                        maxLength: 500
+                    title: Description
+                    description: Description of the tag
+                    nullable: true
+                    example: tag to monitor expenses with environments
+            title: Body_create_tags_public
+            required:
+            - name
+        Body_update_tag_values_v0_tags__tag_name__values__value_name__patch:
+            type: object
+            properties:
+                description:
+                    anyOf:
+                    -   type: string
+                        maxLength: 500
+                    title: Description
+                    description: Description of the value
+                    nullable: true
+                    example: tag value to monitor expenses with test-labs
+            title: Body_update_tag_values_v0_tags__tag_name__values__value_name__patch
+            required:
+            - description
+        Body_update_tags_public:
+            type: object
+            properties:
+                color:
+                    anyOf:
+                    -   type: string
+                        maxLength: 6
+                        minLength: 6
+                        pattern: ^[0-9a-fA-F]+$
+                    title: Color
+                    description: Color of the tag, as a 6-digit hex RGB code without
+                        the '#' prefix
+                    nullable: true
+                    example: ffffff
+                kinds:
+                    anyOf:
+                    -   type: array
+                        items:
+                            type: string
+                            title: TagKinds
+                            enum:
+                            - finops
+                    title: Kinds
+                    description: Kinds that describe what the tag is for, such as
+                        finops
+                    nullable: true
+                    example:
+                    - finops
+                description:
+                    anyOf:
+                    -   type: string
+                        maxLength: 500
+                    title: Description
+                    description: Description of the tag
+                    nullable: true
+                    example: tag to monitor expenses with environments
+            title: Body_update_tags_public
+        ComposedTagValuesInput:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                    maxLength: 255
+                    minLength: 1
+                    pattern: ^[\w\ \-\[\]\(\)\.\:]+$
+                    description: tag value name, is allowed only one name per tag_id
+                    example: test-labs
+                description:
+                    anyOf:
+                    -   type: string
+                        maxLength: 500
+                    title: Description
+                    description: description for this tag value
+                    nullable: true
+                    example: tag value to monitor expenses with test-labs
+            title: ComposedTagValuesInput
+            required:
+            - name
+        HTTPValidationError:
+            type: object
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            title: HTTPValidationError
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        ProductEnum:
+            type: string
+            title: Product
+            enum:
+            - unknown
+            - object-storage
+            - network
+            - virtual-machine
+            - block-storage
+            - kubernetes
+            - container-registry
+            - database
+            - load-balancer
+        RegionEnum:
+            type: string
+            title: Region
+            enum:
+            - br-se1
+            - br-ne1
+            - global
+        ResourceEnum:
+            type: string
+            title: Resource type
+            enum:
+            - un.unknown
+            - os.bucket
+            - os.object
+            - net.nat-gateway
+            - net.port
+            - net.public-ip
+            - net.rule
+            - net.security-group
+            - net.subnet
+            - net.vpc
+            - vm.image
+            - vm.instance
+            - vm.snapshot
+            - bs.snapshot
+            - bs.volume
+            - k8s.cluster
+            - k8s.nodepool
+            - cr.registry
+            - cr.repository
+            - db.cluster
+            - db.instance
+            - db.parameter-group
+            - db.replica
+            - db.snapshot
+            - lb.network-acl
+            - lb.network-backend
+            - lb.network-certificate
+            - lb.network-healthcheck
+            - lb.network-listener
+            - lb.network-loadbalancer
+        ResourceType:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Resource type
+                    enum:
+                    - un.unknown
+                    - os.bucket
+                    - os.object
+                    - net.nat-gateway
+                    - net.port
+                    - net.public-ip
+                    - net.rule
+                    - net.security-group
+                    - net.subnet
+                    - net.vpc
+                    - vm.image
+                    - vm.instance
+                    - vm.snapshot
+                    - bs.snapshot
+                    - bs.volume
+                    - k8s.cluster
+                    - k8s.nodepool
+                    - cr.registry
+                    - cr.repository
+                    - db.cluster
+                    - db.instance
+                    - db.parameter-group
+                    - db.replica
+                    - db.snapshot
+                    - lb.network-acl
+                    - lb.network-backend
+                    - lb.network-certificate
+                    - lb.network-healthcheck
+                    - lb.network-listener
+                    - lb.network-loadbalancer
+                product:
+                    type: string
+                    title: Product
+                    enum:
+                    - unknown
+                    - object-storage
+                    - network
+                    - virtual-machine
+                    - block-storage
+                    - kubernetes
+                    - container-registry
+                    - database
+                    - load-balancer
+            title: ResourceType
+            required:
+            - name
+            - product
+        ResourceTypesOutputListPublic:
+            type: object
+            properties:
+                results:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                title: Resource type
+                                enum:
+                                - un.unknown
+                                - os.bucket
+                                - os.object
+                                - net.nat-gateway
+                                - net.port
+                                - net.public-ip
+                                - net.rule
+                                - net.security-group
+                                - net.subnet
+                                - net.vpc
+                                - vm.image
+                                - vm.instance
+                                - vm.snapshot
+                                - bs.snapshot
+                                - bs.volume
+                                - k8s.cluster
+                                - k8s.nodepool
+                                - cr.registry
+                                - cr.repository
+                                - db.cluster
+                                - db.instance
+                                - db.parameter-group
+                                - db.replica
+                                - db.snapshot
+                                - lb.network-acl
+                                - lb.network-backend
+                                - lb.network-certificate
+                                - lb.network-healthcheck
+                                - lb.network-listener
+                                - lb.network-loadbalancer
+                            product:
+                                type: string
+                                title: Product
+                                enum:
+                                - unknown
+                                - object-storage
+                                - network
+                                - virtual-machine
+                                - block-storage
+                                - kubernetes
+                                - container-registry
+                                - database
+                                - load-balancer
+                            created_at:
+                                type: string
+                                title: Created At
+                                format: date-time
+                                description: element creation date
+                                example: '2025-06-20T18:36:18.919454'
+                            updated_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated At
+                                description: element last update date, None if never
+                                    updated
+                                nullable: true
+                                example: '2025-06-21T18:36:18.919454'
+                        title: ResourceTypesOutputPublic
+                        required:
+                        - name
+                        - product
+                        - created_at
+                    title: Results
+            title: ResourceTypesOutputListPublic
+            required:
+            - results
+        ResourceTypesOutputPublic:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Resource type
+                    enum:
+                    - un.unknown
+                    - os.bucket
+                    - os.object
+                    - net.nat-gateway
+                    - net.port
+                    - net.public-ip
+                    - net.rule
+                    - net.security-group
+                    - net.subnet
+                    - net.vpc
+                    - vm.image
+                    - vm.instance
+                    - vm.snapshot
+                    - bs.snapshot
+                    - bs.volume
+                    - k8s.cluster
+                    - k8s.nodepool
+                    - cr.registry
+                    - cr.repository
+                    - db.cluster
+                    - db.instance
+                    - db.parameter-group
+                    - db.replica
+                    - db.snapshot
+                    - lb.network-acl
+                    - lb.network-backend
+                    - lb.network-certificate
+                    - lb.network-healthcheck
+                    - lb.network-listener
+                    - lb.network-loadbalancer
+                product:
+                    type: string
+                    title: Product
+                    enum:
+                    - unknown
+                    - object-storage
+                    - network
+                    - virtual-machine
+                    - block-storage
+                    - kubernetes
+                    - container-registry
+                    - database
+                    - load-balancer
+                created_at:
+                    type: string
+                    title: Created At
+                    format: date-time
+                    description: element creation date
+                    example: '2025-06-20T18:36:18.919454'
+                updated_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
+                    title: Updated At
+                    description: element last update date, None if never updated
+                    nullable: true
+                    example: '2025-06-21T18:36:18.919454'
+            title: ResourceTypesOutputPublic
+            required:
+            - name
+            - product
+            - created_at
+        ResourcesOutputListPublic:
+            type: object
+            properties:
+                results:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: string
+                                title: Id
+                                format: uuid
+                                description: id of the enrolled resource (vm, database,
+                                    etc.)
+                                example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                            external_id:
+                                type: string
+                                title: External Id
+                                description: id of the resource in the source api
+                                example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                            resource_type:
+                                type: object
+                                properties:
+                                    name:
+                                        type: string
+                                        title: Resource type
+                                        enum:
+                                        - un.unknown
+                                        - os.bucket
+                                        - os.object
+                                        - net.nat-gateway
+                                        - net.port
+                                        - net.public-ip
+                                        - net.rule
+                                        - net.security-group
+                                        - net.subnet
+                                        - net.vpc
+                                        - vm.image
+                                        - vm.instance
+                                        - vm.snapshot
+                                        - bs.snapshot
+                                        - bs.volume
+                                        - k8s.cluster
+                                        - k8s.nodepool
+                                        - cr.registry
+                                        - cr.repository
+                                        - db.cluster
+                                        - db.instance
+                                        - db.parameter-group
+                                        - db.replica
+                                        - db.snapshot
+                                        - lb.network-acl
+                                        - lb.network-backend
+                                        - lb.network-certificate
+                                        - lb.network-healthcheck
+                                        - lb.network-listener
+                                        - lb.network-loadbalancer
+                                    product:
+                                        type: string
+                                        title: Product
+                                        enum:
+                                        - unknown
+                                        - object-storage
+                                        - network
+                                        - virtual-machine
+                                        - block-storage
+                                        - kubernetes
+                                        - container-registry
+                                        - database
+                                        - load-balancer
+                                title: ResourceType
+                                required:
+                                - name
+                                - product
+                            region:
+                                type: string
+                                title: Region
+                                enum:
+                                - br-se1
+                                - br-ne1
+                                - global
+                            created_at:
+                                type: string
+                                title: Created At
+                                format: date-time
+                                description: element creation date
+                                example: '2025-06-20T18:36:18.919454'
+                            updated_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated At
+                                description: element last update date, None if never
+                                    updated
+                                nullable: true
+                                example: '2025-06-21T18:36:18.919454'
+                            last_tag_associated_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Last Tag Associated At
+                                description: last time a tag was attached/detached
+                                    from this resource
+                                nullable: true
+                                example: '2025-06-23T18:36:18.919454'
+                            tags:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        name:
+                                            type: string
+                                            title: Name
+                                            description: name for tag
+                                            example: kubernetes-expenses
+                                        value:
+                                            type: string
+                                            title: Value
+                                            description: tag value name, is allowed
+                                                only one name per tag_id
+                                            example: test-labs
+                                    title: ResourcesTagValuesOutputPublic
+                                    required:
+                                    - name
+                                    - value
+                                title: Tags
+                                description: list of tag name, tag color, tag value
+                                    associated to a resource
+                                readOnly: true
+                                example:
+                                - kubernetes-expenses
+                                - ffffff
+                                - test-labs
+                        title: ResourcesOutputPublic
+                        required:
+                        - id
+                        - external_id
+                        - resource_type
+                        - region
+                        - created_at
+                        - tags
+                    title: Results
+            title: ResourcesOutputListPublic
+            required:
+            - results
+        ResourcesOutputPublic:
+            type: object
+            properties:
+                id:
+                    type: string
+                    title: Id
+                    format: uuid
+                    description: id of the enrolled resource (vm, database, etc.)
+                    example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                external_id:
+                    type: string
+                    title: External Id
+                    description: id of the resource in the source api
+                    example: 31201f93-f5f4-4cf1-ba9c-bfed0717f4ac
+                resource_type:
+                    type: object
+                    properties:
+                        name:
+                            type: string
+                            title: Resource type
+                            enum:
+                            - un.unknown
+                            - os.bucket
+                            - os.object
+                            - net.nat-gateway
+                            - net.port
+                            - net.public-ip
+                            - net.rule
+                            - net.security-group
+                            - net.subnet
+                            - net.vpc
+                            - vm.image
+                            - vm.instance
+                            - vm.snapshot
+                            - bs.snapshot
+                            - bs.volume
+                            - k8s.cluster
+                            - k8s.nodepool
+                            - cr.registry
+                            - cr.repository
+                            - db.cluster
+                            - db.instance
+                            - db.parameter-group
+                            - db.replica
+                            - db.snapshot
+                            - lb.network-acl
+                            - lb.network-backend
+                            - lb.network-certificate
+                            - lb.network-healthcheck
+                            - lb.network-listener
+                            - lb.network-loadbalancer
+                        product:
+                            type: string
+                            title: Product
+                            enum:
+                            - unknown
+                            - object-storage
+                            - network
+                            - virtual-machine
+                            - block-storage
+                            - kubernetes
+                            - container-registry
+                            - database
+                            - load-balancer
+                    title: ResourceType
+                    required:
+                    - name
+                    - product
+                region:
+                    type: string
+                    title: Region
+                    enum:
+                    - br-se1
+                    - br-ne1
+                    - global
+                created_at:
+                    type: string
+                    title: Created At
+                    format: date-time
+                    description: element creation date
+                    example: '2025-06-20T18:36:18.919454'
+                updated_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
+                    title: Updated At
+                    description: element last update date, None if never updated
+                    nullable: true
+                    example: '2025-06-21T18:36:18.919454'
+                last_tag_associated_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
+                    title: Last Tag Associated At
+                    description: last time a tag was attached/detached from this resource
+                    nullable: true
+                    example: '2025-06-23T18:36:18.919454'
+                tags:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                title: Name
+                                description: name for tag
+                                example: kubernetes-expenses
+                            value:
+                                type: string
+                                title: Value
+                                description: tag value name, is allowed only one name
+                                    per tag_id
+                                example: test-labs
+                        title: ResourcesTagValuesOutputPublic
+                        required:
+                        - name
+                        - value
+                    title: Tags
+                    description: list of tag name, tag color, tag value associated
+                        to a resource
+                    readOnly: true
+                    example:
+                    - kubernetes-expenses
+                    - ffffff
+                    - test-labs
+            title: ResourcesOutputPublic
+            required:
+            - id
+            - external_id
+            - resource_type
+            - region
+            - created_at
+            - tags
+        ResourcesTagAndValueInputPublic:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                    description: Name of the tag
+                    example: kubernetes-expenses
+                value:
+                    type: string
+                    title: Value
+                    description: Value of the tag to attach
+                    example: test-labs
+            title: ResourcesTagAndValueInputPublic
+            required:
+            - name
+            - value
+        ResourcesTagValuesOutputPublic:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                    description: name for tag
+                    example: kubernetes-expenses
+                value:
+                    type: string
+                    title: Value
+                    description: tag value name, is allowed only one name per tag_id
+                    example: test-labs
+            title: ResourcesTagValuesOutputPublic
+            required:
+            - name
+            - value
+        ResourcesTagsInputPublic:
+            type: object
+            properties:
+                tags:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                title: Name
+                                description: Name of the tag
+                                example: kubernetes-expenses
+                            value:
+                                type: string
+                                title: Value
+                                description: Value of the tag to attach
+                                example: test-labs
+                        title: ResourcesTagAndValueInputPublic
+                        required:
+                        - name
+                        - value
+                    title: Tags
+                    minItems: 1
+                    description: Tags and values to attach to the resource
+                    example:
+                    -   name: kubernetes-expenses
+                        value: test-labs
+            title: ResourcesTagsInputPublic
+            required:
+            - tags
+        TagKinds:
+            type: string
+            title: TagKinds
+            enum:
+            - finops
+        TagOutputPublic:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                description:
+                    anyOf:
+                    -   type: string
+                    title: Description
+                    nullable: true
+            title: TagOutputPublic
+            required:
+            - name
+            - description
+        TagValuesOutputListPublic:
+            type: object
+            properties:
+                results:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                title: Name
+                                description: tag value name, is allowed only one name
+                                    per tag_id
+                                example: test-labs
+                            description:
+                                anyOf:
+                                -   type: string
+                                title: Description
+                                description: description for this tag value
+                                nullable: true
+                                example: tag value to monitor expenses with test-labs
+                            created_at:
+                                type: string
+                                title: Created At
+                                format: date-time
+                                description: element creation date
+                                example: '2025-06-20T18:36:18.919454'
+                            updated_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated At
+                                description: element last update date, None if never
+                                    updated
+                                nullable: true
+                                example: '2025-06-21T18:36:18.919454'
+                            tag:
+                                type: object
+                                properties:
+                                    name:
+                                        type: string
+                                        title: Name
+                                    description:
+                                        anyOf:
+                                        -   type: string
+                                        title: Description
+                                        nullable: true
+                                title: TagOutputPublic
+                                required:
+                                - name
+                                - description
+                        title: TagValuesOutputPublic
+                        required:
+                        - name
+                        - description
+                        - created_at
+                        - tag
+                    title: Results
+            title: TagValuesOutputListPublic
+            required:
+            - results
+        TagsOutputListPublic:
+            type: object
+            properties:
+                results:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                title: Name
+                                description: name for tag
+                                example: kubernetes-expenses
+                            color:
+                                anyOf:
+                                -   type: string
+                                title: Color
+                                description: 6-character lowercase hexadecimal string
+                                    representing RGB, without '#' prefix.
+                                nullable: true
+                                example: ffffff
+                            kinds:
+                                type: array
+                                items:
+                                    type: string
+                                title: Kinds
+                                description: a tag kind describe the purpose for this
+                                    tag in mgc, the most common case is kind finops.
+                                example:
+                                - finops
+                            description:
+                                anyOf:
+                                -   type: string
+                                title: Description
+                                description: description for this tag
+                                nullable: true
+                                example: tag to monitor expenses with environments
+                            created_at:
+                                type: string
+                                title: Created At
+                                format: date-time
+                                description: element creation date
+                                example: '2025-06-20T18:36:18.919454'
+                            updated_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated At
+                                description: element last update date, None if never
+                                    updated
+                                nullable: true
+                                example: '2025-06-21T18:36:18.919454'
+                            values:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        name:
+                                            type: string
+                                            title: Name
+                                        description:
+                                            anyOf:
+                                            -   type: string
+                                            title: Description
+                                            nullable: true
+                                        created_at:
+                                            type: string
+                                            title: Created At
+                                            format: date-time
+                                        updated_at:
+                                            anyOf:
+                                            -   type: string
+                                                format: date-time
+                                            title: Updated At
+                                            nullable: true
+                                    title: TagValuesOutputPublic
+                                    required:
+                                    - name
+                                    - description
+                                    - created_at
+                                    - updated_at
+                                title: Values
+                                description: values are a tag specification
+                        title: TagsOutputPublic
+                        required:
+                        - name
+                        - kinds
+                        - description
+                        - created_at
+                        - values
+                    title: Results
+            title: TagsOutputListPublic
+            required:
+            - results
+        TagsOutputPublic:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                    description: name for tag
+                    example: kubernetes-expenses
+                color:
+                    anyOf:
+                    -   type: string
+                    title: Color
+                    description: 6-character lowercase hexadecimal string representing
+                        RGB, without '#' prefix.
+                    nullable: true
+                    example: ffffff
+                kinds:
+                    type: array
+                    items:
+                        type: string
+                    title: Kinds
+                    description: a tag kind describe the purpose for this tag in mgc,
+                        the most common case is kind finops.
+                    example:
+                    - finops
+                description:
+                    anyOf:
+                    -   type: string
+                    title: Description
+                    description: description for this tag
+                    nullable: true
+                    example: tag to monitor expenses with environments
+                created_at:
+                    type: string
+                    title: Created At
+                    format: date-time
+                    description: element creation date
+                    example: '2025-06-20T18:36:18.919454'
+                updated_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
+                    title: Updated At
+                    description: element last update date, None if never updated
+                    nullable: true
+                    example: '2025-06-21T18:36:18.919454'
+                values:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                title: Name
+                            description:
+                                anyOf:
+                                -   type: string
+                                title: Description
+                                nullable: true
+                            created_at:
+                                type: string
+                                title: Created At
+                                format: date-time
+                            updated_at:
+                                anyOf:
+                                -   type: string
+                                    format: date-time
+                                title: Updated At
+                                nullable: true
+                        title: TagValuesOutputPublic
+                        required:
+                        - name
+                        - description
+                        - created_at
+                        - updated_at
+                    title: Values
+                    description: values are a tag specification
+            title: TagsOutputPublic
+            required:
+            - name
+            - kinds
+            - description
+            - created_at
+            - values
+        ValidationError:
+            type: object
+            properties:
+                message:
+                    title: Message
+                    type: string
+                slug:
+                    title: Slug
+                    type: string
+            title: ValidationError
+            required:
+            - loc
+            - msg
+            - type
+            example:
+                message: Unauthorized
+                slug: Unauthorized
+        tags_api__api__schemas__public__tag_values__TagValuesOutputPublic:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                    description: tag value name, is allowed only one name per tag_id
+                    example: test-labs
+                description:
+                    anyOf:
+                    -   type: string
+                    title: Description
+                    description: description for this tag value
+                    nullable: true
+                    example: tag value to monitor expenses with test-labs
+                created_at:
+                    type: string
+                    title: Created At
+                    format: date-time
+                    description: element creation date
+                    example: '2025-06-20T18:36:18.919454'
+                updated_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
+                    title: Updated At
+                    description: element last update date, None if never updated
+                    nullable: true
+                    example: '2025-06-21T18:36:18.919454'
+                tag:
+                    type: object
+                    properties:
+                        name:
+                            type: string
+                            title: Name
+                        description:
+                            anyOf:
+                            -   type: string
+                            title: Description
+                            nullable: true
+                    title: TagOutputPublic
+                    required:
+                    - name
+                    - description
+            title: TagValuesOutputPublic
+            required:
+            - name
+            - description
+            - created_at
+            - tag
+        tags_api__api__schemas__public__tags__TagValuesOutputPublic:
+            type: object
+            properties:
+                name:
+                    type: string
+                    title: Name
+                description:
+                    anyOf:
+                    -   type: string
+                    title: Description
+                    nullable: true
+                created_at:
+                    type: string
+                    title: Created At
+                    format: date-time
+                updated_at:
+                    anyOf:
+                    -   type: string
+                        format: date-time
+                    title: Updated At
+                    nullable: true
+            title: TagValuesOutputPublic
+            required:
+            - name
+            - description
+            - created_at
+            - updated_at
+tags:
+-   name: resource-types
+    description: List the resource types that support tags
+-   name: resources
+    description: Manage the tags attached to a resource
+-   name: values
+    description: Manage the values of a tag
+$id: https://tag.jaxyendy.com/openapi.json
+servers:
+-   url: https://{env}/tags
+    variables:
+        env:
+            description: Environment to use
+            default: api.magalu.cloud
+            enum:
+            - api.magalu.cloud
+            - api.pre-prod.jaxyendy.com
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: api.magalu.cloud
+                -   from: pre-prod
+                    to: api.pre-prod.jaxyendy.com
