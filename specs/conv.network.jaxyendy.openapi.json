@@ -6508,7 +6508,7 @@
                                                                 "type": "string"
                                                             }
                                                         ],
-                                                        "title": "Public Ip Id"
+                                                        "title": "Public IP Id"
                                                     },
                                                     "public_ip": {
                                                         "anyOf": [
@@ -6516,7 +6516,7 @@
                                                                 "type": "string"
                                                             }
                                                         ],
-                                                        "title": "Public Ip"
+                                                        "title": "Public IP"
                                                     }
                                                 },
                                                 "title": "PublicIpResponsePort",
@@ -6527,7 +6527,7 @@
                                             }
                                         }
                                     ],
-                                    "title": "Public Ip",
+                                    "title": "Public IP",
                                     "default": []
                                 },
                                 "ip_address": {
@@ -6841,7 +6841,7 @@
                                 "type": "string"
                             }
                         ],
-                        "title": "Public Ip"
+                        "title": "Public IP"
                     },
                     "port_id": {
                         "anyOf": [
@@ -6964,7 +6964,7 @@
                                             "type": "string"
                                         }
                                     ],
-                                    "title": "Public Ip"
+                                    "title": "Public IP"
                                 },
                                 "port_id": {
                                     "anyOf": [
@@ -9951,7 +9951,7 @@
                                                     "type": "string"
                                                 }
                                             ],
-                                            "title": "Public Ip Id"
+                                            "title": "Public IP Id"
                                         },
                                         "public_ip": {
                                             "anyOf": [
@@ -9959,7 +9959,7 @@
                                                     "type": "string"
                                                 }
                                             ],
-                                            "title": "Public Ip"
+                                            "title": "Public IP"
                                         }
                                     },
                                     "title": "PublicIpResponsePort",
@@ -9970,7 +9970,7 @@
                                 }
                             }
                         ],
-                        "title": "Public Ip",
+                        "title": "Public IP",
                         "default": []
                     },
                     "ip_address": {
@@ -10110,7 +10110,7 @@
                                 "type": "string"
                             }
                         ],
-                        "title": "Public Ip Id"
+                        "title": "Public IP Id"
                     },
                     "public_ip": {
                         "anyOf": [
@@ -10118,7 +10118,7 @@
                                 "type": "string"
                             }
                         ],
-                        "title": "Public Ip"
+                        "title": "Public IP"
                     }
                 },
                 "title": "PublicIpResponsePort",

@@ -5962,7 +5962,7 @@
                             },
                             {}
                         ],
-                        "title": "Public Ip"
+                        "title": "Public IP"
                     },
                     "port_id": {
                         "anyOf": [
@@ -8151,7 +8151,7 @@
                             },
                             {}
                         ],
-                        "title": "Public Ip",
+                        "title": "Public IP",
                         "default": []
                     },
                     "ip_address": {
@@ -8269,7 +8269,7 @@
                             },
                             {}
                         ],
-                        "title": "Public Ip Id"
+                        "title": "Public IP Id"
                     },
                     "public_ip": {
                         "anyOf": [
@@ -8278,7 +8278,7 @@
                             },
                             {}
                         ],
-                        "title": "Public Ip"
+                        "title": "Public IP"
                     }
                 },
                 "type": "object",

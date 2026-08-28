@@ -4384,16 +4384,16 @@ components:
                                             public_ip_id:
                                                 anyOf:
                                                 -   type: string
-                                                title: Public Ip Id
+                                                title: Public IP Id
                                             public_ip:
                                                 anyOf:
                                                 -   type: string
-                                                title: Public Ip
+                                                title: Public IP
                                         title: PublicIpResponsePort
                                         example:
                                             public_ip: 100.94.5.31
                                             public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                                title: Public Ip
+                                title: Public IP
                                 default: []
                             ip_address:
                                 type: array
@@ -4583,7 +4583,7 @@ components:
                 public_ip:
                     anyOf:
                     -   type: string
-                    title: Public Ip
+                    title: Public IP
                 port_id:
                     anyOf:
                     -   type: string
@@ -4655,7 +4655,7 @@ components:
                             public_ip:
                                 anyOf:
                                 -   type: string
-                                title: Public Ip
+                                title: Public IP
                             port_id:
                                 anyOf:
                                 -   type: string
@@ -6636,16 +6636,16 @@ components:
                                 public_ip_id:
                                     anyOf:
                                     -   type: string
-                                    title: Public Ip Id
+                                    title: Public IP Id
                                 public_ip:
                                     anyOf:
                                     -   type: string
-                                    title: Public Ip
+                                    title: Public IP
                             title: PublicIpResponsePort
                             example:
                                 public_ip: 100.94.5.31
                                 public_ip_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                    title: Public Ip
+                    title: Public IP
                     default: []
                 ip_address:
                     type: array
@@ -6734,11 +6734,11 @@ components:
                 public_ip_id:
                     anyOf:
                     -   type: string
-                    title: Public Ip Id
+                    title: Public IP Id
                 public_ip:
                     anyOf:
                     -   type: string
-                    title: Public Ip
+                    title: Public IP
             title: PublicIpResponsePort
             example:
                 public_ip: 100.94.5.31

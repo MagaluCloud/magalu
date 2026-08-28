@@ -3271,7 +3271,7 @@ components:
                     default: ''
                 public_ip_id:
                     type: string
-                    title: Public Ip Id
+                    title: Public IP Id
                     description: The public IP ID associated with the load balancer,
                         a new one will be created if not provided
                     default: ''
@@ -3993,7 +3993,7 @@ components:
                     default: ''
                 public_ip_id:
                     type: string
-                    title: Public Ip Id
+                    title: Public IP Id
                     description: The public IP ID associated with the load balancer,
                         a new one will be created if not provided
                     default: ''

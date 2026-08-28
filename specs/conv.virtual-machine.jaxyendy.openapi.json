@@ -1182,7 +1182,7 @@
             "required": false,
             "schema": {
               "type": "boolean",
-              "title": "Delete Public Ip",
+              "title": "Delete Public IP",
               "description": "Flag default value false.",
               "default": false
             }
@@ -3465,7 +3465,7 @@
           },
           "associate_public_ip": {
             "type": "boolean",
-            "title": "Associate Public Ip",
+            "title": "Associate Public IP",
             "default": true
           }
         },
