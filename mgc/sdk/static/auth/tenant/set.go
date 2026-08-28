@@ -77,6 +77,6 @@ func unsetProjectsForTenantChange(ctx context.Context) (had bool, err error) {
 		return false, fmt.Errorf("programming error: unable to retrieve config from context")
 	}
 
-	had = config.Project() != "" || config.IamProject() != ""
-	return had, config.UnsetProjects()
+	had = config.Project() != ""
+	return had, config.UnsetProject()
 }

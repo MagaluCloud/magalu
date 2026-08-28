@@ -51,13 +51,8 @@ func resolveProjectScopeWithTenant(cfg *config.Config, scope core.ProjectScope, 
 		return tenantID
 	}
 
-	key := config.ProjectKey
-	if scope == core.ProjectScopeIAM {
-		key = config.IamProjectKey
-	}
-
 	var id string
-	if err := cfg.Get(key, &id); err != nil {
+	if err := cfg.Get(config.ProjectKey, &id); err != nil {
 		return ""
 	}
 	return id
@@ -106,7 +101,7 @@ const scopeRequiredMessage = `this IAM write applies to the ENTIRE tenant unless
   --scope default        the tenant's default project
   --scope tenant         the entire tenant, explicitly
   --project-id <id>      a specific project
-Or set a default once with 'mgc iam project set <id-or-name>'.`
+Or select a project once with 'mgc project set <id-or-name>'.`
 
 // checkScopeRequired devolve a mensagem a exibir, ou "" quando está tudo certo.
 //
@@ -122,7 +117,7 @@ func checkScopeRequired(cfg *config.Config, required bool, scope core.ProjectSco
 	}
 	if cfg != nil {
 		var id string
-		if err := cfg.Get(config.IamProjectKey, &id); err == nil && id != "" {
+		if err := cfg.Get(config.ProjectKey, &id); err == nil && id != "" {
 			return "" // há escopo configurado
 		}
 	}

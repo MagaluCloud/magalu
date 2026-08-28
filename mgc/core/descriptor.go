@@ -5,8 +5,8 @@ import (
 	"fmt"
 )
 
-// ProjectScope diz de qual chave de configuração um comando tira o escopo de
-// projeto. Vazio (o default) significa que o produto não é escopável — não
+// ProjectScope diz se um comando participa do escopo de projeto, e com que
+// semântica. Vazio (o default) significa que o produto não é escopável — não
 // recebe 'x-project-id' nem ganha as flags de escopo.
 //
 // São dois valores porque o IAM codifica o escopo de outro jeito: para ele,
@@ -15,10 +15,10 @@ import (
 type ProjectScope string
 
 const (
-	// ProjectScopeProduct lê a chave `project`. Omitir = projeto default.
+	// ProjectScopeProduct: omitir o escopo significa "o projeto default".
 	ProjectScopeProduct ProjectScope = "project"
-	// ProjectScopeIAM lê a chave `iamProject`. Omitir = tenant inteiro, e é por
-	// isso que escrita de IAM exige escopo explícito.
+	// ProjectScopeIAM: omitir significa "o tenant inteiro", e é por isso que
+	// escrita de IAM exige escopo explícito.
 	ProjectScopeIAM ProjectScope = "iam"
 )
 

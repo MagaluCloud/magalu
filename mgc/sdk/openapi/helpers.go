@@ -63,8 +63,10 @@ func getHiddenExtension(prefix *string, extensions map[string]any) bool {
 // escopável participa, então marcar um a um seria repetição que envelhece mal —
 // endpoint novo nasceria de fora sem ninguém notar.
 //
-// Valores: "project" (lê a chave `project`) e "iam" (lê `iamProject`). Qualquer
-// outro é ignorado, e ausente significa produto não escopável.
+// Valores: "project" e "iam". Os dois leem a MESMA chave de configuração; o que
+// muda é o significado de omitir — projeto default para produtos, tenant inteiro
+// para o IAM. Qualquer outro valor é ignorado, e ausente significa produto não
+// escopável.
 func getProjectScopeExtension(prefix *string, servers openapi3.Servers) core.ProjectScope {
 	if len(servers) == 0 {
 		return ""

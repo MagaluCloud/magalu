@@ -58,8 +58,8 @@ func TestProjectFlagOverridesConfig(t *testing.T) {
 }
 
 // `--project-id` vale para QUALQUER produto escopável, IAM incluído — é a flag
-// única. Gravar só em `project` a deixaria inerte nos comandos de IAM.
-func TestProjectFlagReachesBothScopes(t *testing.T) {
+// única, gravando na chave única.
+func TestProjectFlagReachesScope(t *testing.T) {
 	cmd := newFlagTestCmd(t)
 	cfg := newTestConfig(t)
 	if err := cmd.Flags().Set(projectFlag, "da-flag"); err != nil {
@@ -70,9 +70,6 @@ func TestProjectFlagReachesBothScopes(t *testing.T) {
 
 	if got, want := cfg.Project(), "da-flag"; got != want {
 		t.Errorf("Project() = %q, quer %q", got, want)
-	}
-	if got, want := cfg.IamProject(), "da-flag"; got != want {
-		t.Errorf("IamProject() = %q, quer %q", got, want)
 	}
 }
 

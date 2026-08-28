@@ -22,3 +22,66 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com:8443
+
+# --- parent_type obrigatorio ---
+#
+# A API aceita `parent_type` opcional, com default `organization`. Exigi-lo e
+# POLITICA DA CLI, nao contrato da API — por isso mora aqui e nao na spec.
+#
+# O motivo: sem digitar, a pessoa nao sabe se o comando esta agindo na
+# organizacao inteira ou num projeto. Exigir o valor torna o alcance explicito
+# no comando, visivel no historico e no code review. E o padrao do PROJECT_ID
+# posicional do gcloud e do --scope obrigatorio do `az role assignment create`.
+#
+# O parent_id vira derivado (ver applyIamParentScope): com `organization` ele e
+# removido, e com `project` ele e preenchido a partir do escopo resolvido, ou do
+# id do tenant, que e como o IAM codifica o projeto default.
+#
+# Listas fundem por INDICE: cada bloco repete os parametros anteriores, na ordem,
+# so para ancorar a posicao.
+
+paths:
+    /api/v1/roles:
+        get:
+            parameters:
+            -   name: role_name
+                in: query
+            -   name: parent_type
+                in: query
+                required: true
+    /api/v1/roles/{role_name}:
+        delete:
+            parameters:
+            -   name: role_name
+                in: path
+            -   name: parent_type
+                in: query
+                required: true
+    /api/v1/roles/{role_name}/members:
+        get:
+            parameters:
+            -   name: role_name
+                in: path
+            -   name: parent_type
+                in: query
+                required: true
+    /api/v1/roles/{role_name}/permissions:
+        get:
+            parameters:
+            -   name: role_name
+                in: path
+            -   name: parent_type
+                in: query
+                required: true
+
+components:
+    schemas:
+        CreateRole:
+            required:
+            - name
+            - parent_type
+        BatchUpdateMembers:
+            required:
+            - member_ids
+            - operation
+            - parent_type

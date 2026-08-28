@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Iam
 
-Manage identities, permissions and the project scope that IAM commands apply to
+The Magalu Cloud IAM.
 
 ## Usage:
 ```
@@ -19,7 +19,6 @@ groups           Groups management.
 invitations      Invitations to join the organization.
 members          Members of Organization.
 permissions      Permission action of resource.
-project          Choose which project IAM commands apply to
 roles            Roles of organization.
 scopes           Scopes API Products of organization.
 service-accounts Service Accounts of organization.

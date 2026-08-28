@@ -188,6 +188,7 @@ func handleExecutor(
 	// serve e o que a configuração diz — e viaja no contexto até o transport.
 	// O transport não deduz nada da URL.
 	ctx = withProjectScope(ctx, sdk, cmd, exec)
+	applyIamParentScope(ctx, sdk, exec, parameters)
 
 	result, err := handleExecutorPre(ctx, sdk, cmd, exec, parameters, configs)
 	err = handleExecutorResult(ctx, sdk, cmd, result, err)

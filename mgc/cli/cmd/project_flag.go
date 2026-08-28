@@ -48,16 +48,12 @@ func getProjectFlag(cmd *cobra.Command, name string) string {
 // applyProjectFlags dá à flag precedência sobre env e arquivo, gravando no temp
 // config — que Config.Get consulta antes do viper. Mesmo mecanismo do --api-key.
 //
-// Escreve nas DUAS chaves de propósito: `--project-id` significa "nesta
-// invocação, use este projeto", e quem decide de qual chave ler é o produto.
-// Gravar só em `project` deixaria a flag inerte nos comandos de IAM, que leem
-// `iamProject` — foi assim que ela nasceu, e o header simplesmente não ia.
+// Há uma chave só: `--project-id` significa "nesta invocação, use este
+// projeto", e vale para todo produto escopável, IAM incluído.
 func applyProjectFlags(cmd *cobra.Command, cfg *config.Config) {
 	value := getProjectFlag(cmd, projectFlag)
 	if value == "" {
 		return
 	}
-	for _, key := range []string{config.ProjectKey, config.IamProjectKey} {
-		_ = cfg.SetTempConfig(key, value)
-	}
+	_ = cfg.SetTempConfig(config.ProjectKey, value)
 }

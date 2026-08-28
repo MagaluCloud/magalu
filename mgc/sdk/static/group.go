@@ -22,7 +22,6 @@ var GetGroup = utils.NewLazyLoader(func() core.Grouper {
 				workspace.GetGroup(),
 				profile.GetGroup(),
 				project.GetGroup(),
-				project.GetIamGroup(),
 			}
 		},
 	)

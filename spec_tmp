@@ -5,11 +5,6 @@
     "description": "The Magalu Cloud IAM.",
     "version": "0.1.0"
   },
-  "servers": [
-    {
-      "url": "/iam"
-    }
-  ],
   "paths": {
     "/api/v1/healthcheck": {
       "get": {
@@ -23,7 +18,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+
+                }
               }
             }
           },
@@ -567,11 +564,18 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "organization",
-                "project"
+              "anyOf": [
+                {
+                  "enum": [
+                    "organization",
+                    "project"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
               ],
-              "type": "string",
               "title": "Parent Type"
             }
           },
@@ -589,6 +593,22 @@
                 }
               ],
               "title": "Parent Id"
+            }
+          },
+          {
+            "name": "parent_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Parent Name"
             }
           }
         ],
@@ -727,11 +747,18 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "organization",
-                "project"
+              "anyOf": [
+                {
+                  "enum": [
+                    "organization",
+                    "project"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
               ],
-              "type": "string",
               "title": "Parent Type"
             }
           },
@@ -749,6 +776,25 @@
                 }
               ],
               "title": "Parent Id"
+            }
+          },
+          {
+            "name": "parent_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255,
+                  "pattern": "^[\\w\\-\\s]+$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Parent Name"
             }
           }
         ],
@@ -812,11 +858,18 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "organization",
-                "project"
+              "anyOf": [
+                {
+                  "enum": [
+                    "organization",
+                    "project"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
               ],
-              "type": "string",
               "title": "Parent Type"
             }
           },
@@ -835,6 +888,25 @@
               ],
               "title": "Parent Id"
             }
+          },
+          {
+            "name": "parent_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255,
+                  "pattern": "^[\\w\\-\\s]+$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Parent Name"
+            }
           }
         ],
         "responses": {
@@ -849,7 +921,9 @@
                     },
                     {
                       "type": "array",
-                      "items": {}
+                      "items": {
+
+                      }
                     }
                   ],
                   "title": "Response Get Role Permissions Api V1 Roles  Role Name  Permissions Get"
@@ -988,11 +1062,18 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "organization",
-                "project"
+              "anyOf": [
+                {
+                  "enum": [
+                    "organization",
+                    "project"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
               ],
-              "type": "string",
               "title": "Parent Type"
             }
           },
@@ -1010,6 +1091,25 @@
                 }
               ],
               "title": "Parent Id"
+            }
+          },
+          {
+            "name": "parent_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255,
+                  "pattern": "^[\\w\\-\\s]+$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Parent Name"
             }
           }
         ],
@@ -1224,7 +1324,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+
+                }
               }
             }
           },
@@ -1920,7 +2022,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+
+                }
               }
             }
           },
@@ -1941,6 +2045,9 @@
         "security": [
           {
             "HTTPBearer": []
+          },
+          {
+            "APIKeyHeader": []
           }
         ],
         "x-mgc-hidden": true
@@ -2107,7 +2214,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+
+                }
               }
             }
           },
@@ -2847,7 +2956,7 @@
           "Groups"
         ],
         "summary": "Update Group Member",
-        "description": "Update a member's profile in a group by member-id.\n\n- **member_id**: UUID address of the member to update\n- **profile**: New profile to assign (e.g., \"member\", \"admin\", \"viewer\")\n\nRaises:\n- 422: Invalid UUID format\n- 404: User UUID not found in ID Magalu\n- 400: Service accounts or groups cannot be members",
+        "description": "Update a member's profile in a group by UUID.\n\nThe API accepts the user's UUID in the URL path and automatically\nresolves it to the corresponding UUID before updating the member.\n\n- **member_id**: UUID address of the member to update\n- **profile**: New profile to assign (e.g., \"member\", \"admin\", \"viewer\")\n\nRaises:\n- 422: Invalid UUID format\n- 404: User UUID not found in ID Magalu\n- 400: Service accounts or groups cannot be members",
         "operationId": "update_group_member_api_v1_groups__group_id__members__member_id__patch",
         "security": [
           {
@@ -2929,7 +3038,7 @@
           "Groups"
         ],
         "summary": "Remove Member From Group",
-        "description": "Remove a member from a group by member-id.\n\nresolves it to the corresponding UUID before removing the member.\n\n- **member_uuid**: Valid member_uui of the member to remove\n\nRaises:\n- 422: Invalid email format\n- 404: User email not found in ID Magalu\n- 400: Service accounts or groups cannot be members (validation check)",
+        "description": "Remove a member from a group by email.\n\nThe API accepts the user's email address in the URL path and automatically\nresolves it to the corresponding UUID before removing the member.\n\n- **member_uuid**: Valid member_uui of the member to remove\n\nRaises:\n- 422: Invalid email format\n- 404: User email not found in ID Magalu\n- 400: Service accounts or groups cannot be members (validation check)",
         "operationId": "remove_member_from_group_api_v1_groups__group_id__members__member_id__delete",
         "security": [
           {
@@ -3072,7 +3181,7 @@
           "Domains",
           "Domains"
         ],
-        "summary": "Read Domain Collection",
+        "summary": "Get Domain",
         "operationId": "get_domain_api_v1_domains_get",
         "security": [
           {
@@ -3206,10 +3315,10 @@
     "/api/v1/domains/{domain_id}": {
       "put": {
         "tags": [
+          "Domains",
           "Domains"
         ],
-        "x-mgc-name": "check-dns",
-        "summary": "Run this after configuring the txt_name / txt_value pair on your DNS provider.",
+        "summary": "Update Domain",
         "operationId": "update_domain_api_v1_domains__domain_id__put",
         "security": [
           {
@@ -3273,7 +3382,7 @@
           "Domains",
           "Domains"
         ],
-        "summary": "List Federation",
+        "summary": "Get Domain Federations",
         "operationId": "get_domain_federations_api_v1_domains__domain_id__federations_get",
         "security": [
           {
@@ -3488,8 +3597,7 @@
           "Domains",
           "Domains"
         ],
-        "summary": "Update Domain Federation Resource",
-        "description": "Update Domain Federation Resource\n\nExamples:\n\nOIDC:\n  mgc iam domains federations update \\\n    --domain-id \"<domain_id>\" \\\n    --federation-id \"<federation_id>\" \\\n    --oidc.name \"<federation_name>\" \\\n    --oidc.client-id \"<oidc_client_id>\" \\\n    --oidc.client-secret \"<oidc_client_secret>\" \\\n    --oidc.authorization-endpoint \"<oidc_authorization_endpoint_url>\" \\\n    --oidc.token-endpoint \"<oidc_token_endpoint_url>\" \\\n    --oidc.userinfo-endpoint \"<oidc_userinfo_endpoint_url>\" \\\n    --oidc.jwks-uri \"<oidc_jwks_uri>\" \\\n    --oidc.scopes '[\"<scope_1>\",\"<scope_2>\"]'\n\nSAML:\n  mgc iam domains federations update \\\n    --domain-id \"<domain_id>\" \\\n    --federation-id \"<federation_id>\" \\\n    --saml.name \"<federation_name>\" \\\n    --saml.entity-id \"<saml_entity_id>\" \\\n    --saml.sso-url \"<saml_sso_url>\" \\\n    --saml.idp-certificate \"<saml_idp_certificate_pem>\"",
+        "summary": "Update Domain",
         "operationId": "update_domain_api_v1_domains__domain_id__federations__federation_id__patch",
         "security": [
           {
@@ -3522,23 +3630,22 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "oidc": {
+                "anyOf": [
+                  {
                     "$ref": "#/components/schemas/DomainFederationOIDCEdit"
                   },
-                  "saml": {
+                  {
                     "$ref": "#/components/schemas/DomainFederationSAMLEdit"
                   }
-                },
-                "title": "Fed In"
+                ],
+                "title": "Body"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -3577,6 +3684,142 @@
             }
           }
         }
+      }
+    },
+    "/api/v1/projects": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "List Projects",
+        "operationId": "list_projects_api_v1_projects_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          },
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "managed",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Managed"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectResponse"
+                  },
+                  "title": "Response List Projects Api V1 Projects Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "x-mgc-hidden": true
+      },
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Create Project",
+        "operationId": "create_project_api_v1_projects_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          },
+          {
+            "APIKeyHeader": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "x-mgc-hidden": true
       }
     }
   },
@@ -4310,100 +4553,41 @@
         "title": "DomainFederationOIDC"
       },
       "DomainFederationOIDCEdit": {
-        "type": "object",
         "properties": {
           "name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Name"
           },
           "client_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Client Id"
           },
           "client_secret": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Client Secret"
           },
           "scopes": {
-            "anyOf": [
-              {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
             "title": "Scopes"
           },
           "authorization_endpoint": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Authorization Endpoint"
           },
           "token_endpoint": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Token Endpoint"
           },
           "jwks_uri": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Jwks Uri"
-          },
-          "userinfo_endpoint": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Userinfo Endpoint"
           }
-        }
+        },
+        "type": "object",
+        "title": "DomainFederationOIDCEdit"
       },
       "DomainFederationOIDCResponse": {
         "properties": {
@@ -4506,51 +4690,24 @@
       "DomainFederationSAMLEdit": {
         "properties": {
           "name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Name"
           },
-          "idp_certificate": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Idp Certificate"
-          },
           "entity_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Entity Id"
           },
           "sso_url": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Sso Url"
+          },
+          "idp_certificate": {
+            "type": "string",
+            "title": "Idp Certificate"
           }
         },
-        "type": "object"
+        "type": "object",
+        "title": "DomainFederationSAMLEdit"
       },
       "DomainFederationSAMLResponse": {
         "properties": {
@@ -5311,6 +5468,21 @@
             ],
             "title": "Permissions",
             "default": []
+          },
+          "projects": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ProjectContext"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Projects",
+            "default": []
           }
         },
         "type": "object",
@@ -5342,6 +5514,107 @@
         ],
         "title": "Product"
       },
+      "Project": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Tenant Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "tenant_id",
+          "name"
+        ],
+        "title": "Project"
+      },
+      "ProjectContext": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "roles": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Roles",
+            "default": []
+          },
+          "permissions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Permissions",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "name"
+        ],
+        "title": "ProjectContext"
+      },
+      "ProjectCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "ProjectCreate"
+      },
+      "ProjectResponse": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "name"
+        ],
+        "title": "ProjectResponse"
+      },
       "Role": {
         "properties": {
           "name": {
@@ -5362,6 +5635,39 @@
           "origin": {
             "type": "string",
             "title": "Origin"
+          },
+          "parent_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Type"
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Id"
+          },
+          "parent_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Name"
           }
         },
         "type": "object",
@@ -5390,6 +5696,39 @@
           "origin": {
             "type": "string",
             "title": "Origin"
+          },
+          "parent_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Type"
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Id"
+          },
+          "parent_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Name"
           },
           "permissions": {
             "items": {
@@ -5448,6 +5787,21 @@
             },
             "type": "array",
             "title": "Roles"
+          },
+          "projects": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ProjectContext"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Projects",
+            "default": []
           }
         },
         "type": "object",
@@ -5697,6 +6051,13 @@
           "type": {
             "type": "string",
             "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
           }
         },
         "type": "object",
@@ -5768,6 +6129,11 @@
     {
       "name": "Domains",
       "description": "Domains Federations of organization."
+    }
+  ],
+  "servers": [
+    {
+      "url": "/iam"
     }
   ]
 }

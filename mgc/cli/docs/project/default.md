@@ -1,24 +1,18 @@
 ---
 sidebar_position: 4
 ---
-# Set
+# Default
 
-Scopes IAM commands to this project. Does not affect the project used by the rest of the CLI, which is set by 'mgc project set'
+Clears the selected project, so requests are scoped to the tenant's default project again
 
 ## Usage:
 ```
-mgc iam project set [id-or-name] [flags]
-```
-
-## Examples:
-```
-mgc iam project set --id-or-name="my-project"
+mgc project default [flags]
 ```
 
 ## Flags:
 ```
--h, --help                help for set
-    --id-or-name string   UUID or name of the project to use. Run 'mgc project list' to see the available ones (required)
+-h, --help   help for default
 ```
 
 ## Global Flags:
@@ -33,6 +27,5 @@ mgc iam project set --id-or-name="my-project"
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --server-url uri           Manually specify the server to use
 ```
 

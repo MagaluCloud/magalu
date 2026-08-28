@@ -20,7 +20,7 @@ Magalu Cloud IAM and require a user login (see 'mgc auth login')`,
 				getCreate(),
 				getSet(),
 				getCurrent(),
-				getUnset(),
+				getDefault(),
 			}
 		},
 	)

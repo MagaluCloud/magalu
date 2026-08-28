@@ -217,7 +217,7 @@ SUPPORTED_SCHEMA_CUSTOMIZATIONS = {
     "exclusiveMinimum": check_is_bool,
     "example": check_any,
     "default": check_any,
-    "required": check_is_list,
+    "required": lambda v, b: check_is_list(v, b, check_is_string, item_name="required property"),
 }
 
 

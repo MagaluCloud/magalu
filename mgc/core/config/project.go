@@ -20,16 +20,15 @@ func ProjectScopeFromContext(ctx context.Context) string {
 	return id
 }
 
-const (
-	// ProjectKey é o projeto da CLI: vai como 'x-project-id' em toda request,
-	// exceto nas do IAM.
-	ProjectKey = "project"
-	// IamProjectKey é o escopo usado SOMENTE pelos endpoints do IAM. É separado
-	// de propósito: uma escrita de IAM sem projeto setado vale para o tenant
-	// inteiro, então o usuário precisa optar por esse escopo explicitamente, e
-	// não herdá-lo do projeto da CLI.
-	IamProjectKey = "iamProject"
-)
+// ProjectKey é o projeto selecionado, usado por TODO produto escopável — IAM
+// incluído. Houve uma segunda chave (`iamProject`) enquanto o IAM tinha o seu
+// próprio comando de seleção; com `mgc iam project` removido, ninguém a
+// gravava, e `mgc project set` não chegava aos comandos de IAM.
+//
+// O que continua separado é o COMPORTAMENTO, não a chave: `core.ProjectScope`
+// diz se omitir significa "o projeto default" (produtos) ou "o tenant inteiro"
+// (IAM).
+const ProjectKey = "project"
 
 // Project é o projeto da CLI, ou "" quando não há nenhum configurado (nesse
 // caso o header é omitido e a API decide o escopo).
@@ -37,27 +36,12 @@ func (c *Config) Project() string {
 	return c.getString(ProjectKey)
 }
 
-// IamProject é o escopo de projeto dos comandos do IAM, ou "" quando não há
-// nenhum — o que significa "o tenant inteiro".
-func (c *Config) IamProject() string {
-	return c.getString(IamProjectKey)
-}
-
-// UnsetProject limpa só o escopo da CLI ('mgc project unset').
+// UnsetProject limpa o projeto selecionado. Chamado por 'mgc project default' e
+// ao trocar de tenant: o projeto pertence ao tenant, então mantê-lo apontaria
+// para um escopo de outra conta. Mesma razão pela qual a API key é limpa em
+// 'auth tenant set'.
 func (c *Config) UnsetProject() error {
 	return c.unsetKeys(ProjectKey)
-}
-
-// UnsetIamProject limpa só o escopo do IAM ('mgc iam project unset').
-func (c *Config) UnsetIamProject() error {
-	return c.unsetKeys(IamProjectKey)
-}
-
-// UnsetProjects limpa os dois escopos. Chamado ao trocar de tenant: o projeto
-// pertence ao tenant, então continuar com ele apontaria para um escopo de outra
-// conta. Mesma razão pela qual a API key é limpa em 'auth tenant set'.
-func (c *Config) UnsetProjects() error {
-	return c.unsetKeys(ProjectKey, IamProjectKey)
 }
 
 func (c *Config) unsetKeys(keys ...string) error {

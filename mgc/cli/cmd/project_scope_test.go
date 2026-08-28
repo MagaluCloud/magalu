@@ -22,7 +22,7 @@ func TestResolveScopeUndeclaredIsEmpty(t *testing.T) {
 	if err := cfg.Set(config.ProjectKey, "proj-cli"); err != nil {
 		t.Fatal(err)
 	}
-	if err := cfg.Set(config.IamProjectKey, "proj-iam"); err != nil {
+	if err := cfg.Set(config.ProjectKey, "proj-iam"); err != nil {
 		t.Fatal(err)
 	}
 
@@ -31,29 +31,26 @@ func TestResolveScopeUndeclaredIsEmpty(t *testing.T) {
 	}
 }
 
-// Os quatro produtos escopáveis leem a chave `project`; o IAM lê a dele. Um
-// nunca enxerga o escopo do outro.
-func TestResolveScopeReadsTheDeclaredKey(t *testing.T) {
+// Há uma chave só: `mgc project set` vale para produtos E para o IAM. Antes
+// eram duas, e o projeto selecionado simplesmente não chegava aos comandos de
+// IAM — que liam uma chave que nenhum comando gravava.
+func TestResolveScopeReadsTheSingleKey(t *testing.T) {
 	cfg := newScopeTestConfig(t)
-	if err := cfg.Set(config.ProjectKey, "proj-cli"); err != nil {
-		t.Fatal(err)
-	}
-	if err := cfg.Set(config.IamProjectKey, "proj-iam"); err != nil {
+	if err := cfg.Set(config.ProjectKey, "proj-1"); err != nil {
 		t.Fatal(err)
 	}
 
-	if got, want := resolveProjectScope(cfg, core.ProjectScopeProduct, ""), "proj-cli"; got != want {
-		t.Errorf("produto = %q, quer %q", got, want)
-	}
-	if got, want := resolveProjectScope(cfg, core.ProjectScopeIAM, ""), "proj-iam"; got != want {
-		t.Errorf("iam = %q, quer %q", got, want)
+	for _, scope := range []core.ProjectScope{core.ProjectScopeProduct, core.ProjectScopeIAM} {
+		if got, want := resolveProjectScope(cfg, scope, ""), "proj-1"; got != want {
+			t.Errorf("escopo %q = %q, quer %q", scope, got, want)
+		}
 	}
 }
 
 // `--scope tenant` omite o header: é assim que o IAM entende "o tenant inteiro".
 func TestResolveScopeTenantOmitsHeader(t *testing.T) {
 	cfg := newScopeTestConfig(t)
-	if err := cfg.Set(config.IamProjectKey, "proj-iam"); err != nil {
+	if err := cfg.Set(config.ProjectKey, "proj-iam"); err != nil {
 		t.Fatal(err)
 	}
 
@@ -76,10 +73,10 @@ func TestResolveScopeDefaultSendsTenantID(t *testing.T) {
 // A flag vence a configuração, pelos dois lados.
 func TestResolveScopeFlagWinsOverConfig(t *testing.T) {
 	cfg := newScopeTestConfig(t)
-	if err := cfg.Set(config.IamProjectKey, "do-arquivo"); err != nil {
+	if err := cfg.Set(config.ProjectKey, "do-arquivo"); err != nil {
 		t.Fatal(err)
 	}
-	if err := cfg.SetTempConfig(config.IamProjectKey, "da-flag"); err != nil {
+	if err := cfg.SetTempConfig(config.ProjectKey, "da-flag"); err != nil {
 		t.Fatal(err)
 	}
 
@@ -110,7 +107,7 @@ func TestScopeRequiredMissingIsReported(t *testing.T) {
 // Qualquer uma das três formas satisfaz.
 func TestScopeRequiredSatisfied(t *testing.T) {
 	cfgComProjeto := newScopeTestConfig(t)
-	if err := cfgComProjeto.Set(config.IamProjectKey, "proj-iam"); err != nil {
+	if err := cfgComProjeto.Set(config.ProjectKey, "proj-iam"); err != nil {
 		t.Fatal(err)
 	}
 

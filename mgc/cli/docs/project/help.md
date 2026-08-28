@@ -16,9 +16,9 @@ mgc project [command]
 ```
 create      Create a new project
 current     Show the project the CLI is using
+default     Go back to the tenant's default project
 list        List the projects of your tenant
 set         Set the project used by the CLI
-unset       Stop scoping the CLI to a project
 ```
 
 ## Flags:

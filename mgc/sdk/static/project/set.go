@@ -25,7 +25,7 @@ var getSet = utils.NewLazyLoader[core.Executor](func() core.Executor {
 			Name:         "set",
 			ProjectScope: core.ProjectScopeIAM,
 			Summary:      "Set the project used by the CLI",
-			Description:  "All subsequent requests are scoped to this project. IAM commands are not affected: they use their own scope, set by 'mgc iam project set'",
+			Description:  "All subsequent requests are scoped to this project, IAM included. Undo it with 'mgc project default'",
 			Observations: "Changing the tenant clears the selected project.",
 		},
 		set,
@@ -40,8 +40,8 @@ func set(ctx context.Context, params setParams, cfg projectConfig) (*setResult, 
 	return setScope(ctx, mgcConfigPkg.ProjectKey, params.IDOrName, cfg)
 }
 
-// setScope é o corpo comum de 'project set' e 'iam project set': a única
-// diferença entre os dois é a chave de config que recebe o id.
+// setScope recebe a chave de config por parâmetro por herança do tempo em que
+// havia duas ('project' e 'iamProject'). Hoje só uma chega aqui.
 func setScope(ctx context.Context, key, query string, cfg projectConfig) (*setResult, error) {
 	// Valida antes de gravar: um id inválido em configuração faria TODO comando
 	// seguinte apontar para um escopo inexistente, e o erro apareceria longe daqui.

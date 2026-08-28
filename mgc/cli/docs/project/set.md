@@ -1,9 +1,9 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 ---
 # Set
 
-All subsequent requests are scoped to this project. IAM commands are not affected: they use their own scope, set by 'mgc iam project set'
+All subsequent requests are scoped to this project, IAM included. Undo it with 'mgc project default'
 
 ## Usage:
 ```
