@@ -6,11 +6,6 @@ info:
 servers:
 -   url: https://{env}/iam
     x-mgc-project-scope: iam
-    x-mgc-scope-required:
-    - post
-    - patch
-    - put
-    - delete
     variables:
         env:
             description: Environment to use
@@ -2859,7 +2854,6 @@ components:
                     - organization
                     - project
                     title: Parent Type
-                    default: organization
                 parent_id:
                     title: Parent Id
                     nullable: true

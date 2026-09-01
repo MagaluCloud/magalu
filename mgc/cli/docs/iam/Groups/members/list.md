@@ -18,7 +18,6 @@ mgc iam groups members list [group-id] [flags]
     --page integer        Page: Número da página (min: 1)
     --per-page integer    Per Page: Itens por página (Max 20) (range: 1 - 20)
     --project-id string   Project to scope this command to. Overrides the configured project for this invocation
-    --scope enum          Scope this command applies to: 'default' for the tenant's default project, 'tenant' for the entire tenant. The IAM API encodes the default project as the tenant id (one of "default" or "tenant")
 ```
 
 ## Global Flags:

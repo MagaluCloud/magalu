@@ -7,7 +7,6 @@
 servers:
 -   url: https://{env}/iam
     x-mgc-project-scope: iam
-    x-mgc-scope-required: [post, patch, put, delete]
     variables:
         env:
             description: Environment to use
@@ -27,6 +26,16 @@ servers:
 #
 # A API aceita `parent_type` opcional, com default `organization`. Exigi-lo e
 # POLITICA DA CLI, nao contrato da API — por isso mora aqui e nao na spec.
+#
+# ATENCAO: `required` sozinho NAO basta. O CreateRole trazia `default:
+# organization`, e o default satisfaz o required — a flag ficava obrigatoria so
+# no help, e `mgc iam roles create --name X` criava role no TENANT INTEIRO sem
+# avisar. O default foi removido em specs/iam.jaxyendy.openapi.json.
+#
+# Como yaml_merge.py so adiciona e sobrescreve, nunca remove, essa remocao NAO
+# pode morar aqui. Um `make download-specs` vai reintroduzir o default: quem
+# refizer a sincronizacao precisa tira-lo de novo. Se ele voltar, a protecao
+# desaparece em silencio.
 #
 # O motivo: sem digitar, a pessoa nao sabe se o comando esta agindo na
 # organizacao inteira ou num projeto. Exigir o valor torna o alcance explicito

@@ -1,8 +1,6 @@
 package openapi
 
 import (
-	"strings"
-
 	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/getkin/kin-openapi/openapi3"
 )
@@ -80,46 +78,4 @@ func getProjectScopeExtension(prefix *string, servers openapi3.Servers) core.Pro
 	default:
 		return ""
 	}
-}
-
-// getScopeRequiredExtension diz se a operação exige escopo explícito.
-//
-// A declaração é do SERVIÇO — `x-mgc-scope-required: [post, patch, put, delete]`
-// no bloco `servers` — e vale por MÉTODO: escrita exige, leitura nunca. Assim
-// endpoint novo do produto nasce protegido, sem ninguém marcar.
-//
-// A operação pode se declarar isenta (`x-mgc-scope-required: false`), para a
-// escrita que só existe no tenant. Mas NÃO pode ligar a exigência: se o serviço
-// não declarou nada, operação nenhuma exige. O opt-out é o que faz esquecer uma
-// marcação produzir ruído visível em vez de exposição silenciosa.
-func getScopeRequiredExtension(prefix *string, servers openapi3.Servers, opExtensions map[string]any, method string) bool {
-	if len(servers) == 0 {
-		return false
-	}
-
-	raw, ok := getExtension(prefix, "scope-required", servers[0].Extensions, nil)
-	if !ok || raw == nil {
-		return false // serviço não declarou: ninguém exige
-	}
-
-	methods, ok := raw.([]any)
-	if !ok {
-		return false
-	}
-	required := false
-	for _, m := range methods {
-		if s, ok := m.(string); ok && strings.EqualFold(s, method) {
-			required = true
-			break
-		}
-	}
-	if !required {
-		return false
-	}
-
-	// Isenção da operação: só desliga.
-	if optOut, ok := getExtensionBool(prefix, "scope-required", opExtensions, true); ok && !optOut {
-		return false
-	}
-	return true
 }

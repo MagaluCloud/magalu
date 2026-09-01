@@ -21,7 +21,6 @@ mgc iam domains federations oidc [domain-id] [flags]
     --jwks-uri string                 Jwks Uri (required)
     --name string                     Name (required)
     --project-id string               Project to scope this command to. Overrides the configured project for this invocation
-    --scope enum                      Scope this command applies to: 'default' for the tenant's default project, 'tenant' for the entire tenant. The IAM API encodes the default project as the tenant id (one of "default" or "tenant")
     --scopes array(string)            Scopes (required)
     --token-endpoint string           Token Endpoint (required)
     --userinfo-endpoint string        Userinfo Endpoint (required)

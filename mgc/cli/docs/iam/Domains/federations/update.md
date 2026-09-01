@@ -50,7 +50,6 @@ mgc iam domains federations update [domain-id] [federation-id] [flags]
                                            This is the same as '--saml=name:string'.
     --saml.sso-url string                  saml's sso_url property: Sso Url
                                            This is the same as '--saml=sso_url:string'.
-    --scope enum                           Scope this command applies to: 'default' for the tenant's default project, 'tenant' for the entire tenant. The IAM API encodes the default project as the tenant id (one of "default" or "tenant")
 ```
 
 ## Global Flags:

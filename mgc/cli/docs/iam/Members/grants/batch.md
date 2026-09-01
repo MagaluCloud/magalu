@@ -20,7 +20,6 @@ mgc iam members grants batch [flags]
     --permission-names array(string)   Permission Names
     --project-id string                Project to scope this command to. Overrides the configured project for this invocation
     --role-names array(string)         Role Names
-    --scope enum                       Scope this command applies to: 'default' for the tenant's default project, 'tenant' for the entire tenant. The IAM API encodes the default project as the tenant id (one of "default" or "tenant")
 ```
 
 ## Global Flags:

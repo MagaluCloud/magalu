@@ -32,13 +32,6 @@ type DescriptorSpec struct {
 	Observations string       `json:"observation,omitempty"`
 	GroupID      string       `json:"groupId,omitempty"`
 	ProjectScope ProjectScope `json:"projectScope,omitempty"`
-	// ScopeRequired diz que este comando não age sem escopo explícito. Vale para
-	// escrita de IAM, onde omitir o escopo significa "o tenant inteiro" — errar
-	// ali não falha uma request, muda configuração da organização toda.
-	//
-	// Declarado por serviço (quais métodos) e desligável por operação, nunca
-	// ligável: a marcação é opt-out para que endpoint novo nasça protegido.
-	ScopeRequired bool `json:"scopeRequired,omitempty"`
 }
 
 func (d *DescriptorSpec) Validate() error {

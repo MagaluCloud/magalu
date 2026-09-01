@@ -281,20 +281,12 @@ def check_is_server_variables(v: Any, base: Any) -> None:
 
 
 SUPPORTED_SERVER_MATCH = {"url", "description"}
-def check_is_list_of_strings(v: Any, b: Any) -> None:
-    if not isinstance(v, list) or not all(isinstance(i, str) for i in v):
-        raise ValueError("is not a list of strings")
-
 
 SUPPORTED_SERVER_CUSTOMIZATIONS = {
     # De qual chave de config o produto tira o escopo de projeto: "project" ou
     # "iam". Declarado por SERVIÇO porque vale para todos os endpoints dele;
     # ausente = produto não escopável, não recebe x-project-id.
     "x-mgc-project-scope": check_is_string,
-    # Métodos cujas operações exigem escopo explícito (ex.: [post, patch, put,
-    # delete]). Por serviço, para que endpoint novo nasça protegido; a operação
-    # pode se declarar isenta com `x-mgc-scope-required: false`.
-    "x-mgc-scope-required": check_is_list_of_strings,
     "url": check_is_string,
     "description": check_is_string,
     "variables": check_is_server_variables,
@@ -479,9 +471,6 @@ SUPPORTED_PATH_METHOD_CUSTOMIZATIONS = {
     "x-mgc-transforms": check_is_transforms,
     "x-mgc-wait-termination": check_is_wait_termination,
     "x-mgc-confirmable": check_is_confirmable,
-    # Isenção: `false` desliga a exigência de escopo desta operação. Só desliga —
-    # não há como LIGAR numa operação de serviço que não declarou.
-    "x-mgc-scope-required": check_is_bool,
     "x-mgc-confirmPrompt": check_is_promptInput,
     "parameters": check_is_path_parameters,
     "responses": check_is_responses,

@@ -4121,8 +4121,7 @@
               "organization",
               "project"
             ],
-            "title": "Parent Type",
-            "default": "organization"
+            "title": "Parent Type"
           },
           "parent_id": {
             "anyOf": [

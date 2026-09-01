@@ -329,14 +329,11 @@ func addAction(
 		flags.addExtraFlag(newWatchFlag())
 	}
 
-	// As flags de escopo entram só onde o produto as entende — mesma mecânica do
+	// A --project-id entra só onde o produto a entende — mesma mecânica do
 	// --cli.watch acima. Metade dos produtos não suporta projeto, e uma flag
 	// global apareceria no help e nos docs de todos eles sem fazer nada.
 	if hasProjectFlag(exec) {
 		flags.addExtraFlag(newProjectIDFlag())
-	}
-	if hasScopeFlag(exec) {
-		flags.addExtraFlag(newScopeFlag())
 	}
 
 	parentCmd.AddCommand(actionCmd)
