@@ -20,6 +20,7 @@ mgc iam domains federations oidc [domain-id] [flags]
 -h, --help                            help for oidc
     --jwks-uri string                 Jwks Uri (required)
     --name string                     Name (required)
+    --project-id string               Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --scopes array(string)            Scopes (required)
     --token-endpoint string           Token Endpoint (required)
     --userinfo-endpoint string        Userinfo Endpoint (required)

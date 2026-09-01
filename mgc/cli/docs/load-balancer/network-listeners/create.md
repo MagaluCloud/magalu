@@ -19,6 +19,7 @@ mgc load-balancer network-listeners create [load-balancer-id] [flags]
     --load-balancer-id uuid         load_balancer_id: ID of the attached Load Balancer (required)
     --name string                   The unique name of the listener (max character count: 64) (required)
     --port integer                  The port number on which the listener will be active (required)
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --protocol enum                 The protocol used by the listener (e.g., TCP, TLS) (one of "tcp" or "tls") (required)
     --tls-certificate-id string     Tls Certificate Id: The ID of the TLS certificate
 ```

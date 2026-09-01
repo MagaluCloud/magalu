@@ -17,6 +17,7 @@ mgc iam groups members create [group-id] [flags]
 -h, --help                          help for create
     --member-email email            Member Email (required)
     --profile string                Profile (required)
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

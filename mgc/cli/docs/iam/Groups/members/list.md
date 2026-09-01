@@ -13,10 +13,11 @@ mgc iam groups members list [group-id] [flags]
 
 ## Flags:
 ```
-    --group-id string    Group Id (required)
--h, --help               help for list
-    --page integer       Page: Número da página (min: 1)
-    --per-page integer   Per Page: Itens por página (Max 20) (range: 1 - 20)
+    --group-id string     Group Id (required)
+-h, --help                help for list
+    --page integer        Page: Número da página (min: 1)
+    --per-page integer    Per Page: Itens por página (Max 20) (range: 1 - 20)
+    --project-id string   Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

@@ -17,6 +17,7 @@ mgc virtual-machine snapshots rename [id] [flags]
 -h, --help                          help for rename
     --id string                     Id (required)
     --name string                   Name (between 1 and 255 characters) (required)
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

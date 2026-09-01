@@ -6,14 +6,15 @@ import (
 )
 
 type DescriptorSpec struct {
-	Name         string `json:"name"`
-	Version      string `json:"version"`
-	Description  string `json:"description"`
-	Summary      string `json:"summary"`
-	IsInternal   *bool  `json:"isInternal,omitempty"`
-	Scopes       Scopes `json:"scopes"`
-	Observations string `json:"observation,omitempty"`
-	GroupID      string `json:"groupId,omitempty"`
+	Name          string `json:"name"`
+	Version       string `json:"version"`
+	Description   string `json:"description"`
+	Summary       string `json:"summary"`
+	IsInternal    *bool  `json:"isInternal,omitempty"`
+	Scopes        Scopes `json:"scopes"`
+	Observations  string `json:"observation,omitempty"`
+	GroupID       string `json:"groupId,omitempty"`
+	ProjectScoped bool   `json:"projectScoped,omitempty"`
 }
 
 func (d *DescriptorSpec) Validate() error {

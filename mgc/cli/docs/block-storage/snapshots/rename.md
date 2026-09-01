@@ -17,6 +17,7 @@ mgc block-storage snapshots rename [id] [flags]
 -h, --help                          help for rename
     --id uuid                       Id (required)
     --name string                   Name (between 3 and 50 characters) (required)
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

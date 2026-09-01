@@ -31,6 +31,7 @@ mgc virtual-machine instances network-interface attach --instance.id="9ec75090-2
                                     This is the same as '--network=interface:object'.
     --network.interface.id string   ID: Id (between 1 and 255 characters)
                                     This is the same as '--network.interface=id:string'.
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

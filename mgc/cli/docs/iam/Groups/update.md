@@ -17,6 +17,7 @@ mgc iam groups update [group-id] [flags]
     --description string            Description
     --group-id string               Group Id (required)
 -h, --help                          help for update
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

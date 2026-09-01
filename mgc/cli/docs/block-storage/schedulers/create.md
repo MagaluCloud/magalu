@@ -28,6 +28,7 @@ mgc block-storage schedulers create [flags]
                                                This is the same as '--policy.frequency.daily=start_time:time'.
     --policy.retention-in-days integer         Policy: Retention In Days (min: 1)
                                                This is the same as '--policy=retention_in_days:integer'.
+    --project-id string                        Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --snapshot object                          Snapshot (single property: type)
                                                Use --snapshot=help for more details (required)
     --snapshot.type enum                       Snapshot: SnapshotType (one of "instant" or "object")

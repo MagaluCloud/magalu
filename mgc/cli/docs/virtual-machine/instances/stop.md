@@ -18,6 +18,7 @@ mgc virtual-machine instances stop [id] [flags]
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                          help for stop
     --id uuid                       Instance id - for help use ./mgc virtual-machines instances list . (required)
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

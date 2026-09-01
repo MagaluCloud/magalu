@@ -14,6 +14,7 @@ mgc load-balancer network-certificates delete [load-balancer-id] [tls-certificat
 ```
 -h, --help                      help for delete
     --load-balancer-id uuid     load_balancer_id: ID of the Load Balancer to delete the TLS certificate from (required)
+    --project-id string         Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --tls-certificate-id uuid   tls_certificate_id: ID of the TLS certificate to delete (required)
 ```
 

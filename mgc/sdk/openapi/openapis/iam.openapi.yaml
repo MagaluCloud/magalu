@@ -5,6 +5,7 @@ info:
     version: 0.1.0
 servers:
 -   url: https://{env}/iam
+    x-mgc-project-scope: true
     variables:
         env:
             description: Environment to use
@@ -388,6 +389,22 @@ paths:
                     title: Role Name
                     nullable: true
                     type: string
+            -   name: parent_type
+                in: query
+                required: true
+                schema:
+                    enum:
+                    - organization
+                    - project
+                    type: string
+                    title: Parent Type
+            -   name: parent_id
+                in: query
+                required: false
+                schema:
+                    title: Parent Id
+                    nullable: true
+                    type: string
             responses:
                 '200':
                     description: Successful Response
@@ -472,6 +489,22 @@ paths:
                 schema:
                     type: string
                     title: Role Name
+            -   name: parent_type
+                in: query
+                required: true
+                schema:
+                    enum:
+                    - organization
+                    - project
+                    type: string
+                    title: Parent Type
+            -   name: parent_id
+                in: query
+                required: false
+                schema:
+                    title: Parent Id
+                    nullable: true
+                    type: string
             responses:
                 '204':
                     description: Successful Response
@@ -508,6 +541,22 @@ paths:
                 schema:
                     type: string
                     title: Role Name
+            -   name: parent_type
+                in: query
+                required: true
+                schema:
+                    enum:
+                    - organization
+                    - project
+                    type: string
+                    title: Parent Type
+            -   name: parent_id
+                in: query
+                required: false
+                schema:
+                    title: Parent Id
+                    nullable: true
+                    type: string
             responses:
                 '200':
                     description: Successful Response
@@ -552,6 +601,22 @@ paths:
                 schema:
                     type: string
                     title: Role Name
+            -   name: parent_type
+                in: query
+                required: true
+                schema:
+                    enum:
+                    - organization
+                    - project
+                    type: string
+                    title: Parent Type
+            -   name: parent_id
+                in: query
+                required: false
+                schema:
+                    title: Parent Id
+                    nullable: true
+                    type: string
             requestBody:
                 required: true
                 content:
@@ -608,6 +673,22 @@ paths:
                 schema:
                     type: string
                     title: Role Name
+            -   name: parent_type
+                in: query
+                required: true
+                schema:
+                    enum:
+                    - organization
+                    - project
+                    type: string
+                    title: Parent Type
+            -   name: parent_id
+                in: query
+                required: false
+                schema:
+                    title: Parent Id
+                    nullable: true
+                    type: string
             responses:
                 '200':
                     description: Successful Response
@@ -2712,10 +2793,19 @@ components:
                     type: array
                     title: Permission Names
                     default: []
+                parent_type:
+                    title: Parent Type
+                    nullable: true
+                    type: string
+                parent_id:
+                    title: Parent Id
+                    nullable: true
+                    type: string
             type: object
             required:
             - member_ids
             - operation
+            - parent_type
             title: BatchUpdateMembers
         CreateGroup:
             properties:
@@ -2774,9 +2864,20 @@ components:
                     title: Based Role
                     nullable: true
                     type: string
+                parent_type:
+                    type: string
+                    enum:
+                    - organization
+                    - project
+                    title: Parent Type
+                parent_id:
+                    title: Parent Id
+                    nullable: true
+                    type: string
             type: object
             required:
             - name
+            - parent_type
             title: CreateRole
         Domain:
             properties:
@@ -3565,6 +3666,18 @@ components:
                 origin:
                     type: string
                     title: Origin
+                parent_type:
+                    title: Parent Type
+                    nullable: true
+                    type: string
+                parent_id:
+                    title: Parent Id
+                    nullable: true
+                    type: string
+                parent_name:
+                    title: Parent Name
+                    nullable: true
+                    type: string
             type: object
             required:
             - name
@@ -3586,6 +3699,18 @@ components:
                         type: string
                     type: array
                     title: Permissions
+                parent_type:
+                    title: Parent Type
+                    nullable: true
+                    type: string
+                parent_id:
+                    title: Parent Id
+                    nullable: true
+                    type: string
+                parent_name:
+                    title: Parent Name
+                    nullable: true
+                    type: string
             type: object
             required:
             - name

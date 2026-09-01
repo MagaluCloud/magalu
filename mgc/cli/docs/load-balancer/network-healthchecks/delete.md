@@ -15,6 +15,7 @@ mgc load-balancer network-healthchecks delete [load-balancer-id] [health-check-i
     --health-check-id uuid    health_check_id: ID of the health check you wanna delete (required)
 -h, --help                    help for delete
     --load-balancer-id uuid   load_balancer_id: ID of the attached Load Balancer (required)
+    --project-id string       Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

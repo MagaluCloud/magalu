@@ -18,6 +18,7 @@ mgc virtual-machine machine-types list [flags]
     --control.sort string         Sort: order of the results using informed fields (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
 -h, --help                       help for list
     --name string                name of the instance type
+    --project-id string          Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

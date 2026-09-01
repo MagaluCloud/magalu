@@ -28,6 +28,7 @@ mgc block-storage volumes retype --new-type.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx
                                     This is the same as '--new-type=id:string'.
     --new-type.name string          New Type: Name (between 1 and 255 characters)
                                     This is the same as '--new-type=name:string'.
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

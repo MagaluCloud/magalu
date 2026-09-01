@@ -15,6 +15,7 @@ mgc iam access-control create [flags]
     --description string   Description
 -h, --help                 help for create
     --name string          Name
+    --project-id string    Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

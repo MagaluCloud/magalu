@@ -17,6 +17,7 @@ mgc virtual-machine images custom list [flags]
     --control.sort string       Sort (pattern: ^(^[\w-]+:(asc|desc)(,[\w-]+:(asc|desc))*)?$)
 -h, --help                     help for list
     --name string              name of the image
+    --project-id string        Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

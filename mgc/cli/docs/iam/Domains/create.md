@@ -12,8 +12,9 @@ mgc iam domains create [flags]
 
 ## Flags:
 ```
-    --domain string   Domain (required)
--h, --help            help for create
+    --domain string       Domain (required)
+-h, --help                help for create
+    --project-id string   Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

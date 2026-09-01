@@ -16,6 +16,7 @@ mgc virtual-machine snapshots copy [id] [flags]
     --destination-region enum       Regions (one of "br-mgl1", "br-ne1" or "br-se1") (required)
 -h, --help                          help for copy
     --id uuid                       Id (required)
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

@@ -12,9 +12,10 @@ mgc iam service-accounts api-keys list [sa-uuid] [flags]
 
 ## Flags:
 ```
--h, --help           help for list
-    --sa-uuid uuid   Sa Uuid (required)
-    --status enum    APIKeyStatusEnum (one of "active" or "revoked")
+-h, --help                help for list
+    --project-id string   Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
+    --sa-uuid uuid        Sa Uuid (required)
+    --status enum         APIKeyStatusEnum (one of "active" or "revoked")
 ```
 
 ## Global Flags:

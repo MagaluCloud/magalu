@@ -56,6 +56,7 @@ mgc virtual-machine instances create --image.id="9ec75090-2872-4f51-8111-53d05d9
                                                 This is the same as '--network.vpc=id:string'.
     --network.vpc.name string                   Vpc: Name (between 1 and 255 characters)
                                                 This is the same as '--network.vpc=name:string'.
+    --project-id string                         Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --ssh-key-name string                       Ssh key Name
     --user-data string                          Used to perform automated configuration tasks. (between 1 and 65000 characters)
     --volumes array(object)                     Volumes

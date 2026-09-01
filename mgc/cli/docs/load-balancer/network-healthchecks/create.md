@@ -23,6 +23,7 @@ mgc load-balancer network-healthchecks create [load-balancer-id] [flags]
     --name string                         The unique name of the Health Check (max character count: 64) (required)
     --path string                         The path to check for HTTP protocol; ignored for other protocols
     --port integer                        The port number on which the Health Check will be performed (required)
+    --project-id string                   Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --protocol enum                       The protocol used for the Health Check (e.g., HTTP, TCP) (one of "http" or "tcp") (required)
     --timeout-seconds integer             Timeout Seconds: The timeout in seconds for each Health Check
     --unhealthy-threshold-count integer   Unhealthy Threshold Count: The number of consecutive failed checks before considering the target unhealthy

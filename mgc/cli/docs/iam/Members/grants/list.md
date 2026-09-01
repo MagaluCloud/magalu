@@ -12,8 +12,9 @@ mgc iam members grants list [uuid] [flags]
 
 ## Flags:
 ```
--h, --help        help for list
-    --uuid uuid   Uuid (required)
+-h, --help                help for list
+    --project-id string   Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
+    --uuid uuid           Uuid (required)
 ```
 
 ## Global Flags:

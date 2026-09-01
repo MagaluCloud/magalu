@@ -3963,6 +3963,7 @@ tags:
 $id: https://block-storage.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/volume
+    x-mgc-project-scope: true
     variables:
         region:
             description: Region to reach the service

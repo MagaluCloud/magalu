@@ -329,6 +329,13 @@ func addAction(
 		flags.addExtraFlag(newWatchFlag())
 	}
 
+	// A --project-id entra só onde o produto a entende — mesma mecânica do
+	// --cli.watch acima. Metade dos produtos não suporta projeto, e uma flag
+	// global apareceria no help e nos docs de todos eles sem fazer nada.
+	if hasProjectFlag(exec) {
+		flags.addExtraFlag(newProjectIDFlag())
+	}
+
 	parentCmd.AddCommand(actionCmd)
 
 	logger().Debugw("Executor added to command tree", "name", exec.Name())

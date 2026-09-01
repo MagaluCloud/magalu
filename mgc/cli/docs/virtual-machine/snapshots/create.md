@@ -27,6 +27,7 @@ mgc virtual-machine snapshots create --instance.id="9ec75090-2872-4f51-8111-53d0
     --instance.name string          Instance: Name (between 1 and 255 characters)
                                     This is the same as '--instance=name:string'.
     --name string                   Name (between 1 and 255 characters) (required)
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

@@ -16,6 +16,7 @@ mgc virtual-machine images custom update [id] [flags]
     --description string            Description
 -h, --help                          help for update
     --id uuid                       Id (required)
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --requirements object           (properties: disk, ram and vcpu)
                                     Use --requirements=help for more details
     --requirements.disk integer     requirements's disk property: Disk

@@ -15,6 +15,7 @@ mgc kubernetes cluster kubeconfig [cluster-id] [flags]
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
     --cluster-id uuid               Schema to get the cluster's kubeconfig file. (required)
 -h, --help                          help for kubeconfig
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

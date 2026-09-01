@@ -17,6 +17,7 @@ mgc iam service-accounts api-keys update [sa-uuid] [apikey-uuid] [flags]
     --description string            Description
 -h, --help                          help for update
     --name string                   Name
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --sa-uuid uuid                  Sa Uuid (required)
     --scopes array(string)          Scopes
 ```

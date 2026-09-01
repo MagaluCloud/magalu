@@ -217,7 +217,7 @@ SUPPORTED_SCHEMA_CUSTOMIZATIONS = {
     "exclusiveMinimum": check_is_bool,
     "example": check_any,
     "default": check_any,
-    "required": check_is_list,
+    "required": lambda v, b: check_is_list(v, b, check_is_string, item_name="required property"),
 }
 
 
@@ -281,7 +281,12 @@ def check_is_server_variables(v: Any, base: Any) -> None:
 
 
 SUPPORTED_SERVER_MATCH = {"url", "description"}
+
 SUPPORTED_SERVER_CUSTOMIZATIONS = {
+    # Se o produto participa do escopo de projeto. Declarado por SERVIÇO porque
+    # vale para todos os endpoints dele; ausente = produto não escopável, não
+    # recebe x-project-id nem a --project-id.
+    "x-mgc-project-scope": check_is_bool,
     "url": check_is_string,
     "description": check_is_string,
     "variables": check_is_server_variables,

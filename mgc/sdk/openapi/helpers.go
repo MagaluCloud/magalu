@@ -1,5 +1,9 @@
 package openapi
 
+import (
+	"github.com/getkin/kin-openapi/openapi3"
+)
+
 func getExtension(prefix *string, name string, extensions map[string]any, def any) (value any, ok bool) {
 	if prefix == nil || *prefix == "" {
 		return def, false
@@ -49,4 +53,12 @@ func getDescriptionExtension(prefix *string, extensions map[string]any, def stri
 func getHiddenExtension(prefix *string, extensions map[string]any) bool {
 	b, _ := getExtensionBool(prefix, "hidden", extensions, false)
 	return b
+}
+
+func getProjectScopedExtension(prefix *string, servers openapi3.Servers) bool {
+	if len(servers) == 0 {
+		return false
+	}
+	v, _ := getExtensionBool(prefix, "project-scope", servers[0].Extensions, false)
+	return v
 }

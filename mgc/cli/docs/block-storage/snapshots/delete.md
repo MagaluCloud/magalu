@@ -12,8 +12,9 @@ mgc block-storage snapshots delete [id] [flags]
 
 ## Flags:
 ```
--h, --help      help for delete
-    --id uuid   Id (required)
+-h, --help                help for delete
+    --id uuid             Id (required)
+    --project-id string   Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

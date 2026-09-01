@@ -12,8 +12,9 @@ mgc iam members delete [uuid] [flags]
 
 ## Flags:
 ```
--h, --help        help for delete
-    --uuid uuid   Uuid (required)
+-h, --help                help for delete
+    --project-id string   Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
+    --uuid uuid           Uuid (required)
 ```
 
 ## Global Flags:

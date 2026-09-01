@@ -16,6 +16,7 @@ mgc virtual-machine instances init-logs [id] [flags]
 -h, --help                          help for init-logs
     --id string                     Id (required)
     --max-lines-count integer       Max-Lines-Count: max lines returned for newly until older logs (max: 5000)
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

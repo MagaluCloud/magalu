@@ -12,8 +12,11 @@ mgc iam roles list [flags]
 
 ## Flags:
 ```
--h, --help               help for list
-    --role-name string   Role Name
+-h, --help                help for list
+    --parent-id string    Parent Id
+    --parent-type enum    Parent Type (one of "organization" or "project") (required)
+    --project-id string   Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
+    --role-name string    Role Name
 ```
 
 ## Global Flags:

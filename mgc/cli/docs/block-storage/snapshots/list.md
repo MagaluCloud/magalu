@@ -18,6 +18,7 @@ mgc block-storage snapshots list [flags]
     --expand array(enum)       Expand
 -h, --help                     help for list
     --name string              Name
+    --project-id string        Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --type enum                Type (one of "instant" or "object")
 ```
 
