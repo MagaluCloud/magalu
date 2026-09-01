@@ -19,7 +19,7 @@ const projectFlag = "project-id"
 // errar com "unknown flag", do próprio cobra, sem validação nossa.
 func newProjectIDFlag() *flag.Flag {
 	schema := mgcSchemaPkg.NewStringSchema()
-	schema.Description = "Project to scope this command to. Overrides the configured project for this invocation"
+	schema.Description = "Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation"
 
 	return schema_flags.NewSchemaFlag(
 		mgcSchemaPkg.NewObjectSchema(map[string]*mgcSchemaPkg.Schema{projectFlag: schema}, nil),
@@ -34,7 +34,7 @@ func newProjectIDFlag() *flag.Flag {
 // hasProjectFlag diz se este executor deve receber --project-id: todo produto
 // escopável, IAM incluído.
 func hasProjectFlag(exec core.Executor) bool {
-	return exec.DescriptorSpec().ProjectScope != ""
+	return exec.DescriptorSpec().ProjectScoped
 }
 
 func getProjectFlag(cmd *cobra.Command, name string) string {

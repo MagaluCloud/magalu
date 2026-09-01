@@ -18,7 +18,7 @@ mgc iam domains federations saml [domain-id] [flags]
 -h, --help                          help for saml
     --idp-certificate string        Idp Certificate (required)
     --name string                   Name (required)
-    --project-id string             Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --sso-url string                Sso Url (required)
 ```
 

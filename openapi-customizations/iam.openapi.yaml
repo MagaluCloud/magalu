@@ -6,7 +6,7 @@
 
 servers:
 -   url: https://{env}/iam
-    x-mgc-project-scope: iam
+    x-mgc-project-scope: true
     variables:
         env:
             description: Environment to use
@@ -76,6 +76,15 @@ paths:
                 required: true
     /api/v1/roles/{role_name}/permissions:
         get:
+            parameters:
+            -   name: role_name
+                in: path
+            -   name: parent_type
+                in: query
+                required: true
+        # Escrita: mesma regra do create/delete. Editar permissoes de papel sem
+        # dizer o alcance atinge a organizacao inteira em silencio.
+        patch:
             parameters:
             -   name: role_name
                 in: path

@@ -14,7 +14,7 @@ mgc iam access-control update [flags]
 ```
     --enforce-mfa         Enforce Mfa
 -h, --help                help for update
-    --project-id string   Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string   Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --status              Status
 ```
 

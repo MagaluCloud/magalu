@@ -35,7 +35,7 @@ mgc kubernetes nodepool update --auto-scale.max-replicas=5 --auto-scale.min-repl
                                         For V1 Clusters, the list of available flavors can be retrieved using the /v1/flavors endpoint (deprecated) or via the MGC CLI with the command 'kubernetes flavors list'.
 -h, --help                              help for update
     --node-pool-id uuid                 Nodepool's UUID. (required)
-    --project-id string                 Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string                 Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --replicas integer                  Number of replicas of the nodes in the node pool.
     --version string                    The target Kubernetes version for the cluster upgrade.
                                         

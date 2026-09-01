@@ -1,6 +1,9 @@
 package config
 
-import "context"
+import (
+	"context"
+	"strings"
+)
 
 // O escopo efetivo da request viaja no contexto, não é deduzido da URL. Quem
 // monta a request sabe de que produto ela é e qual chave de config vale; o
@@ -10,6 +13,9 @@ type projectScopeKey struct{}
 
 // NewProjectScopeContext carrega o id de projeto já resolvido para esta request.
 // String vazia significa "sem escopo": o header não é enviado.
+//
+// Na prática quem resolve nunca devolve vazio para produto escopável: sem nada
+// selecionado vem ProjectDefault, que a API entende igual à ausência.
 func NewProjectScopeContext(parent context.Context, projectID string) context.Context {
 	return context.WithValue(parent, projectScopeKey{}, projectID)
 }
@@ -25,19 +31,33 @@ func ProjectScopeFromContext(ctx context.Context) string {
 // próprio comando de seleção; com `mgc iam project` removido, ninguém a
 // gravava, e `mgc project set` não chegava aos comandos de IAM.
 //
-// O que continua separado é o COMPORTAMENTO, não a chave: `core.ProjectScope`
-// diz se omitir significa "o projeto default" (produtos) ou "o tenant inteiro"
-// (IAM).
+// Também houve dois COMPORTAMENTOS, `core.ProjectScope` "project" e "iam", pela
+// mesma razão. Quem diz o alcance de um comando de IAM hoje é a --parent-type
+// dele, então sobrou um booleano: DescriptorSpec.ProjectScoped.
 const ProjectKey = "project"
 
-// Project é o projeto da CLI, ou "" quando não há nenhum configurado (nesse
-// caso o header é omitido e a API decide o escopo).
+// ProjectDefault é o projeto default do tenant, escrito por extenso. A API o
+// aceita no lugar de um uuid, então mandá-lo é equivalente a omitir o escopo —
+// e gravá-lo é melhor que gravar vazio: `mgc project current` responde onde
+// você está em vez de responder nada, e a configuração diz o que faz em vez de
+// depender de quem a lê saber o que a ausência significa.
+const ProjectDefault = "default"
+
+// IsProjectDefault diz se o valor representa o projeto default — vazio incluído,
+// porque configuração nova e `auth tenant set` deixam a chave ausente.
+func IsProjectDefault(id string) bool {
+	return id == "" || strings.EqualFold(id, ProjectDefault)
+}
+
+// Project é o valor cru da configuração, ou "" quando não há nenhum. Quem
+// precisa do escopo efetivo deve tratar vazio e ProjectDefault como o mesmo
+// caso — use IsProjectDefault.
 func (c *Config) Project() string {
 	return c.getString(ProjectKey)
 }
 
-// UnsetProject limpa o projeto selecionado. Chamado por 'mgc project default' e
-// ao trocar de tenant: o projeto pertence ao tenant, então mantê-lo apontaria
+// UnsetProject remove a chave. Não é mais o caminho de 'mgc project default',
+// que grava ProjectDefault; sobrou para a troca de tenant: o projeto pertence ao tenant, então mantê-lo apontaria
 // para um escopo de outra conta. Mesma razão pela qual a API key é limpa em
 // 'auth tenant set'.
 func (c *Config) UnsetProject() error {

@@ -5055,7 +5055,7 @@ tags:
 $id: https://virtual-machine.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/compute
-    x-mgc-project-scope: project
+    x-mgc-project-scope: true
     variables:
         region:
             description: Region to reach the service

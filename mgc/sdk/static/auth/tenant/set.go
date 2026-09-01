@@ -77,6 +77,8 @@ func unsetProjectsForTenantChange(ctx context.Context) (had bool, err error) {
 		return false, fmt.Errorf("programming error: unable to retrieve config from context")
 	}
 
-	had = config.Project() != ""
+	// `default` não é um projeto selecionado: avisar que ele foi limpo seria
+	// ruído em toda troca de tenant de quem nunca escolheu projeto nenhum.
+	had = !mgcConfigPkg.IsProjectDefault(config.Project())
 	return had, config.UnsetProject()
 }

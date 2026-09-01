@@ -22,7 +22,7 @@ mgc block-storage volumes create --snapshot.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx
     --encrypted                     Indicates if the volume is encrypted. Default is False.
 -h, --help                          help for create
     --name string                   Name (between 3 and 50 characters) (required)
-    --project-id string             Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --size integer                  Size: Gibibytes (GiB) (range: 10 - 2147483648) (required)
     --snapshot object               Snapshot (at least one of: single property: id or single property: name)
                                     Use --snapshot=help for more details

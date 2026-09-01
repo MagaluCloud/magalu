@@ -17,7 +17,7 @@ mgc load-balancer network-backends targets replace [load-balancer-id] [backend-i
     --health-check-id string        Health Check Id (at least one of: uuid)
 -h, --help                          help for replace
     --load-balancer-id uuid         load_balancer_id: ID of the attached Load Balancer (required)
-    --project-id string             Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --targets array                 The list of targets to be created (at least one of: array or array)
                                     Use --targets=help for more details (required)
     --targets-type enum             Targets Type: The type of targets to be created, must be the same as the other targets of the referenced backend (one of "instance" or "raw") (required)

@@ -39,7 +39,7 @@ mgc iam domains federations update [domain-id] [federation-id] [flags]
                                            This is the same as '--oidc=token_endpoint:string'.
     --oidc.userinfo-endpoint string        oidc's userinfo_endpoint property: Userinfo Endpoint
                                            This is the same as '--oidc=userinfo_endpoint:string'.
-    --project-id string                    Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string                    Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --saml object                          (properties: entity_id, idp_certificate, name and sso_url)
                                            Use --saml=help for more details
     --saml.entity-id string                saml's entity_id property: Entity Id

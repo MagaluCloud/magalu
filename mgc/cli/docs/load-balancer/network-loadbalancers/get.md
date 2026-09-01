@@ -15,7 +15,7 @@ mgc load-balancer network-loadbalancers get [load-balancer-id] [flags]
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                          help for get
     --load-balancer-id uuid         load_balancer_id: ID of the Load Balancer to fetch (required)
-    --project-id string             Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

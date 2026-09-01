@@ -5,33 +5,16 @@ import (
 	"fmt"
 )
 
-// ProjectScope diz se um comando participa do escopo de projeto, e com que
-// semântica. Vazio (o default) significa que o produto não é escopável — não
-// recebe 'x-project-id' nem ganha as flags de escopo.
-//
-// São dois valores porque o IAM codifica o escopo de outro jeito: para ele,
-// omitir o header significa "o tenant inteiro", enquanto para os demais
-// significa "o projeto default". Ver ProjectScopeIAM.
-type ProjectScope string
-
-const (
-	// ProjectScopeProduct: omitir o escopo significa "o projeto default".
-	ProjectScopeProduct ProjectScope = "project"
-	// ProjectScopeIAM: omitir significa "o tenant inteiro", e é por isso que
-	// escrita de IAM exige escopo explícito.
-	ProjectScopeIAM ProjectScope = "iam"
-)
-
 type DescriptorSpec struct {
-	Name         string       `json:"name"`
-	Version      string       `json:"version"`
-	Description  string       `json:"description"`
-	Summary      string       `json:"summary"`
-	IsInternal   *bool        `json:"isInternal,omitempty"`
-	Scopes       Scopes       `json:"scopes"`
-	Observations string       `json:"observation,omitempty"`
-	GroupID      string       `json:"groupId,omitempty"`
-	ProjectScope ProjectScope `json:"projectScope,omitempty"`
+	Name          string `json:"name"`
+	Version       string `json:"version"`
+	Description   string `json:"description"`
+	Summary       string `json:"summary"`
+	IsInternal    *bool  `json:"isInternal,omitempty"`
+	Scopes        Scopes `json:"scopes"`
+	Observations  string `json:"observation,omitempty"`
+	GroupID       string `json:"groupId,omitempty"`
+	ProjectScoped bool   `json:"projectScoped,omitempty"`
 }
 
 func (d *DescriptorSpec) Validate() error {

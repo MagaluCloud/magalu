@@ -16,7 +16,7 @@ mgc iam groups create [flags]
 -h, --help                 help for create
     --identifier string    Identifier (required)
     --name string          Name (required)
-    --project-id string    Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string    Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

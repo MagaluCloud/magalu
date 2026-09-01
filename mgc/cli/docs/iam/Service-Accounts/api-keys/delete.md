@@ -14,7 +14,7 @@ mgc iam service-accounts api-keys delete [sa-uuid] [apikey-uuid] [flags]
 ```
     --apikey-uuid uuid    Apikey Uuid (required)
 -h, --help                help for delete
-    --project-id string   Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string   Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --sa-uuid uuid        Sa Uuid (required)
 ```
 

@@ -172,8 +172,10 @@ func TestCurrentReadsConfig(t *testing.T) {
 	if err != nil {
 		t.Fatalf("current sem projeto setado não é erro: %v", err)
 	}
-	if got.ID != "" {
-		t.Errorf("sem projeto o id deveria ser vazio, veio %q", got.ID)
+	// Sem nada selecionado a resposta é o literal, não vazio: o comando existe
+	// para dizer onde você está, e "em lugar nenhum" não é resposta.
+	if got.ID != mgcConfigPkg.ProjectDefault {
+		t.Errorf("sem projeto o id deveria ser %q, veio %q", mgcConfigPkg.ProjectDefault, got.ID)
 	}
 
 	if err := cfg.Set(mgcConfigPkg.ProjectKey, "id-alpha"); err != nil {
@@ -216,8 +218,10 @@ func TestSetAndCurrentAreNotConfirmable(t *testing.T) {
 	}
 }
 
-// default limpa o projeto selecionado, devolvendo o escopo ao padrão do tenant.
-func TestDefaultClearsProject(t *testing.T) {
+// default GRAVA o literal, não apaga a chave. Apagar deixava a configuração
+// muda: quem a lesse depois precisava saber que a ausência significa "o projeto
+// default".
+func TestDefaultWritesTheLiteral(t *testing.T) {
 	pm, _ := profile_manager.NewInMemoryProfileManager()
 	cfg := mgcConfigPkg.New(pm)
 	if err := cfg.Set(mgcConfigPkg.ProjectKey, "p"); err != nil {
@@ -228,8 +232,39 @@ func TestDefaultClearsProject(t *testing.T) {
 	if _, err := useDefault(ctx, struct{}{}, struct{}{}); err != nil {
 		t.Fatalf("useDefault: %v", err)
 	}
-	if got := cfg.Project(); got != "" {
-		t.Errorf("project deveria estar limpo, veio %q", got)
+	if got, want := cfg.Project(), mgcConfigPkg.ProjectDefault; got != want {
+		t.Errorf("project = %q, quer %q", got, want)
+	}
+}
+
+// `default` NÃO é palavra reservada no positional do set: o projeto que a
+// pessoa criou com esse nome tem de ser selecionável pelo nome, como qualquer
+// outro. Era o contrário antes, e o projeto real ficava inalcançável em
+// silêncio — o comando selecionava o default do tenant sem dizer nada.
+func TestSetResolvesAProjectNamedDefault(t *testing.T) {
+	available := []projectResult{
+		{ID: "id-do-projeto", Name: "default", Type: "managed"},
+		{ID: "id-alpha", Name: "alpha", Type: "default"},
+	}
+
+	got, err := resolveProject(available, "default")
+	if err != nil {
+		t.Fatalf("resolveProject: %v", err)
+	}
+	if got.ID != "id-do-projeto" {
+		t.Errorf("id = %q, quer id-do-projeto (o projeto real, não o sentinela)", got.ID)
+	}
+}
+
+// Sem projeto com esse nome — o caso comum — o erro tem de apontar a saída, ou
+// a pessoa fica sabendo só que não achou.
+func TestSetDefaultWithoutSuchProjectPointsToTheCommand(t *testing.T) {
+	_, err := resolveProject([]projectResult{{ID: "id-alpha", Name: "alpha"}}, "default")
+	if err == nil {
+		t.Fatal("sem projeto chamado default deveria falhar")
+	}
+	if !strings.Contains(err.Error(), "mgc project default") {
+		t.Errorf("o erro deveria ensinar o comando, veio: %v", err)
 	}
 }
 
@@ -297,8 +332,8 @@ func TestCurrentWithoutProjectDoesNotLookUp(t *testing.T) {
 	if err != nil {
 		t.Fatalf("sem projeto nao e erro: %v", err)
 	}
-	if got.ID != "" || got.Warning != "" {
-		t.Errorf("resultado deveria ser vazio, veio %+v", got)
+	if got.ID != mgcConfigPkg.ProjectDefault || got.Warning != "" {
+		t.Errorf("deveria devolver o literal sem aviso, veio %+v", got)
 	}
 }
 

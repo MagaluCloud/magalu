@@ -18,7 +18,7 @@ mgc iam members grants batch [flags]
     --parent-id string                 Parent Id
     --parent-type string               Parent Type (required)
     --permission-names array(string)   Permission Names
-    --project-id string                Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string                Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --role-names array(string)         Role Names
 ```
 

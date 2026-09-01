@@ -16,7 +16,7 @@ mgc virtual-machine snapshots get [id] [flags]
     --expand array(string)          Expand: You can get more detailed info about: ['image', 'machine-type'] 
 -h, --help                          help for get
     --id string                     Id (required)
-    --project-id string             Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

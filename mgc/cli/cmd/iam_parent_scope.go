@@ -57,7 +57,7 @@ func applyIamParentScope(ctx context.Context, sdk *mgcSdk.Sdk, exec core.Executo
 // Buscar o tenant aqui é seguro: as operações do IAM que têm `parent_type` são
 // todas `OAuth2`, nunca api-key — então sempre há access token com as claims.
 func parentProjectID(ctx context.Context, sdk *mgcSdk.Sdk) string {
-	if id := config.ProjectScopeFromContext(ctx); id != "" {
+	if id := config.ProjectScopeFromContext(ctx); !config.IsProjectDefault(id) {
 		return id
 	}
 	id, _ := sdk.Auth().CurrentTenantID()

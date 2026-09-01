@@ -283,10 +283,10 @@ def check_is_server_variables(v: Any, base: Any) -> None:
 SUPPORTED_SERVER_MATCH = {"url", "description"}
 
 SUPPORTED_SERVER_CUSTOMIZATIONS = {
-    # De qual chave de config o produto tira o escopo de projeto: "project" ou
-    # "iam". Declarado por SERVIÇO porque vale para todos os endpoints dele;
-    # ausente = produto não escopável, não recebe x-project-id.
-    "x-mgc-project-scope": check_is_string,
+    # Se o produto participa do escopo de projeto. Declarado por SERVIÇO porque
+    # vale para todos os endpoints dele; ausente = produto não escopável, não
+    # recebe x-project-id nem a --project-id.
+    "x-mgc-project-scope": check_is_bool,
     "url": check_is_string,
     "description": check_is_string,
     "variables": check_is_server_variables,

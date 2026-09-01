@@ -36,17 +36,27 @@ func TestUnsetProjectOnTenantChange(t *testing.T) {
 }
 
 // Sem projeto nenhum não há o que avisar, e limpar não pode dar erro — o
-// setTenant chama isso em toda troca.
+// setTenant chama isso em toda troca. `default` conta como "nenhum": avisar
+// que ele foi limpo seria ruído em toda troca de quem nunca escolheu projeto.
 func TestUnsetProjectOnTenantChangeWithNothingSet(t *testing.T) {
-	cfg := newTestConfig(t)
-	ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
+	for name, stored := range map[string]string{"chave ausente": "", "literal default": mgcConfigPkg.ProjectDefault} {
+		t.Run(name, func(t *testing.T) {
+			cfg := newTestConfig(t)
+			if stored != "" {
+				if err := cfg.Set(mgcConfigPkg.ProjectKey, stored); err != nil {
+					t.Fatal(err)
+				}
+			}
+			ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
 
-	had, err := unsetProjectsForTenantChange(ctx)
-	if err != nil {
-		t.Fatalf("limpar config vazia não pode dar erro: %v", err)
-	}
-	if had {
-		t.Error("sem projeto setado não deveria avisar nada")
+			had, err := unsetProjectsForTenantChange(ctx)
+			if err != nil {
+				t.Fatalf("limpar não pode dar erro: %v", err)
+			}
+			if had {
+				t.Error("sem projeto específico não deveria avisar nada")
+			}
+		})
 	}
 }
 

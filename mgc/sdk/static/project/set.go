@@ -22,11 +22,11 @@ type setResult struct {
 var getSet = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
-			Name:         "set",
-			ProjectScope: core.ProjectScopeIAM,
-			Summary:      "Set the project used by the CLI",
-			Description:  "All subsequent requests are scoped to this project, IAM included. Undo it with 'mgc project default'",
-			Observations: "Changing the tenant clears the selected project.",
+			Name:          "set",
+			ProjectScoped: true,
+			Summary:       "Set the project used by the CLI",
+			Description:   "All subsequent requests are scoped to this project, IAM included. Undo it with 'mgc project default'",
+			Observations:  "Changing the tenant clears the selected project.",
 		},
 		set,
 	)
@@ -36,6 +36,15 @@ var getSet = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	})
 })
 
+// set resolve SEMPRE contra a lista: o positional aceita id ou nome, e nenhum
+// valor é reservado ali.
+//
+// Houve um atalho aqui, `set default` gravando o literal sem consultar nada.
+// Ele tornava inalcançável pelo nome um projeto que a pessoa tivesse criado
+// chamado `default` — e em silêncio, selecionando o default do tenant no lugar.
+// Nome de projeto não tem restrição nenhuma no schema da API, então essa
+// colisão é permitida. Quem diz "o default do tenant" é 'mgc project default',
+// que não compartilha sintaxe com nome de projeto e por isso nunca empata.
 func set(ctx context.Context, params setParams, cfg projectConfig) (*setResult, error) {
 	return setScope(ctx, mgcConfigPkg.ProjectKey, params.IDOrName, cfg)
 }
@@ -97,7 +106,14 @@ func resolveProject(available []projectResult, query string) (*projectResult, er
 	case 1:
 		return &matches[0], nil
 	case 0:
-		return nil, fmt.Errorf("project %q not found. Available projects:%s", query, projectLines(available))
+		// Quem digita `set default` quase sempre quer o default do tenant, não um
+		// projeto com esse nome. Sem esta linha o erro seria tecnicamente correto
+		// e inútil: lista projetos e não diz onde está o que a pessoa procura.
+		hint := ""
+		if strings.EqualFold(query, mgcConfigPkg.ProjectDefault) {
+			hint = "Did you mean 'mgc project default' (the tenant's default project)?\n"
+		}
+		return nil, fmt.Errorf("project %q not found.\n%sAvailable projects:%s", query, hint, projectLines(available))
 	default:
 		return nil, fmt.Errorf("more than one project named %q. Use the id instead:%s", query, projectLines(matches))
 	}

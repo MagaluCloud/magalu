@@ -23,7 +23,7 @@ mgc kubernetes cluster update --description="This is an example cluster." --vers
     --cluster-id uuid               Cluster's UUID (required)
     --description string            A brief description of the Kubernetes cluster.
 -h, --help                          help for update
-    --project-id string             Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --version string                The target Kubernetes version for the cluster upgrade.
                                     
                                     **Supported Upgrade Paths:**

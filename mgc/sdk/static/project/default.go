@@ -10,7 +10,7 @@ import (
 )
 
 type defaultResult struct {
-	Default bool `json:"default"`
+	Project string `json:"project"`
 }
 
 // defaultConfirmMessage explica a consequência, não a ação: quem digitou o
@@ -21,9 +21,10 @@ const defaultConfirmMessage = "No project will be selected, and every request wi
 var getDefault = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecuteSimple(
 		core.DescriptorSpec{
-			Name:        "default",
-			Summary:     "Go back to the tenant's default project",
-			Description: "Clears the selected project, so requests are scoped to the tenant's default project again",
+			Name:         "default",
+			Summary:      "Go back to the tenant's default project",
+			Description:  "Selects the tenant's default project, so requests are no longer scoped to a specific one",
+			Observations: "This is the only way to select the tenant's default project: 'mgc project set' always resolves a real project, by id or name.",
 		},
 		func(ctx context.Context) (*defaultResult, error) {
 			return useDefault(ctx, struct{}{}, struct{}{})
@@ -36,13 +37,17 @@ var getDefault = utils.NewLazyLoader[core.Executor](func() core.Executor {
 })
 
 // useDefault não pode se chamar `default`: é palavra reservada da linguagem.
+//
+// Grava o literal em vez de apagar a chave. Apagar deixava a configuração muda —
+// quem a lesse depois precisava saber que a ausência significa "o projeto
+// default"; agora ela mesma diz.
 func useDefault(ctx context.Context, _ struct{}, _ struct{}) (*defaultResult, error) {
 	config := mgcConfigPkg.FromContext(ctx)
 	if config == nil {
 		return nil, fmt.Errorf("programming error: unable to retrieve config from context")
 	}
-	if err := config.UnsetProject(); err != nil {
+	if err := config.Set(mgcConfigPkg.ProjectKey, mgcConfigPkg.ProjectDefault); err != nil {
 		return nil, err
 	}
-	return &defaultResult{Default: true}, nil
+	return &defaultResult{Project: mgcConfigPkg.ProjectDefault}, nil
 }

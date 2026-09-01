@@ -19,7 +19,7 @@ mgc virtual-machine images custom create [flags]
     --license enum                  License (one of "licensed" or "unlicensed") (required)
     --name string                   Name (required)
     --platform enum                 Platform (one of "linux" or "windows") (required)
-    --project-id string             Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --requirements object           CustomImageRequirements (properties: disk, ram and vcpu)
                                     Use --requirements=help for more details
     --requirements.disk integer     CustomImageRequirements: Disk

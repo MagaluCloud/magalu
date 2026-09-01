@@ -17,7 +17,7 @@ mgc load-balancer network-listeners replace [load-balancer-id] [listener-id] [fl
     --listener-id uuid              listener_id: ID of the listener you wanna update (required)
     --load-balancer-id uuid         load_balancer_id: ID of the attached Load Balancer (required)
     --name string                   The unique name of the listener (max character count: 64)
-    --project-id string             Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --tls-certificate-id uuid       Tls Certificate Id: The unique identifier of the associated tls certificate
 ```
 

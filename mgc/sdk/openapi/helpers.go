@@ -1,7 +1,6 @@
 package openapi
 
 import (
-	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/getkin/kin-openapi/openapi3"
 )
 
@@ -56,26 +55,10 @@ func getHiddenExtension(prefix *string, extensions map[string]any) bool {
 	return b
 }
 
-// getProjectScopeExtension lê `x-mgc-project-scope` do bloco `servers` da spec.
-// A declaração é por SERVIÇO, não por operação: todo endpoint de um produto
-// escopável participa, então marcar um a um seria repetição que envelhece mal —
-// endpoint novo nasceria de fora sem ninguém notar.
-//
-// Valores: "project" e "iam". Os dois leem a MESMA chave de configuração; o que
-// muda é o significado de omitir — projeto default para produtos, tenant inteiro
-// para o IAM. Qualquer outro valor é ignorado, e ausente significa produto não
-// escopável.
-func getProjectScopeExtension(prefix *string, servers openapi3.Servers) core.ProjectScope {
+func getProjectScopedExtension(prefix *string, servers openapi3.Servers) bool {
 	if len(servers) == 0 {
-		return ""
+		return false
 	}
-	v, _ := getExtensionString(prefix, "project-scope", servers[0].Extensions, "")
-	switch v {
-	case string(core.ProjectScopeProduct):
-		return core.ProjectScopeProduct
-	case string(core.ProjectScopeIAM):
-		return core.ProjectScopeIAM
-	default:
-		return ""
-	}
+	v, _ := getExtensionBool(prefix, "project-scope", servers[0].Extensions, false)
+	return v
 }

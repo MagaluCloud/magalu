@@ -905,6 +905,35 @@
               "type": "string",
               "title": "Role Name"
             }
+          },
+          {
+            "name": "parent_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "organization",
+                "project"
+              ],
+              "type": "string",
+              "title": "Parent Type"
+            }
+          },
+          {
+            "name": "parent_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Parent Id"
+            }
           }
         ],
         "requestBody": {
@@ -5361,6 +5390,39 @@
           "origin": {
             "type": "string",
             "title": "Origin"
+          },
+          "parent_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Type"
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Id"
+          },
+          "parent_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Name"
           }
         },
         "type": "object",
@@ -5396,6 +5458,39 @@
             },
             "type": "array",
             "title": "Permissions"
+          },
+          "parent_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Type"
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Id"
+          },
+          "parent_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Name"
           }
         },
         "type": "object",

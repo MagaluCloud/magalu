@@ -16,7 +16,7 @@ mgc kubernetes nodepool get [cluster-id] [node-pool-id] [flags]
     --cluster-id uuid               Cluster's UUID. (required)
 -h, --help                          help for get
     --node-pool-id uuid             Nodepool's UUID. (required)
-    --project-id string             Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

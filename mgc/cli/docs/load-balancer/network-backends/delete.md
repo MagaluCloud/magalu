@@ -15,7 +15,7 @@ mgc load-balancer network-backends delete [load-balancer-id] [backend-id] [flags
     --backend-id uuid         backend_id: ID of the backend you wanna delete (required)
 -h, --help                    help for delete
     --load-balancer-id uuid   load_balancer_id: ID of the attached Load Balancer (required)
-    --project-id string       Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string       Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

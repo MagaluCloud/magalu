@@ -16,7 +16,7 @@ mgc virtual-machine instances delete [id] [flags]
     --delete-public-ip    Delete Public Ip: Flag default value false.
 -h, --help                help for delete
     --id uuid             Instance id - for help use ./mgc virtual-machines instances list . (required)
-    --project-id string   Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string   Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

@@ -58,6 +58,22 @@
         ],
         "parameters": [
           {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Include"
+            }
+          },
+          {
             "name": "email",
             "in": "query",
             "required": false,
@@ -788,7 +804,7 @@
                   "type": "string",
                   "minLength": 1,
                   "maxLength": 255,
-                  "pattern": "^[\\w\\-\\s]+$"
+                  "pattern": "^[\\w\\-\\s\\.,&]*$"
                 },
                 {
                   "type": "null"
@@ -899,7 +915,7 @@
                   "type": "string",
                   "minLength": 1,
                   "maxLength": 255,
-                  "pattern": "^[\\w\\-\\s]+$"
+                  "pattern": "^[\\w\\-\\s\\.,&]*$"
                 },
                 {
                   "type": "null"
@@ -978,6 +994,61 @@
             "schema": {
               "type": "string",
               "title": "Role Name"
+            }
+          },
+          {
+            "name": "parent_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "organization",
+                    "project"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Parent Type"
+            }
+          },
+          {
+            "name": "parent_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Parent Id"
+            }
+          },
+          {
+            "name": "parent_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 255,
+                  "pattern": "^[\\w\\-\\s\\.,&]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Parent Name"
             }
           }
         ],
@@ -1103,7 +1174,7 @@
                   "type": "string",
                   "minLength": 1,
                   "maxLength": 255,
-                  "pattern": "^[\\w\\-\\s]+$"
+                  "pattern": "^[\\w\\-\\s\\.,&]*$"
                 },
                 {
                   "type": "null"
@@ -2410,7 +2481,7 @@
           {
             "name": "email",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string",
               "description": "The group email to check",
@@ -3193,16 +3264,6 @@
         ],
         "parameters": [
           {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 0,
-              "title": "Offset"
-            }
-          },
-          {
             "name": "limit",
             "in": "query",
             "required": false,
@@ -3211,6 +3272,16 @@
               "maximum": 100,
               "default": 50,
               "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "title": "Offset"
             }
           }
         ],
@@ -3821,6 +3892,61 @@
         },
         "x-mgc-hidden": true
       }
+    },
+    "/api/v2/members/grants/batch": {
+      "post": {
+        "tags": [
+          "Members"
+        ],
+        "summary": "Batch Update Members V2",
+        "operationId": "batch_update_members_v2_api_v2_members_grants_batch_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchUpdateMembersV2"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "origin": "permissionsAPI",
+                  "permission": "turia_iam_editor",
+                  "product": "turiaiam",
+                  "message": "User action not authorized for permission turia_iam_editor"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "iam:read",
+              "iam:write"
+            ]
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -4246,6 +4372,34 @@
         ],
         "title": "BatchUpdateMembers"
       },
+      "BatchUpdateMembersV2": {
+        "properties": {
+          "operation": {
+            "$ref": "#/components/schemas/OperationType"
+          },
+          "member_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Member Ids"
+          },
+          "projects": {
+            "items": {
+              "$ref": "#/components/schemas/ProjectContext"
+            },
+            "type": "array",
+            "title": "Projects"
+          }
+        },
+        "type": "object",
+        "required": [
+          "operation",
+          "member_ids",
+          "projects"
+        ],
+        "title": "BatchUpdateMembersV2"
+      },
       "CreateGroup": {
         "properties": {
           "identifier": {
@@ -4308,6 +4462,21 @@
               }
             ],
             "title": "Permissions"
+          },
+          "projects": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ProjectContext"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Projects",
+            "default": []
           }
         },
         "type": "object",
@@ -5108,6 +5277,20 @@
               }
             ],
             "title": "Profile"
+          },
+          "projects": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ProjectsPrivilegesResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Projects"
           }
         },
         "type": "object",
@@ -5542,40 +5725,76 @@
       "ProjectContext": {
         "properties": {
           "type": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "organization",
+                  "project"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Type"
           },
           "id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Id"
           },
           "name": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "pattern": "^[\\w\\-\\s\\.,&]*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Name"
           },
           "roles": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Roles",
             "default": []
           },
           "permissions": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Permissions",
             "default": []
           }
         },
         "type": "object",
-        "required": [
-          "type",
-          "id",
-          "name"
-        ],
         "title": "ProjectContext"
       },
       "ProjectCreate": {
@@ -5614,6 +5833,44 @@
           "name"
         ],
         "title": "ProjectResponse"
+      },
+      "ProjectsPrivilegesResponse": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "roles": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Roles"
+          },
+          "permissions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Permissions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "name"
+        ],
+        "title": "ProjectsPrivilegesResponse"
       },
       "Role": {
         "properties": {

@@ -3,7 +3,7 @@ sidebar_position: 4
 ---
 # Default
 
-Clears the selected project, so requests are scoped to the tenant's default project again
+Selects the tenant's default project, so requests are no longer scoped to a specific one
 
 ## Usage:
 ```

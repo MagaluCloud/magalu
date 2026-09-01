@@ -16,7 +16,7 @@ mgc virtual-machine instances get [id] [flags]
     --expand array(string)          Expand: You can get more detailed info about: ['image', 'machine-type', 'machine-types', 'network', 'labels']  (required) (default ["network","image","machine-type"])
 -h, --help                          help for get
     --id string                     Instance id - for help use ./mgc virtual-machines instances list . (required)
-    --project-id string             Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

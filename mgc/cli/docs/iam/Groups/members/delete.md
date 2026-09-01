@@ -15,7 +15,7 @@ mgc iam groups members delete [group-id] [member-id] [flags]
     --group-id string     Group Id (required)
 -h, --help                help for delete
     --member-id string    Member Id (required)
-    --project-id string   Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string   Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

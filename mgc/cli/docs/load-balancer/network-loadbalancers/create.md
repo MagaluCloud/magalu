@@ -28,7 +28,7 @@ mgc load-balancer network-loadbalancers create --acls='[{"action":"ALLOW","ether
     --listeners array(object)          Listeners: The list of listener configurations for the load balancer
                                        Use --listeners=help for more details (required)
     --name string                      The unique name of the load balancer (max character count: 64) (required)
-    --project-id string                Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string                Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --public-ip-id string              The public IP ID associated with the load balancer, a new one will be created if not provided
     --subnet-pool-id string            The subnet pool ID associated with the load balancer, the default will be used if not provided
     --tls-certificates array(object)   The list of TLS certificates for the load balancer

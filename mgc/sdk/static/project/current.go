@@ -29,7 +29,7 @@ var getCurrent = utils.NewLazyLoader[core.Executor](func() core.Executor {
 			Name:         "current",
 			Summary:      "Show the project the CLI is using",
 			Description:  "Resolves the selected project against the API to show its name. The id comes from the local configuration, so it is still reported when the API cannot be reached",
-			Observations: "An empty id means no project is selected: requests go to the tenant's default project.",
+			Observations: "The id 'default' means no specific project is selected: requests go to the tenant's default project.",
 		},
 		current,
 	)
@@ -46,8 +46,10 @@ func currentScope(ctx context.Context, key string, cfg projectConfig) (*currentR
 	}
 
 	var id string
-	if err := config.Get(key, &id); err != nil || id == "" {
-		return &currentResult{}, nil // sem projeto: nada a resolver, e nenhuma request
+	if err := config.Get(key, &id); err != nil || mgcConfigPkg.IsProjectDefault(id) {
+		// O default não está na lista com esse nome, então não há o que resolver
+		// — e não se gasta uma request. Vazio e o literal são o mesmo caso.
+		return &currentResult{ID: mgcConfigPkg.ProjectDefault}, nil
 	}
 
 	// Não há GET /{id} na API de projects: resolver o nome é listar e procurar.

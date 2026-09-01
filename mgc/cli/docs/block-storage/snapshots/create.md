@@ -21,7 +21,7 @@ mgc block-storage snapshots create --source-snapshot.id="xxxxxxxx-xxxx-xxxx-xxxx
     --description string            Description (required)
 -h, --help                          help for create
     --name string                   Name (between 3 and 50 characters) (required)
-    --project-id string             Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --source-snapshot object        Source Snapshot (at least one of: single property: id or single property: name)
                                     Use --source-snapshot=help for more details
     --source-snapshot.id string     Source Snapshot: Id (min character count: 1)

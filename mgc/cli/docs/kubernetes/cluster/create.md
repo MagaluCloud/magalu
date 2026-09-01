@@ -47,7 +47,7 @@ mgc kubernetes cluster create --allowed-cidrs='["192.168.1.0/24","10.0.0.0/16"]'
     --node-pools array(object)      An array representing a set of nodes within a Kubernetes cluster.
                                     
                                     Use --node-pools=help for more details
-    --project-id string             Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --services-ipv4-cidr string     The IPv4 subnet CIDR used by Kubernetes Services.
                                     This parameter can only be set when creating a new cluster and can not be updated later.
                                     If not specified, the value of "10.96.0.0/12" will be used by default.

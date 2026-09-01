@@ -14,7 +14,7 @@ mgc iam members list [flags]
 ```
     --email string        Email
 -h, --help                help for list
-    --project-id string   Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string   Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

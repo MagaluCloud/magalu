@@ -14,7 +14,7 @@ mgc iam domains check-dns [domain-id] [flags]
 ```
     --domain-id string    Domain Id (required)
 -h, --help                help for check-dns
-    --project-id string   Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string   Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:

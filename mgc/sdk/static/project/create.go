@@ -18,10 +18,10 @@ type createParams struct {
 var getCreate = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
-			Name:         "create",
-			ProjectScope: core.ProjectScopeIAM,
-			Summary:      "Create a new project",
-			Description:  "Create a new project under the currently authenticated tenant",
+			Name:          "create",
+			ProjectScoped: true,
+			Summary:       "Create a new project",
+			Description:   "Create a new project under the currently authenticated tenant",
 		},
 		create,
 	)

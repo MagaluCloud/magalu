@@ -6,7 +6,7 @@
 
 servers:
 -   url: https://{env}/{region}/load-balancer
-    x-mgc-project-scope: project
+    x-mgc-project-scope: true
     variables:
         region:
             description: Region to reach the service

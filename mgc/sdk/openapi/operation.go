@@ -68,15 +68,12 @@ func newOperation(
 	logger = logger.Named(name)
 	op := &operation{
 		SimpleDescriptor: core.SimpleDescriptor{Spec: core.DescriptorSpec{
-			Name:        name,
-			Description: getDescriptionExtension(extensionPrefix, desc.op.Extensions, desc.op.Description),
-			Version:     version,
-			Summary:     desc.op.Summary,
-			IsInternal:  utils.BoolPtr(getHiddenExtension(extensionPrefix, desc.op.Extensions)),
-			// Declarado uma vez por serviço, no bloco `servers` da customização.
-			// Ausente = produto não escopável: não recebe 'x-project-id' nem as
-			// flags de escopo. Opt-in porque só 5 dos 10 produtos participam.
-			ProjectScope: getProjectScopeExtension(extensionPrefix, servers),
+			Name:          name,
+			Description:   getDescriptionExtension(extensionPrefix, desc.op.Extensions, desc.op.Description),
+			Version:       version,
+			Summary:       desc.op.Summary,
+			IsInternal:    utils.BoolPtr(getHiddenExtension(extensionPrefix, desc.op.Extensions)),
+			ProjectScoped: getProjectScopedExtension(extensionPrefix, servers),
 		}},
 		key:             desc.pathKey,
 		method:          method,

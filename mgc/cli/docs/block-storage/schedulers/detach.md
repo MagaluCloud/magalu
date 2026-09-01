@@ -20,7 +20,7 @@ mgc block-storage schedulers detach --volume.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxx
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                          help for detach
     --id uuid                       Id (required)
-    --project-id string             Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string             Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --volume object                 Volume (at least one of: single property: id or single property: name)
                                     Use --volume=help for more details (required)
     --volume.id string              Volume: Id (min character count: 1)

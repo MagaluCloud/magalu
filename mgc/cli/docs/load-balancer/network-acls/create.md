@@ -18,7 +18,7 @@ mgc load-balancer network-acls create [load-balancer-id] [flags]
 -h, --help                             help for create
     --load-balancer-id uuid            load_balancer_id: ID of the attached Load Balancer (required)
     --name string                      acl name field (max character count: 64)
-    --project-id string                Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string                Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
     --protocol enum                    Protocol (one of "tcp" or "tls") (required)
     --remote-ip-prefix ipvanynetwork   Remote Ip Prefix (required)
 ```

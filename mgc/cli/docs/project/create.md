@@ -19,7 +19,7 @@ mgc project create --name="my-project"
 ```
 -h, --help                help for create
     --name string         Name of the new project (required)
-    --project-id string   Project to scope this command to. Overrides the configured project for this invocation
+    --project-id string   Project to scope this command to, or 'default' for the tenant's default project. Overrides the configured project for this invocation
 ```
 
 ## Global Flags:
