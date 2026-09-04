@@ -77,6 +77,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.read
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/images/custom:
         get:
             tags:
@@ -182,6 +195,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/images/custom/{id}:
         get:
             tags:
@@ -295,6 +321,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/instance-types:
         get:
             tags:
@@ -374,6 +413,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.read
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/instances:
         get:
             tags:
@@ -624,6 +676,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/instances/config/{id}/first-windows-password:
         get:
             tags:
@@ -703,6 +768,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.read
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/instances/network-interface/attach:
         post:
             tags:
@@ -753,6 +831,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/instances/network-interface/detach:
         post:
             tags:
@@ -804,6 +895,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/instances/{id}:
         get:
             tags:
@@ -1047,6 +1151,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/instances/{id}/init-logs:
         get:
             tags:
@@ -1136,6 +1253,19 @@ paths:
             -   OAuth2:
                 - virtual-machine.read
             x-mgc-name: init-logs
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/instances/{id}/reboot:
         post:
             tags:
@@ -1229,6 +1359,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/instances/{id}/rename:
         patch:
             tags:
@@ -1349,6 +1492,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/instances/{id}/retype:
         post:
             tags:
@@ -1489,6 +1645,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/instances/{id}/start:
         post:
             tags:
@@ -1580,6 +1749,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/instances/{id}/stop:
         post:
             tags:
@@ -1672,6 +1854,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/instances/{id}/suspend:
         post:
             tags:
@@ -1765,6 +1960,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/machine-types:
         get:
             tags:
@@ -1843,6 +2051,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.read
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/snapshots:
         get:
             tags:
@@ -2057,6 +2278,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/snapshots/{id}:
         get:
             tags:
@@ -2333,6 +2567,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/snapshots/{id}/copy:
         post:
             tags:
@@ -2413,6 +2660,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/snapshots/{id}/rename:
         patch:
             tags:
@@ -2505,6 +2765,19 @@ paths:
             security:
             -   OAuth2:
                 - virtual-machine.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
 components:
     schemas:
         Architecture:
@@ -5055,6 +5328,7 @@ tags:
 $id: https://virtual-machine.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/compute
+    x-mgc-project-scope: true
     variables:
         region:
             description: Region to reach the service

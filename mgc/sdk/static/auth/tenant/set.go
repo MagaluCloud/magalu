@@ -21,7 +21,7 @@ func newSet() core.Executor {
 		core.DescriptorSpec{
 			Name:         "set",
 			Description:  "Set the active Tenant to be used for all subsequent requests",
-			Observations: "If you have an API Key set, changing the tenant will unset it.",
+			Observations: "Changing the tenant unsets the current API Key and selects the new tenant's default project.",
 		},
 		setTenant,
 	)
@@ -52,5 +52,19 @@ func setTenant(ctx context.Context, params tenantSetParams, _ struct{}) (
 			return nil, err
 		}
 	}
-	return auth.SelectTenant(ctx, params.UUID, allScopes.AsScopesString())
+
+	result, err := auth.SelectTenant(ctx, params.UUID, allScopes.AsScopesString())
+	if err != nil {
+		return nil, err
+	}
+
+	// Depois da troca, nunca antes: gravar o projeto de um tenant que o token
+	// seguinte pode nem ter assumido deixaria a configuração apontando para o
+	// lugar errado justamente quando a troca falha.
+	if err = SelectDefaultProject(ctx, auth); err != nil {
+		return nil, err
+	}
+	fmt.Print("📁 The selected project changed to this tenant's default. \n\n")
+
+	return result, nil
 }

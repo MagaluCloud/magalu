@@ -15,6 +15,8 @@ mgc iam roles permissions update [role-name] [flags]
     --add array(string)             Add
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                          help for update
+    --parent-id string              Parent Id
+    --parent-type enum              Parent Type (one of "organization" or "project") (required)
     --remove array(string)          Remove
     --role-name string              Role Name (required)
 ```

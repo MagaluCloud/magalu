@@ -1,23 +1,28 @@
 ---
-sidebar_position: 4
+sidebar_position: 0
 ---
-# Update
+# Project
 
-Add Grants
+Projects group the resources of a tenant. The commands here talk to
+Magalu Cloud IAM and require a user login (see 'mgc auth login')
 
 ## Usage:
 ```
-mgc iam members grants update [uuid] [flags]
+mgc project [flags]
+mgc project [command]
+```
+
+## Commands:
+```
+create      Create a new project
+current     Show the project the CLI is using
+list        List the projects of your tenant
+set         Set the project used by the CLI
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
--h, --help                          help for update
-    --operation enum                OperationType (one of "add" or "remove") (required)
-    --permissions array(string)     Permissions
-    --roles array(string)           Roles
-    --uuid uuid                     Uuid (required)
+-h, --help   help for project
 ```
 
 ## Global Flags:
@@ -32,6 +37,5 @@ mgc iam members grants update [uuid] [flags]
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --server-url uri           Manually specify the server to use
 ```
 

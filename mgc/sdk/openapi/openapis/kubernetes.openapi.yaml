@@ -13,6 +13,7 @@ info:
 servers:
 -   url: https://{env}/{region}/kubernetes
     description: NE-1 pre-prod
+    x-mgc-project-scope: true
     variables:
         region:
             description: Region to reach the service
@@ -398,6 +399,19 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v0/clusters/{cluster_id}:
         get:
             tags:
@@ -845,6 +859,19 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v0/clusters/{cluster_id}/kubeconfig:
         get:
             tags:
@@ -988,6 +1015,19 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v0/clusters/{cluster_id}/node_pools:
         post:
             tags:
@@ -1188,6 +1228,19 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v0/clusters/{cluster_id}/node_pools/{node_pool_id}:
         get:
             tags:
@@ -1658,6 +1711,19 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v0/clusters/{cluster_id}/node_pools/{node_pool_id}/nodes:
         get:
             tags:
@@ -1817,6 +1883,19 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1alpha0/clusters/{cluster_id}/node-pools:
         get:
             tags:
@@ -1944,6 +2023,19 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/flavors:
         get:
             tags:
@@ -2067,6 +2159,19 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
             deprecated: true
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/versions:
         get:
             tags:
@@ -2189,6 +2294,19 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
 components:
     schemas:
         ClusterRequest:

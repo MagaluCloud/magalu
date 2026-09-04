@@ -60,3 +60,7 @@ fi
 python3 $BASEDIR/transformers/transform.py $API_NAME $API_SPEC_FILE $SPEC_UID -o $OAPI_PATH/$SPEC_FILE
 python3 $BASEDIR/yaml_merge.py --override $OAPI_PATH/$SPEC_FILE $CUSTOM_PATH/$SPEC_FILE
 
+# Depois do merge, nunca antes: a marca 'x-mgc-project-scope' mora na
+# customização, e no transform ela ainda não foi fundida no spec.
+python3 $BASEDIR/transformers/apply_project_scope.py $OAPI_PATH/$SPEC_FILE
+

@@ -23,9 +23,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-
-                }
+                "schema": {}
               }
             }
           },
@@ -563,6 +561,35 @@
               ],
               "title": "Role Name"
             }
+          },
+          {
+            "name": "parent_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "organization",
+                "project"
+              ],
+              "type": "string",
+              "title": "Parent Type"
+            }
+          },
+          {
+            "name": "parent_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Parent Id"
+            }
           }
         ],
         "responses": {
@@ -694,6 +721,35 @@
               "type": "string",
               "title": "Role Name"
             }
+          },
+          {
+            "name": "parent_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "organization",
+                "project"
+              ],
+              "type": "string",
+              "title": "Parent Type"
+            }
+          },
+          {
+            "name": "parent_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Parent Id"
+            }
           }
         ],
         "responses": {
@@ -750,6 +806,35 @@
               "type": "string",
               "title": "Role Name"
             }
+          },
+          {
+            "name": "parent_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "organization",
+                "project"
+              ],
+              "type": "string",
+              "title": "Parent Type"
+            }
+          },
+          {
+            "name": "parent_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Parent Id"
+            }
           }
         ],
         "responses": {
@@ -764,9 +849,7 @@
                     },
                     {
                       "type": "array",
-                      "items": {
-
-                      }
+                      "items": {}
                     }
                   ],
                   "title": "Response Get Role Permissions Api V1 Roles  Role Name  Permissions Get"
@@ -821,6 +904,35 @@
             "schema": {
               "type": "string",
               "title": "Role Name"
+            }
+          },
+          {
+            "name": "parent_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "organization",
+                "project"
+              ],
+              "type": "string",
+              "title": "Parent Type"
+            }
+          },
+          {
+            "name": "parent_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Parent Id"
             }
           }
         ],
@@ -898,6 +1010,35 @@
             "schema": {
               "type": "string",
               "title": "Role Name"
+            }
+          },
+          {
+            "name": "parent_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "organization",
+                "project"
+              ],
+              "type": "string",
+              "title": "Parent Type"
+            }
+          },
+          {
+            "name": "parent_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Parent Id"
             }
           }
         ],
@@ -1112,9 +1253,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-
-                }
+                "schema": {}
               }
             }
           },
@@ -1810,9 +1949,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-
-                }
+                "schema": {}
               }
             }
           },
@@ -1999,9 +2136,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-
-                }
+                "schema": {}
               }
             }
           },
@@ -3866,6 +4001,28 @@
             "type": "array",
             "title": "Permission Names",
             "default": []
+          },
+          "parent_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Type"
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Id"
           }
         },
         "type": "object",
@@ -3986,6 +4143,25 @@
               }
             ],
             "title": "Based Role"
+          },
+          "parent_type": {
+            "type": "string",
+            "enum": [
+              "organization",
+              "project"
+            ],
+            "title": "Parent Type"
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Id"
           }
         },
         "type": "object",
@@ -5214,6 +5390,39 @@
           "origin": {
             "type": "string",
             "title": "Origin"
+          },
+          "parent_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Type"
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Id"
+          },
+          "parent_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Name"
           }
         },
         "type": "object",
@@ -5249,6 +5458,39 @@
             },
             "type": "array",
             "title": "Permissions"
+          },
+          "parent_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Type"
+          },
+          "parent_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Id"
+          },
+          "parent_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Name"
           }
         },
         "type": "object",

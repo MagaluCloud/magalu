@@ -6,6 +6,7 @@
 
 servers:
 -   url: https://{env}/iam
+    x-mgc-project-scope: true
     variables:
         env:
             description: Environment to use
@@ -20,3 +21,59 @@ servers:
                     to: api.magalu.cloud
                 -   from: pre-prod
                     to: api.pre-prod.jaxyendy.com:8443
+paths:
+    /api/v1/members/{uuid}/grants:
+        patch:
+            x-mgc-hidden: true
+
+    /api/v1/roles:
+        get:
+            parameters:
+            -   name: role_name
+                in: query
+            -   name: parent_type
+                in: query
+                required: true
+    /api/v1/roles/{role_name}:
+        delete:
+            parameters:
+            -   name: role_name
+                in: path
+            -   name: parent_type
+                in: query
+                required: true
+    /api/v1/roles/{role_name}/members:
+        get:
+            parameters:
+            -   name: role_name
+                in: path
+            -   name: parent_type
+                in: query
+                required: true
+    /api/v1/roles/{role_name}/permissions:
+        get:
+            parameters:
+            -   name: role_name
+                in: path
+            -   name: parent_type
+                in: query
+                required: true
+        patch:
+            parameters:
+            -   name: role_name
+                in: path
+            -   name: parent_type
+                in: query
+                required: true
+
+components:
+    schemas:
+        CreateRole:
+            required:
+            - name
+            - parent_type
+        BatchUpdateMembers:
+            required:
+            - member_ids
+            - operation
+            - parent_type

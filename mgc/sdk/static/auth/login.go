@@ -20,6 +20,7 @@ import (
 	mgcAuthPkg "github.com/MagaluCloud/magalu/mgc/core/auth"
 	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	mgcAuthScope "github.com/MagaluCloud/magalu/mgc/sdk/static/auth/scopes"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/auth/tenant"
 	"github.com/pkg/browser"
 	"github.com/skip2/go-qrcode"
 	"go.uber.org/zap"
@@ -62,8 +63,9 @@ var getLogin = utils.NewLazyLoader[core.Executor](func() core.Executor {
 			Name:    "login",
 			Summary: "Authenticate with Magalu Cloud",
 			Description: `Log in to your Magalu Cloud account. When you login with this command,
-the current Tenant will always be set to the default one. To see more details
-about a successful login, use the '--show' flag when logging in`,
+the current Tenant will always be set to the default one, and the selected
+project follows it. To see more details about a successful login, use the
+'--show' flag when logging in`,
 		},
 		login,
 	)
@@ -139,6 +141,14 @@ func login(ctx context.Context, parameters loginParameters, _ struct{}) (*loginR
 	result := <-resultChan
 	if result.err != nil {
 		return nil, result.err
+	}
+
+	// O login recoloca a CLI no tenant default, então o projeto selecionado —
+	// que pertence a um tenant — tem de acompanhar. Antes do CurrentTenant
+	// abaixo de propósito: ele consulta a rede e pode falhar mesmo com o id
+	// perfeitamente disponível, e o escopo não pode ficar velho por causa disso.
+	if err := tenant.SelectDefaultProject(ctx, auth); err != nil {
+		return nil, err
 	}
 
 	currentTenant, err := auth.CurrentTenant(ctx)

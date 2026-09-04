@@ -70,6 +70,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/attachments/{id}:
         delete:
             tags:
@@ -136,6 +149,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/schedulers:
         get:
             tags:
@@ -302,6 +328,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/schedulers/{id}:
         delete:
             tags:
@@ -440,6 +479,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.read
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/schedulers/{id}/attach:
         post:
             tags:
@@ -515,6 +567,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/schedulers/{id}/detach:
         post:
             tags:
@@ -590,6 +655,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/snapshots:
         get:
             tags:
@@ -771,6 +849,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/snapshots/{id}:
         delete:
             tags:
@@ -922,6 +1013,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.read
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/snapshots/{id}/copy:
         post:
             tags:
@@ -1004,6 +1108,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/snapshots/{id}/rename:
         patch:
             tags:
@@ -1087,6 +1204,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/volume-types:
         get:
             tags:
@@ -1140,6 +1270,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.read
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/volumes:
         get:
             tags:
@@ -1334,6 +1477,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/volumes/{id}:
         delete:
             tags:
@@ -1509,6 +1665,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.read
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/volumes/{id}/attach/{virtual_machine_id}:
         post:
             tags:
@@ -1611,6 +1780,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/volumes/{id}/detach:
         post:
             tags:
@@ -1711,6 +1893,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/volumes/{id}/extend:
         post:
             tags:
@@ -1804,6 +1999,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/volumes/{id}/rename:
         patch:
             tags:
@@ -1902,6 +2110,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
     /v1/volumes/{id}/retype:
         post:
             tags:
@@ -1995,6 +2216,19 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
+        parameters:
+        -   name: x-project-id
+            in: header
+            required: false
+            description: Project to scope this command to. Prefer 'mgc project set',
+                which resolves the project by id or name and checks that it exists
+            x-mgc-name: project
+            schema:
+                type: string
+                title: Project
+                description: Project to scope this command to. Prefer 'mgc project
+                    set', which resolves the project by id or name and checks that
+                    it exists
 components:
     schemas:
         AttachmentMachine:
@@ -3963,6 +4197,7 @@ tags:
 $id: https://block-storage.jaxyendy.com/openapi.json
 servers:
 -   url: https://{env}/{region}/volume
+    x-mgc-project-scope: true
     variables:
         region:
             description: Region to reach the service
