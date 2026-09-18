@@ -2499,7 +2499,7 @@
       },
       "NodePoolFlavor": {
         "type": "string",
-        "description": "Name of the machine type. The machine type defines the CPU, RAM, and storage capacity of the nodes.\nThe full list of available machine types can be found in the Virtual Machine by listing the machine types.\nThe smallest supported machine type is BV2-4-40.\n\nFor V1 Clusters, the list of available flavors can be retrieved using the /v1/flavors endpoint (deprecated) or via the MGC CLI with the command `kubernetes flavors list`.",
+        "description": "Name of the machine type. The machine type defines the CPU, RAM, and storage capacity of the nodes.\nThe full list of available machine types can be found in the Virtual Machine by listing the machine types with `mgc vm machine-types list` .\nThe smallest supported machine type is BV2-4-40.",
         "example": "BV2-4-40"
       },
       "NodePoolLabels": {
@@ -3603,7 +3603,8 @@
     },
     {
       "name": "flavor",
-      "description": "Endpoints related to listing available flavors for a Kubernetes cluster."
+      "description": "Endpoints related to listing available flavors for a Kubernetes cluster.",
+      "x-mgc-hidden": true
     },
     {
       "name": "version",
