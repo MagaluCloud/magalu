@@ -191,8 +191,9 @@ func (e Event) MarshalJSON() ([]byte, error) {
 	if e.Outcome == OutcomeFailure {
 		out.FailureReason = e.normalizedFailureReason()
 	}
-	if e.TimeToFirstValue != nil {
-		ms := nonNegativeMs(*e.TimeToFirstValue)
+	// A negative TTFV means the wall clock went backwards; it is dropped instead of sent as 0.
+	if e.TimeToFirstValue != nil && *e.TimeToFirstValue >= 0 {
+		ms := e.TimeToFirstValue.Milliseconds()
 		out.TimeToFirstValueMs = &ms
 	}
 

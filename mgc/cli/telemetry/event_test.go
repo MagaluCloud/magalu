@@ -209,3 +209,15 @@ func TestAnonymizedPayload(t *testing.T) {
 		}
 	}
 }
+
+func TestMarshalJSONOmitsNegativeTimeToFirstValue(t *testing.T) {
+	ttfv := -2 * time.Second
+	e := Event{Outcome: OutcomeSuccess, TimeToFirstValue: &ttfv}
+	got, err := json.Marshal(e)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(got), "timeToFirstValueMs") {
+		t.Errorf("negative TTFV must be omitted: %s", got)
+	}
+}
