@@ -1865,121 +1865,6 @@
         }
       }
     },
-    "/v1/flavors": {
-      "get": {
-        "tags": [
-          "flavor"
-        ],
-        "summary": "Lists all available flavors",
-        "description": "Lists all available flavors.",
-        "operationId": "getFlavorsV1",
-        "security": [
-          {
-            "BearerAuth": [
-              "mke.read"
-            ]
-          },
-          {
-            "OAuth2": [
-              "mke.read"
-            ]
-          }
-        ],
-        "x-permission": {
-          "permission-name": "kubernetes_cluster_info",
-          "product-name": "kubernetes"
-        },
-        "x-codeSamples": [
-          {
-            "lang": "Shell + Curl",
-            "source": "curl --request GET \\\n  --url https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1/flavors \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN'"
-          },
-          {
-            "lang": "Shell + Httpie",
-            "source": "http GET https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1/flavors \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN'"
-          },
-          {
-            "lang": "Go + Native",
-            "source": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1/flavors\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\treq.Header.Add(\"Authorization\", \"Bearer REPLACE_BEARER_TOKEN\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
-          },
-          {
-            "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"api-mke.pre-prod.br-ne-1.jaxyendy.com\")\n\nheaders = { 'Authorization': \"Bearer REPLACE_BEARER_TOKEN\" }\n\nconn.request(\"GET\", \"/v1/flavors\", headers=headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
-          },
-          {
-            "lang": "Node + Native",
-            "source": "const http = require(\"https\");\n\nconst options = {\n  \"method\": \"GET\",\n  \"hostname\": \"api-mke.pre-prod.br-ne-1.jaxyendy.com\",\n  \"port\": null,\n  \"path\": \"/v1/flavors\",\n  \"headers\": {\n    \"Authorization\": \"Bearer REPLACE_BEARER_TOKEN\"\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.end();"
-          },
-          {
-            "lang": "Ruby + Native",
-            "source": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://api-mke.pre-prod.br-ne-1.jaxyendy.com/v1/flavors\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\nhttp.verify_mode = OpenSSL::SSL::VERIFY_NONE\n\nrequest = Net::HTTP::Get.new(url)\nrequest[\"Authorization\"] = 'Bearer REPLACE_BEARER_TOKEN'\n\nresponse = http.request(request)\nputs response.read_body"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FlavorsResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
     "/v1/versions": {
       "get": {
         "tags": [
@@ -2499,7 +2384,7 @@
       },
       "NodePoolFlavor": {
         "type": "string",
-        "description": "Name of the machine type. The machine type defines the CPU, RAM, and storage capacity of the nodes.\nThe full list of available machine types can be found in the Virtual Machine by listing the machine types.\nThe smallest supported machine type is BV2-4-40.\n\nFor V1 Clusters, the list of available flavors can be retrieved using the /v1/flavors endpoint (deprecated) or via the MGC CLI with the command `kubernetes flavors list`.",
+        "description": "Name of the machine type. The machine type defines the CPU, RAM, and storage capacity of the nodes.\nThe full list of available machine types can be found in the Virtual Machine by listing the machine types with `mgc vm machine-types list` .\nThe smallest supported machine type is BV2-4-40.",
         "example": "BV2-4-40"
       },
       "NodePoolLabels": {
@@ -3265,93 +3150,6 @@
           "size"
         ]
       },
-      "FlavorWithSku": {
-        "type": "object",
-        "description": "Definition of CPU capacity, RAM, and storage for nodes.",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Name of the Flavor.",
-            "example": "cloud-k8s.gp1.small"
-          },
-          "id": {
-            "type": "string",
-            "description": "Unique identifier for the Flavor.",
-            "example": "c777eaa7-d67c-46f4-9e4f-232bc9b67b58",
-            "default": ""
-          },
-          "vcpu": {
-            "type": "integer",
-            "description": "Number of available vCPUs.",
-            "example": 2,
-            "default": 0
-          },
-          "ram": {
-            "type": "integer",
-            "description": "Amount of RAM, measured in MB.",
-            "example": 4096,
-            "default": 0
-          },
-          "size": {
-            "type": "integer",
-            "description": "Amount of disk space, measured in GB.",
-            "example": 20,
-            "default": 0
-          },
-          "sku": {
-            "type": "string",
-            "description": "SKU associated with the Flavor.",
-            "example": "sku-1234"
-          }
-        },
-        "required": [
-          "name",
-          "id",
-          "vcpu",
-          "ram",
-          "size",
-          "sku"
-        ]
-      },
-      "FlavorsResponse": {
-        "type": "object",
-        "description": "Response object for the Flavor request.",
-        "required": [
-          "results"
-        ],
-        "properties": {
-          "results": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FlavorsAvailable"
-            }
-          }
-        }
-      },
-      "FlavorsAvailable": {
-        "type": "object",
-        "description": "Lists of available flavors provided by the application.",
-        "properties": {
-          "nodepool": {
-            "type": "array",
-            "description": "Lists of available flavors for the Node Pools.",
-            "items": {
-              "$ref": "#/components/schemas/FlavorWithSku"
-            }
-          },
-          "controlplane": {
-            "type": "array",
-            "description": "Lists of available flavors for the Control Plane.",
-            "items": {
-              "$ref": "#/components/schemas/FlavorWithSku"
-            }
-          }
-        },
-        "required": [
-          "nodepool",
-          "controlplane"
-        ]
-      },
       "VersionsResponse": {
         "type": "object",
         "description": "Response object for the Version request.",
@@ -3600,10 +3398,6 @@
     {
       "name": "nodepool",
       "description": "Endpoints related to the creation, listing of nodepools and nodes, updating, and deletion of nodepools for a Kubernetes cluster."
-    },
-    {
-      "name": "flavor",
-      "description": "Endpoints related to listing available flavors for a Kubernetes cluster."
     },
     {
       "name": "version",

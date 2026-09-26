@@ -14,7 +14,6 @@ mgc kubernetes [command]
 ## Commands:
 ```
 cluster     Endpoints related to the creation, listing, deletion, and retrieval of the kubeconfig for a Kubernetes cluster.
-flavor      Endpoints related to listing available flavors for a Kubernetes cluster.
 nodepool    Endpoints related to the creation, listing of nodepools and nodes, updating, and deletion of nodepools for a Kubernetes cluster.
 version     Endpoints related to listing available Kubernetes versions for a Kubernetes cluster.
 ```
