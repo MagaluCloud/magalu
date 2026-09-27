@@ -127,7 +127,7 @@ func TestMarshalJSONFailureGolden(t *testing.T) {
 		"impact":"MEDIUM",
 		"clientVersion":"v1.4.2",
 		"os":"darwin",
-		"installMethod":"unknown",
+		"installMethod":"manual",
 		"timeToFirstValueMs":4231
 		}`
 
@@ -175,8 +175,6 @@ func TestMarshalJSONInvalidFailureReasonBecomesUnknown(t *testing.T) {
 }
 
 func TestAnonymizedPayload(t *testing.T) {
-	// Simulates: mgc ... --api-key=abc123 --region=br-ne1, failing with a detailed API message.
-	// Only flag names reach the event; values and messages never do.
 	secrets := []string{"abc123", "br-ne1", "Bearer eyJhbGci", "user@example.com", "/home/user/.config/mgc"}
 
 	e := Event{

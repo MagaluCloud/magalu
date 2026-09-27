@@ -22,7 +22,6 @@ const (
 	OutcomeFailure Outcome = "failure"
 )
 
-// FailureReason is a closed list of error categories. No other value may be emitted.
 type FailureReason string
 
 const (
@@ -53,7 +52,6 @@ var failureReasons = map[FailureReason]struct{}{
 	FailureUnknown:        {},
 }
 
-// Valid reports whether r belongs to the closed list of failure reasons.
 func (r FailureReason) Valid() bool {
 	_, ok := failureReasons[r]
 	return ok
@@ -85,8 +83,6 @@ type Resource struct {
 	ID   string `json:"id,omitempty"`
 }
 
-// Event is the anonymized record of a single command execution.
-// It must never carry flag values, raw error messages, credentials or local paths.
 type Event struct {
 	Timestamp            time.Time
 	Actor                *Actor
@@ -103,13 +99,9 @@ type Event struct {
 	InstallMethod        string
 	TimeToFirstValue     *time.Duration
 	LastRequestID        string
-
-	// InstallationID is the anonymous distinct id. It is handed to exporters
-	// separately and is not part of the serialized properties.
-	InstallationID string
+	InstallationID       string
 }
 
-// LogLevel is INFO on success and WARN on failure.
 func (e Event) LogLevel() LogLevel {
 	if e.Outcome == OutcomeFailure {
 		return LogLevelWarn
@@ -117,7 +109,6 @@ func (e Event) LogLevel() LogLevel {
 	return LogLevelInfo
 }
 
-// Impact is derived from the outcome and, on failure, from the failure reason.
 func (e Event) Impact() Impact {
 	if e.Outcome != OutcomeFailure {
 		return ImpactLow
@@ -177,7 +168,7 @@ func (e Event) MarshalJSON() ([]byte, error) {
 	}
 
 	if out.InstallMethod == "" {
-		out.InstallMethod = "unknown"
+		out.InstallMethod = InstallMethodManual
 	}
 	if e.Actor != nil && e.Actor.TenantID != "" {
 		out.Actor = e.Actor
@@ -191,7 +182,6 @@ func (e Event) MarshalJSON() ([]byte, error) {
 	if e.Outcome == OutcomeFailure {
 		out.FailureReason = e.normalizedFailureReason()
 	}
-	// A negative TTFV means the wall clock went backwards; it is dropped instead of sent as 0.
 	if e.TimeToFirstValue != nil && *e.TimeToFirstValue >= 0 {
 		ms := e.TimeToFirstValue.Milliseconds()
 		out.TimeToFirstValueMs = &ms
@@ -207,7 +197,6 @@ func nonNegativeMs(d time.Duration) int64 {
 	return d.Milliseconds()
 }
 
-// joinOptions returns option names sorted alphabetically, without duplicates, comma separated.
 func joinOptions(names []string) string {
 	sorted := slices.Clone(names)
 	slices.Sort(sorted)
