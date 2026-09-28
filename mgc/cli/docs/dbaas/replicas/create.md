@@ -10,8 +10,14 @@ Creates a new replica for an instance asynchronously.
 mgc dbaas replicas create [flags]
 ```
 
+## Examples:
+```
+mgc dbaas replicas create --availability-zone="br-ne1-a" --name="my-db-replica" --source-id="9959ee7a-0710-4faa-9f10-6845819e8ac0"
+```
+
 ## Flags:
 ```
+    --availability-zone enum        Availability Zone (one of "br-ne1-a", "br-ne1-b", "br-se1-a", "br-se1-b" or "br-se1-c")
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
 -h, --help                          help for create
     --instance-type-id uuid         Instance Type Id
