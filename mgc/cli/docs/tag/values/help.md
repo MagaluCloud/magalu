@@ -17,7 +17,7 @@ create      Create a value for a tag
 delete      Delete a value from a tag
 get         Get details of a value
 list        List the values of a tag
-update      Update the description of a value
+update      Update a value
 ```
 
 ## Flags:

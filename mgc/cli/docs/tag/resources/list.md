@@ -12,7 +12,7 @@ mgc tag resources list [flags]
 
 ## Examples:
 ```
-mgc tag resources list --external-id="31201f93-f5f4-4cf1-ba9c-bfed0717f4ac"
+mgc tag resources list --external-id="31201f93-f5f4-4cf1-ba9c-bfed0717f4ac" --tag-name="kubernetes-expenses"
 ```
 
 ## Flags:
@@ -24,6 +24,7 @@ mgc tag resources list --external-id="31201f93-f5f4-4cf1-ba9c-bfed0717f4ac"
 -h, --help                      help for list
     --region enum               Region to filter by (one of "br-ne1", "br-se1" or "global")
     --resource-type-name enum   Resource type to filter by, prefixed by its product (one of "bs.snapshot", "bs.volume", "cr.registry", "cr.repository", "db.cluster", "db.instance", "db.parameter-group", "db.replica", "db.snapshot", "k8s.cluster", "k8s.nodepool", "lb.network-acl", "lb.network-backend", "lb.network-certificate", "lb.network-healthcheck", "lb.network-listener", "lb.network-loadbalancer", "net.nat-gateway", "net.port", "net.public-ip", "net.rule", "net.security-group", "net.subnet", "net.vpc", "os.bucket", "os.object", "un.unknown", "vm.image", "vm.instance" or "vm.snapshot")
+    --tag-name string           Name of an attached tag to filter by (between 1 and 255 characters and pattern: ^[\w\ \-\[\]\(\)\.\:]+$)
 ```
 
 ## Global Flags:

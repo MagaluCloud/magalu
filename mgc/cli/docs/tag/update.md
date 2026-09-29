@@ -3,7 +3,7 @@ sidebar_position: 5
 ---
 # Update
 
-Update the color, kinds or description of a tag.
+Update the name, color, kinds or description of a tag.
 
 ## Usage:
 ```
@@ -12,7 +12,7 @@ mgc tag update [name] [flags]
 
 ## Examples:
 ```
-mgc tag update --color="ffffff" --description="tag to monitor expenses with environments" --kinds='["finops"]' --name="kubernetes-expenses"
+mgc tag update --color="ffffff" --description="tag to monitor expenses with environments" --kinds='["finops"]' --name="kubernetes-expenses" --new-name="kubernetes-expenses"
 ```
 
 ## Flags:
@@ -22,6 +22,7 @@ mgc tag update --color="ffffff" --description="tag to monitor expenses with envi
 -h, --help                 help for update
     --kinds array(enum)    Kinds that describe what the tag is for, such as finops
     --name string          Name of the tag (required)
+    --new-name string      New name for the tag (between 1 and 255 characters and pattern: ^[\w\ \-\[\]\(\)\.\:]+$)
 ```
 
 ## Global Flags:

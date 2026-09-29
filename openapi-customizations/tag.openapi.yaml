@@ -12,6 +12,18 @@ components:
                     example:
                     -   name: kubernetes-expenses
                         value: test-labs
+paths:
+    /v0/tags/{tag_name}/values/{value_name}:
+        patch:
+            responses:
+                '200':
+                    links:
+                        get:
+                            parameters:
+                                value_name: $response.body#/name
+                        delete:
+                            parameters:
+                                value_name: $response.body#/name
 servers:
 -   url: https://{env}/tags
     variables:

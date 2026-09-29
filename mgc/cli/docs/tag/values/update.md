@@ -3,7 +3,7 @@ sidebar_position: 5
 ---
 # Update
 
-Update the description of a value.
+Update the name or description of a value.
 
 ## Usage:
 ```
@@ -12,15 +12,15 @@ mgc tag values update [tag-name] [value-name] [flags]
 
 ## Examples:
 ```
-mgc tag values update --description="tag value to monitor expenses with test-labs" --tag-name="kubernetes-expenses" --value-name="test-labs"
+mgc tag values update --description="tag value to monitor expenses with test-labs" --new-name="test-labs" --tag-name="kubernetes-expenses" --value-name="test-labs"
 ```
 
 ## Flags:
 ```
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --cli.watch                     Wait until the operation is completed by calling the 'get' link and waiting until termination. Akin to '! get -w'
-    --description string            Description of the value (max character count: 500) (required)
+    --description string            Description of the value (max character count: 500)
 -h, --help                          help for update
+    --new-name string               New name for the value, unique within the tag (between 1 and 255 characters and pattern: ^[\w\ \-\[\]\(\)\.\:]+$)
     --tag-name string               Tag name that owns the value (required)
     --value-name string             Value name to operate on (required)
 ```

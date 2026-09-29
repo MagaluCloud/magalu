@@ -308,7 +308,7 @@
             }
           }
         },
-        "description": "Update the color, kinds or description of a tag.\n\nThe tag name cannot be changed. To use a different name, create a new tag\nand attach it to the resources."
+        "description": "Update the name, color, kinds or description of a tag."
       },
       "delete": {
         "summary": "Delete a tag",
@@ -723,7 +723,7 @@
         "tags": [
           "values"
         ],
-        "summary": "Update the description of a value",
+        "summary": "Update a value",
         "operationId": "update_tag_values_v0_tags__tag_name__values__value_name__patch",
         "security": [
           {
@@ -775,7 +775,6 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -806,7 +805,7 @@
             }
           }
         },
-        "description": "Update the description of a value.\n\nThe value name cannot be changed. To use a different name, create a new\nvalue and delete the old one."
+        "description": "Update the name or description of a value.\n\nThe new name must be unique within the tag."
       },
       "get": {
         "tags": [
@@ -1011,7 +1010,8 @@
         "security": [
           {
             "OAuth2": [
-              "tags:tags-tr"
+              "tags:tags-tr",
+              "tags:projects-tr"
             ]
           }
         ],
@@ -1082,7 +1082,8 @@
         "security": [
           {
             "OAuth2": [
-              "tags:tags-tr"
+              "tags:tags-tr",
+              "tags:projects-tr"
             ]
           }
         ],
@@ -1160,6 +1161,23 @@
             "description": "Region to filter by"
           },
           {
+            "name": "tag_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 255,
+              "minLength": 1,
+              "pattern": "^[\\w\\ \\-\\[\\]\\(\\)\\.\\:]+$",
+              "description": "Name of an attached tag to filter by",
+              "examples": [
+                "kubernetes-expenses",
+                "storage-for-datalake"
+              ]
+            },
+            "description": "Name of an attached tag to filter by"
+          },
+          {
             "name": "_limit",
             "in": "query",
             "required": false,
@@ -1233,7 +1251,7 @@
             }
           }
         },
-        "description": "List the resources you have access to, with the tags attached to each one.\n\nUse --resource-type-name, --region or --external-id to filter the result.\n\nRelated commands:\n  mgc tag resource-types list  see the values accepted by --resource-type-name"
+        "description": "List the resources you have access to, with the tags attached to each one.\n\nUse --resource-type-name, --region, --external-id or --tag-name to filter the result.\n\nRelated commands:\n  mgc tag resource-types list  see the values accepted by --resource-type-name"
       }
     },
     "/v0/resources/{external_id}/tags": {
@@ -1481,19 +1499,15 @@
             ]
           },
           "kinds": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/TagKinds"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/TagKinds"
+            },
+            "type": "array",
             "title": "Kinds",
             "description": "Kinds that describe what the tag is for, such as finops",
+            "default": [
+              "finops"
+            ],
             "examples": [
               [
                 "finops"
@@ -1541,16 +1555,53 @@
             "examples": [
               "tag value to monitor expenses with test-labs"
             ]
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1,
+                "pattern": "^[\\w\\ \\-\\[\\]\\(\\)\\.\\:]+$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "New name for the value, unique within the tag",
+            "examples": [
+              "test-labs",
+              "production-labs"
+            ],
+            "x-mgc-name": "new-name"
           }
         },
         "type": "object",
-        "required": [
-          "description"
-        ],
         "title": "Body_update_tag_values_v0_tags__tag_name__values__value_name__patch"
       },
       "Body_update_tags_public": {
         "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1,
+                "pattern": "^[\\w\\ \\-\\[\\]\\(\\)\\.\\:]+$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "New name for the tag",
+            "examples": [
+              "kubernetes-expenses",
+              "storage-for-datalake"
+            ],
+            "x-mgc-name": "new-name"
+          },
           "color": {
             "anyOf": [
               {

@@ -171,13 +171,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            description: 'Update the color, kinds or description of a tag.
-
-
-                The tag name cannot be changed. To use a different name, create a
-                new tag
-
-                and attach it to the resources.'
+            description: Update the name, color, kinds or description of a tag.
         delete:
             summary: Delete a tag
             operationId: delete_tags_public
@@ -285,7 +279,7 @@ paths:
                                 value_name: $request.body#/name
                         update:
                             operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
-                            description: Update the description of a value
+                            description: Update a value
                             parameters:
                                 tag_name: $request.path.tag_name
                                 value_name: $request.body#/name
@@ -428,7 +422,7 @@ paths:
         patch:
             tags:
             - values
-            summary: Update the description of a value
+            summary: Update a value
             operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
             security:
             -   OAuth2:
@@ -453,7 +447,6 @@ paths:
                     example: test-labs
                 description: Value name to operate on
             requestBody:
-                required: true
                 content:
                     application/json:
                         schema:
@@ -476,43 +469,28 @@ paths:
                             description: Create a value for a tag
                             parameters:
                                 tag_name: $request.path.tag_name
-                            x-mgc-wait-termination:
-                                interval: 5s
-                                maxRetries: 10
-                                jsonPathQuery: $.result.description == $.owner.parameters.description
                         get:
                             operationId: get_tag_values_v0_tags__tag_name__values__value_name__get
                             description: Get details of a value
                             parameters:
                                 tag_name: $request.path.tag_name
                                 value_name: $response.body#/name
-                            x-mgc-wait-termination:
-                                interval: 5s
-                                maxRetries: 10
-                                jsonPathQuery: $.result.description == $.owner.parameters.description
                         delete:
                             operationId: delete_tag_values
                             description: Delete a value from a tag
                             parameters:
                                 tag_name: $request.path.tag_name
                                 value_name: $response.body#/name
-                            x-mgc-wait-termination:
-                                interval: 5s
-                                maxRetries: 10
-                                jsonPathQuery: $.result.description == $.owner.parameters.description
                 '422':
                     description: Validation Error
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
-            description: 'Update the description of a value.
+            description: 'Update the name or description of a value.
 
 
-                The value name cannot be changed. To use a different name, create
-                a new
-
-                value and delete the old one.'
+                The new name must be unique within the tag.'
         get:
             tags:
             - values
@@ -560,17 +538,10 @@ paths:
                                 tag_name: $request.path.tag_name
                         update:
                             operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
-                            description: Update the description of a value
+                            description: Update a value
                             parameters:
                                 tag_name: $request.path.tag_name
                                 value_name: $response.body#/name
-                        update/description:
-                            operationId: update_tag_values_v0_tags__tag_name__values__value_name__patch
-                            description: Update the description of a value
-                            parameters:
-                                tag_name: $request.path.tag_name
-                                value_name: $response.body#/name
-                            x-mgc-hidden: true
                         delete:
                             operationId: delete_tag_values
                             description: Delete a value from a tag
@@ -669,6 +640,7 @@ paths:
             security:
             -   OAuth2:
                 - tags:tags-tr
+                - tags:projects-tr
             parameters:
             -   name: external_id
                 in: path
@@ -703,6 +675,7 @@ paths:
             security:
             -   OAuth2:
                 - tags:tags-tr
+                - tags:projects-tr
             parameters:
             -   name: external_id
                 in: query
@@ -729,6 +702,17 @@ paths:
                     description: Region to filter by
                     example: br-se1
                 description: Region to filter by
+            -   name: tag_name
+                in: query
+                required: false
+                schema:
+                    type: string
+                    maxLength: 255
+                    minLength: 1
+                    pattern: ^[\w\ \-\[\]\(\)\.\:]+$
+                    description: Name of an attached tag to filter by
+                    example: kubernetes-expenses
+                description: Name of an attached tag to filter by
             -   name: _limit
                 in: query
                 required: false
@@ -769,9 +753,9 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/HTTPValidationError'
             description: "List the resources you have access to, with the tags attached\
-                \ to each one.\n\nUse --resource-type-name, --region or --external-id\
-                \ to filter the result.\n\nRelated commands:\n  mgc tag resource-types\
-                \ list  see the values accepted by --resource-type-name"
+                \ to each one.\n\nUse --resource-type-name, --region, --external-id\
+                \ or --tag-name to filter the result.\n\nRelated commands:\n  mgc\
+                \ tag resource-types list  see the values accepted by --resource-type-name"
     /v0/resources/{external_id}/tags:
         post:
             tags:
@@ -947,17 +931,17 @@ components:
                     nullable: true
                     example: ffffff
                 kinds:
-                    anyOf:
-                    -   type: array
-                        items:
-                            type: string
-                            title: TagKinds
-                            enum:
-                            - finops
+                    type: array
+                    items:
+                        type: string
+                        title: TagKinds
+                        enum:
+                        - finops
                     title: Kinds
                     description: Kinds that describe what the tag is for, such as
                         finops
-                    nullable: true
+                    default:
+                    - finops
                     example:
                     - finops
                 description:
@@ -982,12 +966,32 @@ components:
                     description: Description of the value
                     nullable: true
                     example: tag value to monitor expenses with test-labs
+                name:
+                    anyOf:
+                    -   type: string
+                        maxLength: 255
+                        minLength: 1
+                        pattern: ^[\w\ \-\[\]\(\)\.\:]+$
+                    title: Name
+                    description: New name for the value, unique within the tag
+                    nullable: true
+                    example: test-labs
+                    x-mgc-name: new-name
             title: Body_update_tag_values_v0_tags__tag_name__values__value_name__patch
-            required:
-            - description
         Body_update_tags_public:
             type: object
             properties:
+                name:
+                    anyOf:
+                    -   type: string
+                        maxLength: 255
+                        minLength: 1
+                        pattern: ^[\w\ \-\[\]\(\)\.\:]+$
+                    title: Name
+                    description: New name for the tag
+                    nullable: true
+                    example: kubernetes-expenses
+                    x-mgc-name: new-name
                 color:
                     anyOf:
                     -   type: string
