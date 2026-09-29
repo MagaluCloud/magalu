@@ -14,7 +14,7 @@ import (
 type uploadParams struct {
 	Source       mgcSchemaPkg.FilePath `json:"src" jsonschema:"description=Source file path to be uploaded,example=./file.txt" mgc:"positional"`
 	Destination  mgcSchemaPkg.URI      `json:"dst" jsonschema:"description=Full destination path in the bucket with desired filename,example=my-bucket/dir/file.txt" mgc:"positional"`
-	StorageClass string                `json:"storage_class,omitempty" jsonschema:"description=Type of Storage in which to store object,example=cold,enum=,enum=standard,enum=cold,enum=glacier_ir,enum=cold_instant,default="`
+	StorageClass string                `json:"storage_class,omitempty" jsonschema:"description=Type of Storage in which to store object,example=standard,enum=,enum=standard,default="`
 }
 
 type uploadTemplateResult struct {
@@ -46,6 +46,15 @@ func upload(ctx context.Context, params uploadParams, cfg common.Config) (*uploa
 	fileName := common.ExtractFileName(srcPath)
 
 	if params.Destination.IsRoot() || strings.HasSuffix(fullDstPath.String(), "/") {
+		fixedFileName, converted, err := common.FixFilenameEncoding(fileName)
+		if err != nil {
+			return nil, &common.ObjectError{Url: mgcSchemaPkg.URI(fileName), Err: fmt.Errorf("skipping file: %w", err)}
+		}
+		if converted {
+			logger().Warnw("converted filename encoding for upload", "original", fileName, "converted", fixedFileName)
+		}
+		fileName = fixedFileName
+
 		fullDstPath = fullDstPath.JoinPath(fileName)
 	}
 

@@ -28,13 +28,13 @@ type CopyObjectParams struct {
 	Source       mgcSchemaPkg.URI `json:"src" jsonschema:"description=Path of the object in a bucket to be copied,example=bucket1/file.txt" mgc:"positional"`
 	Destination  mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Full destination path in the bucket with desired filename,example=bucket2/dir/file.txt" mgc:"positional"`
 	Version      string           `json:"obj_version,omitempty" jsonschema:"description=Version of the object to be copied"`
-	StorageClass string           `json:"storage_class,omitempty" jsonschema:"description=Copy objects to other storage classes,example=cold,enum=,enum=standard,enum=cold,enum=glacier_ir,enum=cold_instant,default="`
+	StorageClass string           `json:"storage_class,omitempty" jsonschema:"description=Copy objects with storage-class setting,example=standard,enum=,enum=standard,default="`
 }
 
 type CopyAllObjectsParams struct {
 	Source       mgcSchemaPkg.URI `json:"src" jsonschema:"description=Path of objects in a bucket to be copied,example=bucket1" mgc:"positional"`
 	Destination  mgcSchemaPkg.URI `json:"dst" jsonschema:"description=Full destination path in the bucket,example=bucket2/dir/" mgc:"positional"`
-	StorageClass string           `json:"storage_class,omitempty" jsonschema:"description=Copy objects to other storage classes,example=cold,enum=,enum=standard,enum=cold,enum=glacier_ir,enum=cold_instant,default="`
+	StorageClass string           `json:"storage_class,omitempty" jsonschema:"description=Copy objects with storage-class setting,example=standard,enum=,enum=standard,default="`
 	Filters      `json:",squash"` // nolint
 }
 

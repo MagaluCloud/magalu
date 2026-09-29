@@ -2,6 +2,7 @@ package objects
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -19,7 +20,7 @@ type uploadDirParams struct {
 	Source         mgcSchemaPkg.DirPath `json:"src" jsonschema:"description=Source directory path for upload,example=path/to/folder" mgc:"positional"`
 	Destination    mgcSchemaPkg.URI     `json:"dst" jsonschema:"description=Full destination path in the bucket,example=my-bucket/dir/" mgc:"positional"`
 	Shallow        bool                 `json:"shallow,omitempty" jsonschema:"description=Don't upload subdirectories,default=false"`
-	StorageClass   string               `json:"storage_class,omitempty" jsonschema:"description=Type of Storage in which to store object,example=cold,enum=,enum=standard,enum=cold,enum=glacier_ir,enum=cold_instant,default="`
+	StorageClass   string               `json:"storage_class,omitempty" jsonschema:"description=Type of Storage in which to store object,example=standard,enum=,enum=standard,default="`
 	common.Filters `json:",squash"`     // nolint
 }
 
@@ -88,9 +89,17 @@ func processFile(ctx context.Context, cfg common.Config, destination mgcSchemaPk
 
 	relPath := common.GetRelativePath(basePath, file)
 
-	dst := destination.JoinPath(relPath)
+	fixedRelPath, converted, err := common.FixFilenameEncoding(relPath)
+	if err != nil {
+		return &common.ObjectError{Url: mgcSchemaPkg.URI(relPath), Err: fmt.Errorf("skipping file: %w", err)}
+	}
+	if converted {
+		logger().Warnw("converted filename encoding for upload", "original", relPath, "converted", fixedRelPath)
+	}
 
-	_, err := upload(
+	dst := destination.JoinPath(fixedRelPath)
+
+	_, err = upload(
 		ctx,
 		uploadParams{Source: mgcSchemaPkg.FilePath(file), Destination: dst, StorageClass: storageClass},
 		cfg,
@@ -155,10 +164,15 @@ func processCurrentAndSubfolders(ctx context.Context, cfg common.Config, destina
 		close(results)
 	}()
 
+	var errs []error
 	for err := range results {
 		if err != nil {
-			return err
+			errs = append(errs, err)
 		}
+	}
+
+	if len(errs) > 0 {
+		return fmt.Errorf("%d of %d file(s) failed to upload:\n%w", len(errs), len(files), errors.Join(errs...))
 	}
 
 	return nil

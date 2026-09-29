@@ -3,11 +3,16 @@ sidebar_position: 2
 ---
 # Create
 
-Create a new route.
+Add a route to a VPC's route table.
 
 ## Usage:
 ```
 mgc network vpcs route-table routes create [vpc-id] [flags]
+```
+
+## Examples:
+```
+mgc network vpcs route-table routes create --targets.id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" --targets.type="vpc_peering"
 ```
 
 ## Flags:
@@ -16,8 +21,13 @@ mgc network vpcs route-table routes create [vpc-id] [flags]
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
     --description string            Description
 -h, --help                          help for create
-    --port-id uuid4                 Port Id (required)
-    --vpc-id string                 Vpc Id (required)
+    --targets object                TargetSchema (properties: id and type)
+                                    Use --targets=help for more details (required)
+    --targets.id uuid4              TargetSchema: Id
+                                    This is the same as '--targets=id:uuid4'.
+    --targets.type enum             TargetSchema: RouteTargetType (one of "port_id" or "vpc_peering")
+                                    This is the same as '--targets=type:enum'.
+    --vpc-id string                 Vpc Id: ID of the VPC whose route table receives this route (the source side of the traffic). (required)
 ```
 
 ## Global Flags:
@@ -29,7 +39,6 @@ mgc network vpcs route-table routes create [vpc-id] [flags]
 -t, --cli.timeout duration     If > 0, it's the timeout for the action execution. It's specified as numbers and unit suffix.
                                Valid unit suffixes: ns, us, ms, s, m and h. Examples: 300ms, 1m30s
     --debug                    Display detailed log information at the debug level
-    --env enum                 Environment to use (one of "pre-prod" or "prod") (default "prod")
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
