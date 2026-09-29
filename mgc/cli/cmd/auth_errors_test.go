@@ -9,7 +9,7 @@ import (
 )
 
 func TestCheckScopesErrors(t *testing.T) {
-	cases := []struct {
+	testCases := []struct {
 		name    string
 		err     error
 		message string
@@ -29,16 +29,16 @@ func TestCheckScopesErrors(t *testing.T) {
 		},
 	}
 
-	for _, c := range cases {
-		t.Run(c.name, func(t *testing.T) {
-			if got := c.err.Error(); got != c.message {
-				t.Errorf("message changed: got %q, want %q", got, c.message)
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := tc.err.Error(); got != tc.message {
+				t.Errorf("message changed: got %q, want %q", got, tc.message)
 			}
-			if got := telemetry.ClassifyError(c.err); got != c.reason {
-				t.Errorf("ClassifyError = %q, want %q", got, c.reason)
+			if got := telemetry.ClassifyError(tc.err); got != tc.reason {
+				t.Errorf("ClassifyError = %q, want %q", got, tc.reason)
 			}
-			if got := telemetry.ClassifyError(fmt.Errorf("wrapped: %w", c.err)); got != c.reason {
-				t.Errorf("ClassifyError(wrapped) = %q, want %q", got, c.reason)
+			if got := telemetry.ClassifyError(fmt.Errorf("wrapped: %w", tc.err)); got != tc.reason {
+				t.Errorf("ClassifyError(wrapped) = %q, want %q", got, tc.reason)
 			}
 		})
 	}

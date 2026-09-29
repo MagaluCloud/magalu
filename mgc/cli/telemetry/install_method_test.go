@@ -3,7 +3,7 @@ package telemetry
 import "testing"
 
 func TestInstallMethod(t *testing.T) {
-	cases := []struct {
+	testCases := []struct {
 		path string
 		want string
 	}{
@@ -21,9 +21,11 @@ func TestInstallMethod(t *testing.T) {
 		{"/usr/bin/mgc", InstallMethodSystem},
 	}
 
-	for _, c := range cases {
-		if got := DetectInstallMethod(c.path); got != c.want {
-			t.Errorf("%s: got %s, want %s", c.path, got, c.want)
-		}
+	for _, tc := range testCases {
+		t.Run(tc.path, func(t *testing.T) {
+			if got := DetectInstallMethod(tc.path); got != tc.want {
+				t.Errorf("got %s, want %s", got, tc.want)
+			}
+		})
 	}
 }

@@ -3,6 +3,7 @@ package telemetry
 import (
 	"bytes"
 	"context"
+	"testing"
 	"time"
 )
 
@@ -83,4 +84,46 @@ func record(svc *Service, info CommandInfo, cmdErr error) string {
 	var stderr bytes.Buffer
 	svc.Record(context.Background(), info, cmdErr, &stderr)
 	return stderr.String()
+}
+
+func collecting(state State) testSetup {
+	state.NoticeShown = true
+	return testSetup{state: state, terminal: true}
+}
+
+type execution struct {
+	path   []string
+	at     time.Duration
+	cmdErr error
+	stderr string
+	events int
+}
+
+type runResult struct {
+	state  State
+	saves  int
+	events []Event
+}
+
+func runExecutions(t *testing.T, setup testSetup, executions []execution) runResult {
+	t.Helper()
+	result := runResult{state: setup.state}
+
+	for i, ex := range executions {
+		setup.state = result.state
+		svc, store, exp := newTestService(setup)
+
+		stderr := record(svc, commandAt(ex.path, loginAt.Add(ex.at)), ex.cmdErr)
+		if stderr != ex.stderr {
+			t.Errorf("execution %d: stderr = %q, want %q", i+1, stderr, ex.stderr)
+		}
+		if len(exp.events) != ex.events {
+			t.Errorf("execution %d: %d events, want %d", i+1, len(exp.events), ex.events)
+		}
+
+		result.state = store.state
+		result.saves += store.saves
+		result.events = append(result.events, exp.events...)
+	}
+	return result
 }

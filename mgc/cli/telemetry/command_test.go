@@ -3,7 +3,7 @@ package telemetry
 import "testing"
 
 func TestCommandInfoAction(t *testing.T) {
-	cases := []struct {
+	testCases := []struct {
 		name string
 		info CommandInfo
 		want string
@@ -16,15 +16,17 @@ func TestCommandInfoAction(t *testing.T) {
 		{"unknown command", CommandInfo{Path: []string{"virtual-machine"}, UnknownCommand: true}, UnknownAction},
 	}
 
-	for _, c := range cases {
-		if got := c.info.Action(); got != c.want {
-			t.Errorf("%s: got %q, want %q", c.name, got, c.want)
-		}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := tc.info.Action(); got != tc.want {
+				t.Errorf("got %q, want %q", got, tc.want)
+			}
+		})
 	}
 }
 
 func TestCommandInfoResourceType(t *testing.T) {
-	cases := []struct {
+	testCases := []struct {
 		name string
 		info CommandInfo
 		want string
@@ -37,15 +39,17 @@ func TestCommandInfoResourceType(t *testing.T) {
 		{"unknown command", CommandInfo{Path: []string{"virtual-machine", "instances", "list"}, UnknownCommand: true}, ""},
 	}
 
-	for _, c := range cases {
-		if got := c.info.ResourceType(); got != c.want {
-			t.Errorf("%s: got %q, want %q", c.name, got, c.want)
-		}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := tc.info.ResourceType(); got != tc.want {
+				t.Errorf("got %q, want %q", got, tc.want)
+			}
+		})
 	}
 }
 
 func TestCommandInfoIsLogin(t *testing.T) {
-	cases := []struct {
+	testCases := []struct {
 		name string
 		info CommandInfo
 		want bool
@@ -59,15 +63,17 @@ func TestCommandInfoIsLogin(t *testing.T) {
 		{"empty path", CommandInfo{}, false},
 	}
 
-	for _, c := range cases {
-		if got := c.info.IsLogin(); got != c.want {
-			t.Errorf("%s: got %v, want %v", c.name, got, c.want)
-		}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := tc.info.IsLogin(); got != tc.want {
+				t.Errorf("got %v, want %v", got, tc.want)
+			}
+		})
 	}
 }
 
 func TestCommandInfoIsInfrastructure(t *testing.T) {
-	cases := []struct {
+	testCases := []struct {
 		name string
 		info CommandInfo
 		want bool
@@ -83,9 +89,11 @@ func TestCommandInfoIsInfrastructure(t *testing.T) {
 		{"empty path", CommandInfo{}, false},
 	}
 
-	for _, c := range cases {
-		if got := c.info.IsInfrastructure(); got != c.want {
-			t.Errorf("%s: got %v, want %v", c.name, got, c.want)
-		}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := tc.info.IsInfrastructure(); got != tc.want {
+				t.Errorf("got %v, want %v", got, tc.want)
+			}
+		})
 	}
 }

@@ -41,7 +41,7 @@ func (timeoutNetError) Timeout() bool   { return true }
 func (timeoutNetError) Temporary() bool { return true }
 
 func TestClassifyError(t *testing.T) {
-	cases := []struct {
+	testCases := []struct {
 		name string
 		err  error
 		want FailureReason
@@ -75,9 +75,11 @@ func TestClassifyError(t *testing.T) {
 		{"untyped", errors.New("something odd"), FailureUnknown},
 	}
 
-	for _, c := range cases {
-		if got := ClassifyError(c.err); got != c.want {
-			t.Errorf("%s: got %q, want %q", c.name, got, c.want)
-		}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := ClassifyError(tc.err); got != tc.want {
+				t.Errorf("got %q, want %q", got, tc.want)
+			}
+		})
 	}
 }

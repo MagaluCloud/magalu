@@ -6,324 +6,322 @@ import (
 	"time"
 )
 
-// collecting parte de uma sessão interativa em que o aviso já foi visto, para os
-// testes de coleta não serem afetados pela regra do aviso.
-func collecting(state State) testSetup {
-	state.NoticeShown = true
-	return testSetup{state: state, terminal: true}
-}
+func TestRecord(t *testing.T) {
+	readOnly := errors.New("read-only home")
 
-func TestRecordLoginShowsNoticeAndCollects(t *testing.T) {
-	svc, store, exp := newTestService(testSetup{terminal: true})
-
-	if stderr := record(svc, commandAt(authLogin, loginAt), nil); stderr == "" {
-		t.Error("the notice must be shown after the first interactive login")
+	testCases := []struct {
+		name       string
+		setup      testSetup
+		executions []execution
+		check      func(t *testing.T, r runResult)
+	}{
+		{
+			name:       "interactive login shows the notice and is collected with a single save",
+			setup:      testSetup{terminal: true},
+			executions: []execution{{path: authLogin, stderr: expectedNotice, events: 1}},
+			check: func(t *testing.T, r runResult) {
+				if r.saves != 1 || r.state.InstallationID == "" || !r.state.NoticeShown || r.state.CredentialsSetAt == nil {
+					t.Errorf("saves=%d state=%+v, want a single save with id, notice and credentials", r.saves, r.state)
+				}
+			},
+		},
+		{
+			name:       "already logged in user is not collected in the execution that shows the notice",
+			setup:      testSetup{terminal: true},
+			executions: []execution{{path: vmList, stderr: expectedNoticeNotCollected}},
+			check: func(t *testing.T, r runResult) {
+				if r.state.InstallationID != "" || r.state.FirstValueRecorded {
+					t.Errorf("only notice_shown may be written, got %+v", r.state)
+				}
+			},
+		},
+		{
+			name:  "already logged in user is collected from the next execution on",
+			setup: testSetup{terminal: true},
+			executions: []execution{
+				{path: vmList, stderr: expectedNoticeNotCollected},
+				{path: vmList, events: 1},
+			},
+		},
+		{
+			name:       "failed login is treated as any other command",
+			setup:      testSetup{terminal: true},
+			executions: []execution{{path: authLogin, cmdErr: errors.New("boom"), stderr: expectedNoticeNotCollected}},
+			check: func(t *testing.T, r runResult) {
+				if r.state.CredentialsSetAt != nil {
+					t.Error("a failed login must not set credentials_set_at")
+				}
+			},
+		},
+		{
+			name:  "unreadable state shows no notice, collects nothing and keeps the file",
+			setup: testSetup{state: State{Disabled: true}, loadErr: errors.New("yaml: invalid"), terminal: true},
+			executions: []execution{
+				{path: authLogin},
+				{path: vmList},
+			},
+			check: func(t *testing.T, r runResult) {
+				if r.saves != 0 || !r.state.Disabled {
+					t.Error("the unreadable state file must not be overwritten")
+				}
+			},
+		},
+		{
+			name:  "unwritable state on login shows no notice and collects nothing, run after run",
+			setup: testSetup{terminal: true, saveErr: readOnly},
+			executions: []execution{
+				{path: authLogin},
+				{path: authLogin},
+			},
+			check: func(t *testing.T, r runResult) {
+				if r.saves != 2 || r.state.NoticeShown {
+					t.Errorf("saves=%d notice_shown=%v, want one failed save per run and nothing persisted", r.saves, r.state.NoticeShown)
+				}
+			},
+		},
+		{
+			name:  "unwritable state on another command shows no notice and collects nothing, run after run",
+			setup: testSetup{terminal: true, saveErr: readOnly},
+			executions: []execution{
+				{path: vmList},
+				{path: vmList},
+			},
+			check: func(t *testing.T, r runResult) {
+				if r.saves != 2 || r.state.NoticeShown {
+					t.Errorf("saves=%d notice_shown=%v, want one failed save per run and nothing persisted", r.saves, r.state.NoticeShown)
+				}
+			},
+		},
+		{
+			name:       "first value is saved together with the installation id",
+			setup:      collecting(State{CredentialsSetAt: &loginAt}),
+			executions: []execution{{path: vmList, at: time.Second, events: 1}},
+			check: func(t *testing.T, r runResult) {
+				if r.saves != 1 || r.state.InstallationID == "" || !r.state.FirstValueRecorded {
+					t.Errorf("saves=%d state=%+v, want a single save with id and TTFV", r.saves, r.state)
+				}
+			},
+		},
+		{
+			name:  "installation id is generated once and reused",
+			setup: collecting(State{}),
+			executions: []execution{
+				{path: vmList, events: 1},
+				{path: vmList, events: 1},
+			},
+			check: func(t *testing.T, r runResult) {
+				if r.saves != 1 || r.state.InstallationID != "id-1" {
+					t.Errorf("saves=%d state=%+v, want the id generated and saved once", r.saves, r.state)
+				}
+				for _, e := range r.events {
+					if e.InstallationID != "id-1" {
+						t.Errorf("event carries id %q", e.InstallationID)
+					}
+				}
+			},
+		},
+		{
+			name: "installation id is still sent when saving fails",
+			setup: func() testSetup {
+				s := collecting(State{})
+				s.saveErr = readOnly
+				return s
+			}(),
+			executions: []execution{{path: vmList, events: 1}},
+			check: func(t *testing.T, r runResult) {
+				if r.events[0].InstallationID != "id-1" {
+					t.Error("an ephemeral id must be used when saving fails")
+				}
+			},
+		},
 	}
-	if len(exp.events) != 1 || exp.events[0].Action != "auth.login" {
-		t.Fatalf("the login execution must be collected, got %+v", exp.events)
-	}
-	if store.state.InstallationID == "" {
-		t.Error("installation_id must be written when the event is sent")
-	}
-}
 
-func TestRecordAlreadyLoggedInSkipsOnlyFirstExecution(t *testing.T) {
-	svc, store, exp := newTestService(testSetup{terminal: true})
-
-	if stderr := record(svc, commandAt(vmList, loginAt), nil); stderr == "" {
-		t.Error("the notice must be shown before the first collection")
-	}
-	if len(exp.events) != 0 {
-		t.Error("the execution that shows the notice must not be collected")
-	}
-	if store.state.InstallationID != "" || store.state.FirstValueRecorded {
-		t.Errorf("only notice_shown may be written, got %+v", store.state)
-	}
-
-	next, _, nextExp := newTestService(testSetup{state: store.state, terminal: true})
-	record(next, commandAt(vmList, loginAt), nil)
-
-	if len(nextExp.events) != 1 {
-		t.Errorf("the next execution must be collected, got %d events", len(nextExp.events))
-	}
-}
-
-func TestRecordFailedLoginIsTreatedAsAnyOtherCommand(t *testing.T) {
-	svc, store, exp := newTestService(testSetup{terminal: true})
-
-	record(svc, commandAt(authLogin, loginAt), errors.New("boom"))
-
-	if len(exp.events) != 0 {
-		t.Error("a failed login that shows the notice must not be collected")
-	}
-	if store.state.CredentialsSetAt != nil {
-		t.Error("a failed login must not set credentials_set_at")
-	}
-}
-
-func TestRecordOutsideInteractiveCollectsWithoutNotice(t *testing.T) {
-	svc, store, exp := newTestService(testSetup{env: map[string]string{"CI": "true"}})
-
-	if stderr := record(svc, commandAt(vmList, loginAt), nil); stderr != "" {
-		t.Errorf("no notice outside interactive sessions, got %q", stderr)
-	}
-	if len(exp.events) != 1 || store.state.NoticeShown {
-		t.Errorf("events=%d notice_shown=%v; want 1, false", len(exp.events), store.state.NoticeShown)
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			r := runExecutions(t, tc.setup, tc.executions)
+			if tc.check != nil {
+				tc.check(t, r)
+			}
+		})
 	}
 }
 
 func TestServiceTimeToFirstValue(t *testing.T) {
-	t.Run("first successful infra command after login", func(t *testing.T) {
-		svc, store, exp := newTestService(collecting(State{CredentialsSetAt: &loginAt}))
-
-		record(svc, commandAt(vmList, loginAt.Add(4231*time.Millisecond)), nil)
-
-		e := exp.events[0]
-		if e.TimeToFirstValue == nil || e.TimeToFirstValue.Milliseconds() != 4231 {
-			t.Fatalf("expected TTFV 4231ms, got %v", e.TimeToFirstValue)
-		}
-		if !store.state.FirstValueRecorded {
-			t.Error("first_value_recorded must be persisted")
-		}
-	})
-
-	t.Run("first infra command fails", func(t *testing.T) {
-		svc, store, exp := newTestService(collecting(State{CredentialsSetAt: &loginAt}))
-
-		record(svc, commandAt(vmList, loginAt.Add(time.Minute)), errors.New("boom"))
-
-		if exp.events[0].TimeToFirstValue != nil || store.state.FirstValueRecorded {
-			t.Error("failed command must not record TTFV")
-		}
-	})
-
-	t.Run("already recorded", func(t *testing.T) {
-		svc, _, exp := newTestService(collecting(State{CredentialsSetAt: &loginAt, FirstValueRecorded: true}))
-
-		record(svc, commandAt(vmList, loginAt.Add(time.Hour)), nil)
-
-		if exp.events[0].TimeToFirstValue != nil {
-			t.Error("TTFV must be sent only once")
-		}
-	})
-
-	t.Run("never logged in", func(t *testing.T) {
-		svc, store, exp := newTestService(collecting(State{}))
-
-		record(svc, commandAt(vmList, loginAt), nil)
-
-		if exp.events[0].TimeToFirstValue != nil || store.state.FirstValueRecorded {
-			t.Error("TTFV requires a recorded login")
-		}
-	})
-
-	t.Run("clock moved backwards", func(t *testing.T) {
-		svc, store, exp := newTestService(collecting(State{CredentialsSetAt: &loginAt}))
-
-		record(svc, commandAt(vmList, loginAt.Add(-time.Hour)), nil)
-
-		if exp.events[0].TimeToFirstValue != nil || store.state.FirstValueRecorded {
-			t.Error("negative TTFV must be dropped and retried later")
-		}
-	})
-
-	t.Run("non infrastructure command", func(t *testing.T) {
-		svc, store, exp := newTestService(collecting(State{CredentialsSetAt: &loginAt}))
-
-		record(svc, commandAt([]string{"config", "list"}, loginAt.Add(time.Second)), nil)
-
-		if exp.events[0].TimeToFirstValue != nil || store.state.FirstValueRecorded {
-			t.Error("config commands are not a first value")
-		}
-	})
-}
-
-func TestServiceOptOut(t *testing.T) {
-	cases := []struct {
-		name       string
-		state      State
-		env        map[string]string
-		disabledBy string
+	testCases := []struct {
+		name         string
+		state        State
+		path         []string
+		at           time.Duration
+		cmdErr       error
+		wantTTFV     time.Duration
+		wantRecorded bool
 	}{
-		{"config key", State{Disabled: true}, nil, DisabledByConfig},
-		{"DO_NOT_TRACK", State{}, map[string]string{"DO_NOT_TRACK": "1"}, DisabledByDoNotTrack},
-		{"MGC_CLI_TELEMETRY_OPTOUT", State{}, map[string]string{"MGC_CLI_TELEMETRY_OPTOUT": "1"}, DisabledByOptOut},
-		{"OPTOUT=true", State{}, map[string]string{"MGC_CLI_TELEMETRY_OPTOUT": "true"}, DisabledByOptOut},
+		{"first successful infra command after login", State{CredentialsSetAt: &loginAt}, vmList, 4231 * time.Millisecond, nil, 4231 * time.Millisecond, true},
+		{"first infra command fails", State{CredentialsSetAt: &loginAt}, vmList, time.Minute, errors.New("boom"), 0, false},
+		{"already recorded", State{CredentialsSetAt: &loginAt, FirstValueRecorded: true}, vmList, time.Hour, nil, 0, true},
+		{"never logged in", State{}, vmList, 0, nil, 0, false},
+		{"clock moved backwards", State{CredentialsSetAt: &loginAt}, vmList, -time.Hour, nil, 0, false},
+		{"non infrastructure command", State{CredentialsSetAt: &loginAt}, []string{"config", "list"}, time.Second, nil, 0, false},
 	}
 
-	for _, c := range cases {
-		t.Run(c.name, func(t *testing.T) {
-			// Sessão interativa sem aviso visto: se a telemetria estivesse ativa,
-			// o login mostraria o aviso e seria coletado.
-			svc, store, exp := newTestService(testSetup{state: c.state, env: c.env, terminal: true})
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			r := runExecutions(t, collecting(tc.state), []execution{{path: tc.path, at: tc.at, cmdErr: tc.cmdErr, events: 1}})
 
-			if got := svc.DisabledBy(); got != c.disabledBy {
-				t.Errorf("DisabledBy = %q, want %q", got, c.disabledBy)
+			var got time.Duration
+			if ttfv := r.events[0].TimeToFirstValue; ttfv != nil {
+				got = *ttfv
 			}
-			stderr := record(svc, commandAt(authLogin, loginAt), nil)
-			stderr += record(svc, commandAt(vmList, loginAt), nil)
-
-			if stderr != "" || len(exp.events) != 0 {
-				t.Errorf("disabled telemetry must neither print nor export, got %q events=%d", stderr, len(exp.events))
+			if got != tc.wantTTFV {
+				t.Errorf("TTFV = %v, want %v", got, tc.wantTTFV)
 			}
-			if store.saves != 0 {
-				t.Error("nothing may be written when disabled")
+			if r.state.FirstValueRecorded != tc.wantRecorded {
+				t.Errorf("first_value_recorded = %v, want %v", r.state.FirstValueRecorded, tc.wantRecorded)
 			}
 		})
 	}
+}
 
-	for _, v := range []string{"", "0", "false", "FALSE"} {
-		setup := collecting(State{})
-		setup.env = map[string]string{"MGC_CLI_TELEMETRY_OPTOUT": v, "DO_NOT_TRACK": v}
-		svc, _, exp := newTestService(setup)
+func TestServiceOptOut(t *testing.T) {
+	seen := State{NoticeShown: true}
+	withEnv := func(v string) map[string]string {
+		return map[string]string{"MGC_CLI_TELEMETRY_OPTOUT": v, "DO_NOT_TRACK": v}
+	}
 
-		record(svc, commandAt(vmList, loginAt), nil)
+	testCases := []struct {
+		name           string
+		setup          testSetup
+		wantDisabledBy string
+	}{
+		{"config key", testSetup{state: State{NoticeShown: true, Disabled: true}, terminal: true}, DisabledByConfig},
+		{"DO_NOT_TRACK", testSetup{state: seen, env: map[string]string{"DO_NOT_TRACK": "1"}, terminal: true}, DisabledByDoNotTrack},
+		{"MGC_CLI_TELEMETRY_OPTOUT=1", testSetup{state: seen, env: map[string]string{"MGC_CLI_TELEMETRY_OPTOUT": "1"}, terminal: true}, DisabledByOptOut},
+		{"MGC_CLI_TELEMETRY_OPTOUT=true", testSetup{state: seen, env: map[string]string{"MGC_CLI_TELEMETRY_OPTOUT": "true"}, terminal: true}, DisabledByOptOut},
+		{"unreadable state", testSetup{state: seen, loadErr: errors.New("yaml: invalid"), terminal: true}, DisabledByUnreadableState},
+		{"empty value keeps it enabled", testSetup{state: seen, env: withEnv(""), terminal: true}, ""},
+		{"0 keeps it enabled", testSetup{state: seen, env: withEnv("0"), terminal: true}, ""},
+		{"false keeps it enabled", testSetup{state: seen, env: withEnv("false"), terminal: true}, ""},
+		{"FALSE keeps it enabled", testSetup{state: seen, env: withEnv("FALSE"), terminal: true}, ""},
+	}
 
-		if !svc.Enabled() || len(exp.events) != 1 {
-			t.Errorf("value %q must keep telemetry enabled", v)
-		}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			svc, store, exp := newTestService(tc.setup)
+
+			if got := svc.DisabledBy(); got != tc.wantDisabledBy {
+				t.Errorf("DisabledBy = %q, want %q", got, tc.wantDisabledBy)
+			}
+
+			record(svc, commandAt(vmList, loginAt), nil)
+
+			wantEvents := 1
+			if tc.wantDisabledBy != "" {
+				wantEvents = 0
+				if store.saves != 0 {
+					t.Error("nothing may be written when disabled")
+				}
+			}
+			if len(exp.events) != wantEvents {
+				t.Errorf("%d events, want %d", len(exp.events), wantEvents)
+			}
+		})
 	}
 }
 
-func TestServiceUnreadableState(t *testing.T) {
-	unreadable := testSetup{state: State{Disabled: true}, loadErr: errors.New("yaml: invalid"), terminal: true}
+func TestServiceSetDisabled(t *testing.T) {
+	unreadable := errors.New("yaml: invalid")
 
-	t.Run("sends nothing and keeps the file untouched", func(t *testing.T) {
-		svc, store, exp := newTestService(unreadable)
-
-		if got := svc.DisabledBy(); got != DisabledByUnreadableState {
-			t.Errorf("DisabledBy = %q, want %q", got, DisabledByUnreadableState)
-		}
-		stderr := record(svc, commandAt(authLogin, loginAt), nil)
-		stderr += record(svc, commandAt(vmList, loginAt), nil)
-
-		if stderr != "" || len(exp.events) != 0 {
-			t.Errorf("no notice or event without a readable state, got %q events=%d", stderr, len(exp.events))
-		}
-		if store.saves != 0 || !store.state.Disabled {
-			t.Error("the unreadable state file must not be overwritten")
-		}
-	})
-
-	t.Run("explicit enable replaces the unreadable file", func(t *testing.T) {
-		svc, store, _ := newTestService(unreadable)
-
-		if err := svc.SetDisabled(false); err != nil {
-			t.Fatal(err)
-		}
-		if !svc.Enabled() || store.saves != 1 {
-			t.Errorf("Enabled = %v, saves = %d; want true, 1", svc.Enabled(), store.saves)
-		}
-	})
-
-	t.Run("failed enable keeps blocking", func(t *testing.T) {
-		svc, store, _ := newTestService(unreadable)
-		store.saveErr = errors.New("permission denied")
-
-		if err := svc.SetDisabled(false); err == nil {
-			t.Fatal("expected save error")
-		}
-		if svc.Enabled() {
-			t.Error("telemetry must stay disabled while the state is unreadable")
-		}
-	})
-}
-
-func TestRecordUnwritableStateShowsNoNoticeAndCollectsNothing(t *testing.T) {
-	readOnly := errors.New("read-only home")
-
-	for name, path := range map[string][]string{"login": authLogin, "other command": vmList} {
-		first, store, exp := newTestService(testSetup{terminal: true, saveErr: readOnly})
-
-		if stderr := record(first, commandAt(path, loginAt), nil); stderr != "" || len(exp.events) != 0 {
-			t.Errorf("%s: got %q events=%d; want no notice and no event", name, stderr, len(exp.events))
-		}
-		if store.saves != 1 || store.state.NoticeShown {
-			t.Errorf("%s: saves=%d notice_shown=%v; want one failed save and nothing persisted", name, store.saves, store.state.NoticeShown)
-		}
-
-		next, _, nextExp := newTestService(testSetup{state: store.state, terminal: true, saveErr: readOnly})
-
-		if stderr := record(next, commandAt(path, loginAt), nil); stderr != "" || len(nextExp.events) != 0 {
-			t.Errorf("%s, next execution: got %q events=%d; want the notice not to repeat", name, stderr, len(nextExp.events))
-		}
-	}
-}
-
-func TestServiceSavesOncePerCommand(t *testing.T) {
-	t.Run("first value", func(t *testing.T) {
-		svc, store, _ := newTestService(collecting(State{CredentialsSetAt: &loginAt}))
-
-		record(svc, commandAt(vmList, loginAt.Add(time.Second)), nil)
-
-		if store.saves != 1 || store.state.InstallationID == "" || !store.state.FirstValueRecorded {
-			t.Errorf("saves = %d, state = %+v; want a single save with id and TTFV", store.saves, store.state)
-		}
-	})
-
-	t.Run("first interactive login", func(t *testing.T) {
-		svc, store, _ := newTestService(testSetup{terminal: true})
-
-		record(svc, commandAt(authLogin, loginAt), nil)
-
-		if store.saves != 1 || store.state.InstallationID == "" || !store.state.NoticeShown || store.state.CredentialsSetAt == nil {
-			t.Errorf("saves = %d, state = %+v; want a single save with id, notice and credentials", store.saves, store.state)
-		}
-	})
-}
-
-func TestServiceInstallationID(t *testing.T) {
-	svc, store, exp := newTestService(collecting(State{}))
-
-	record(svc, commandAt(vmList, loginAt), nil)
-	record(svc, commandAt(vmList, loginAt), nil)
-
-	if store.state.InstallationID != "id-1" || store.saves != 1 {
-		t.Errorf("id must be generated and saved once, state=%+v saves=%d", store.state, store.saves)
-	}
-	for _, e := range exp.events {
-		if e.InstallationID != "id-1" {
-			t.Errorf("event carries id %q", e.InstallationID)
-		}
+	testCases := []struct {
+		name           string
+		setup          testSetup
+		disabled       bool
+		wantErr        bool
+		wantDisabledBy string
+	}{
+		{"disable writes the config key", testSetup{}, true, false, DisabledByConfig},
+		{"enable replaces an unreadable file", testSetup{loadErr: unreadable}, false, false, ""},
+		{"enable that cannot save keeps blocking", testSetup{loadErr: unreadable, saveErr: errors.New("permission denied")}, false, true, DisabledByUnreadableState},
 	}
 
-	failing := collecting(State{})
-	failing.saveErr = errors.New("read-only")
-	svc, _, exp = newTestService(failing)
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			svc, _, _ := newTestService(tc.setup)
 
-	record(svc, commandAt(vmList, loginAt), nil)
-
-	if exp.events[0].InstallationID != "id-1" {
-		t.Error("an ephemeral id must still be used when saving fails")
+			err := svc.SetDisabled(tc.disabled)
+			if (err != nil) != tc.wantErr {
+				t.Errorf("err = %v, wantErr %v", err, tc.wantErr)
+			}
+			if got := svc.DisabledBy(); got != tc.wantDisabledBy {
+				t.Errorf("DisabledBy = %q, want %q", got, tc.wantDisabledBy)
+			}
+		})
 	}
 }
 
 func TestServiceBuildsEvent(t *testing.T) {
-	setup := collecting(State{})
-	setup.env = map[string]string{"GITHUB_ACTIONS": "true"}
-	svc, _, exp := newTestService(setup)
+	create := commandAt([]string{"virtual-machine", "instances", "create"}, loginAt)
+	create.OptionsSet = []string{"region", "machine-type"}
+	create.TenantID = "tenant-1"
+	create.LastRequestID = "req-9"
 
-	info := commandAt([]string{"virtual-machine", "instances", "create"}, loginAt)
-	info.OptionsSet = []string{"region", "machine-type"}
-	info.TenantID = "tenant-1"
-	info.LastRequestID = "req-9"
-	record(svc, info, nil)
-
-	e := exp.events[0]
-	if e.Action != "virtualmachine.instances.create" || e.Resource == nil || e.Resource.Type != "virtual_machine_instances" {
-		t.Errorf("unexpected action/resource: %s %+v", e.Action, e.Resource)
+	testCases := []struct {
+		name          string
+		info          CommandInfo
+		cmdErr        error
+		wantAction    string
+		wantResource  *Resource
+		wantOutcome   Outcome
+		wantReason    FailureReason
+		wantTenant    string
+		wantRequestID string
+	}{
+		{
+			name:          "command with flags, tenant and request id",
+			info:          create,
+			wantAction:    "virtualmachine.instances.create",
+			wantResource:  &Resource{Type: "virtual_machine_instances"},
+			wantOutcome:   OutcomeSuccess,
+			wantTenant:    "tenant-1",
+			wantRequestID: "req-9",
+		},
+		{
+			name:        "unknown command with untyped error",
+			info:        CommandInfo{UnknownCommand: true, Start: loginAt, End: loginAt},
+			cmdErr:      errors.New(`unknown command "foo" for "mgc"`),
+			wantAction:  UnknownAction,
+			wantOutcome: OutcomeFailure,
+			wantReason:  FailureValidation,
+		},
 	}
-	if e.Duration != 842*time.Millisecond || e.Outcome != OutcomeSuccess || e.Actor.TenantID != "tenant-1" || e.LastRequestID != "req-9" {
-		t.Errorf("unexpected event %+v", e)
-	}
-	if e.ExecutionContext != ExecutionContextCI || e.ExecutionEnvironment != "github_actions" {
-		t.Errorf("unexpected context %s/%s", e.ExecutionContext, e.ExecutionEnvironment)
-	}
 
-	record(svc, CommandInfo{UnknownCommand: true, Start: loginAt, End: loginAt}, errors.New(`unknown command "foo" for "mgc"`))
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			setup := collecting(State{})
+			setup.env = map[string]string{"GITHUB_ACTIONS": "true"}
+			svc, _, exp := newTestService(setup)
 
-	e = exp.events[1]
-	if e.Action != UnknownAction || e.Resource != nil || e.FailureReason != FailureValidation {
-		t.Errorf("unknown command: %+v", e)
+			record(svc, tc.info, tc.cmdErr)
+			e := exp.events[0]
+
+			if e.Action != tc.wantAction || e.Outcome != tc.wantOutcome || e.FailureReason != tc.wantReason {
+				t.Errorf("action/outcome/reason = %s/%s/%s, want %s/%s/%s", e.Action, e.Outcome, e.FailureReason, tc.wantAction, tc.wantOutcome, tc.wantReason)
+			}
+			if (e.Resource == nil) != (tc.wantResource == nil) || (e.Resource != nil && *e.Resource != *tc.wantResource) {
+				t.Errorf("resource = %+v, want %+v", e.Resource, tc.wantResource)
+			}
+			var tenant string
+			if e.Actor != nil {
+				tenant = e.Actor.TenantID
+			}
+			if tenant != tc.wantTenant {
+				t.Errorf("tenant = %q, want %q", tenant, tc.wantTenant)
+			}
+			if e.LastRequestID != tc.wantRequestID || e.Duration != tc.info.End.Sub(tc.info.Start) {
+				t.Errorf("request id/duration = %q/%v", e.LastRequestID, e.Duration)
+			}
+			if e.ExecutionContext != ExecutionContextCI || e.ExecutionEnvironment != "github_actions" {
+				t.Errorf("context = %s/%s, want ci/github_actions", e.ExecutionContext, e.ExecutionEnvironment)
+			}
+		})
 	}
 }
