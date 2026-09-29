@@ -5,11 +5,14 @@ import (
 
 	"github.com/MagaluCloud/magalu/mgc/core"
 	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview"
 	"github.com/spf13/cobra"
 )
 
+const includePreviewFlag = "include-preview"
+
 func newDumpTreeCmd(sdk *mgcSdk.Sdk) *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:     "dump-tree",
 		Short:   "Print command tree",
 		Long:    `Walks through the command tree, and prints name, description, version, children and schema for parameters and configs. Defaults to YAML output, but "-o json" and other formats may be used`,
@@ -17,6 +20,9 @@ func newDumpTreeCmd(sdk *mgcSdk.Sdk) *cobra.Command {
 		GroupID: "other",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			root := sdk.Group()
+			if include, _ := cmd.Flags().GetBool(includePreviewFlag); !include {
+				root = withoutPreview(root)
+			}
 
 			tree, err := collectAllChildren(root)
 			if err != nil {
@@ -36,6 +42,29 @@ func newDumpTreeCmd(sdk *mgcSdk.Sdk) *cobra.Command {
 			return formatter.Format(tree["children"], options, getRawOutputFlag(cmd))
 		},
 	}
+	cmd.Flags().Bool(
+		includePreviewFlag,
+		false,
+		"Also include the preview commands (beta, alpha) installed on this machine. Used by tests, never by the docs",
+	)
+	return cmd
+}
+
+// Preview commands come from the specs on this machine, not from the binary,
+// so they must not end up in the tree used to generate the docs.
+func withoutPreview(root core.Grouper) core.Grouper {
+	return core.NewSimpleGrouper(
+		root.DescriptorSpec(),
+		func() (children []core.Descriptor, err error) {
+			_, err = root.VisitChildren(func(child core.Descriptor) (bool, error) {
+				if !preview.IsLevelName(child.Name()) {
+					children = append(children, child)
+				}
+				return true, nil
+			})
+			return children, err
+		},
+	)
 }
 
 func collectAllChildren(child core.Descriptor) (map[string]any, error) {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"path/filepath"
 	"runtime"
 
 	"github.com/MagaluCloud/magalu/mgc/core"
@@ -13,6 +14,9 @@ import (
 	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
 	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
 	"github.com/MagaluCloud/magalu/mgc/sdk/openapi"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview/fsstore"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview/specvalidator"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static"
 )
 
@@ -104,6 +108,23 @@ func (o *Sdk) newOpenApiSource() core.Grouper {
 	return openapi.NewSource(loader, &extensionPrefix)
 }
 
+// newPreviewSources picks the preview adapters: every level reads the specs
+// in "<config dir>/.preview/<level>". Every other dir in the config dir is a
+// workspace, and a workspace name cannot start with a dot, so "workspace"
+// commands never list, select or delete the preview specs.
+func (o *Sdk) newPreviewSources() []core.Grouper {
+	extensionPrefix := "x-mgc"
+	validator := specvalidator.New()
+	dir := filepath.Join(o.ProfileManager().Dir(), ".preview")
+
+	sources := make([]core.Grouper, 0, len(preview.Levels))
+	for _, level := range preview.Levels {
+		store := fsstore.New(filepath.Join(dir, level.Name))
+		sources = append(sources, preview.NewGroup(level, store, validator, &extensionPrefix))
+	}
+	return sources
+}
+
 func (o *Sdk) RefResolver() core.RefPathResolver {
 	if o.refResolver == nil {
 		o.refResolver = core.NewDocumentRefPathResolver(func() (any, error) { return o.Group(), nil })
@@ -120,10 +141,11 @@ func (o *Sdk) Group() core.Grouper {
 				Description: "All MagaLu Groups & Executors",
 			},
 			func() []core.Grouper {
-				return []core.Grouper{
+				official := []core.Grouper{
 					static.GetGroup(),
 					o.newOpenApiSource(),
 				}
+				return append(official, o.newPreviewSources()...)
 			},
 		)
 	}

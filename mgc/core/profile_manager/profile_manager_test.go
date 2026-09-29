@@ -400,3 +400,12 @@ func TestEnvWorkspaceVar(t *testing.T) {
 		t.Errorf("expected name %q, got %q", workspaceName, p.Name)
 	}
 }
+
+func TestProfileManagerDir(t *testing.T) {
+	dir := t.TempDir()
+	t.Setenv("MGC_CONFIG_DIR", dir)
+
+	if got := New().Dir(); got != dir {
+		t.Errorf("expected Dir() %q, got %q", dir, got)
+	}
+}
