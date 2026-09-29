@@ -5,10 +5,6 @@ import (
 	"testing"
 )
 
-func envFrom(vars map[string]string) func(string) string {
-	return func(k string) string { return vars[k] }
-}
-
 func TestEnvironmentAgents(t *testing.T) {
 	cases := []struct {
 		vars map[string]string
