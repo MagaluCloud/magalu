@@ -52,11 +52,11 @@ func checkScopes(sdk *mgcSdk.Sdk, exec core.Executor) error {
 	}
 
 	if k, s := a.AccessKeyPair(); (k == "" || s == "") && len(missing) > 0 {
-		return fmt.Errorf("you are not logged in. To authenticate, please run 'mgc auth login'")
+		return notLoggedInError{}
 	}
 
 	if len(missing) > 0 {
-		return fmt.Errorf("you are missing the following scopes for this operation: %v", missing)
+		return missingScopesError{Missing: missing}
 	}
 
 	return nil
