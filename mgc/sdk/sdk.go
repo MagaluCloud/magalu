@@ -108,21 +108,22 @@ func (o *Sdk) newOpenApiSource() core.Grouper {
 	return openapi.NewSource(loader, &extensionPrefix)
 }
 
-// newPreviewSources picks the preview adapters: every level reads the specs
-// in "<config dir>/.preview/<level>". Every other dir in the config dir is a
+// newPreviewSources picks the preview adapters. The beta specs ship with the
+// CLI, embedded in the binary. The alpha specs are the ones a customer installs
+// in "<config dir>/.preview/alpha": every other dir in the config dir is a
 // workspace, and a workspace name cannot start with a dot, so "workspace"
-// commands never list, select or delete the preview specs.
+// commands never list, select or delete them.
 func (o *Sdk) newPreviewSources() []core.Grouper {
 	extensionPrefix := "x-mgc"
 	validator := specvalidator.New()
-	dir := filepath.Join(o.ProfileManager().Dir(), ".preview")
 
-	sources := make([]core.Grouper, 0, len(preview.Levels))
-	for _, level := range preview.Levels {
-		store := fsstore.New(filepath.Join(dir, level.Name))
-		sources = append(sources, preview.NewGroup(level, store, validator, &extensionPrefix))
+	beta := fsstore.New(openapi.BetaSpecs(), "")
+	alpha := fsstore.NewDir(filepath.Join(o.ProfileManager().Dir(), ".preview", preview.Alpha.Name))
+
+	return []core.Grouper{
+		preview.NewGroup(preview.Beta, beta, validator, &extensionPrefix),
+		preview.NewGroup(preview.Alpha, alpha, validator, &extensionPrefix),
 	}
-	return sources
 }
 
 func (o *Sdk) RefResolver() core.RefPathResolver {

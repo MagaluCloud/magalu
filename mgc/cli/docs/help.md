@@ -26,6 +26,12 @@ object-storage     Operations for Object Storage
 virtual-machine    Virtual Machine Api Product
 ```
 
+## Preview:
+```
+alpha              Early preview commands
+beta               Preview commands released
+```
+
 ## Other commands:
 ```
 completion         Generate the autocompletion script for the specified shell

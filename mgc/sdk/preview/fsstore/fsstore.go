@@ -1,5 +1,7 @@
-// Package fsstore keeps preview packages as files in a dir, such as
-// ~/.config/mgc/beta: the package "<name>" is the file "<name>.openapi.yaml".
+// Package fsstore keeps preview packages as files in a file system: the package
+// "<name>" is the file "<name>.openapi.yaml". The file system is either embedded
+// in the binary (the beta specs, which ship with the CLI) or a dir on disk (the
+// alpha specs a customer installs, see NewDir).
 package fsstore
 
 import (
@@ -7,7 +9,6 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/MagaluCloud/magalu/mgc/sdk/preview"
@@ -16,16 +17,24 @@ import (
 const specSuffix = ".openapi.yaml"
 
 type Store struct {
-	dir string
+	fsys  fs.FS
+	where string
 }
 
-func New(dir string) *Store {
-	return &Store{dir: dir}
+// New reads the packages at the root of fsys. where says where they live, for
+// messages.
+func New(fsys fs.FS, where string) *Store {
+	return &Store{fsys: fsys, where: where}
 }
 
-// Names lists the spec files kept in the dir, sorted. A missing dir has none.
+// NewDir reads the packages kept in dir. A missing dir has none.
+func NewDir(dir string) *Store {
+	return New(os.DirFS(dir), dir)
+}
+
+// Names lists the spec files, sorted. A missing dir has none.
 func (s *Store) Names() ([]string, error) {
-	entries, err := os.ReadDir(s.dir)
+	entries, err := fs.ReadDir(s.fsys, ".")
 	if errors.Is(err, fs.ErrNotExist) {
 		return nil, nil
 	}
@@ -45,11 +54,12 @@ func (s *Store) Names() ([]string, error) {
 }
 
 func (s *Store) Read(name string) (preview.Package, error) {
-	if name == "" || name == "." || name == ".." || strings.ContainsAny(name, `/\`) {
-		return preview.Package{}, fmt.Errorf("preview package %q must be a file name inside %s", name, s.dir)
+	file := name + specSuffix
+	if name == "" || name == "." || name == ".." || strings.ContainsAny(name, `/\`) || !fs.ValidPath(file) {
+		return preview.Package{}, fmt.Errorf("preview package %q must be a file name inside %s", name, s.where)
 	}
 
-	spec, err := os.ReadFile(filepath.Join(s.dir, name+specSuffix))
+	spec, err := fs.ReadFile(s.fsys, file)
 	if err != nil {
 		return preview.Package{}, err
 	}
@@ -57,7 +67,7 @@ func (s *Store) Read(name string) (preview.Package, error) {
 }
 
 func (s *Store) String() string {
-	return s.dir
+	return s.where
 }
 
 var _ preview.Store = (*Store)(nil)

@@ -1,0 +1,94 @@
+# This file is to be merged on top of the compiled DNS spec using yaml_merge.py.
+# DNS ships as an alpha: the compiled spec goes to ~/.config/mgc/.preview/alpha,
+# never to mgc/sdk/openapi/openapis (that folder is embedded in the CLI).
+# NOTE: Lists are merged by their indexes, be careful with parameters, tags and such!
+# to keep it sane, keep some list item identifier (ex: "name") and add extra properties,
+# such as "x-mgc-name" or "x-mgc-description"
+
+paths:
+    /v0/user/managed-dns/domains:
+        post:
+            responses:
+                '202':
+                    links:
+                        get:
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 60
+                                jsonPathQuery: $.result.status == "READY"
+                                errorJsonPathQuery: $.result.status == "FAILED"
+    /v0/user/managed-dns/domains/{domain_id}:
+        delete:
+            x-mgc-confirmable:
+                message: Deleting domain {{.parameters.domain_id}} also deletes every
+                    record in it. This action cannot be undone. Proceed?
+    /v0/user/managed-dns/domains/{domain_id}/records:
+        post:
+            responses:
+                '202':
+                    links:
+                        get:
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 60
+                                jsonPathQuery: $.result.status == "READY"
+                                errorJsonPathQuery: $.result.status == "FAILED"
+    /v0/user/managed-dns/domains/{domain_id}/records/{record_id}:
+        patch:
+            responses:
+                '200':
+                    links:
+                        get:
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 60
+                                jsonPathQuery: $.result.status == "READY"
+                                errorJsonPathQuery: $.result.status == "FAILED"
+        put:
+            responses:
+                '200':
+                    links:
+                        get:
+                            x-mgc-wait-termination:
+                                interval: 5s
+                                maxRetries: 60
+                                jsonPathQuery: $.result.status == "READY"
+                                errorJsonPathQuery: $.result.status == "FAILED"
+tags:
+-   name: managed_dns_domains
+    x-mgc-name: domains
+    x-mgc-description: Private DNS domains, resolved only inside the VPC they belong to
+-   name: managed_dns_records
+    x-mgc-name: records
+    x-mgc-description: Records of a private DNS domain
+-   name: health
+    x-mgc-hidden: true
+servers:
+-   url: https://{env}/{region}/dns
+    variables:
+        region:
+            description: Region to reach the service
+            default: br-se1
+            enum:
+            - br-ne1
+            - br-se1
+            - br-mgl1
+            x-mgc-transforms:
+            -   type: translate
+                allowMissing: true
+                translations:
+                -   from: br-mgl1
+                    to: br-se-1
+        env:
+            description: Environment to use
+            default: api.magalu.cloud
+            enum:
+            - api.magalu.cloud
+            - api.pre-prod.jaxyendy.com:8443
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: api.magalu.cloud
+                -   from: pre-prod
+                    to: api.pre-prod.jaxyendy.com:8443

@@ -1,0 +1,388 @@
+openapi: 3.0.0
+info:
+  description: Intermediate API for provisioning and managing DNS XaaS records.
+  title: DNS Records API
+  contact: {}
+  version: 0.1.0
+paths:
+  /v0/health:
+    get:
+      description: Returns the health status of the API
+      tags:
+        - health
+      summary: Health check endpoint
+      operationId: get_health_v0_health
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/v0.HealthResponse"
+  /v0/healthz:
+    get:
+      description: Simple endpoint for Kubernetes liveness probes
+      tags:
+        - health
+      summary: Liveness probe endpoint
+      operationId: get_healthz_v0_healthz
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+  /v0/xaas/lbaas/dns-record-claims:
+    get:
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - dnsaas-internal.read
+      description: >-
+        Returns the list of DNSRecordClaims. All filters are optional.
+
+        The response includes the dns_target field with the IP associated with the record.
+      tags:
+        - lbaas_dns_record_claims
+      summary: Lists DNS records with filters and pagination
+      operationId: list_dns_record_claims_v0_xaas_lbaas_dns_record_claims_get
+      parameters:
+        - description: Tenant ID (UUID)
+          name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - description: Resource ID
+          name: resource_id
+          in: query
+          schema:
+            type: string
+        - description: Project type
+          name: project_type
+          in: query
+          schema:
+            type: string
+        - description: VPC ID
+          name: vpc_id
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/lbaas.DNSRecordClaimStatusResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+    post:
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - dnsaas-internal.write
+      description: >-
+        Creates a DNSRecordClaim asynchronously.
+
+        The API returns immediately with an operation ID, and the record claim is processed in the background by the operator.
+      tags:
+        - lbaas_dns_record_claims
+      summary: Requests the creation of a DNS record for a resource
+      operationId: create_dns_record_claim_v0_xaas_lbaas_dns_record_claims_post
+      parameters:
+        - description: Tenant ID (UUID)
+          name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/lbaas.DNSRecordClaimRequest"
+        description: Creation payload
+        required: true
+      responses:
+        "202":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/lbaas.DNSRecordClaimResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+  "/v0/xaas/lbaas/dns-record-claims/{request_id}":
+    get:
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - dnsaas-internal.read
+      description: Returns the current status of the DNSRecordClaim, including fqdn
+        and dns_target.
+      tags:
+        - lbaas_dns_record_claims
+      summary: Queries the DNS record status
+      operationId: get_dns_record_claim_by_name_v0_xaas_lbaas_dns_record_claims_get
+      parameters:
+        - description: Request ID
+          name: request_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - description: Tenant ID (UUID)
+          name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/lbaas.DNSRecordClaimStatusResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+    delete:
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - dnsaas-internal.write
+      description: Deletes the DNSRecordClaim associated with the provided name.
+      tags:
+        - lbaas_dns_record_claims
+      summary: Removes the DNS record of a resource
+      operationId: delete_dns_record_claim_by_name_v0_xaas_lbaas_dns_record_claims_delete
+      parameters:
+        - description: Request ID
+          name: request_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - description: Tenant ID (UUID)
+          name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+    patch:
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - dnsaas-internal.write
+      description: Updates dns_target of a DNSRecordClaim.
+      tags:
+        - lbaas_dns_record_claims
+      summary: Updates an existing DNS record
+      operationId: update_dns_record_claim_by_name_v0_xaas_lbaas_dns_record_claims_patch
+      parameters:
+        - description: Request ID
+          name: request_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - description: Tenant ID (UUID)
+          name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/lbaas.DNSRecordClaimUpdateRequest"
+        description: Updatable fields
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/lbaas.DNSRecordClaimResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+tags:
+  - description: Management and provisioning of DNS XaaS records for Load Balancer
+      as a Service (LBaaS) resources
+    name: lbaas_dns_record_claims
+  - description: Monitoring and liveness probe endpoints
+    name: health
+servers:
+  - url: /
+components:
+  securitySchemes:
+    OAuth2:
+      description: OAuth2 via IDPA
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://autoseg-idp.luizalabs.com/oauth/authorize
+          tokenUrl: https://id.magalu.com
+          scopes:
+            dnsaas-internal.read: Read DNSaaS API resources
+            dnsaas-internal.write: Write DNSaaS API resources
+    bearerAuth:
+      description: "Insert Access Token (Ex: Bearer {token})"
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    lbaas.DNSRecordClaimRequest:
+      type: object
+      properties:
+        dns_target:
+          $ref: "#/components/schemas/lbaas.DNSTarget"
+        resource_id:
+          type: string
+        vpc_id:
+          type: string
+    lbaas.DNSRecordClaimResponse:
+      type: object
+      properties:
+        fqdn:
+          type: string
+        operation_id:
+          type: string
+        request_id:
+          type: string
+        status:
+          type: string
+    lbaas.DNSRecordClaimStatusResponse:
+      type: object
+      properties:
+        created_at:
+          type: string
+        dns_target:
+          $ref: "#/components/schemas/lbaas.DNSTarget"
+        fqdn:
+          type: string
+        last_sync_at:
+          type: string
+        request_id:
+          type: string
+        status:
+          type: string
+        updated_at:
+          type: string
+    lbaas.DNSRecordClaimUpdateRequest:
+      type: object
+      properties:
+        dns_target:
+          $ref: "#/components/schemas/lbaas.DNSTarget"
+    lbaas.DNSTarget:
+      type: object
+      properties:
+        ipv4:
+          type: string
+    shared.APIError:
+      type: object
+      properties:
+        details:
+          type: array
+          items:
+            type: string
+        error:
+          type: string
+        message:
+          type: string
+    v0.HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        timestamp:
+          type: string
+        uptime:
+          type: string
+        version:
+          type: string

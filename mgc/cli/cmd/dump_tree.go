@@ -21,7 +21,7 @@ func newDumpTreeCmd(sdk *mgcSdk.Sdk) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			root := sdk.Group()
 			if include, _ := cmd.Flags().GetBool(includePreviewFlag); !include {
-				root = withoutPreview(root)
+				root = withoutAlpha(root)
 			}
 
 			tree, err := collectAllChildren(root)
@@ -45,19 +45,20 @@ func newDumpTreeCmd(sdk *mgcSdk.Sdk) *cobra.Command {
 	cmd.Flags().Bool(
 		includePreviewFlag,
 		false,
-		"Also include the preview commands (beta, alpha) installed on this machine. Used by tests, never by the docs",
+		"Also include the alpha commands installed on this machine. Used by tests, never by the docs",
 	)
 	return cmd
 }
 
-// Preview commands come from the specs on this machine, not from the binary,
-// so they must not end up in the tree used to generate the docs.
-func withoutPreview(root core.Grouper) core.Grouper {
+// Alpha commands come from the specs installed on this machine, not from the
+// binary, so they must not end up in the tree used to generate the docs. Beta
+// commands ship with the CLI and are documented like any other.
+func withoutAlpha(root core.Grouper) core.Grouper {
 	return core.NewSimpleGrouper(
 		root.DescriptorSpec(),
 		func() (children []core.Descriptor, err error) {
 			_, err = root.VisitChildren(func(child core.Descriptor) (bool, error) {
-				if !preview.IsLevelName(child.Name()) {
+				if child.Name() != preview.Alpha.Name {
 					children = append(children, child)
 				}
 				return true, nil

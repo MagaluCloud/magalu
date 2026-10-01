@@ -153,6 +153,16 @@ func convertToMarkdown(inputText string, fileHeader string) string {
 		}
 	}
 
+	for _, section := range sections {
+		if strings.Contains(section, "Preview:") {
+			markdown.WriteString("## Preview:\n```\n")
+			section = strings.ReplaceAll(section, "Preview:\n", "")
+			markdown.WriteString(prepareOutputString(section, "Preview:", true))
+			markdown.WriteString("\n```\n\n")
+			break
+		}
+	}
+
 	// Other commands section
 	for _, section := range sections {
 		if strings.Contains(section, "Other commands:") {

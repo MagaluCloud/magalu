@@ -17,6 +17,8 @@ import (
 
 var logger = mgcLoggerPkg.NewLazy[Level]()
 
+const GroupID = "preview"
+
 // NewGroup returns a root to be merged with the official ones. It has a single
 // child named after the level when the store has packages, and no children
 // otherwise, so the command stays hidden. It never fails: a broken store must
@@ -44,6 +46,7 @@ func newLevelGroup(level Level, store Store, validator Validator, extensionPrefi
 	return core.NewSimpleGrouper(
 		core.DescriptorSpec{
 			Name:    level.Name,
+			GroupID: GroupID,
 			Summary: level.Summary,
 			Description: fmt.Sprintf(
 				"%s, loaded from %s. Commands may change or stop working. ",

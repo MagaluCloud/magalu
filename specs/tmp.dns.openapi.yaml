@@ -1,0 +1,1029 @@
+openapi: 3.0.0
+info:
+  description: >-
+    Intermediate API for provisioning and managing customer-owned Private
+    DNS domains and records (Managed DNS product). A domain is a fully
+    user-chosen name, private to the vpc_id it's created in — it is never
+    delegated or published on the public internet, only resolved by
+    resources inside that VPC. Design draft, modeled after the conventions
+    of stark-api's DNS Records API (dns-record-claims) — no service
+    implements this yet. See "Design notes" below.
+  title: DNS Managed Records API
+  contact: {}
+  version: 0.1.0
+paths:
+  /v0/health:
+    get:
+      security: []
+      description: Returns the health status of the API
+      tags:
+        - health
+      summary: Health check endpoint
+      operationId: get_health_v0_health
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/v0.HealthResponse"
+  /v0/healthz:
+    get:
+      security: []
+      description: Simple endpoint for Kubernetes liveness probes
+      tags:
+        - health
+      summary: Liveness probe endpoint
+      operationId: get_healthz_v0_healthz
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+  /v0/user/managed-dns/domains:
+    get:
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - dnsaas-managed.read
+      description: >-
+        Returns a page of private DNS domains owned by the tenant. All filters
+        are optional. Pagination is offset-based; the total match count
+        (before pagination) is returned in the X-Total-Count response header.
+      tags:
+        - managed_dns_domains
+      summary: Lists managed DNS domains with filters and pagination
+      operationId: list_domains_v0_user_managed_dns_domains_get
+      parameters:
+        - description: Tenant ID (UUID)
+          name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+        - description: Filter by exact domain name (FQDN, trailing dot optional)
+          name: domain_name
+          in: query
+          schema:
+            type: string
+        - description: Filter by VPC ID
+          name: vpc_id
+          in: query
+          schema:
+            type: string
+        - description: Max items to return (default 50, max 200)
+          name: limit
+          in: query
+          schema:
+            type: integer
+        - description: Number of items to skip (default 0)
+          name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          headers:
+            X-Total-Count:
+              description: Total items matching the filters, before pagination
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/managed.DomainResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "503":
+          description: Service Unavailable — the Kubernetes API that holds the CRs is unreachable or did not answer in time (slug `kubernetes_unavailable_error`); retry later
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+    post:
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - dnsaas-managed.write
+      description: >-
+        Creates a Private DNS domain asynchronously, resolvable only within
+        vpc_id. The API returns immediately with an operation ID and the
+        domain_id, and the domain is provisioned in the background by the
+        operator. Nameservers are assigned once provisioning completes
+        (status becomes READY) and are returned by the GET endpoint below —
+        they route internal resolution for the VPC, the domain is never
+        delegated publicly.
+      tags:
+        - managed_dns_domains
+      summary: Requests the creation of a DNS domain
+      operationId: create_domain_v0_user_managed_dns_domains_post
+      parameters:
+        - description: Tenant ID (UUID)
+          name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/managed.DomainCreateRequest"
+        description: Creation payload
+        required: true
+      responses:
+        "202":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/managed.DomainOperationResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "409":
+          description: >-
+            Conflict — a domain with this domain_name already exists for
+            this tenant in this vpc_id. The same domain_name is allowed
+            again in a different vpc_id, since each VPC is an isolated
+            private resolution scope.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "503":
+          description: Service Unavailable — the Kubernetes API that holds the CRs is unreachable or did not answer in time (slug `kubernetes_unavailable_error`); retry later
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+  "/v0/user/managed-dns/domains/{domain_id}":
+    get:
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - dnsaas-managed.read
+      description: Returns the current status of the domain, including its assigned nameservers.
+      tags:
+        - managed_dns_domains
+      summary: Queries the DNS domain status
+      operationId: get_domain_v0_user_managed_dns_domains_get
+      parameters:
+        - description: Domain ID
+          name: domain_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: domain-8f14e45f
+        - description: Tenant ID (UUID)
+          name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/managed.DomainResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "503":
+          description: Service Unavailable — the Kubernetes API that holds the CRs is unreachable or did not answer in time (slug `kubernetes_unavailable_error`); retry later
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+    delete:
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - dnsaas-managed.write
+      description: >-
+        Deletes the domain and cascades deletion to every record inside it.
+        This cannot be undone.
+      tags:
+        - managed_dns_domains
+      summary: Removes a DNS domain and all its records
+      operationId: delete_domain_v0_user_managed_dns_domains_delete
+      parameters:
+        - description: Domain ID
+          name: domain_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: domain-8f14e45f
+        - description: Tenant ID (UUID)
+          name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "503":
+          description: Service Unavailable — the Kubernetes API that holds the CRs is unreachable or did not answer in time (slug `kubernetes_unavailable_error`); retry later
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+  "/v0/user/managed-dns/domains/{domain_id}/records":
+    get:
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - dnsaas-managed.read
+      description: >-
+        Returns a page of records in the domain. All filters are optional.
+        Pagination is offset-based; the total match count (before
+        pagination) is returned in the X-Total-Count response header.
+      tags:
+        - managed_dns_records
+      summary: Lists records in a domain with filters and pagination
+      operationId: list_records_v0_user_managed_dns_domains_records_get
+      parameters:
+        - description: Domain ID
+          name: domain_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: domain-8f14e45f
+        - description: Tenant ID (UUID)
+          name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+        - description: Filter by record type (A, AAAA or CNAME)
+          name: type
+          in: query
+          schema:
+            type: string
+        - description: Filter by exact record name (hostname within the domain, e.g. "www")
+          name: name
+          in: query
+          schema:
+            type: string
+        - description: Max items to return (default 50, max 200)
+          name: limit
+          in: query
+          schema:
+            type: integer
+        - description: Number of items to skip (default 0)
+          name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          headers:
+            X-Total-Count:
+              description: Total items matching the filters, before pagination
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/managed.RecordResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "404":
+          description: Not Found — domain_id does not exist for this tenant
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "503":
+          description: Service Unavailable — the Kubernetes API that holds the CRs is unreachable or did not answer in time (slug `kubernetes_unavailable_error`); retry later
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+    post:
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - dnsaas-managed.write
+      description: >-
+        Creates a record set in the domain asynchronously. The domain must
+        already be READY. The API returns immediately with an operation ID
+        and the record_id; the record is provisioned in the background by
+        the operator.
+      tags:
+        - managed_dns_records
+      summary: Requests the creation of a record in a domain
+      operationId: create_record_v0_user_managed_dns_domains_records_post
+      parameters:
+        - description: Domain ID
+          name: domain_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: domain-8f14e45f
+        - description: Tenant ID (UUID)
+          name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/managed.RecordCreateRequest"
+        description: Creation payload
+        required: true
+      responses:
+        "202":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/managed.RecordOperationResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "404":
+          description: Not Found — domain_id does not exist for this tenant
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "409":
+          description: Conflict — a record with this name/type already exists in the domain
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "503":
+          description: Service Unavailable — the Kubernetes API that holds the CRs is unreachable or did not answer in time (slug `kubernetes_unavailable_error`); retry later
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+  "/v0/user/managed-dns/domains/{domain_id}/records/{record_id}":
+    get:
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - dnsaas-managed.read
+      description: Returns the current status of the record.
+      tags:
+        - managed_dns_records
+      summary: Queries a record's status
+      operationId: get_record_v0_user_managed_dns_domains_records_get
+      parameters:
+        - description: Domain ID
+          name: domain_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: domain-8f14e45f
+        - description: Record ID
+          name: record_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: record-1a2b3c4d
+        - description: Tenant ID (UUID)
+          name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/managed.RecordResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "503":
+          description: Service Unavailable — the Kubernetes API that holds the CRs is unreachable or did not answer in time (slug `kubernetes_unavailable_error`); retry later
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+    patch:
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - dnsaas-managed.write
+      description: Updates the ttl and/or values of an existing record. The name and type of a record are immutable — delete and recreate to change either.
+      tags:
+        - managed_dns_records
+      summary: Updates an existing record
+      operationId: update_record_v0_user_managed_dns_domains_records_patch
+      parameters:
+        - description: Domain ID
+          name: domain_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: domain-8f14e45f
+        - description: Record ID
+          name: record_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: record-1a2b3c4d
+        - description: Tenant ID (UUID)
+          name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/managed.RecordUpdateRequest"
+        description: Updatable fields
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/managed.RecordOperationResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "503":
+          description: Service Unavailable — the Kubernetes API that holds the CRs is unreachable or did not answer in time (slug `kubernetes_unavailable_error`); retry later
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+    put:
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - dnsaas-managed.write
+      description: >-
+        Replaces the ttl and values of an existing record — unlike PATCH,
+        both fields are required (full replacement, idempotent). The name
+        and type of a record are immutable — delete and recreate to change
+        either.
+      tags:
+        - managed_dns_records
+      summary: Replaces an existing record's ttl and values
+      operationId: replace_record_v0_user_managed_dns_domains_records_put
+      parameters:
+        - description: Domain ID
+          name: domain_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: domain-8f14e45f
+        - description: Record ID
+          name: record_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: record-1a2b3c4d
+        - description: Tenant ID (UUID)
+          name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/managed.RecordReplaceRequest"
+        description: Full replacement of the updatable fields
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/managed.RecordOperationResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "503":
+          description: Service Unavailable — the Kubernetes API that holds the CRs is unreachable or did not answer in time (slug `kubernetes_unavailable_error`); retry later
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+    delete:
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - dnsaas-managed.write
+      description: Deletes the record from the domain.
+      tags:
+        - managed_dns_records
+      summary: Removes a record from a domain
+      operationId: delete_record_v0_user_managed_dns_domains_records_delete
+      parameters:
+        - description: Domain ID
+          name: domain_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: domain-8f14e45f
+        - description: Record ID
+          name: record_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: record-1a2b3c4d
+        - description: Tenant ID (UUID)
+          name: x-tenant-id
+          in: header
+          required: true
+          schema:
+            type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+        "503":
+          description: Service Unavailable — the Kubernetes API that holds the CRs is unreachable or did not answer in time (slug `kubernetes_unavailable_error`); retry later
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/shared.APIError"
+tags:
+  - description: Provisioning and lifecycle management of user-named, VPC-private
+      DNS domains (Managed DNS product) — never delegated or published publicly
+    name: managed_dns_domains
+  - description: Provisioning and lifecycle management of DNS records within a
+      private managed domain
+    name: managed_dns_records
+  - description: Monitoring and liveness probe endpoints
+    name: health
+servers:
+  - url: /
+components:
+  securitySchemes:
+    OAuth2:
+      description: OAuth2 via IDPA
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://autoseg-idp.luizalabs.com/oauth/authorize
+          tokenUrl: https://id.magalu.com
+          scopes:
+            dnsaas-managed.read: Read Managed DNS API resources
+            dnsaas-managed.write: Write Managed DNS API resources
+    bearerAuth:
+      description: "Insert Access Token (Ex: Bearer {token})"
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    managed.DomainCreateRequest:
+      type: object
+      required:
+        - domain_name
+        - vpc_id
+      properties:
+        domain_name:
+          type: string
+          description: >-
+            Fully user-chosen domain name — this is a Private DNS domain,
+            never delegated or published on the public internet, so
+            domain_name does not need to be a subdomain of any Magalu-owned
+            or public root domain; the tenant may pick any syntactically
+            valid domain name (e.g. "backend.acme.corp"). Trailing dot is
+            optional and normalized server-side. Must be unique per tenant +
+            vpc_id.
+          pattern: "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*\\.?$"
+          example: backend.acme.corp
+        vpc_id:
+          type: string
+          description: >-
+            VPC this domain is private to. The domain is resolvable only by
+            resources inside this VPC.
+          example: vpc-1a2b3c4d
+    managed.DomainOperationResponse:
+      type: object
+      properties:
+        operation_id:
+          type: string
+          example: 8f14e45f-ceea-4c4c-b0f1-3d0f0e8b8a1a
+        domain_id:
+          type: string
+          example: domain-8f14e45f
+        domain_name:
+          type: string
+          example: backend.acme.corp
+        vpc_id:
+          type: string
+          example: vpc-1a2b3c4d
+        status:
+          $ref: "#/components/schemas/managed.OperationStatus"
+    managed.DomainResponse:
+      type: object
+      properties:
+        domain_id:
+          type: string
+          example: domain-8f14e45f
+        domain_name:
+          type: string
+          example: backend.acme.corp
+        vpc_id:
+          type: string
+          example: vpc-1a2b3c4d
+        status:
+          $ref: "#/components/schemas/managed.OperationStatus"
+        nameservers:
+          type: array
+          description: >-
+            Assigned once status is READY; empty while PENDING. These route
+            private resolution inside vpc_id only — the domain has no public
+            delegation.
+          items:
+            type: string
+          example:
+            - ns1.mgc.internal
+            - ns2.mgc.internal
+        created_at:
+          type: string
+          description: >-
+            RFC3339 timestamp sourced from the underlying resource. "" if
+            not yet known — never a guessed value.
+          example: "2026-08-31T10:00:00Z"
+        updated_at:
+          type: string
+          description: RFC3339 timestamp of the last observed state change. "" if not yet known.
+          example: "2026-08-31T10:05:00Z"
+    managed.RecordCreateRequest:
+      type: object
+      required:
+        - name
+        - type
+        - dns_target
+      properties:
+        name:
+          type: string
+          description: >-
+            Hostname within the domain (e.g. "www", "api", or "@" for the
+            domain apex).
+          pattern: "^(\\*|[a-z0-9_]([-a-z0-9_]*[a-z0-9_])?)(\\.[a-z0-9_]([-a-z0-9_]*[a-z0-9_])?)*\\.?$"
+          example: www
+        type:
+          $ref: "#/components/schemas/managed.RecordType"
+        ttl:
+          type: integer
+          description: Time to live in seconds. Defaults to 300 if omitted.
+          minimum: 60
+          maximum: 86400
+          example: 300
+        dns_target:
+          type: array
+          description: >-
+            Record values, named dns_target for parity with stark-api's
+            lbaas contract — but an array here (not a single {ipv4} object),
+            since a managed record can hold multiple values and types
+            stark-api's DNSTarget can't (IPv6 for AAAA, "<priority> <host>."
+            for MX, a hostname for CNAME, free text for TXT, etc). 1 to 50
+            items.
+          minItems: 1
+          maxItems: 50
+          items:
+            type: string
+          example:
+            - 203.0.113.10
+    managed.RecordUpdateRequest:
+      type: object
+      properties:
+        ttl:
+          type: integer
+          minimum: 60
+          maximum: 86400
+          example: 300
+        dns_target:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            type: string
+          example:
+            - 203.0.113.20
+    managed.RecordReplaceRequest:
+      type: object
+      description: >-
+        Same fields as RecordUpdateRequest, but both required — PUT is a
+        full replacement of the record's updatable fields, not a partial
+        patch.
+      required:
+        - ttl
+        - dns_target
+      properties:
+        ttl:
+          type: integer
+          minimum: 60
+          maximum: 86400
+          example: 300
+        dns_target:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            type: string
+          example:
+            - 203.0.113.20
+    managed.RecordOperationResponse:
+      type: object
+      properties:
+        operation_id:
+          type: string
+          example: 8f14e45f-ceea-4c4c-b0f1-3d0f0e8b8a1a
+        record_id:
+          type: string
+          example: record-1a2b3c4d
+        fqdn:
+          type: string
+          example: www.backend.acme.corp
+        status:
+          $ref: "#/components/schemas/managed.OperationStatus"
+    managed.RecordResponse:
+      type: object
+      properties:
+        record_id:
+          type: string
+          example: record-1a2b3c4d
+        domain_id:
+          type: string
+          example: domain-8f14e45f
+        name:
+          type: string
+          example: www
+        fqdn:
+          type: string
+          example: www.backend.acme.corp
+        type:
+          $ref: "#/components/schemas/managed.RecordType"
+        ttl:
+          type: integer
+          example: 300
+        dns_target:
+          type: array
+          items:
+            type: string
+          example:
+            - 203.0.113.10
+        status:
+          $ref: "#/components/schemas/managed.OperationStatus"
+        created_at:
+          type: string
+          description: >-
+            RFC3339 timestamp sourced from the underlying resource. "" if
+            not yet known — never a guessed value.
+          example: "2026-08-31T10:00:00Z"
+        updated_at:
+          type: string
+          description: RFC3339 timestamp of the last observed state change. "" if not yet known.
+          example: "2026-08-31T10:05:00Z"
+    managed.RecordType:
+      type: string
+      description: >-
+        Only A, AAAA and CNAME are accepted in v1 — the Velaryon Operator's
+        admission webhook enforces this restriction (ADR-008) even though
+        the underlying CRD's own schema is broader; MX/TXT/NS/SRV/CAA are
+        rejected with 422 until that scope is revisited.
+      enum:
+        - A
+        - AAAA
+        - CNAME
+      example: A
+    managed.OperationStatus:
+      type: string
+      enum:
+        - PENDING
+        - READY
+        - FAILED
+      example: READY
+    shared.APIError:
+      type: object
+      properties:
+        details:
+          type: array
+          items:
+            type: string
+          example:
+            - dns_target ipv4 is required
+        error:
+          type: string
+          example: validation_failed
+        message:
+          type: string
+          example: The request has invalid or missing fields
+    v0.HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: ok
+        timestamp:
+          type: string
+          example: "2026-08-31T10:00:00Z"
+        uptime:
+          type: string
+          example: 72h3m10s
+        version:
+          type: string
+          example: 0.1.0

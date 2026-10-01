@@ -9,6 +9,7 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/cli/ui/progress_bar"
 	mgcLoggerPkg "github.com/MagaluCloud/magalu/mgc/core/logger"
 	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -65,6 +66,10 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	rootCmd.AddGroup(&cobra.Group{
 		ID:    "catalog",
 		Title: "Products:",
+	})
+	rootCmd.AddGroup(&cobra.Group{
+		ID:    preview.GroupID,
+		Title: "Preview:",
 	})
 	rootCmd.AddGroup(&cobra.Group{
 		ID:    "settings",

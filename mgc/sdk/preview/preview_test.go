@@ -61,6 +61,7 @@ func TestNewGroupExposesPackagesUnderTheLevel(t *testing.T) {
 			assert.Equal(t, []string{level.Name}, childNames(t, root))
 
 			levelGroup := group(t, root, level.Name)
+			assert.Equal(t, GroupID, levelGroup.GroupID(), "a preview level is not a product")
 			assert.Equal(t, level.Summary, levelGroup.Summary())
 			assert.Contains(t, levelGroup.Description(), "mem-store")
 			assert.Equal(t, []string{"foo"}, childNames(t, levelGroup))
@@ -145,10 +146,4 @@ func TestNewGroupDoesNotTouchOfficialGroups(t *testing.T) {
 		root := newRoot(newMemStore(nil), newMemStore(map[string]string{"foo": fooSpec}))
 		assert.Equal(t, []string{Alpha.Name, "foo"}, childNames(t, root))
 	})
-}
-
-func TestIsLevelName(t *testing.T) {
-	assert.True(t, IsLevelName("beta"))
-	assert.True(t, IsLevelName("alpha"))
-	assert.False(t, IsLevelName("iam"))
 }

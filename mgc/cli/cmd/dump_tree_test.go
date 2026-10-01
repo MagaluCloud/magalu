@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestDumpTreeLeavesPreviewOut(t *testing.T) {
+func TestDumpTreeLeavesAlphaOut(t *testing.T) {
 	newGroup := func(name string) core.Grouper {
 		return core.NewSimpleGrouper(
 			core.DescriptorSpec{Name: name, Description: name},
@@ -23,12 +23,12 @@ func TestDumpTreeLeavesPreviewOut(t *testing.T) {
 		},
 	)
 
-	tree, err := collectAllChildren(withoutPreview(root))
+	tree, err := collectAllChildren(withoutAlpha(root))
 	require.NoError(t, err)
 
 	names := []string{}
 	for _, child := range tree["children"].([]map[string]any) {
 		names = append(names, child["name"].(string))
 	}
-	assert.Equal(t, []string{"iam"}, names)
+	assert.Equal(t, []string{preview.Beta.Name, "iam"}, names)
 }
