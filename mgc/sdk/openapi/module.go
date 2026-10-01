@@ -61,13 +61,11 @@ func newRefsDocumentLoader(pRoot *core.Grouper) utils.LoadWithError[map[string]a
 		}
 		byPaths := map[string]map[string]core.Executor{}
 		byId := map[string]core.Executor{}
-		_, err = (*pRoot).VisitChildren(func(child core.Descriptor) (bool, error) {
-			if resource, ok := child.(core.Grouper); ok {
-				return loadResourceRefs(resource, byPaths, byId)
-			}
-
-			return false, fmt.Errorf("expected resource to be grouper, got %#v", child)
-		})
+		// The module root is itself a grouper; index its children the same way as
+		// any sub-resource: recurse into sub-groupers and index executors. This also
+		// covers modules that expose operations directly at the root (untagged ops),
+		// which otherwise broke operationId link resolution for the whole module.
+		_, err = loadResourceRefs(*pRoot, byPaths, byId)
 		if err != nil {
 			return
 		}
