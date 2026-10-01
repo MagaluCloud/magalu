@@ -13,7 +13,7 @@
     "/v0/tags": {
       "post": {
         "summary": "Create a tag",
-        "description": "Create a tag that can be attached to cloud resources.\n\nValues can be created along with the tag. A single request accepts at most\n100 values.\n\nRelated commands:\n  mgc tag values create --tag-name \u003cname\u003e  add more values to the tag\n  mgc tag resources tags attach            attach the tag to a resource",
+        "description": "Create a tag that can be attached to cloud resources.\n\nValues can be created along with the tag. A single request accepts at most\n100 values.\n\nRelated commands:\n  mgc tag values create --tag-name \u003cname\u003e  add more values to the tag\n  mgc tag resources attach            attach the tag to a resource",
         "operationId": "create_tags_public",
         "security": [
           {

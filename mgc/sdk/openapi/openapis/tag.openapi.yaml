@@ -829,6 +829,7 @@ paths:
                     type: string
                     title: Tag Name
                     description: Tag name to detach from the resource
+                    example: kubernetes-expenses
                 description: Tag name to detach from the resource
             -   name: external_id
                 in: path

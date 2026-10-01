@@ -13,6 +13,12 @@ components:
                     -   name: kubernetes-expenses
                         value: test-labs
 paths:
+    /v0/resources/{external_id}/tags/{tag_name}:
+        delete:
+            parameters:
+            -   name: tag_name
+                schema:
+                    example: kubernetes-expenses
     /v0/tags/{tag_name}/values/{value_name}:
         patch:
             responses:
