@@ -53,6 +53,7 @@ help               Help about any command
 auth               Actions with ID Magalu to log in, API Keys, refresh tokens, change tenants and others
 config             Manage CLI Configuration values
 profile            Manage account settings, including SSH keys and related configurations
+telemetry          Manage usage data collection
 workspace          Manage workspaces for isolated auth and config settings
 ```
 
