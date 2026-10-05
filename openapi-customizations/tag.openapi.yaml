@@ -1,0 +1,48 @@
+# This file is to be merged on top of mgc/sdk/openapi/openapis/tag.openapi.yaml
+# using yaml_merge.py
+# NOTE: Lists are merged by their indexes, be careful with parameters, tags and such!
+# to keep it sane, keep some list item identifier (ex: "name") and add extra properties,
+# such as "x-mgc-name" or "x-mgc-description"
+
+components:
+    schemas:
+        ResourcesTagsInputPublic:
+            properties:
+                tags:
+                    example:
+                    -   name: kubernetes-expenses
+                        value: test-labs
+paths:
+    /v0/resources/{external_id}/tags/{tag_name}:
+        delete:
+            parameters:
+            -   name: tag_name
+                schema:
+                    example: kubernetes-expenses
+    /v0/tags/{tag_name}/values/{value_name}:
+        patch:
+            responses:
+                '200':
+                    links:
+                        get:
+                            parameters:
+                                value_name: $response.body#/name
+                        delete:
+                            parameters:
+                                value_name: $response.body#/name
+servers:
+-   url: https://{env}/tags
+    variables:
+        env:
+            description: Environment to use
+            default: api.magalu.cloud
+            enum:
+            - api.magalu.cloud
+            - api.pre-prod.jaxyendy.com:8443
+            x-mgc-transforms:
+            -   type: translate
+                translations:
+                -   from: prod
+                    to: api.magalu.cloud
+                -   from: pre-prod
+                    to: api.pre-prod.jaxyendy.com:8443
