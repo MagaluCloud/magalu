@@ -2,8 +2,7 @@ package telemetry
 
 import "strings"
 
-// inserido via -ldflags
-// preenchido no release com -X github.com/MagaluCloud/magalu/mgc/cli/telemetry.posthogAPIKey (release.yaml, internal.yaml)
+// preenchido no build via -ldflags -X pelo release.yaml e pelo internal.yaml
 var posthogAPIKey string
 
 const (

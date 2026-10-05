@@ -3,7 +3,9 @@ package telemetry
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
+	"net"
 	"os"
 	"strings"
 	"time"
@@ -162,27 +164,35 @@ func (s *Service) export(ctx context.Context, event Event) {
 	defer cancel()
 
 	if err := s.opts.Exporter.Export(ctx, event); err != nil {
-		s.opts.Debug("telemetry: event dropped", "reason", describeExportError(ctx, err))
+		s.opts.Debug("telemetry: event dropped", "reason", describeExportError(ctx, err), "error", err.Error())
 	}
 }
 
 func describeExportError(ctx context.Context, err error) string {
-	if errors.Is(err, context.DeadlineExceeded) || errors.Is(ctx.Err(), context.DeadlineExceeded) {
+	var (
+		dnsErr    *net.DNSError
+		statusErr ExportStatusError
+	)
+	switch {
+	case errors.Is(err, context.DeadlineExceeded) || errors.Is(ctx.Err(), context.DeadlineExceeded):
 		return "timeout"
+	case errors.As(err, &dnsErr):
+		return "dns"
+	case errors.As(err, &statusErr):
+		return fmt.Sprintf("status %d", statusErr.StatusCode)
+	case isNetworkError(err):
+		return "network"
 	}
-	if isNetworkError(err) {
-		return "network: " + err.Error()
-	}
-	return err.Error()
+	return "unknown"
 }
 
-// buildEvent monta o evento a partir do comando, sem alterar o estado.
 func (s *Service) buildEvent(info CommandInfo, cmdErr error) Event {
 	event := Event{
 		Timestamp:            info.End,
 		ExecutionContext:     s.executionContext,
 		ExecutionEnvironment: s.executionEnvironment,
 		Action:               info.Action(),
+		Product:              info.Product(),
 		OptionsSet:           info.OptionsSet,
 		Outcome:              OutcomeSuccess,
 		Duration:             info.End.Sub(info.Start),

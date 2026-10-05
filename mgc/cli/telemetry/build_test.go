@@ -10,9 +10,27 @@ func TestBuildConfig(t *testing.T) {
 		wantEndpoint string
 		wantNoop     bool
 	}{
-		{"development build without key uses the noop exporter", "", nil, DefaultEndpoint, true},
-		{"blank key is treated as missing", "  ", nil, DefaultEndpoint, true},
-		{"release build uses posthog on the default endpoint", "phc_test", nil, DefaultEndpoint, false},
+		{
+			"development build without key uses the noop exporter",
+			"",
+			nil,
+			DefaultEndpoint,
+			true,
+		},
+		{
+			"blank key is treated as missing",
+			"  ",
+			nil,
+			DefaultEndpoint,
+			true,
+		},
+		{
+			"release build uses posthog on the default endpoint",
+			"phc_test",
+			nil,
+			DefaultEndpoint,
+			false,
+		},
 		{
 			"endpoint override replaces the whole url",
 			"phc_test",
