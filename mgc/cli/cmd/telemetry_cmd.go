@@ -11,9 +11,20 @@ const telemetryCmdName = "telemetry"
 
 func newTelemetryCmd(getService func() *telemetry.Service) *cobra.Command {
 	telemetryCmd := &cobra.Command{
-		Use:     telemetryCmdName,
-		Short:   "Manage usage data collection",
-		Long:    fmt.Sprintf("Manage the pseudonymous usage data collected by the CLI. Privacy policy: %s", telemetry.PrivacyPolicyURL),
+		Use:   telemetryCmdName,
+		Short: "Manage usage data collection",
+		Long: fmt.Sprintf(`Manage the pseudonymous usage data collected by the CLI.
+
+After each command the CLI sends one event with the command path, the names of
+the flags that were set (never their values), the outcome and a failure category,
+the duration, the CLI version, the operating system, the install method, the
+execution context (interactive, ci or agent), the tenant ID, the last request ID
+and an anonymous installation ID. Flag values, credentials, error messages and
+command output are never sent.
+
+To opt out, run 'mgc telemetry disable' or set %s=1 or %s=1.
+
+Privacy policy: %s`, telemetry.EnvOptOut, telemetry.EnvDoNotTrack, telemetry.PrivacyPolicyURL),
 		GroupID: "settings",
 	}
 

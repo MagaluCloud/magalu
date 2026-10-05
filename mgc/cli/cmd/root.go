@@ -5,7 +5,9 @@ import (
 	"os"
 	"regexp"
 	"runtime"
+	"time"
 
+	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 	"github.com/MagaluCloud/magalu/mgc/cli/ui/progress_bar"
 	mgcLoggerPkg "github.com/MagaluCloud/magalu/mgc/core/logger"
 	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
@@ -61,6 +63,7 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 		},
 	}
 	rootCmd.SetGlobalNormalizationFunc(normalizeFlagName)
+	rootCmd.SetFlagErrorFunc(wrapFlagError)
 
 	rootCmd.AddGroup(&cobra.Group{
 		ID:    "catalog",
@@ -99,7 +102,10 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 		return err
 	}
 
+	telemetrySvc := newTelemetryService(sdk, version)
+
 	rootCmd.AddCommand(newDumpTreeCmd(sdk))
+	rootCmd.AddCommand(newTelemetryCmd(func() *telemetry.Service { return telemetrySvc }))
 
 	mainArgs := argParser.MainArgs()
 
@@ -112,10 +118,21 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 		_ = mgcLoggerPkg.Root().Sync()
 	}()
 
+	var requestIDs *requestIDRecorder
+	if telemetrySvc.Enabled() {
+		requestIDs = trackRequestIDs(sdk)
+	}
+
 	rootCmd.SetArgs(mainArgs)
+	start := time.Now()
 	err = rootCmd.Execute()
+	end := time.Now()
 	if err == nil && loadErr != nil {
 		err = loadErr
+	}
+
+	if requestIDs != nil {
+		recordTelemetry(telemetrySvc, sdk, rootCmd, mainArgs, err, start, end, requestIDs)
 	}
 	// looking for flags like raw, debug, api-key, etc... ? see: mgc/cli/cmd/handle_executor.go - tip: there is a nice point to put an breakpoint
 	err = showHelpForError(rootCmd, mainArgs, err) // since we SilenceUsage and SilenceErrors
