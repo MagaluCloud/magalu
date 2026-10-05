@@ -27,6 +27,8 @@ type CommandInfo struct {
 	End            time.Time
 	TenantID       string
 	LastRequestID  string
+	// Authenticated indica login ou API key. Sem nenhum dos dois o comando não é coletado
+	Authenticated bool
 }
 
 func (c CommandInfo) Action() string {

@@ -118,7 +118,7 @@ func (s *Service) SetDisabled(disabled bool) error {
 }
 
 func (s *Service) Record(ctx context.Context, info CommandInfo, cmdErr error, w io.Writer) {
-	if !s.Enabled() {
+	if !s.Enabled() || !info.Authenticated {
 		return
 	}
 

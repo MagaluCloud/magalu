@@ -228,6 +228,37 @@ func TestServiceOptOut(t *testing.T) {
 	}
 }
 
+func TestServiceUnauthenticated(t *testing.T) {
+	testCases := []struct {
+		name   string
+		setup  testSetup
+		path   []string
+		cmdErr error
+	}{
+		{"command without login", collecting(State{}), vmList, errors.New("RefreshToken is not set")},
+		{"failed login", collecting(State{}), authLogin, errors.New("login cancelled")},
+		{"notice pending", testSetup{terminal: true}, vmList, nil},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			svc, store, exp := newTestService(tc.setup)
+			info := commandAt(tc.path, loginAt)
+			info.Authenticated = false
+
+			if stderr := record(svc, info, tc.cmdErr); stderr != "" {
+				t.Errorf("stderr = %q, want empty", stderr)
+			}
+			if len(exp.events) != 0 {
+				t.Errorf("%d events, want 0", len(exp.events))
+			}
+			if store.saves != 0 {
+				t.Errorf("%d saves, want 0", store.saves)
+			}
+		})
+	}
+}
+
 func TestServiceSetDisabled(t *testing.T) {
 	unreadable := errors.New("yaml: invalid")
 
@@ -286,7 +317,7 @@ func TestServiceBuildsEvent(t *testing.T) {
 		},
 		{
 			name:        "unknown command with untyped error",
-			info:        CommandInfo{UnknownCommand: true, Start: loginAt, End: loginAt},
+			info:        CommandInfo{UnknownCommand: true, Start: loginAt, End: loginAt, Authenticated: true},
 			cmdErr:      errors.New(`unknown command "foo" for "mgc"`),
 			wantAction:  UnknownAction,
 			wantOutcome: OutcomeFailure,

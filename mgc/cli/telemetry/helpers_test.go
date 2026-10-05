@@ -50,7 +50,7 @@ var (
 )
 
 func commandAt(path []string, end time.Time) CommandInfo {
-	return CommandInfo{Path: path, Start: end.Add(-842 * time.Millisecond), End: end}
+	return CommandInfo{Path: path, Start: end.Add(-842 * time.Millisecond), End: end, Authenticated: true}
 }
 
 // testSetup descreve o ambiente de um Service de teste. terminal = true com env vazio

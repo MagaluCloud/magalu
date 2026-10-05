@@ -18,9 +18,11 @@ import (
 )
 
 const (
-	loggerConfigKey = "logging"
-	defaultRegion   = "br-se1"
-	apiKeyEnvVar    = "MGC_API_KEY"
+	loggerConfigKey    = "logging"
+	defaultRegion      = "br-se1"
+	apiKeyEnvVar       = "MGC_API_KEY"
+	objKeyIDEnvVar     = "MGC_OBJ_KEY_ID"
+	objKeySecretEnvVar = "MGC_OBJ_KEY_SECRET"
 )
 
 var argParser = &osArgParser{}
@@ -118,9 +120,9 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 		_ = mgcLoggerPkg.Root().Sync()
 	}()
 
-	var requestIDs *requestIDRecorder
+	var run *telemetryRun
 	if telemetrySvc.Enabled() {
-		requestIDs = trackRequestIDs(sdk)
+		run = startTelemetryRun(sdk)
 	}
 
 	rootCmd.SetArgs(mainArgs)
@@ -131,8 +133,9 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 		err = loadErr
 	}
 
-	if requestIDs != nil {
-		recordTelemetry(telemetrySvc, sdk, rootCmd, mainArgs, err, start, end, requestIDs)
+	if run != nil {
+		run.start, run.end = start, end
+		recordTelemetry(telemetrySvc, sdk, rootCmd, mainArgs, err, run)
 	}
 	// looking for flags like raw, debug, api-key, etc... ? see: mgc/cli/cmd/handle_executor.go - tip: there is a nice point to put an breakpoint
 	err = showHelpForError(rootCmd, mainArgs, err) // since we SilenceUsage and SilenceErrors
@@ -140,8 +143,8 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 }
 
 func setKeyPair(sdk *mgcSdk.Sdk) {
-	objId := os.Getenv("MGC_OBJ_KEY_ID")
-	objKey := os.Getenv("MGC_OBJ_KEY_SECRET")
+	objId := os.Getenv(objKeyIDEnvVar)
+	objKey := os.Getenv(objKeySecretEnvVar)
 
 	if objId != "" && objKey != "" {
 		sdk.Config().AddTempKeyPair("apikey",
