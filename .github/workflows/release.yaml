@@ -100,6 +100,7 @@ jobs:
           VERSION: ${{ github.event.inputs.version }}
           GITHUB_TOKEN: ${{ secrets.GH_PAT2 }}
           PRIVATE_KEY_PATH: ${{ secrets.SSH_ID_RSA_MAGALUCLI }}
+          MGC_POSTHOG_API_KEY: ${{ secrets.MGC_POSTHOG_API_KEY }}
 
       - name: Setup GitHub CLI
         id: setup-gh-cli
