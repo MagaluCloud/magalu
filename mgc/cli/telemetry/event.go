@@ -2,6 +2,7 @@ package telemetry
 
 import (
 	"encoding/json"
+	"fmt"
 	"slices"
 	"strings"
 	"time"
@@ -100,6 +101,17 @@ type Event struct {
 	TimeToFirstValue     *time.Duration
 	LastRequestID        string
 	InstallationID       string
+	// Product não faz parte do JSON do modelo, ele só compõe a mensagem do log
+	Product string
+}
+
+// Message é o texto do registro no backend, no formato "CLI - <produto> - <status>"
+func (e Event) Message() string {
+	product := e.Product
+	if product == "" {
+		product = UnknownProduct
+	}
+	return fmt.Sprintf("CLI - %s - %s", product, e.Outcome)
 }
 
 func (e Event) LogLevel() LogLevel {

@@ -25,6 +25,28 @@ func TestCommandInfoAction(t *testing.T) {
 	}
 }
 
+func TestCommandInfoProduct(t *testing.T) {
+	testCases := []struct {
+		name string
+		info CommandInfo
+		want string
+	}{
+		{"nested command", CommandInfo{Path: []string{"virtual-machine", "images", "list"}}, "virtual machine"},
+		{"upper case and hyphens", CommandInfo{Path: []string{"Object-Storage", "Buckets", "Create"}}, "object storage"},
+		{"settings command", CommandInfo{Path: []string{"config", "list"}}, "config"},
+		{"empty path", CommandInfo{}, UnknownAction},
+		{"unknown command", CommandInfo{Path: []string{"virtual-machine"}, UnknownCommand: true}, UnknownAction},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := tc.info.Product(); got != tc.want {
+				t.Errorf("got %q, want %q", got, tc.want)
+			}
+		})
+	}
+}
+
 func TestCommandInfoResourceType(t *testing.T) {
 	testCases := []struct {
 		name string

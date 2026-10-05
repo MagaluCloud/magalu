@@ -5,7 +5,10 @@ import (
 	"time"
 )
 
-const UnknownAction = "unknown"
+const (
+	UnknownAction  = "unknown"
+	UnknownProduct = "unknown"
+)
 
 var nonInfraGroups = map[string]struct{}{
 	"auth":      {},
@@ -35,6 +38,13 @@ func (c CommandInfo) Action() string {
 		segments[i] = strings.ReplaceAll(strings.ToLower(s), "-", "")
 	}
 	return strings.Join(segments, ".")
+}
+
+func (c CommandInfo) Product() string {
+	if c.UnknownCommand || len(c.Path) == 0 {
+		return UnknownProduct
+	}
+	return strings.ReplaceAll(strings.ToLower(c.Path[0]), "-", " ")
 }
 
 func (c CommandInfo) ResourceType() string {

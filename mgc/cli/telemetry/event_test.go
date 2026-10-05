@@ -211,3 +211,39 @@ func TestMarshalJSONPayloadRules(t *testing.T) {
 		})
 	}
 }
+
+func TestEventMessage(t *testing.T) {
+	testCases := []struct {
+		name  string
+		event Event
+		want  string
+	}{
+		{"success", Event{Product: "virtual machine", Outcome: OutcomeSuccess}, "CLI - virtual machine - success"},
+		{"failure", Event{Product: "object storage", Outcome: OutcomeFailure}, "CLI - object storage - failure"},
+		{"no product", Event{Outcome: OutcomeFailure}, "CLI - unknown - failure"},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := tc.event.Message(); got != tc.want {
+				t.Errorf("got %q, want %q", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestMarshalJSONOmitsProduct(t *testing.T) {
+	data, err := json.Marshal(Event{Product: "virtual machine", Outcome: OutcomeSuccess})
+	if err != nil {
+		t.Fatal(err)
+	}
+	var fields map[string]any
+	if err := json.Unmarshal(data, &fields); err != nil {
+		t.Fatal(err)
+	}
+	for key, value := range fields {
+		if strings.EqualFold(key, "product") || value == "virtual machine" {
+			t.Errorf("product must not be part of the event JSON: %s", data)
+		}
+	}
+}
