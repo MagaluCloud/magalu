@@ -7,8 +7,10 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/http/httptrace"
 	"slices"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -22,10 +24,11 @@ type PostHogExporter struct {
 	endpoint string
 	apiKey   string
 	client   *http.Client
+	// warmed fecha quando a conexão aberta pelo Warm fica pronta ou falha
+	warmed chan struct{}
 }
 
-// transport customizado para ativar DisableKeepAlives e fechar a conexao (economiza o handshake)
-// podemos fazer isso hoje pois enviamos apenas um evento por comando.
+// O keep-alive fica ligado para o envio reaproveitar a conexão aberta pelo Warm
 func NewPostHogExporter(endpoint, apiKey string) *PostHogExporter {
 	return &PostHogExporter{
 		endpoint: endpoint,
@@ -34,10 +37,33 @@ func NewPostHogExporter(endpoint, apiKey string) *PostHogExporter {
 			Transport: &http.Transport{
 				Proxy:             http.ProxyFromEnvironment,
 				ForceAttemptHTTP2: true,
-				DisableKeepAlives: true,
 			},
 		},
 	}
+}
+
+// Warm faz um HEAD sem token em segundo plano só para abrir a conexão.
+func (p *PostHogExporter) Warm(ctx context.Context) {
+	if p.warmed != nil {
+		return
+	}
+	warmed := make(chan struct{})
+	p.warmed = warmed
+
+	var once sync.Once
+	markWarmed := func() { once.Do(func() { close(warmed) }) }
+
+	go func() {
+		defer markWarmed()
+		trace := &httptrace.ClientTrace{GotConn: func(httptrace.GotConnInfo) { markWarmed() }}
+		req, err := http.NewRequestWithContext(httptrace.WithClientTrace(ctx, trace), http.MethodHead, p.endpoint, nil)
+		if err != nil {
+			return
+		}
+		if resp, err := p.client.Do(req); err == nil {
+			resp.Body.Close()
+		}
+	}()
 }
 
 type ExportStatusError struct {
@@ -52,6 +78,14 @@ func (p *PostHogExporter) Export(ctx context.Context, event Event) error {
 	body, err := newOTLPLogs(event)
 	if err != nil {
 		return err
+	}
+
+	if p.warmed != nil {
+		select {
+		case <-p.warmed:
+		case <-ctx.Done():
+			return ctx.Err()
+		}
 	}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, p.endpoint, bytes.NewReader(body))

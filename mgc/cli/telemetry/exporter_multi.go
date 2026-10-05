@@ -25,3 +25,11 @@ func (m MultiExporter) Export(ctx context.Context, event Event) error {
 	}
 	return errors.Join(errs...)
 }
+
+func (m MultiExporter) Warm(ctx context.Context) {
+	for _, exporter := range m {
+		if warmer, ok := exporter.(Warmer); ok {
+			warmer.Warm(ctx)
+		}
+	}
+}

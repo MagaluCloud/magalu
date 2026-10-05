@@ -159,6 +159,17 @@ func (s *Service) Record(ctx context.Context, info CommandInfo, cmdErr error, w 
 	}
 }
 
+// Warm abre a conexão do exportador enquanto o comando roda. Não faz nada com a
+// telemetria desativada ou com um exportador que não precisa de rede
+func (s *Service) Warm(ctx context.Context) {
+	if !s.Enabled() || s.noticePending() {
+		return
+	}
+	if warmer, ok := s.opts.Exporter.(Warmer); ok {
+		warmer.Warm(ctx)
+	}
+}
+
 func (s *Service) export(ctx context.Context, event Event) {
 	ctx, cancel := context.WithTimeout(ctx, s.opts.Timeout)
 	defer cancel()

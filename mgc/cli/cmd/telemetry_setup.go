@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"slices"
+	"strings"
 	"time"
 
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
@@ -36,11 +38,36 @@ type telemetryRun struct {
 	loggedInBefore bool
 }
 
-func startTelemetryRun(sdk *mgcSdk.Sdk) *telemetryRun {
-	return &telemetryRun{
+func startTelemetryRun(svc *telemetry.Service, sdk *mgcSdk.Sdk, root *cobra.Command, args []string) *telemetryRun {
+	run := &telemetryRun{
 		requestIDs:     trackRequestIDs(sdk),
 		loggedInBefore: hasLoginSession(sdk),
 	}
+	if likelyRecorded(root, args, readCredentials(sdk, root, run.loggedInBefore, ""), os.Getenv) {
+		svc.Warm(context.Background())
+	}
+	return run
+}
+
+// likelyRecorded antecipa, antes do Execute, se o comando vai gerar evento, para só
+// então abrir a conexão da telemetria.
+func likelyRecorded(root *cobra.Command, args []string, creds credentials, getenv func(string) string) bool {
+	if slices.ContainsFunc(args, isHelpOrVersionArg) {
+		return false
+	}
+	info, track := telemetryCommandInfo(root, args, nil)
+	if !track {
+		return false
+	}
+	return info.IsLogin() || slices.ContainsFunc(args, isAPIKeyArg) || isAuthenticated(creds, getenv)
+}
+
+func isHelpOrVersionArg(arg string) bool {
+	return arg == "-h" || arg == "--help" || arg == "--version"
+}
+
+func isAPIKeyArg(arg string) bool {
+	return arg == "--"+apiKeyFlag || strings.HasPrefix(arg, "--"+apiKeyFlag+"=")
 }
 
 // trackRequestIDs coloca o requestIDRecorder na frente do transport usado pelos

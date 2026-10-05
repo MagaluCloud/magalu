@@ -122,7 +122,7 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 
 	var run *telemetryRun
 	if telemetrySvc.Enabled() {
-		run = startTelemetryRun(sdk)
+		run = startTelemetryRun(telemetrySvc, sdk, rootCmd, mainArgs)
 	}
 
 	rootCmd.SetArgs(mainArgs)

@@ -39,15 +39,15 @@ func TestMultiExporter(t *testing.T) {
 		wantErrs    []error
 	}{
 		{
-			name:        "two slow exporters share the same 1s budget",
+			name:        "two slow exporters share the same export budget",
 			exporters:   MultiExporter{slowExporter(2*time.Second, true), slowExporter(2*time.Second, true)},
-			maxDuration: 1100 * time.Millisecond,
+			maxDuration: exportBudget,
 			wantErrs:    []error{context.DeadlineExceeded},
 		},
 		{
 			name:        "an exporter that ignores the context does not hold the budget",
 			exporters:   MultiExporter{slowExporter(2*time.Second, true), slowExporter(2*time.Second, false)},
-			maxDuration: 1100 * time.Millisecond,
+			maxDuration: exportBudget,
 			wantErrs:    []error{context.DeadlineExceeded},
 		},
 		{

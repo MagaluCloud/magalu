@@ -67,15 +67,15 @@ func TestServiceExportTimeout(t *testing.T) {
 		wantReason  string
 	}{
 		{
-			name:        "slow backend is aborted after the 1s budget",
+			name:        "slow backend is aborted after the export budget",
 			exporter:    NewPostHogExporter(slow.URL, "phc_test"),
-			maxDuration: 1100 * time.Millisecond,
+			maxDuration: exportBudget,
 			wantReason:  "timeout",
 		},
 		{
-			name:        "slow backends registered together share the 1s budget",
+			name:        "slow backends registered together share the export budget",
 			exporter:    MultiExporter{NewPostHogExporter(slow.URL, "phc_test"), NewPostHogExporter(slow.URL, "phc_test")},
-			maxDuration: 1100 * time.Millisecond,
+			maxDuration: exportBudget,
 			wantReason:  "timeout",
 		},
 		{
@@ -87,7 +87,7 @@ func TestServiceExportTimeout(t *testing.T) {
 		{
 			name:        "unreachable backend is dropped as a network failure",
 			exporter:    NewPostHogExporter("http://127.0.0.1:1/i/v1/logs", "phc_test"),
-			maxDuration: 1100 * time.Millisecond,
+			maxDuration: exportBudget,
 			wantReason:  "network",
 		},
 	}

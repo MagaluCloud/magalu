@@ -43,6 +43,9 @@ func envFrom(vars map[string]string) func(string) string {
 	return func(k string) string { return vars[k] }
 }
 
+// exportBudget é o tempo máximo de um envio nos testes, o timeout mais uma folga para o agendador
+const exportBudget = ExportTimeout + 100*time.Millisecond
+
 var (
 	loginAt   = time.Date(2026, 9, 22, 14, 0, 0, 0, time.UTC)
 	vmList    = []string{"virtual-machine", "instances", "list"}
