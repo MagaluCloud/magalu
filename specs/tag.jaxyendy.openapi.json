@@ -1010,8 +1010,7 @@
         "security": [
           {
             "OAuth2": [
-              "tags:tags-tr",
-              "tags:projects-tr"
+              "tags:tags-tr"
             ]
           }
         ],
@@ -1082,8 +1081,7 @@
         "security": [
           {
             "OAuth2": [
-              "tags:tags-tr",
-              "tags:projects-tr"
+              "tags:tags-tr"
             ]
           }
         ],
