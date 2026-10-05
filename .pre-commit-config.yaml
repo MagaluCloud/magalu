@@ -9,6 +9,12 @@ repos:
         entry: bash -c 'make generate-docs'
         require_serial: true
         stages: [pre-commit]
+      - id: check-cli-commands-json
+        name: check "cli commands json" outputs
+        language: system
+        entry: bash -c 'make generate-commands-json'
+        require_serial: true
+        stages: [pre-commit]
       - id: apply-oapi-customizations
         name: apply-oapi-customizations
         language: python

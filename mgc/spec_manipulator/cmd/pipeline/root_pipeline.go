@@ -14,6 +14,7 @@ func PipelineCmd() *cobra.Command {
 	pipeMenu.AddCommand(CliDocOutputCmd())
 	pipeMenu.AddCommand(NewOAPIIndexCommand())
 	pipeMenu.AddCommand(GetGenDocsMagaluCmd())
+	pipeMenu.AddCommand(GenCommandsJSONCmd())
 
 	return pipeMenu
 }

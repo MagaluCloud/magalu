@@ -134,3 +134,48 @@ Run pre-commit without any file modified:
 ```sh
 pre-commit run -a
 ```
+
+### CLI Commands JSON Generator
+
+When running pre-commit, the file `mgc/cli/commands.json` is automatically generated with all CLI commands and their flags. This file is used in the Magalu Cloud documentation to map all available commands and generate the flag description table for each one.
+
+#### JSON Structure
+
+The file is an object whose keys identify each command in the format `group.subgroup.action` (e.g. `virtual-machine.instances.create`). Each entry contains:
+
+```json
+"virtual-machine.instances.create": {
+  "command": "mgc virtual-machine instances create [flags]",
+  "flags": [
+    {
+      "name": "image",
+      "description": "Imagem a ser utilizada na criação da instância",
+      "original_description": "Image to be used when creating the instance",
+      "type": "object",
+      "required": true,
+      "default_value": null
+    },
+    {
+      "name": "image.id",
+      "description": "Id",
+      "original_description": "",
+      "type": "string",
+      "required": false,
+      "default_value": null
+    }
+  ]
+}
+```
+
+| Field | Description |
+|---|---|
+| `command` | Full CLI command, including `[flags]` when parameters are present |
+| `flags[].name` | Flag name as used in the CLI (e.g. `--image`, `--image.id`) |
+| `flags[].description` | Description always in Portuguese. If the flag has no description in the dump tree, it must be edited manually |
+| `flags[].original_description` | Original English description extracted directly from the dump tree. Empty when the flag has no description in the spec |
+| `flags[].type` | Type of the value expected by the flag (`string`, `integer`, `boolean`, `object`, `array(string)`, etc.) |
+| `flags[].required` | Whether the flag is required |
+| `flags[].default_value` | Default value of the flag, or `null` if none |
+
+Flags of type `object` are automatically expanded into sub-flags using dot notation (e.g. `--image` also generates `--image.id` and `--image.name`), reflecting the actual CLI behavior.
+
