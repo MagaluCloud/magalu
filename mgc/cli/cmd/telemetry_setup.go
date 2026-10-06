@@ -17,14 +17,15 @@ import (
 )
 
 func newTelemetryService(sdk *mgcSdk.Sdk, version string) *telemetry.Service {
+	debug := func(msg string, kv ...any) { mgcLoggerPkg.New[osArgParser]().Infow(msg, kv...) }
 	return telemetry.New(telemetry.Options{
 		ClientVersion:  version,
 		OS:             runtime.GOOS,
 		ExecutablePath: telemetry.ResolveExecutablePath(),
 		IsTerminal:     term.IsTerminal(int(os.Stdin.Fd())) && term.IsTerminal(int(os.Stdout.Fd())),
 		Store:          telemetry.NewViperStateStore(mgcConfigDir(sdk)),
-		Exporter:       telemetry.LoadBuildConfig(os.Getenv).Exporter(),
-		Debug:          func(msg string, kv ...any) { mgcLoggerPkg.New[osArgParser]().Infow(msg, kv...) },
+		Exporter:       telemetry.LoadBuildConfig(os.Getenv).Exporter(debug),
+		Debug:          debug,
 	})
 }
 

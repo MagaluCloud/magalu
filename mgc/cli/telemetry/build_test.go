@@ -55,7 +55,7 @@ func TestBuildConfig(t *testing.T) {
 				t.Errorf("endpoint = %q, want %q", cfg.Endpoint, tc.wantEndpoint)
 			}
 
-			switch exporter := cfg.Exporter().(type) {
+			switch exporter := cfg.Exporter(nil).(type) {
 			case NoopExporter:
 				if !tc.wantNoop {
 					t.Errorf("want the posthog exporter, got noop")
@@ -75,7 +75,7 @@ func TestBuildConfig(t *testing.T) {
 }
 
 func TestBuildConfigDefaultsToNoopWithoutLdflags(t *testing.T) {
-	if _, ok := LoadBuildConfig(envFrom(nil)).Exporter().(NoopExporter); !ok {
+	if _, ok := LoadBuildConfig(envFrom(nil)).Exporter(nil).(NoopExporter); !ok {
 		t.Errorf("a build without -ldflags must not send anything")
 	}
 }

@@ -27,9 +27,9 @@ func newBuildConfig(apiKey string, getenv func(string) string) BuildConfig {
 	return cfg
 }
 
-func (c BuildConfig) Exporter() Exporter {
+func (c BuildConfig) Exporter(debug DebugLogger) Exporter {
 	if c.APIKey == "" {
 		return NoopExporter{}
 	}
-	return NewPostHogExporter(c.Endpoint, c.APIKey)
+	return NewPostHogExporter(c.Endpoint, c.APIKey).WithDebug(debug)
 }

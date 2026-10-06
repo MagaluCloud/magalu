@@ -4,9 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 	"time"
 )
@@ -222,6 +224,46 @@ func TestPostHogExporterErrors(t *testing.T) {
 				t.Errorf("Export() = %v, want nil", err)
 			case tc.wantStatus != 0 && (!errors.As(err, &statusErr) || statusErr.StatusCode != tc.wantStatus):
 				t.Errorf("Export() = %v, want status error %d", err, tc.wantStatus)
+			}
+		})
+	}
+}
+
+func TestPostHogExporterDebugLog(t *testing.T) {
+	testCases := []struct {
+		name        string
+		status      int
+		wantStatus  string
+		wantSuccess string
+	}{
+		{"accepted call is logged as success", http.StatusOK, "200", "true"},
+		{"rejected call is logged with its status", http.StatusInternalServerError, "500", "false"},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			server, _ := newCaptureServer(t, tc.status)
+			var logs []debugEntry
+			exporter := NewPostHogExporter(server.URL, "phc_test").
+				WithDebug(func(msg string, kv ...any) { logs = append(logs, debugEntry{msg, kv}) })
+
+			_ = exporter.Export(context.Background(), exportedEvent())
+
+			if len(logs) != 1 {
+				t.Fatalf("debug logs = %+v, want a single entry", logs)
+			}
+			entry := logs[0]
+			if entry.value("method") != http.MethodPost || entry.value("status") != tc.wantStatus || entry.value("success") != tc.wantSuccess {
+				t.Errorf("debug log = %+v, want POST with status %s and success %s", entry, tc.wantStatus, tc.wantSuccess)
+			}
+			if entry.value("duration_ms") == "" {
+				t.Errorf("debug log must carry duration_ms, got %+v", entry)
+			}
+			text := fmt.Sprint(entry.msg, entry.kv)
+			for _, eventData := range []string{"tenant-1", "virtualmachine", "phc_test"} {
+				if strings.Contains(text, eventData) {
+					t.Errorf("debug log must not contain %q: %s", eventData, text)
+				}
 			}
 		})
 	}
