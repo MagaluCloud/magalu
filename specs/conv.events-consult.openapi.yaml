@@ -382,7 +382,6 @@
             "type": "string",
             "title": "Region",
             "enum": [
-              "br-mgl1",
               "br-ne1",
               "br-se1",
               "global"
@@ -648,7 +647,6 @@
                   "type": "string",
                   "title": "Region",
                   "enum": [
-                    "br-mgl1",
                     "br-ne1",
                     "br-se1",
                     "global"
@@ -730,7 +728,6 @@
         "type": "string",
         "title": "Region",
         "enum": [
-          "br-mgl1",
           "br-ne1",
           "br-se1",
           "global"
