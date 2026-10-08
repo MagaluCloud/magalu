@@ -55,27 +55,33 @@ func TestBuildConfig(t *testing.T) {
 				t.Errorf("endpoint = %q, want %q", cfg.Endpoint, tc.wantEndpoint)
 			}
 
-			switch exporter := cfg.Exporter(nil).(type) {
-			case NoopExporter:
-				if !tc.wantNoop {
-					t.Errorf("want the posthog exporter, got noop")
+			if cfg.Enabled() == tc.wantNoop {
+				t.Errorf("Enabled() = %v, want %v", cfg.Enabled(), !tc.wantNoop)
+			}
+
+			exporters := cfg.Exporters(nil)
+			if tc.wantNoop {
+				if len(exporters) != 0 {
+					t.Errorf("want no exporters, got %d", len(exporters))
 				}
-			case *PostHogExporter:
-				if tc.wantNoop {
-					t.Errorf("want the noop exporter, got posthog")
-				}
-				if exporter.endpoint != tc.wantEndpoint {
-					t.Errorf("exporter endpoint = %q, want %q", exporter.endpoint, tc.wantEndpoint)
-				}
-			default:
-				t.Errorf("unexpected exporter %T", exporter)
+				return
+			}
+			if len(exporters) != 1 {
+				t.Fatalf("want a single exporter, got %d", len(exporters))
+			}
+			posthog, ok := exporters[0].(*PostHogExporter)
+			if !ok {
+				t.Fatalf("unexpected exporter %T", exporters[0])
+			}
+			if posthog.endpoint != tc.wantEndpoint {
+				t.Errorf("exporter endpoint = %q, want %q", posthog.endpoint, tc.wantEndpoint)
 			}
 		})
 	}
 }
 
 func TestBuildConfigDefaultsToNoopWithoutLdflags(t *testing.T) {
-	if _, ok := LoadBuildConfig(envFrom(nil)).Exporter(nil).(NoopExporter); !ok {
+	if cfg := LoadBuildConfig(envFrom(nil)); cfg.Enabled() || len(cfg.Exporters(nil)) != 0 {
 		t.Errorf("a build without -ldflags must not send anything")
 	}
 }

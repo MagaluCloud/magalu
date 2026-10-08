@@ -2,7 +2,6 @@ package telemetry
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"testing"
 	"time"
@@ -28,15 +27,6 @@ func (f *fakeStore) Save(s State) error {
 		return f.saveErr
 	}
 	f.state = s
-	return nil
-}
-
-type fakeExporter struct {
-	events []Event
-}
-
-func (f *fakeExporter) Export(_ context.Context, e Event) error {
-	f.events = append(f.events, e)
 	return nil
 }
 
@@ -66,9 +56,6 @@ func (d debugEntry) value(key string) string {
 func envFrom(vars map[string]string) func(string) string {
 	return func(k string) string { return vars[k] }
 }
-
-// exportBudget é o tempo máximo de um envio nos testes, o timeout mais uma folga para o agendador
-const exportBudget = ExportTimeout + 100*time.Millisecond
 
 var (
 	loginAt   = time.Date(2026, 9, 22, 14, 0, 0, 0, time.UTC)
@@ -109,7 +96,7 @@ func newTestService(s testSetup) (*Service, *fakeStore, *fakeDispatcher) {
 // record chama o Record e devolve o que foi escrito em stderr.
 func record(svc *Service, info CommandInfo, cmdErr error) string {
 	var stderr bytes.Buffer
-	svc.Record(context.Background(), info, cmdErr, &stderr)
+	svc.Record(info, cmdErr, &stderr)
 	return stderr.String()
 }
 

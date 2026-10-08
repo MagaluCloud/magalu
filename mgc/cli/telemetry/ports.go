@@ -9,12 +9,6 @@ type Exporter interface {
 	Export(ctx context.Context, event Event) error
 }
 
-// Warmer é opcional. O exportador abre a conexão enquanto o comando roda, para o
-// envio no fim não pagar o handshake dentro do orçamento de envio
-type Warmer interface {
-	Warm(ctx context.Context)
-}
-
 // Dispatcher entrega o evento para ser enviado fora do comando, sem esperar a rede
 type Dispatcher interface {
 	Dispatch(event Event) error

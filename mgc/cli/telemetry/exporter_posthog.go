@@ -7,10 +7,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/http/httptrace"
 	"slices"
 	"strconv"
-	"sync"
 	"time"
 )
 
@@ -25,11 +23,8 @@ type PostHogExporter struct {
 	apiKey   string
 	client   *http.Client
 	debug    DebugLogger
-	// warmed fecha quando a conexão aberta pelo Warm fica pronta ou falha
-	warmed chan struct{}
 }
 
-// O keep-alive fica ligado para o envio reaproveitar a conexão aberta pelo Warm
 func NewPostHogExporter(endpoint, apiKey string) *PostHogExporter {
 	return &PostHogExporter{
 		endpoint: endpoint,
@@ -37,7 +32,7 @@ func NewPostHogExporter(endpoint, apiKey string) *PostHogExporter {
 		client: &http.Client{
 			Transport: &http.Transport{
 				Proxy:             http.ProxyFromEnvironment,
-				ForceAttemptHTTP2: true,
+				DisableKeepAlives: true,
 			},
 		},
 		debug: func(string, ...any) {},
@@ -52,40 +47,8 @@ func (p *PostHogExporter) WithDebug(debug DebugLogger) *PostHogExporter {
 	return p
 }
 
-// Warm faz um HEAD sem token em segundo plano só para abrir a conexão.
-func (p *PostHogExporter) Warm(ctx context.Context) {
-	if p.warmed != nil {
-		return
-	}
-	warmed := make(chan struct{})
-	p.warmed = warmed
-
-	var once sync.Once
-	markWarmed := func() { once.Do(func() { close(warmed) }) }
-
-	go func() {
-		defer markWarmed()
-		start := time.Now()
-		var connectedIn time.Duration
-		trace := &httptrace.ClientTrace{GotConn: func(httptrace.GotConnInfo) {
-			connectedIn = time.Since(start)
-			markWarmed()
-		}}
-		req, err := http.NewRequestWithContext(httptrace.WithClientTrace(ctx, trace), http.MethodHead, p.endpoint, nil)
-		if err != nil {
-			return
-		}
-		resp, err := p.client.Do(req)
-		if err == nil {
-			resp.Body.Close()
-		}
-		p.logCall(http.MethodHead, start, resp, err, "connect_ms", connectedIn.Milliseconds())
-	}()
-}
-
 type ExportStatusError struct {
 	StatusCode int
-	RetryAfter time.Duration
 }
 
 func (e ExportStatusError) Error() string {
@@ -99,20 +62,6 @@ func (p *PostHogExporter) Export(ctx context.Context, event Event) error {
 		return err
 	}
 
-	if p.warmed != nil {
-		select {
-		case <-p.warmed:
-		case <-ctx.Done():
-			p.logCall(http.MethodPost, start, nil, ctx.Err(), "warm_wait_ms", time.Since(start).Milliseconds())
-			return ctx.Err()
-		}
-	}
-	warmWait := time.Since(start)
-
-	var reused bool
-	trace := &httptrace.ClientTrace{GotConn: func(info httptrace.GotConnInfo) { reused = info.Reused }}
-	ctx = httptrace.WithClientTrace(ctx, trace)
-
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, p.endpoint, bytes.NewReader(body))
 	if err != nil {
 		return err
@@ -122,12 +71,12 @@ func (p *PostHogExporter) Export(ctx context.Context, event Event) error {
 
 	resp, err := p.client.Do(req)
 	if err != nil {
-		p.logCall(http.MethodPost, start, nil, err, "warm_wait_ms", warmWait.Milliseconds(), "reused_conn", reused)
+		p.logCall(start, nil, err)
 		return err
 	}
 	defer resp.Body.Close()
 	_, _ = io.Copy(io.Discard, io.LimitReader(resp.Body, maxDrainedResponseBytes))
-	p.logCall(http.MethodPost, start, resp, nil, "warm_wait_ms", warmWait.Milliseconds(), "reused_conn", reused)
+	p.logCall(start, resp, nil)
 
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		return ExportStatusError{StatusCode: resp.StatusCode}
@@ -135,18 +84,16 @@ func (p *PostHogExporter) Export(ctx context.Context, event Event) error {
 	return nil
 }
 
-func (p *PostHogExporter) logCall(method string, start time.Time, resp *http.Response, err error, extra ...any) {
-	kv := []any{"method", method, "duration_ms", time.Since(start).Milliseconds()}
+func (p *PostHogExporter) logCall(start time.Time, resp *http.Response, err error) {
+	kv := []any{"method", http.MethodPost, "duration_ms", time.Since(start).Milliseconds()}
 	if resp != nil {
 		kv = append(kv, "status", resp.StatusCode)
 	}
-	if method == http.MethodPost {
-		kv = append(kv, "success", err == nil && resp != nil && resp.StatusCode >= 200 && resp.StatusCode <= 299)
-	}
+	kv = append(kv, "success", err == nil && resp != nil && resp.StatusCode >= 200 && resp.StatusCode <= 299)
 	if err != nil {
 		kv = append(kv, "error", err.Error())
 	}
-	p.debug("telemetry: posthog call", append(kv, extra...)...)
+	p.debug("telemetry: posthog call", kv...)
 }
 
 type otlpLogs struct {

@@ -27,9 +27,13 @@ func newBuildConfig(apiKey string, getenv func(string) string) BuildConfig {
 	return cfg
 }
 
-func (c BuildConfig) Exporter(debug DebugLogger) Exporter {
-	if c.APIKey == "" {
-		return NoopExporter{}
+func (c BuildConfig) Enabled() bool {
+	return c.APIKey != ""
+}
+
+func (c BuildConfig) Exporters(debug DebugLogger) []Exporter {
+	if !c.Enabled() {
+		return nil
 	}
-	return NewPostHogExporter(c.Endpoint, c.APIKey).WithDebug(debug)
+	return []Exporter{NewPostHogExporter(c.Endpoint, c.APIKey).WithDebug(debug)}
 }

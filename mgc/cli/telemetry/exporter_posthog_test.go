@@ -268,3 +268,18 @@ func TestPostHogExporterDebugLog(t *testing.T) {
 		})
 	}
 }
+
+func TestPostHogExporterClosesConnection(t *testing.T) {
+	var closed bool
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		closed = r.Close
+	}))
+	defer server.Close()
+
+	if err := NewPostHogExporter(server.URL, "phc_test").Export(context.Background(), exportedEvent()); err != nil {
+		t.Fatal(err)
+	}
+	if !closed {
+		t.Errorf("the request must ask the server to close the connection")
+	}
+}
