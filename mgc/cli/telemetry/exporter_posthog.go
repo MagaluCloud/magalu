@@ -85,6 +85,7 @@ func (p *PostHogExporter) Warm(ctx context.Context) {
 
 type ExportStatusError struct {
 	StatusCode int
+	RetryAfter time.Duration
 }
 
 func (e ExportStatusError) Error() string {

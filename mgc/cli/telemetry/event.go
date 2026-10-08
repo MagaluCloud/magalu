@@ -202,6 +202,41 @@ func (e Event) MarshalJSON() ([]byte, error) {
 	return json.Marshal(out)
 }
 
+func (e *Event) UnmarshalJSON(data []byte) error {
+	var in eventJSON
+	if err := json.Unmarshal(data, &in); err != nil {
+		return err
+	}
+	timestamp, err := time.Parse(timestampLayout, in.Timestamp)
+	if err != nil {
+		return err
+	}
+
+	*e = Event{
+		Timestamp:            timestamp.UTC(),
+		Actor:                in.Actor,
+		ExecutionContext:     in.ExecutionContext,
+		ExecutionEnvironment: in.ExecutionEnvironment,
+		Resource:             in.Resource,
+		Action:               in.Action,
+		Outcome:              in.Outcome,
+		FailureReason:        in.FailureReason,
+		Duration:             time.Duration(in.DurationMs) * time.Millisecond,
+		ClientVersion:        in.ClientVersion,
+		OS:                   in.OS,
+		InstallMethod:        in.InstallMethod,
+		LastRequestID:        in.LastRequestID,
+	}
+	if in.OptionsSet != "" {
+		e.OptionsSet = strings.Split(in.OptionsSet, ",")
+	}
+	if in.TimeToFirstValueMs != nil {
+		ttfv := time.Duration(*in.TimeToFirstValueMs) * time.Millisecond
+		e.TimeToFirstValue = &ttfv
+	}
+	return nil
+}
+
 func nonNegativeMs(d time.Duration) int64 {
 	if d < 0 {
 		return 0

@@ -247,3 +247,103 @@ func TestMarshalJSONOmitsProduct(t *testing.T) {
 		}
 	}
 }
+
+func TestUnmarshalJSONRoundTrip(t *testing.T) {
+	ttfv := 4231 * time.Millisecond
+	at := time.Date(2026, 9, 22, 14, 30, 45, 123000000, time.UTC)
+
+	testCases := []struct {
+		name  string
+		event Event
+	}{
+		{
+			name: "success with every optional field",
+			event: Event{
+				Timestamp:            at,
+				Actor:                &Actor{TenantID: "tenant-1"},
+				ExecutionContext:     ExecutionContextCI,
+				ExecutionEnvironment: "github_actions",
+				Resource:             &Resource{Type: "virtual_machine_instances", ID: "vm-1"},
+				Action:               "virtualmachine.instances.get",
+				OptionsSet:           []string{"id", "region"},
+				Outcome:              OutcomeSuccess,
+				Duration:             842 * time.Millisecond,
+				ClientVersion:        "v1.4.2",
+				OS:                   "linux",
+				InstallMethod:        InstallMethodHomebrew,
+				TimeToFirstValue:     &ttfv,
+				LastRequestID:        "req-1",
+			},
+		},
+		{
+			name: "failure without optional fields",
+			event: Event{
+				Timestamp:        at,
+				ExecutionContext: ExecutionContextInteractive,
+				Action:           UnknownAction,
+				Outcome:          OutcomeFailure,
+				FailureReason:    FailureValidation,
+				Duration:         15 * time.Millisecond,
+				ClientVersion:    "v1.4.2",
+				OS:               "darwin",
+				InstallMethod:    InstallMethodManual,
+			},
+		},
+		{
+			name: "zero millisecond timestamp",
+			event: Event{
+				Timestamp:     time.Date(2026, 9, 22, 14, 30, 45, 0, time.UTC),
+				Action:        "config.list",
+				Outcome:       OutcomeSuccess,
+				ClientVersion: "v1.4.2",
+				OS:            "windows",
+				InstallMethod: InstallMethodSystem,
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			before, err := json.Marshal(tc.event)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			var decoded Event
+			if err := json.Unmarshal(before, &decoded); err != nil {
+				t.Fatalf("Unmarshal: %v", err)
+			}
+			after, err := json.Marshal(decoded)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if string(before) != string(after) {
+				t.Errorf("round trip changed the payload\nbefore %s\nafter  %s", before, after)
+			}
+			if !decoded.Timestamp.Equal(tc.event.Timestamp) {
+				t.Errorf("timestamp = %v, want %v", decoded.Timestamp, tc.event.Timestamp)
+			}
+		})
+	}
+}
+
+func TestUnmarshalJSONErrors(t *testing.T) {
+	testCases := []struct {
+		name string
+		data string
+	}{
+		{"invalid json", `{"timestamp":`},
+		{"invalid timestamp", `{"timestamp":"yesterday","action":"config.list"}`},
+		{"wrong field type", `{"timestamp":"2026-09-22T14:30:45.000Z","durationMs":"slow"}`},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			var e Event
+			if err := json.Unmarshal([]byte(tc.data), &e); err == nil {
+				t.Errorf("Unmarshal(%s) = nil, want an error", tc.data)
+			}
+		})
+	}
+}

@@ -3,6 +3,7 @@ package telemetry
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"testing"
 	"time"
 )
@@ -39,6 +40,29 @@ func (f *fakeExporter) Export(_ context.Context, e Event) error {
 	return nil
 }
 
+type fakeDispatcher struct {
+	events []Event
+}
+
+func (f *fakeDispatcher) Dispatch(e Event) error {
+	f.events = append(f.events, e)
+	return nil
+}
+
+type debugEntry struct {
+	msg string
+	kv  []any
+}
+
+func (d debugEntry) value(key string) string {
+	for i := 0; i+1 < len(d.kv); i += 2 {
+		if d.kv[i] == key {
+			return fmt.Sprint(d.kv[i+1])
+		}
+	}
+	return ""
+}
+
 func envFrom(vars map[string]string) func(string) string {
 	return func(k string) string { return vars[k] }
 }
@@ -66,20 +90,20 @@ type testSetup struct {
 	saveErr  error
 }
 
-func newTestService(s testSetup) (*Service, *fakeStore, *fakeExporter) {
+func newTestService(s testSetup) (*Service, *fakeStore, *fakeDispatcher) {
 	store := &fakeStore{state: s.state, loadErr: s.loadErr, saveErr: s.saveErr}
-	exporter := &fakeExporter{}
+	dispatcher := &fakeDispatcher{}
 	svc := New(Options{
 		ClientVersion: "v1.4.2",
 		OS:            "linux",
 		IsTerminal:    s.terminal,
 		Store:         store,
-		Exporter:      exporter,
+		Dispatcher:    dispatcher,
 		Getenv:        envFrom(s.env),
 		Now:           func() time.Time { return loginAt },
 		NewID:         func() string { return "id-1" },
 	})
-	return svc, store, exporter
+	return svc, store, dispatcher
 }
 
 // record chama o Record e devolve o que foi escrito em stderr.

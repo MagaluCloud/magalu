@@ -34,6 +34,7 @@ type Options struct {
 	IsTerminal     bool
 	Store          StateStore
 	Exporter       Exporter
+	Dispatcher     Dispatcher
 	Getenv         func(string) string
 	Now            func() time.Time
 	NewID          func() string
@@ -69,6 +70,9 @@ func New(opts Options) *Service {
 	}
 	if opts.Exporter == nil {
 		opts.Exporter = NoopExporter{}
+	}
+	if opts.Dispatcher == nil {
+		opts.Dispatcher = NoopDispatcher{}
 	}
 
 	s := &Service{opts: opts}
@@ -155,7 +159,7 @@ func (s *Service) Record(ctx context.Context, info CommandInfo, cmdErr error, w 
 		printNotice(w, collect)
 	}
 	if collect {
-		s.export(ctx, event)
+		s.dispatch(event)
 	}
 }
 
@@ -167,6 +171,12 @@ func (s *Service) Warm(ctx context.Context) {
 	}
 	if warmer, ok := s.opts.Exporter.(Warmer); ok {
 		warmer.Warm(ctx)
+	}
+}
+
+func (s *Service) dispatch(event Event) {
+	if err := s.opts.Dispatcher.Dispatch(event); err != nil {
+		s.opts.Debug("telemetry: dispatch failed", "error", err.Error())
 	}
 }
 

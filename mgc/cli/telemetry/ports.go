@@ -15,6 +15,11 @@ type Warmer interface {
 	Warm(ctx context.Context)
 }
 
+// Dispatcher entrega o evento para ser enviado fora do comando, sem esperar a rede
+type Dispatcher interface {
+	Dispatch(event Event) error
+}
+
 type State struct {
 	Disabled           bool
 	NoticeShown        bool
