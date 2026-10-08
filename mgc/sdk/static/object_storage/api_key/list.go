@@ -23,7 +23,7 @@ var getList = utils.NewLazyLoader[core.Executor](func() core.Executor {
 		list,
 	)
 
-	exec = core.NewHumanIdentifiableFieldsExecutor(exec, []string{"name"})
+	exec = core.NewHumanIdentifiableFieldsExecutor(exec, []string{"name", "tenant_name"})
 
 	return exec
 })
