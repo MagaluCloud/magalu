@@ -1155,96 +1155,6 @@
         "x-permission-name": "bs_snapshot_get"
       }
     },
-    "/v1/snapshots/{id}/copy": {
-      "post": {
-        "tags": [
-          "snapshots"
-        ],
-        "summary": "Copy a object snapshot to another region.",
-        "description": "Copy a object snapshot cross region for the currently authenticated tenant.\n\n#### Rules\n- The copy only be accepted when the destiny region is different from origin region.\n- The copy only be accepted if the snapshot name in destiny region is different from input name.\n- The copy only be accepted if the user has access to destiny region.\n\n#### Notes\n- Utilize the **block-storage snapshots list** command to retrieve a list of\n all Snapshots and obtain the ID of the Snapshot you wish to copy across different region.",
-        "operationId": "copy_snapshot_cross_region_v1_snapshots__id__copy_post",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Id"
-            }
-          },
-          {
-            "name": "x-tenant-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "X-Tenant-Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CopyCrossRegionRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorResponse"
-                  },
-                  "title": "Response 404 Copy Snapshot Cross Region V1 Snapshots  Id  Copy Post"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorResponse"
-                  },
-                  "title": "Response 409 Copy Snapshot Cross Region V1 Snapshots  Id  Copy Post"
-                }
-              }
-            },
-            "description": "Conflict"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ErrorResponse"
-                  },
-                  "title": "Response 422 Copy Snapshot Cross Region V1 Snapshots  Id  Copy Post"
-                }
-              }
-            },
-            "description": "Unprocessable Entity"
-          }
-        },
-        "x-viveiro": true,
-        "x-permission-name": "bs_snapshot_copy"
-      }
-    },
     "/v1/snapshots/{id}/rename": {
       "patch": {
         "tags": [
@@ -2385,21 +2295,6 @@
           }
         }
       },
-      "CopyCrossRegionRequest": {
-        "properties": {
-          "destination_region": {
-            "$ref": "#/components/schemas/Regions"
-          }
-        },
-        "type": "object",
-        "required": [
-          "destination_region"
-        ],
-        "title": "CopyCrossRegionRequest",
-        "example": {
-          "destination_region": "br-se1"
-        }
-      },
       "CreateAttachmentRequest": {
         "properties": {
           "volume": {
@@ -2736,7 +2631,6 @@
         "type": "string",
         "enum": [
           "br-se1",
-          "br-mgl1",
           "br-ne1"
         ],
         "title": "Regions"

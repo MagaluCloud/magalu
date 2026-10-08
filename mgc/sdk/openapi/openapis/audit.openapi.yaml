@@ -17,16 +17,7 @@ servers:
             enum:
             - br-ne1
             - br-se1
-            - br-mgl1
             - global
-            x-mgc-transforms:
-            -   type: translate
-                allowMissing: true
-                translations:
-                -   from: br-mgl1
-                    to: br-se-1
-                -   from: global
-                    to: global
         env:
             description: Environment to use
             default: api.magalu.cloud
@@ -392,7 +383,6 @@ components:
         Region:
             type: string
             enum:
-            - br-mgl1
             - br-ne1
             - br-se1
             - global
