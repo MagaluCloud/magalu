@@ -19,8 +19,11 @@ and `mgc telemetry` itself are not collected. The full list of collected fields
 is in [docs/telemetry](./docs/telemetry/help.md).
 
 A notice is shown once, in an interactive terminal, before collection starts.
-Sending is limited to 1 second at the end of the command and failures are
-silently dropped.
+The event is sent in the background by a separate process, so the command never
+waits for the network. Network errors and server errors are retried a few times,
+and the event is silently dropped if it still cannot be sent. With `--debug`,
+the sending process writes its diagnostics to `telemetry-debug.txt` in the CLI
+config directory.
 
 To opt out, use any of:
 

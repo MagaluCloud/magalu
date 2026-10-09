@@ -22,6 +22,10 @@ execution context (interactive, ci or agent), the tenant ID, the last request ID
 and an anonymous installation ID. Flag values, credentials, error messages and
 command output are never sent.
 
+The event is sent in the background by a separate process, so the command never
+waits for the network. With --debug, the sending process writes its diagnostics
+to telemetry-debug.txt in the CLI config directory.
+
 To opt out, run 'mgc telemetry disable' or set %s=1 or %s=1.
 
 Privacy policy: %s`, telemetry.EnvOptOut, telemetry.EnvDoNotTrack, telemetry.PrivacyPolicyURL),

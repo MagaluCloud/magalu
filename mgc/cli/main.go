@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/MagaluCloud/magalu/mgc/cli/cmd"
+	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/dispatch"
 	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 )
 
@@ -46,6 +47,13 @@ func getVCSInfo(version string) string {
 }
 
 func main() {
+	// O processo de envio da telemetria desvia aqui, antes de carregar o SDK e os comandos.
+	// Ele sempre sai com 0, porque ninguém espera por ele e uma falha no envio não é erro da CLI
+	if len(os.Args) > 1 && os.Args[1] == dispatch.SenderArg {
+		cmd.RunTelemetrySender(os.Args[2:])
+		os.Exit(0)
+	}
+
 	defer panicRecover()
 	mgcSdk.SetUserAgent("MgcCLI")
 

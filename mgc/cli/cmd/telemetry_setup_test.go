@@ -1,6 +1,11 @@
 package cmd
 
-import "testing"
+import (
+	"path/filepath"
+	"testing"
+
+	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/debuglog"
+)
 
 func TestIsAuthenticated(t *testing.T) {
 	testCases := []struct {
@@ -26,6 +31,27 @@ func TestIsAuthenticated(t *testing.T) {
 			getenv := func(k string) string { return tc.env[k] }
 			if got := isAuthenticated(tc.creds, getenv); got != tc.want {
 				t.Errorf("isAuthenticated = %v, want %v", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestTelemetryDebugLogPath(t *testing.T) {
+	configDir := filepath.Join("home", "user", ".config", "mgc")
+
+	testCases := []struct {
+		name      string
+		debugMode bool
+		want      string
+	}{
+		{"debug mode logs next to telemetry.yaml", true, filepath.Join(configDir, debuglog.FileName)},
+		{"no log outside debug mode", false, ""},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := telemetryDebugLogPath(tc.debugMode, configDir); got != tc.want {
+				t.Errorf("got %q, want %q", got, tc.want)
 			}
 		})
 	}

@@ -104,7 +104,7 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 		return err
 	}
 
-	telemetrySvc := newTelemetryService(sdk, version)
+	telemetrySvc := newTelemetryService(sdk, version, rootCmd)
 
 	rootCmd.AddCommand(newDumpTreeCmd(sdk))
 	rootCmd.AddCommand(newTelemetryCmd(func() *telemetry.Service { return telemetrySvc }))
