@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"net/http"
 	"net/url"
 	"testing"
 
@@ -33,6 +34,13 @@ func apiError(code int, slug string) error {
 		RequestID: "req-1",
 	}
 }
+
+// credentialError imita a resposta da renovação do token com a sessão expirada
+func credentialError(code int, slug string, headers http.Header, payload string) *mgcHttpPkg.HttpError {
+	return &mgcHttpPkg.HttpError{Code: code, Slug: slug, Headers: headers, Payload: []byte(payload), Message: "details with user data"}
+}
+
+var bearerChallenge = http.Header{"Www-Authenticate": {`Bearer realm="Doorkeeper", error="invalid_grant"`}}
 
 type timeoutNetError struct{}
 
@@ -63,6 +71,13 @@ func TestClassifyError(t *testing.T) {
 		{"401 with limit slug", apiError(401, "token_limit_reached"), FailureAuthentication},
 		{"503 with quota slug", apiError(503, "quota_service_down"), FailureAPIServer},
 		{"400", apiError(400, "invalid_parameter"), FailureValidation},
+		{"400 invalid_grant in the body", credentialError(400, "", nil, `{"error":"invalid_grant","error_description":"expired"}`), FailureAuthentication},
+		{"400 with only WWW-Authenticate", credentialError(400, "", bearerChallenge, ""), FailureAuthentication},
+		{"expired session as identifiable error", &mgcHttpPkg.IdentifiableHttpError{HttpError: credentialError(400, "", bearerChallenge, `{"error":"invalid_grant"}`), RequestID: "2646270c"}, FailureAuthentication},
+		{"invalid_token wrapped", fmt.Errorf("refresh: %w", credentialError(400, "", nil, `{"error":"invalid_token"}`)), FailureAuthentication},
+		{"400 with other oauth error", credentialError(400, "", nil, `{"error":"invalid_request"}`), FailureValidation},
+		{"400 quota slug without credential signal", credentialError(400, "quota_exceeded", nil, `{"slug":"quota_exceeded"}`), FailureQuota},
+		{"400 with non json body", credentialError(400, "", nil, "<html>bad request</html>"), FailureValidation},
 		{"500", apiError(500, "unknown"), FailureAPIServer},
 		{"503 wrapped", fmt.Errorf("while waiting: %w", apiError(503, "")), FailureAPIServer},
 		{"dns", &url.Error{Op: "Get", URL: "https://api", Err: &net.DNSError{Err: "no such host", Name: "api"}}, FailureNetwork},
@@ -78,6 +93,28 @@ func TestClassifyError(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			if got := ClassifyError(tc.err); got != tc.want {
+				t.Errorf("got %q, want %q", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestFailedRequestID(t *testing.T) {
+	testCases := []struct {
+		name string
+		err  error
+		want string
+	}{
+		{"identifiable http error", apiError(400, ""), "req-1"},
+		{"wrapped identifiable error", fmt.Errorf("refresh: %w", &mgcHttpPkg.IdentifiableHttpError{HttpError: credentialError(400, "", nil, ""), RequestID: "2646270c"}), "2646270c"},
+		{"http error without id", credentialError(500, "", nil, ""), ""},
+		{"not an http error", errors.New("bad flag"), ""},
+		{"nil", nil, ""},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := FailedRequestID(tc.err); got != tc.want {
 				t.Errorf("got %q, want %q", got, tc.want)
 			}
 		})

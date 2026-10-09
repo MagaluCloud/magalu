@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
+	"encoding/json"
 	"errors"
 	"net"
 	"os"
@@ -47,6 +48,9 @@ func classifyHttpError(e *mgcHttpPkg.HttpError) FailureReason {
 	case e.Code == 429:
 		return FailureQuota
 	case e.Code >= 400 && e.Code < 500:
+		if isCredentialError(e) {
+			return FailureAuthentication
+		}
 		if isQuotaSlug(e.Slug) {
 			return FailureQuota
 		}
@@ -55,6 +59,30 @@ func classifyHttpError(e *mgcHttpPkg.HttpError) FailureReason {
 		return FailureAPIServer
 	}
 	return FailureUnknown
+}
+
+var oauthCredentialErrors = map[string]struct{}{
+	"invalid_grant":       {},
+	"invalid_token":       {},
+	"invalid_client":      {},
+	"unauthorized_client": {},
+}
+
+// isCredentialError reconhece um 4xx que não é 401 mas é falha de credencial, como a
+// renovação do token com a sessão expirada, que responde 400 invalid_grant. Só a
+// categoria é usada, nada da resposta vai para o evento
+func isCredentialError(e *mgcHttpPkg.HttpError) bool {
+	if e.Headers.Get("WWW-Authenticate") != "" {
+		return true
+	}
+	var body struct {
+		Error string `json:"error"`
+	}
+	if err := json.Unmarshal(e.Payload, &body); err != nil {
+		return false
+	}
+	_, ok := oauthCredentialErrors[body.Error]
+	return ok
 }
 
 func isQuotaSlug(slug string) bool {
@@ -116,4 +144,14 @@ func ClassifyError(err error) FailureReason {
 	}
 
 	return FailureUnknown
+}
+
+// FailedRequestID devolve o X-Request-Id da requisição que fez o comando falhar,
+// inclusive a renovação do token, que não passa pelo cliente HTTP dos comandos
+func FailedRequestID(err error) string {
+	var identifiable *mgcHttpPkg.IdentifiableHttpError
+	if errors.As(err, &identifiable) {
+		return identifiable.RequestID
+	}
+	return ""
 }

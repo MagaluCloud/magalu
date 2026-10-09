@@ -92,6 +92,9 @@ func recordTelemetry(
 	info.Start = run.start
 	info.End = run.end
 	info.LastRequestID = run.requestIDs.LastRequestID()
+	if failedID := telemetry.FailedRequestID(cmdErr); failedID != "" {
+		info.LastRequestID = failedID
+	}
 	if tenantID, err := sdk.Auth().CurrentTenantID(); err == nil {
 		info.TenantID = tenantID
 	}

@@ -183,6 +183,7 @@ func handleExecutor(
 	setApiKey(cmd, sdk)
 	setKeyPair(sdk)
 
+	ctx = withCommandRequests(ctx)
 	result, err := handleExecutorPre(ctx, sdk, cmd, exec, parameters, configs)
 	err = handleExecutorResult(ctx, sdk, cmd, result, err)
 	if err != nil {

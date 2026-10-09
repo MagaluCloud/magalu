@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"net/http/httptest"
@@ -46,6 +47,8 @@ func TestRequestIDRecorder(t *testing.T) {
 				next = failingTransport{tc.transportErr}
 			}
 			recorder := newRequestIDRecorder(next)
+
+			recorder.tracked = func(*http.Request) bool { return true }
 			client := &http.Client{Transport: recorder}
 
 			for range tc.responseIDs {
@@ -71,4 +74,58 @@ func TestRequestIDRecorder(t *testing.T) {
 			}
 		})
 	}
+}
+
+// hostIDTransport responde sem rede, com o próprio host como X-Request-Id
+type hostIDTransport struct{}
+
+func (hostIDTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	header := http.Header{}
+	header.Set(requestIDHeader, req.URL.Hostname())
+	return &http.Response{StatusCode: http.StatusOK, Header: header, Body: http.NoBody, Request: req}, nil
+}
+
+func TestRequestIDRecorderOnlyTracksCommandRequests(t *testing.T) {
+	commandCtx := withCommandRequests(context.Background())
+	versionCheck := request{"https://github.com/MagaluCloud/mgccli/releases/latest", context.Background()}
+
+	testCases := []struct {
+		name     string
+		requests []request
+		want     string
+	}{
+		{"command call", []request{{"https://api.magalu.cloud/br-se1/compute/v1/instances", commandCtx}}, "api.magalu.cloud"},
+		{"version check after the command call is ignored", []request{{"https://api.magalu.cloud/br-se1/compute/v1/instances", commandCtx}, versionCheck}, "api.magalu.cloud"},
+		{"version check before the command call", []request{versionCheck, {"https://api.pre-prod.example.com/compute", commandCtx}}, "api.pre-prod.example.com"},
+		{"any host counts when it comes from the command", []request{{"https://storage.new-domain.example/bucket", commandCtx}}, "storage.new-domain.example"},
+		{"only the version check", []request{versionCheck}, ""},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			recorder := newRequestIDRecorder(hostIDTransport{})
+			client := &http.Client{Transport: recorder}
+
+			for _, r := range tc.requests {
+				req, err := http.NewRequestWithContext(r.ctx, http.MethodGet, r.url, nil)
+				if err != nil {
+					t.Fatal(err)
+				}
+				resp, err := client.Do(req)
+				if err != nil {
+					t.Fatal(err)
+				}
+				_ = resp.Body.Close()
+			}
+
+			if got := recorder.LastRequestID(); got != tc.want {
+				t.Errorf("got %q, want %q", got, tc.want)
+			}
+		})
+	}
+}
+
+type request struct {
+	url string
+	ctx context.Context
 }
