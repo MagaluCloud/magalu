@@ -50,3 +50,5 @@ terraform.tfstate.d
 mgc/spec_manipulator/cicd
 specs/tmp/**
 report.md
+
+.env
