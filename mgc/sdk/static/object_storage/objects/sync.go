@@ -4,7 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math"
 	"os"
+	"path/filepath"
 	"strings"
 	sy "sync"
 	"time"
@@ -61,10 +63,19 @@ var getSync = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	})
 })
 
-var (
-	allBucketFiles = make(map[string]bool)
-	uploadFiles    = &UploadCounter{}
-)
+// bucketFiles holds the objects found in the bucket that were not seen
+// locally yet, keyed by their path relative to the sync destination. The
+// value is the full object key, used when deleting.
+type bucketFiles struct {
+	mu   sy.Mutex
+	keys map[string]string
+}
+
+func (b *bucketFiles) markSeen(relPath string) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	delete(b.keys, relPath)
+}
 
 func sync(ctx context.Context, params syncParams, cfg common.Config) (result core.Value, err error) {
 	if !strings.HasPrefix(string(params.Bucket), common.URIPrefix) {
@@ -84,7 +95,11 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		return nil, err
 	}
 
-	if f, _ := os.Stat(basePath.String()); !f.IsDir() {
+	f, err := os.Stat(basePath.String())
+	if err != nil {
+		return nil, err
+	}
+	if !f.IsDir() {
 		return nil, fmt.Errorf("local path must be a folder")
 	}
 
@@ -103,9 +118,14 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		progressBar, _ = progressBar.Start()
 	}
 
-	fillBucketFiles(ctx, params, cfg)
+	remoteFiles, err := fillBucketFiles(ctx, params, cfg)
+	if err != nil {
+		return nil, err
+	}
 
-	err = processSyncFiles(ctx, cfg, params.Local, params.Bucket, basePath.String(), files, progressBar)
+	uploadFiles := &UploadCounter{}
+
+	err = processSyncFiles(ctx, cfg, params.Local, params.Bucket, basePath.String(), files, remoteFiles, uploadFiles, progressBar)
 
 	if err != nil {
 		return nil, err
@@ -113,14 +133,11 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 
 	_, _ = progressBar.Stop()
 
-	deletedFiles := make([]string, 0, len(allBucketFiles))
+	deletedFiles := make([]string, 0, len(remoteFiles.keys))
 
 	if params.Delete {
-		for file := range allBucketFiles {
-			if err != nil {
-				logger().Debugw("error deleting file", "error", err)
-			}
-			deletedFiles = append(deletedFiles, file)
+		for _, key := range remoteFiles.keys {
+			deletedFiles = append(deletedFiles, key)
 		}
 		delOb := common.DeleteObjectsParams{
 			Destination: params.Bucket,
@@ -136,7 +153,7 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 	return syncResult{
 		Source:        params.Local,
 		Destination:   params.Bucket,
-		FilesDeleted:  len(allBucketFiles),
+		FilesDeleted:  len(remoteFiles.keys),
 		FilesUploaded: int(uploadFiles.Value()),
 		Deleted:       len(deletedFiles) > 0,
 		DeletedFiles:  strings.Join(deletedFiles, ", "),
@@ -161,20 +178,33 @@ func bucketObjectsToWalkDirEntry(ctx context.Context, bucketObjects []string) <-
 	return out
 }
 
-func fillBucketFiles(ctx context.Context, params syncParams, cfg common.Config) {
+func fillBucketFiles(ctx context.Context, params syncParams, cfg common.Config) (*bucketFiles, error) {
 	logger().Debug("Getting bucket files")
 
 	dirBucketFiles := common.ListGenerator(ctx, common.ListObjectsParams{
 		Destination: params.Bucket,
 		Recursive:   true,
 		PaginationParams: common.PaginationParams{
-			MaxItems: common.MaxBatchSize,
+			MaxItems: math.MaxInt64,
 		},
 	}, cfg, nil)
 
-	for file := range dirBucketFiles {
-		allBucketFiles["/"+file.Path()] = true
+	// Listed keys are relative to the bucket root, local paths are relative
+	// to the destination, so strip the destination prefix before comparing.
+	prefix := params.Bucket.Path()
+	if prefix != "" {
+		prefix += "/"
 	}
+
+	files := &bucketFiles{keys: make(map[string]string)}
+	for file := range dirBucketFiles {
+		if err := file.Err(); err != nil {
+			return nil, err
+		}
+		key := file.Path()
+		files.keys[strings.TrimPrefix(key, prefix)] = key
+	}
+	return files, nil
 }
 
 func getFileStats(ctx context.Context, destination mgcSchemaPkg.URI, cfg common.Config) (fileSyncStats, error) {
@@ -216,10 +246,12 @@ func (c *UploadCounter) Increment() {
 }
 
 func (c *UploadCounter) Value() uint64 {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	return c.v
 }
 
-func processSyncFiles(ctx context.Context, cfg common.Config, source, destination mgcSchemaPkg.URI, basePath string, files []string, progressBar *pterm.ProgressbarPrinter) error {
+func processSyncFiles(ctx context.Context, cfg common.Config, source, destination mgcSchemaPkg.URI, basePath string, files []string, remoteFiles *bucketFiles, uploadFiles *UploadCounter, progressBar *pterm.ProgressbarPrinter) error {
 	results := make(chan error, cfg.Workers)
 	filesChan := make(chan string, cfg.Workers)
 
@@ -228,7 +260,7 @@ func processSyncFiles(ctx context.Context, cfg common.Config, source, destinatio
 	for i := 0; i < cfg.Workers; i++ {
 		go func() {
 			defer wg.Done()
-			syncWorker(ctx, cfg, source, destination, basePath, filesChan, results, progressBar)
+			syncWorker(ctx, cfg, source, destination, basePath, filesChan, results, remoteFiles, uploadFiles, progressBar)
 		}()
 	}
 
@@ -262,14 +294,14 @@ func processSyncFiles(ctx context.Context, cfg common.Config, source, destinatio
 	return nil
 }
 
-func syncWorker(ctx context.Context, cfg common.Config, source, destination mgcSchemaPkg.URI, basePath string, files <-chan string, results chan<- error, progressBar *pterm.ProgressbarPrinter) {
+func syncWorker(ctx context.Context, cfg common.Config, source, destination mgcSchemaPkg.URI, basePath string, files <-chan string, results chan<- error, remoteFiles *bucketFiles, uploadFiles *UploadCounter, progressBar *pterm.ProgressbarPrinter) {
 	for {
 		select {
 		case file, ok := <-files:
 			if !ok {
 				return
 			}
-			err := processSyncFile(ctx, cfg, source, destination, basePath, file, progressBar)
+			err := processSyncFile(ctx, cfg, source, destination, basePath, file, remoteFiles, uploadFiles, progressBar)
 			if err != nil {
 				select {
 				case results <- err:
@@ -283,7 +315,7 @@ func syncWorker(ctx context.Context, cfg common.Config, source, destination mgcS
 	}
 }
 
-func processSyncFile(ctx context.Context, cfg common.Config, source, destination mgcSchemaPkg.URI, basePath, file string, progressBar *pterm.ProgressbarPrinter) error {
+func processSyncFile(ctx context.Context, cfg common.Config, source, destination mgcSchemaPkg.URI, basePath, file string, remoteFiles *bucketFiles, uploadFiles *UploadCounter, progressBar *pterm.ProgressbarPrinter) error {
 	normalizedSource, err := common.GetAbsSystemURI(mgcSchemaPkg.URI(file))
 	if err != nil {
 		logger().Debugw("error with path", "error", err)
@@ -308,9 +340,7 @@ func processSyncFile(ctx context.Context, cfg common.Config, source, destination
 		return err
 	}
 
-	if allBucketFiles[pathWithFolder] {
-		delete(allBucketFiles, pathWithFolder)
-	}
+	remoteFiles.markSeen(strings.TrimPrefix(filepath.ToSlash(pathWithFolder), "/"))
 
 	fileStats, err := getFileStats(ctx, normalizedDestination, cfg)
 	if err != nil {
