@@ -29,8 +29,8 @@ func telemetryCommandInfo(root *cobra.Command, args []string, cmdErr error) (tel
 		return untracked()
 	}
 
-	cmd, rest, err := root.Find(args)
-	if err != nil || cmd == nil {
+	cmd, rest, _ := root.Find(args)
+	if cmd == nil {
 		return telemetry.CommandInfo{UnknownCommand: true}, true
 	}
 
@@ -40,12 +40,13 @@ func telemetryCommandInfo(root *cobra.Command, args []string, cmdErr error) (tel
 
 	if cmd == root || cmd.HasSubCommands() {
 		if next, _ := getNextUnknownCommand(cmd, rest); next != nil {
-			return telemetry.CommandInfo{UnknownCommand: true, OptionsSet: changedFlagNames(cmd)}, true
+			path := append(commandPathSegments(cmd), *next)
+			return telemetry.CommandInfo{UnknownCommand: true, Path: path, OptionsSet: changedFlagNames(cmd)}, true
 		}
 		return untracked()
 	}
 
-	path := strings.Fields(cmd.CommandPath())[1:]
+	path := commandPathSegments(cmd)
 	if _, skip := untrackedCommands[path[0]]; skip {
 		return untracked()
 	}
@@ -55,6 +56,13 @@ func telemetryCommandInfo(root *cobra.Command, args []string, cmdErr error) (tel
 		OptionsSet: changedFlagNames(cmd),
 		ResourceID: resourceID(cmd),
 	}, true
+}
+
+// commandPathSegments devolve o caminho do comando resolvido, sem o "mgc" na frente.
+func commandPathSegments(cmd *cobra.Command) []string {
+	fullPath := cmd.CommandPath()
+	words := strings.Fields(fullPath)
+	return words[1:]
 }
 
 func untracked() (telemetry.CommandInfo, bool) {

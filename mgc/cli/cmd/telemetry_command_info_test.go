@@ -29,7 +29,7 @@ func newFakeCommandTree() *cobra.Command {
 	root.SetOut(io.Discard)
 	root.SetErr(io.Discard)
 
-	vm := &cobra.Command{Use: "virtual-machine", RunE: showHelp}
+	vm := &cobra.Command{Use: "virtual-machine", Aliases: []string{"vm"}, RunE: showHelp}
 	instances := &cobra.Command{Use: "instances", RunE: showHelp}
 	create := &cobra.Command{Use: "create", RunE: noop}
 	create.Flags().String("region", "", "")
@@ -72,6 +72,8 @@ func TestTelemetryCommandInfo(t *testing.T) {
 		wantPath       []string
 		wantOptions    []string
 		wantResourceID string
+		wantAction     string
+		wantProduct    string
 	}{
 		{
 			name:        "command with flags keeps only flag names",
@@ -109,13 +111,36 @@ func TestTelemetryCommandInfo(t *testing.T) {
 			args:        []string{"foo", "bar"},
 			wantTrack:   true,
 			wantUnknown: true,
+			wantPath:    []string{"foo"},
+			wantAction:  "foo",
+			wantProduct: telemetry.UnknownProduct,
 		},
 		{
 			name:        "unknown command inside a group",
 			args:        []string{"virtual-machine", "--debug", "foo"},
 			wantTrack:   true,
 			wantUnknown: true,
+			wantPath:    []string{"virtual-machine", "foo"},
 			wantOptions: []string{"debug"},
+			wantAction:  "virtualmachine.foo",
+		},
+		{
+			name:        "unknown subcommand inside a group resolved through an alias",
+			args:        []string{"vm", "list"},
+			wantTrack:   true,
+			wantUnknown: true,
+			wantPath:    []string{"virtual-machine", "list"},
+			wantAction:  "virtualmachine.list",
+			wantProduct: "virtual machine",
+		},
+		{
+			// Só o primeiro argumento não resolvido entra no Path; o que vem depois é ignorado.
+			name:        "extra arguments after the unresolved token are ignored",
+			args:        []string{"virtual-machine", "foo", "extra"},
+			wantTrack:   true,
+			wantUnknown: true,
+			wantPath:    []string{"virtual-machine", "foo"},
+			wantAction:  "virtualmachine.foo",
 		},
 		{name: "help requested through a flag", args: []string{"flag-help"}},
 		{name: "group help flag", args: []string{"virtual-machine", "--help"}},
@@ -147,6 +172,16 @@ func TestTelemetryCommandInfo(t *testing.T) {
 			}
 			if info.ResourceID != tc.wantResourceID {
 				t.Errorf("resource id = %q, want %q", info.ResourceID, tc.wantResourceID)
+			}
+			if tc.wantAction != "" {
+				if got := info.Action(); got != tc.wantAction {
+					t.Errorf("action = %q, want %q", got, tc.wantAction)
+				}
+			}
+			if tc.wantProduct != "" {
+				if got := info.Product(); got != tc.wantProduct {
+					t.Errorf("product = %q, want %q", got, tc.wantProduct)
+				}
 			}
 		})
 	}

@@ -13,7 +13,8 @@ func TestCommandInfoAction(t *testing.T) {
 		{"upper case and hyphens", CommandInfo{Path: []string{"Object-Storage", "Buckets", "Create"}}, "objectstorage.buckets.create"},
 		{"multiple hyphens", CommandInfo{Path: []string{"block-storage", "volume-attachments", "attach"}}, "blockstorage.volumeattachments.attach"},
 		{"empty path", CommandInfo{}, UnknownAction},
-		{"unknown command", CommandInfo{Path: []string{"virtual-machine"}, UnknownCommand: true}, UnknownAction},
+		{"unresolved command at root", CommandInfo{Path: []string{"virtual-machine"}, UnknownCommand: true}, "virtualmachine"},
+		{"unresolved subcommand inside a group", CommandInfo{Path: []string{"virtual-machine", "list"}, UnknownCommand: true}, "virtualmachine.list"},
 	}
 
 	for _, tc := range testCases {
@@ -35,7 +36,8 @@ func TestCommandInfoProduct(t *testing.T) {
 		{"upper case and hyphens", CommandInfo{Path: []string{"Object-Storage", "Buckets", "Create"}}, "object storage"},
 		{"settings command", CommandInfo{Path: []string{"config", "list"}}, "config"},
 		{"empty path", CommandInfo{}, UnknownAction},
-		{"unknown command", CommandInfo{Path: []string{"virtual-machine"}, UnknownCommand: true}, UnknownAction},
+		{"unresolved token alone, nothing real resolved", CommandInfo{Path: []string{"foo"}, UnknownCommand: true}, UnknownProduct},
+		{"unresolved subcommand after a real group", CommandInfo{Path: []string{"virtual-machine", "list"}, UnknownCommand: true}, "virtual machine"},
 	}
 
 	for _, tc := range testCases {
@@ -58,7 +60,9 @@ func TestCommandInfoResourceType(t *testing.T) {
 		{"upper case", CommandInfo{Path: []string{"Object-Storage", "Buckets", "Create"}}, "object_storage_buckets"},
 		{"single segment has no resource", CommandInfo{Path: []string{"version"}}, ""},
 		{"empty path", CommandInfo{}, ""},
-		{"unknown command", CommandInfo{Path: []string{"virtual-machine", "instances", "list"}, UnknownCommand: true}, ""},
+		{"unresolved token alone, nothing real resolved", CommandInfo{Path: []string{"foo"}, UnknownCommand: true}, ""},
+		{"unresolved subcommand after a real group", CommandInfo{Path: []string{"virtual-machine", "foo"}, UnknownCommand: true}, "virtual_machine"},
+		{"unresolved leaf after a real group and subgroup", CommandInfo{Path: []string{"virtual-machine", "instances", "foo"}, UnknownCommand: true}, "virtual_machine_instances"},
 	}
 
 	for _, tc := range testCases {
@@ -107,7 +111,9 @@ func TestCommandInfoIsInfrastructure(t *testing.T) {
 		{"profile", CommandInfo{Path: []string{"profile", "ssh-keys", "list"}}, false},
 		{"workspace", CommandInfo{Path: []string{"workspace", "list"}}, false},
 		{"telemetry", CommandInfo{Path: []string{"telemetry", "status"}}, false},
-		{"unknown command", CommandInfo{Path: []string{"virtual-machine"}, UnknownCommand: true}, false},
+		{"unresolved token alone, nothing real resolved", CommandInfo{Path: []string{"virtual-machine"}, UnknownCommand: true}, false},
+		{"unresolved subcommand after a real infra group", CommandInfo{Path: []string{"virtual-machine", "foo"}, UnknownCommand: true}, true},
+		{"unresolved subcommand after a real non-infra group", CommandInfo{Path: []string{"auth", "foo"}, UnknownCommand: true}, false},
 		{"empty path", CommandInfo{}, false},
 	}
 

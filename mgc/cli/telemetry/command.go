@@ -32,7 +32,7 @@ type CommandInfo struct {
 }
 
 func (c CommandInfo) Action() string {
-	if c.UnknownCommand || len(c.Path) == 0 {
+	if len(c.Path) == 0 {
 		return UnknownAction
 	}
 	segments := make([]string, len(c.Path))
@@ -43,18 +43,23 @@ func (c CommandInfo) Action() string {
 }
 
 func (c CommandInfo) Product() string {
-	if c.UnknownCommand || len(c.Path) == 0 {
+	if len(c.Path) == 0 {
+		return UnknownProduct
+	}
+	if c.UnknownCommand && len(c.Path) < 2 {
 		return UnknownProduct
 	}
 	return strings.ReplaceAll(strings.ToLower(c.Path[0]), "-", " ")
 }
 
 func (c CommandInfo) ResourceType() string {
-	if c.UnknownCommand || len(c.Path) < 2 {
+	pathLen := len(c.Path)
+	if pathLen < 2 {
 		return ""
 	}
-	segments := make([]string, len(c.Path)-1)
-	for i, s := range c.Path[:len(c.Path)-1] {
+	resourcePath := c.Path[:pathLen-1]
+	segments := make([]string, len(resourcePath))
+	for i, s := range resourcePath {
 		segments[i] = strings.ReplaceAll(strings.ToLower(s), "-", "_")
 	}
 	return strings.Join(segments, "_")
@@ -65,7 +70,10 @@ func (c CommandInfo) IsLogin() bool {
 }
 
 func (c CommandInfo) IsInfrastructure() bool {
-	if c.UnknownCommand || len(c.Path) == 0 {
+	if len(c.Path) == 0 {
+		return false
+	}
+	if c.UnknownCommand && len(c.Path) < 2 {
 		return false
 	}
 	_, nonInfra := nonInfraGroups[c.Path[0]]
