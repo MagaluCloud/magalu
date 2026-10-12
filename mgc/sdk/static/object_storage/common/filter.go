@@ -28,6 +28,16 @@ func (o Filters) JSONSchemaExtend(s *jsonschema.Schema) {
 }
 
 func ApplyFilters(ctx context.Context, entries <-chan pipeline.WalkDirEntry, params []FilterParams, cancel context.CancelCauseFunc) <-chan pipeline.WalkDirEntry {
+	filterRule := NewFilterRule(params, cancel)
+	if filterRule == nil {
+		return entries
+	}
+
+	return pipeline.Filter[pipeline.WalkDirEntry](ctx, entries, filterRule)
+}
+
+// NewFilterRule builds the rule used by ApplyFilters. Returns nil when there are no filters.
+func NewFilterRule(params []FilterParams, cancel context.CancelCauseFunc) pipeline.FilterRule[pipeline.WalkDirEntry] {
 	filters := []pipeline.FilterRule[pipeline.WalkDirEntry]{}
 	for _, filter := range params {
 		if filter.Include != "" {
@@ -43,9 +53,8 @@ func ApplyFilters(ctx context.Context, entries <-chan pipeline.WalkDirEntry, par
 	}
 
 	if len(filters) < 1 {
-		return entries
+		return nil
 	}
 
-	filterRule := pipeline.FilterRuleFirst[pipeline.WalkDirEntry]{Filters: filters}
-	return pipeline.Filter[pipeline.WalkDirEntry](ctx, entries, filterRule)
+	return pipeline.FilterRuleFirst[pipeline.WalkDirEntry]{Filters: filters}
 }
