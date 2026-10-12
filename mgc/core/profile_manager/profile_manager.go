@@ -48,7 +48,6 @@ func NewInMemoryProfileManager() (*ProfileManager, afero.Fs) {
 	return pf, fs
 }
 
-// Dir is the root of the MGC config dir, such as ~/.config/mgc.
 func (m *ProfileManager) Dir() string {
 	return m.dir
 }

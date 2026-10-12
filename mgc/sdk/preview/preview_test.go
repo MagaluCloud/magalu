@@ -1,7 +1,9 @@
 package preview
 
 import (
+	"context"
 	"errors"
+	"strings"
 	"testing"
 
 	"github.com/MagaluCloud/magalu/mgc/core"
@@ -61,6 +63,7 @@ func TestNewGroupExposesPackagesUnderTheLevel(t *testing.T) {
 			assert.Equal(t, []string{level.Name}, childNames(t, root))
 
 			levelGroup := group(t, root, level.Name)
+			assert.Equal(t, GroupID, levelGroup.GroupID(), "a preview level is not a product")
 			assert.Equal(t, level.Summary, levelGroup.Summary())
 			assert.Contains(t, levelGroup.Description(), "mem-store")
 			assert.Equal(t, []string{"foo"}, childNames(t, levelGroup))
@@ -88,18 +91,25 @@ func TestNewGroupIsolatesBrokenPackages(t *testing.T) {
 	beta := group(t, NewGroup(Beta, store, validator, &extensionPrefix), Beta.Name)
 	assert.Equal(t, []string{"broken", "foo", "refused"}, childNames(t, beta))
 
-	// the valid module keeps working
 	assert.Equal(t, []string{"things"}, childNames(t, group(t, beta, "foo")))
 
-	// the others fail only when used, saying which module and where
-	err := visitErr(group(t, beta, "broken"))
-	require.Error(t, err)
-	assert.Contains(t, err.Error(), `beta module "broken" (mem-store)`)
+	visited := []string{}
+	_, err := core.VisitAllExecutors(beta, nil, false, func(_ core.Executor, path []string) (bool, error) {
+		visited = append(visited, strings.Join(path, " "))
+		return true, nil
+	})
+	require.NoError(t, err)
+	assert.Contains(t, visited, "foo things list")
 
-	err = visitErr(group(t, beta, "refused"))
-	require.Error(t, err)
-	assert.Contains(t, err.Error(), `beta module "refused" (mem-store)`)
-	assert.Contains(t, err.Error(), "spec has no operations")
+	for name, reason := range map[string]string{"broken": "", "refused": "spec has no operations"} {
+		exec, ok := child(t, beta, name).(core.Executor)
+		require.True(t, ok, "%q should be a command that reports the error", name)
+
+		_, err := exec.Execute(context.Background(), core.Parameters{}, core.Configs{})
+		require.Error(t, err)
+		assert.Contains(t, err.Error(), `beta module "`+name+`" (mem-store)`)
+		assert.Contains(t, err.Error(), reason)
+	}
 }
 
 func TestNewGroupDoesNotTouchOfficialGroups(t *testing.T) {
@@ -147,8 +157,14 @@ func TestNewGroupDoesNotTouchOfficialGroups(t *testing.T) {
 	})
 }
 
-func TestIsLevelName(t *testing.T) {
-	assert.True(t, IsLevelName("beta"))
-	assert.True(t, IsLevelName("alpha"))
-	assert.False(t, IsLevelName("iam"))
+func TestCheck(t *testing.T) {
+	validator := &fakeValidator{refused: map[string]string{"refused": "spec has no operations"}}
+
+	assert.NoError(t, Check(Alpha, Package{Name: "foo", Spec: []byte(fooSpec)}, validator, &extensionPrefix))
+
+	err := Check(Alpha, Package{Name: "broken", Spec: []byte(brokenSpec)}, validator, &extensionPrefix)
+	assert.ErrorContains(t, err, `alpha module "broken" (download)`)
+
+	err = Check(Alpha, Package{Name: "refused", Spec: []byte(fooSpec)}, validator, &extensionPrefix)
+	assert.ErrorContains(t, err, "spec has no operations")
 }

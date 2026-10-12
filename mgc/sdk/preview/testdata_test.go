@@ -34,7 +34,6 @@ info: [this is not
 
 var extensionPrefix = "x-mgc"
 
-// memStore is a Store kept in memory.
 type memStore struct {
 	specs map[string]string
 	err   error
@@ -68,7 +67,6 @@ func (s *memStore) String() string {
 	return "mem-store"
 }
 
-// fakeValidator refuses the packages listed in refused and records what it saw.
 type fakeValidator struct {
 	refused map[string]string
 	seen    []string

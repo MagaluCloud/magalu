@@ -46,12 +46,9 @@ func TestStoreLoader(t *testing.T) {
 		assert.Equal(t, "Foo preview API.", foo.Description)
 		assert.Equal(t, "Foo preview API.", foo.Summary)
 
-		// falls back to the title when there is no description
 		assert.Equal(t, "bar", bar.Name)
 		assert.Equal(t, "Bar", bar.Description)
 
-		// a spec that does not parse still gets listed, so the error shows up
-		// only when that module is used
 		assert.Equal(t, "broken", broken.Name)
 		assert.Equal(t, "alpha broken", broken.Description)
 	})

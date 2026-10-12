@@ -1,13 +1,7 @@
-// Package preview exposes preview commands under "mgc beta" and "mgc alpha".
-// They are built at runtime from the compiled OpenAPI specs kept on this
-// machine, never from the specs embedded in the binary, so the official
-// commands stay untouched.
-//
-// Where the specs come from and how they are checked are ports (Store,
-// Validator); the adapters live in subpackages and sdk.go picks them.
 package preview
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/MagaluCloud/magalu/mgc/core"
@@ -17,10 +11,8 @@ import (
 
 var logger = mgcLoggerPkg.NewLazy[Level]()
 
-// NewGroup returns a root to be merged with the official ones. It has a single
-// child named after the level when the store has packages, and no children
-// otherwise, so the command stays hidden. It never fails: a broken store must
-// not break the CLI.
+const GroupID = "preview"
+
 func NewGroup(level Level, store Store, validator Validator, extensionPrefix *string) core.Grouper {
 	return core.NewSimpleGrouper(
 		core.DescriptorSpec{Name: level.Name + " root", Description: level.Summary},
@@ -44,6 +36,7 @@ func newLevelGroup(level Level, store Store, validator Validator, extensionPrefi
 	return core.NewSimpleGrouper(
 		core.DescriptorSpec{
 			Name:    level.Name,
+			GroupID: GroupID,
 			Summary: level.Summary,
 			Description: fmt.Sprintf(
 				"%s, loaded from %s. Commands may change or stop working. ",
@@ -54,7 +47,7 @@ func newLevelGroup(level Level, store Store, validator Validator, extensionPrefi
 		func() (children []core.Descriptor, err error) {
 			_, err = source.VisitChildren(func(child core.Descriptor) (bool, error) {
 				if module, ok := child.(core.Grouper); ok {
-					child = &moduleGroup{module, level, store}
+					child = checkedModule(&moduleGroup{module, level, store})
 				}
 				children = append(children, child)
 				return true, nil
@@ -64,8 +57,70 @@ func newLevelGroup(level Level, store Store, validator Validator, extensionPrefi
 	)
 }
 
-// moduleGroup says which preview module failed and where it lives, since
-// the openapi errors do not.
+func checkedModule(module *moduleGroup) core.Descriptor {
+	err := loadAll(module)
+	if err == nil {
+		return module
+	}
+
+	logger().Warnw("ignoring broken preview module", "level", module.level.Name, "module", module.Name(), "error", err)
+	return newBrokenModule(module.Name(), err)
+}
+
+func Check(level Level, pkg Package, validator Validator, extensionPrefix *string) error {
+	store := packageStore{pkg}
+	source := openapi.NewSource(&storeLoader{level: level, store: store, validator: validator}, extensionPrefix)
+
+	child, err := source.GetChildByName(pkg.Name)
+	if err != nil {
+		return err
+	}
+	module, ok := child.(core.Grouper)
+	if !ok {
+		return fmt.Errorf("%s module %q is not a group of commands", level.Name, pkg.Name)
+	}
+	return loadAll(&moduleGroup{module, level, store})
+}
+
+func loadAll(module core.Grouper) error {
+	_, err := core.VisitAllExecutors(module, nil, true, func(core.Executor, []string) (bool, error) {
+		return true, nil
+	})
+	return err
+}
+
+type packageStore struct {
+	pkg Package
+}
+
+func (s packageStore) Names() ([]string, error) {
+	return []string{s.pkg.Name}, nil
+}
+
+func (s packageStore) Read(name string) (Package, error) {
+	if name != s.pkg.Name {
+		return Package{}, fmt.Errorf("package %q not found", name)
+	}
+	return s.pkg, nil
+}
+
+func (s packageStore) String() string {
+	return "download"
+}
+
+func newBrokenModule(name string, err error) core.Executor {
+	return core.NewStaticExecuteSimple(
+		core.DescriptorSpec{
+			Name:        name,
+			Summary:     "Failed to load: run it to see why",
+			Description: err.Error(),
+		},
+		func(context.Context) (core.Value, error) {
+			return nil, err
+		},
+	)
+}
+
 type moduleGroup struct {
 	core.Grouper
 	level Level

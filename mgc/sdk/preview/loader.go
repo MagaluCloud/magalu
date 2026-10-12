@@ -15,8 +15,6 @@ const (
 	specSuffix    = ".openapi.yaml"
 )
 
-// storeLoader feeds a Store to the openapi source. It synthesizes the index
-// from the store names, so every package "<name>" becomes the module "<name>".
 type storeLoader struct {
 	level     Level
 	store     Store
@@ -57,7 +55,6 @@ type index struct {
 	Modules []indexModule `json:"modules"`
 }
 
-// buildIndex is written as JSON, which is also valid YAML for the openapi source.
 func (l *storeLoader) buildIndex() ([]byte, error) {
 	names, err := l.store.Names()
 	if err != nil {
@@ -94,8 +91,6 @@ type specInfo struct {
 	Version     string `yaml:"version"`
 }
 
-// readInfo is best effort: a package that does not read or parse is still
-// listed, and fails only when its module is used.
 func (l *storeLoader) readInfo(name string) specInfo {
 	var spec struct {
 		Info specInfo `yaml:"info"`

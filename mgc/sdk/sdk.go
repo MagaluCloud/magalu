@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 	"path/filepath"
 	"runtime"
 
@@ -15,9 +16,12 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
 	"github.com/MagaluCloud/magalu/mgc/sdk/openapi"
 	"github.com/MagaluCloud/magalu/mgc/sdk/preview"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview/alphasync"
 	"github.com/MagaluCloud/magalu/mgc/sdk/preview/fsstore"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview/serverpin"
 	"github.com/MagaluCloud/magalu/mgc/sdk/preview/specvalidator"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/alpha"
 )
 
 // Re-exports from Core
@@ -108,21 +112,51 @@ func (o *Sdk) newOpenApiSource() core.Grouper {
 	return openapi.NewSource(loader, &extensionPrefix)
 }
 
-// newPreviewSources picks the preview adapters: every level reads the specs
-// in "<config dir>/.preview/<level>". Every other dir in the config dir is a
-// workspace, and a workspace name cannot start with a dot, so "workspace"
-// commands never list, select or delete the preview specs.
 func (o *Sdk) newPreviewSources() []core.Grouper {
 	extensionPrefix := "x-mgc"
 	validator := specvalidator.New()
-	dir := filepath.Join(o.ProfileManager().Dir(), ".preview")
 
-	sources := make([]core.Grouper, 0, len(preview.Levels))
-	for _, level := range preview.Levels {
-		store := fsstore.New(filepath.Join(dir, level.Name))
-		sources = append(sources, preview.NewGroup(level, store, validator, &extensionPrefix))
+	beta := fsstore.New(openapi.BetaSpecs(), "")
+	alphaDir := o.alphaDir()
+	alpha := serverpin.Wrap(alphasync.VerifiedStore(fsstore.NewDir(alphaDir), alphaDir, alphasync.TrustedKeys()))
+
+	return []core.Grouper{
+		preview.NewGroup(preview.Beta, beta, validator, &extensionPrefix),
+		preview.NewGroup(preview.Alpha, alpha, validator, &extensionPrefix),
 	}
-	return sources
+}
+
+func (o *Sdk) alphaDir() string {
+	return filepath.Join(o.ProfileManager().Dir(), ".preview", preview.Alpha.Name)
+}
+
+func (o *Sdk) newAlphaRoot() core.Grouper {
+	extensionPrefix := "x-mgc"
+	validator := specvalidator.New()
+
+	sync := alphasync.NewCommand(alphasync.Config{
+		BaseURL:    alphaBaseURL(),
+		Dir:        o.alphaDir(),
+		CLIVersion: o.version,
+		Keys:       alphasync.TrustedKeys(),
+		HTTPClient: &http.Client{Transport: newHttpTransport(o.version)},
+		Check: func(pkg preview.Package) error {
+			pinned, err := serverpin.Pin(pkg.Spec)
+			if err != nil {
+				return err
+			}
+			pkg.Spec = pinned
+			return preview.Check(preview.Alpha, pkg, validator, &extensionPrefix)
+		},
+	})
+	return alpha.NewRoot(sync)
+}
+
+func alphaBaseURL() string {
+	if url := os.Getenv("MGC_ALPHA_URL"); url != "" {
+		return url
+	}
+	return alphasync.DefaultBaseURL
 }
 
 func (o *Sdk) RefResolver() core.RefPathResolver {
@@ -145,7 +179,10 @@ func (o *Sdk) Group() core.Grouper {
 					static.GetGroup(),
 					o.newOpenApiSource(),
 				}
-				return append(official, o.newPreviewSources()...)
+				roots := append(official, o.newPreviewSources()...)
+				// Last on purpose: the hidden "alpha" must give way to the
+				// visible one that installed alpha specs bring.
+				return append(roots, o.newAlphaRoot())
 			},
 		)
 	}
