@@ -23,6 +23,8 @@ const (
 	apiKeyEnvVar       = "MGC_API_KEY"
 	objKeyIDEnvVar     = "MGC_OBJ_KEY_ID"
 	objKeySecretEnvVar = "MGC_OBJ_KEY_SECRET"
+
+	catalogGroupID = "catalog"
 )
 
 var argParser = &osArgParser{}
@@ -68,7 +70,7 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	rootCmd.SetFlagErrorFunc(wrapFlagError)
 
 	rootCmd.AddGroup(&cobra.Group{
-		ID:    "catalog",
+		ID:    catalogGroupID,
 		Title: "Products:",
 	})
 	rootCmd.AddGroup(&cobra.Group{

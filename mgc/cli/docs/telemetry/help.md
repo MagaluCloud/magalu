@@ -4,16 +4,16 @@ sidebar_position: 0
 # Telemetry
 
 Manage the pseudonymous usage data collected by the CLI.
-
 After each command the CLI sends one event with the command path, the names of
 the flags that were set (never their values), the outcome and a failure category,
 the duration, the CLI version, the operating system, the install method, the
 execution context (interactive, ci or agent), the tenant ID, the last request ID
 and an anonymous installation ID. Flag values, credentials, error messages and
 command output are never sent.
-
+The event is sent in the background by a separate process, so the command never
+waits for the network. With --debug, the sending process writes its diagnostics
+to telemetry-debug.txt in the CLI config directory.
 To opt out, run 'mgc telemetry disable' or set MGC_CLI_TELEMETRY_OPTOUT=1 or DO_NOT_TRACK=1.
-
 Privacy policy: https://magalu.cloud/termos-legais/politica-de-privacidade/
 
 ## Usage:

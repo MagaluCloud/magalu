@@ -33,7 +33,12 @@ func newDumpTreeCmd(sdk *mgcSdk.Sdk) *cobra.Command {
 				return err
 			}
 
-			return formatter.Format(tree["children"], options, getRawOutputFlag(cmd))
+			nodes, _ := tree["children"].([]map[string]any)
+			if telemetryNode, ok := telemetryTreeNode(cmd.Root()); ok {
+				nodes = append(nodes, telemetryNode)
+			}
+
+			return formatter.Format(nodes, options, getRawOutputFlag(cmd))
 		},
 	}
 }
@@ -73,4 +78,21 @@ func collectAllChildren(child core.Descriptor) (map[string]any, error) {
 	} else {
 		return nil, fmt.Errorf("child %v not group/executor", child)
 	}
+}
+
+func telemetryTreeNode(root *cobra.Command) (map[string]any, bool) {
+	telemetryCmd, _, err := root.Find([]string{telemetryCmdName})
+	if err != nil || telemetryCmd == root {
+		return nil, false
+	}
+
+	var children []map[string]any
+	for _, subcommand := range telemetryCmd.Commands() {
+		if !subcommand.IsAvailableCommand() {
+			continue
+		}
+		children = append(children, map[string]any{"name": subcommand.Name()})
+	}
+
+	return map[string]any{"name": telemetryCmd.Name(), "children": children}, true
 }

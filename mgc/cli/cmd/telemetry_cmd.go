@@ -14,29 +14,32 @@ func newTelemetryCmd(getService func() *telemetry.Service) *cobra.Command {
 		Use:   telemetryCmdName,
 		Short: "Manage usage data collection",
 		Long: fmt.Sprintf(`Manage the pseudonymous usage data collected by the CLI.
-
 After each command the CLI sends one event with the command path, the names of
 the flags that were set (never their values), the outcome and a failure category,
 the duration, the CLI version, the operating system, the install method, the
 execution context (interactive, ci or agent), the tenant ID, the last request ID
 and an anonymous installation ID. Flag values, credentials, error messages and
 command output are never sent.
-
 The event is sent in the background by a separate process, so the command never
 waits for the network. With --debug, the sending process writes its diagnostics
 to telemetry-debug.txt in the CLI config directory.
-
 To opt out, run 'mgc telemetry disable' or set %s=1 or %s=1.
-
 Privacy policy: %s`, telemetry.EnvOptOut, telemetry.EnvDoNotTrack, telemetry.PrivacyPolicyURL),
 		GroupID: "settings",
 	}
 
-	telemetryCmd.AddCommand(
+	// catalogGroupID é o mesmo grupo "Commands:" dos subcomandos de cada produto
+	// (load_cmd_tree.go), para o Cobra mostrar "Commands:" em vez de "Available
+	// Commands:" e o gerador de docs reconhecer a seção
+	telemetryCmd.AddGroup(&cobra.Group{ID: catalogGroupID, Title: "Commands:"})
+	for _, subcommand := range []*cobra.Command{
 		newTelemetryEnableCmd(getService),
 		newTelemetryDisableCmd(getService),
 		newTelemetryStatusCmd(getService),
-	)
+	} {
+		subcommand.GroupID = catalogGroupID
+		telemetryCmd.AddCommand(subcommand)
+	}
 	return telemetryCmd
 }
 
