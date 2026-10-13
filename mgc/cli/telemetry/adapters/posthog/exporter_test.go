@@ -1,4 +1,4 @@
-package telemetry
+package posthog
 
 import (
 	"context"
@@ -11,6 +11,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 )
 
 type capturedRequest struct {
@@ -32,21 +34,21 @@ func newCaptureServer(t *testing.T, status int) (*httptest.Server, *[]capturedRe
 	return server, &requests
 }
 
-func exportedEvent() Event {
+func exportedEvent() telemetry.Event {
 	ttfv := 1500 * time.Millisecond
-	return Event{
+	return telemetry.Event{
 		Timestamp:        time.Date(2026, 9, 22, 14, 30, 45, 123456789, time.UTC),
-		Actor:            &Actor{TenantID: "tenant-1"},
-		ExecutionContext: ExecutionContextInteractive,
-		Resource:         &Resource{Type: "virtual_machine_instances", ID: "vm-1"},
+		Actor:            &telemetry.Actor{TenantID: "tenant-1"},
+		ExecutionContext: telemetry.ExecutionContextInteractive,
+		Resource:         &telemetry.Resource{Type: "virtual_machine_instances", ID: "vm-1"},
 		Action:           "virtualmachine.instances.get",
 		OptionsSet:       []string{"output", "id"},
-		Outcome:          OutcomeFailure,
-		FailureReason:    FailureValidation,
+		Outcome:          telemetry.OutcomeFailure,
+		FailureReason:    telemetry.FailureValidation,
 		Duration:         842 * time.Millisecond,
 		ClientVersion:    "v1.4.2",
 		OS:               "linux",
-		InstallMethod:    InstallMethodHomebrew,
+		InstallMethod:    telemetry.InstallMethodHomebrew,
 		TimeToFirstValue: &ttfv,
 		LastRequestID:    "req-1",
 		InstallationID:   "b3f1c2de-0000-4000-8000-000000000000",
@@ -72,11 +74,11 @@ func decodeLogRecord(t *testing.T, body []byte) (otlpLogs, map[string]otlpAnyVal
 	return payload, attributes
 }
 
-func TestPostHogExporterRequest(t *testing.T) {
+func TestExporterRequest(t *testing.T) {
 	server, requests := newCaptureServer(t, http.StatusOK)
 	endpoint := server.URL + "/i/v1/logs"
 
-	if err := NewPostHogExporter(endpoint, "phc_test").Export(context.Background(), exportedEvent()); err != nil {
+	if err := NewExporter(endpoint, "phc_test").Export(context.Background(), exportedEvent()); err != nil {
 		t.Fatalf("Export() = %v", err)
 	}
 
@@ -115,19 +117,19 @@ func TestPostHogExporterRequest(t *testing.T) {
 	}
 }
 
-func TestPostHogExporterAttributes(t *testing.T) {
+func TestExporterAttributes(t *testing.T) {
 	success := exportedEvent()
-	success.Outcome = OutcomeSuccess
+	success.Outcome = telemetry.OutcomeSuccess
 	success.FailureReason = ""
 	success.Actor = nil
-	success.Resource = &Resource{Type: "virtual_machine_instances"}
+	success.Resource = &telemetry.Resource{Type: "virtual_machine_instances"}
 	success.OptionsSet = nil
 	success.TimeToFirstValue = nil
 	success.LastRequestID = ""
 
 	testCases := []struct {
 		name         string
-		event        Event
+		event        telemetry.Event
 		wantSeverity string
 		wantStrings  map[string]string
 		wantInts     map[string]string
@@ -201,7 +203,7 @@ func TestPostHogExporterAttributes(t *testing.T) {
 	}
 }
 
-func TestPostHogExporterErrors(t *testing.T) {
+func TestExporterErrors(t *testing.T) {
 	testCases := []struct {
 		name       string
 		status     int
@@ -216,9 +218,9 @@ func TestPostHogExporterErrors(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			server, _ := newCaptureServer(t, tc.status)
 
-			err := NewPostHogExporter(server.URL, "phc_test").Export(context.Background(), exportedEvent())
+			err := NewExporter(server.URL, "phc_test").Export(context.Background(), exportedEvent())
 
-			var statusErr ExportStatusError
+			var statusErr telemetry.ExportStatusError
 			switch {
 			case tc.wantStatus == 0 && err != nil:
 				t.Errorf("Export() = %v, want nil", err)
@@ -229,7 +231,7 @@ func TestPostHogExporterErrors(t *testing.T) {
 	}
 }
 
-func TestPostHogExporterDebugLog(t *testing.T) {
+func TestExporterDebugLog(t *testing.T) {
 	testCases := []struct {
 		name        string
 		status      int
@@ -244,7 +246,7 @@ func TestPostHogExporterDebugLog(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			server, _ := newCaptureServer(t, tc.status)
 			var logs []debugEntry
-			exporter := NewPostHogExporter(server.URL, "phc_test").
+			exporter := NewExporter(server.URL, "phc_test").
 				WithDebug(func(msg string, kv ...any) { logs = append(logs, debugEntry{msg, kv}) })
 
 			_ = exporter.Export(context.Background(), exportedEvent())
@@ -269,14 +271,14 @@ func TestPostHogExporterDebugLog(t *testing.T) {
 	}
 }
 
-func TestPostHogExporterClosesConnection(t *testing.T) {
+func TestExporterClosesConnection(t *testing.T) {
 	var closed bool
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		closed = r.Close
 	}))
 	defer server.Close()
 
-	if err := NewPostHogExporter(server.URL, "phc_test").Export(context.Background(), exportedEvent()); err != nil {
+	if err := NewExporter(server.URL, "phc_test").Export(context.Background(), exportedEvent()); err != nil {
 		t.Fatal(err)
 	}
 	if !closed {

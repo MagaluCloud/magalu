@@ -10,6 +10,7 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/debuglog"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/dispatch"
+	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/posthog"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/sender"
 )
 
@@ -25,7 +26,7 @@ func RunTelemetrySender(args []string) {
 	defer backstop.Stop()
 
 	exporters := func(log telemetry.DebugLogger) []telemetry.Exporter {
-		return telemetry.LoadBuildConfig(os.Getenv).Exporters(log)
+		return posthog.LoadBuildConfig(os.Getenv).Exporters(log)
 	}
 	runTelemetrySender(args, exporters, sender.DefaultPolicy(), senderDeadline)
 }

@@ -1,4 +1,4 @@
-package telemetry
+package posthog
 
 import (
 	"bytes"
@@ -10,6 +10,8 @@ import (
 	"slices"
 	"strconv"
 	"time"
+
+	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 )
 
 const (
@@ -18,15 +20,15 @@ const (
 	maxDrainedResponseBytes = 64 << 10 // 64 KiB
 )
 
-type PostHogExporter struct {
+type Exporter struct {
 	endpoint string
 	apiKey   string
 	client   *http.Client
-	debug    DebugLogger
+	debug    telemetry.DebugLogger
 }
 
-func NewPostHogExporter(endpoint, apiKey string) *PostHogExporter {
-	return &PostHogExporter{
+func NewExporter(endpoint, apiKey string) *Exporter {
+	return &Exporter{
 		endpoint: endpoint,
 		apiKey:   apiKey,
 		client: &http.Client{
@@ -40,14 +42,14 @@ func NewPostHogExporter(endpoint, apiKey string) *PostHogExporter {
 }
 
 // WithDebug liga o log de cada chamada ao PostHog, sem dados do evento nem o token
-func (p *PostHogExporter) WithDebug(debug DebugLogger) *PostHogExporter {
+func (p *Exporter) WithDebug(debug telemetry.DebugLogger) *Exporter {
 	if debug != nil {
 		p.debug = debug
 	}
 	return p
 }
 
-func (p *PostHogExporter) Export(ctx context.Context, event Event) error {
+func (p *Exporter) Export(ctx context.Context, event telemetry.Event) error {
 	start := time.Now()
 	body, err := newOTLPLogs(event)
 	if err != nil {
@@ -71,12 +73,12 @@ func (p *PostHogExporter) Export(ctx context.Context, event Event) error {
 	p.logCall(start, resp, nil)
 
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		return ExportStatusError{StatusCode: resp.StatusCode}
+		return telemetry.ExportStatusError{StatusCode: resp.StatusCode}
 	}
 	return nil
 }
 
-func (p *PostHogExporter) logCall(start time.Time, resp *http.Response, err error) {
+func (p *Exporter) logCall(start time.Time, resp *http.Response, err error) {
 	kv := []any{"method", http.MethodPost, "duration_ms", time.Since(start).Milliseconds()}
 	if resp != nil {
 		kv = append(kv, "status", resp.StatusCode)
@@ -127,7 +129,7 @@ func stringValue(s string) otlpAnyValue {
 	return otlpAnyValue{StringValue: &s}
 }
 
-func newOTLPLogs(event Event) ([]byte, error) {
+func newOTLPLogs(event telemetry.Event) ([]byte, error) {
 	attributes, err := logAttributes(event)
 	if err != nil {
 		return nil, err
@@ -150,7 +152,7 @@ func newOTLPLogs(event Event) ([]byte, error) {
 
 // logAttributes parte do JSON do modelo, assim os nomes e as omissões são os mesmos
 // do evento, e só achata os campos aninhados com "."
-func logAttributes(event Event) ([]otlpKeyValue, error) {
+func logAttributes(event telemetry.Event) ([]otlpKeyValue, error) {
 	raw, err := json.Marshal(event)
 	if err != nil {
 		return nil, err

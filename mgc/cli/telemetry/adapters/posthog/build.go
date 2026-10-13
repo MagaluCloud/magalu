@@ -1,6 +1,10 @@
-package telemetry
+package posthog
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
+)
 
 // preenchido no build via -ldflags -X pelo release.yaml e pelo internal.yaml
 var posthogAPIKey string
@@ -31,9 +35,9 @@ func (c BuildConfig) Enabled() bool {
 	return c.APIKey != ""
 }
 
-func (c BuildConfig) Exporters(debug DebugLogger) []Exporter {
+func (c BuildConfig) Exporters(debug telemetry.DebugLogger) []telemetry.Exporter {
 	if !c.Enabled() {
 		return nil
 	}
-	return []Exporter{NewPostHogExporter(c.Endpoint, c.APIKey).WithDebug(debug)}
+	return []telemetry.Exporter{NewExporter(c.Endpoint, c.APIKey).WithDebug(debug)}
 }

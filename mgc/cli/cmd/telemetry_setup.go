@@ -10,6 +10,7 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/debuglog"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/dispatch"
+	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/posthog"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/viperstate"
 	mgcLoggerPkg "github.com/MagaluCloud/magalu/mgc/core/logger"
 	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
@@ -31,7 +32,7 @@ func newTelemetryService(sdk *mgcSdk.Sdk, version string, root *cobra.Command) *
 }
 
 func newTelemetryDispatcher(sdk *mgcSdk.Sdk, root *cobra.Command, debug telemetry.DebugLogger) telemetry.Dispatcher {
-	if !telemetry.LoadBuildConfig(os.Getenv).Enabled() {
+	if !posthog.LoadBuildConfig(os.Getenv).Enabled() {
 		return telemetry.NoopDispatcher{}
 	}
 	debugLogPath := func() string {

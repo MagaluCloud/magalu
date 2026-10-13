@@ -1,4 +1,4 @@
-package telemetry
+package posthog
 
 import "testing"
 
@@ -69,12 +69,12 @@ func TestBuildConfig(t *testing.T) {
 			if len(exporters) != 1 {
 				t.Fatalf("want a single exporter, got %d", len(exporters))
 			}
-			posthog, ok := exporters[0].(*PostHogExporter)
+			exporter, ok := exporters[0].(*Exporter)
 			if !ok {
 				t.Fatalf("unexpected exporter %T", exporters[0])
 			}
-			if posthog.endpoint != tc.wantEndpoint {
-				t.Errorf("exporter endpoint = %q, want %q", posthog.endpoint, tc.wantEndpoint)
+			if exporter.endpoint != tc.wantEndpoint {
+				t.Errorf("exporter endpoint = %q, want %q", exporter.endpoint, tc.wantEndpoint)
 			}
 		})
 	}

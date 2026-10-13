@@ -2,7 +2,6 @@ package telemetry
 
 import (
 	"bytes"
-	"fmt"
 	"testing"
 	"time"
 )
@@ -37,20 +36,6 @@ type fakeDispatcher struct {
 func (f *fakeDispatcher) Dispatch(e Event) error {
 	f.events = append(f.events, e)
 	return nil
-}
-
-type debugEntry struct {
-	msg string
-	kv  []any
-}
-
-func (d debugEntry) value(key string) string {
-	for i := 0; i+1 < len(d.kv); i += 2 {
-		if d.kv[i] == key {
-			return fmt.Sprint(d.kv[i+1])
-		}
-	}
-	return ""
 }
 
 func envFrom(vars map[string]string) func(string) string {
