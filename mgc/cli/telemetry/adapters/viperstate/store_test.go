@@ -1,4 +1,4 @@
-package telemetry
+package viperstate
 
 import (
 	"os"
@@ -6,9 +6,11 @@ import (
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 )
 
-func TestViperStateStoreLoad(t *testing.T) {
+func TestStoreLoad(t *testing.T) {
 	testCases := []struct {
 		name    string
 		content string // "" significa que o arquivo não existe
@@ -21,19 +23,19 @@ func TestViperStateStoreLoad(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			dir := t.TempDir()
-			path := filepath.Join(dir, StateFileName)
+			path := filepath.Join(dir, telemetry.StateFileName)
 			if tc.content != "" {
 				if err := os.WriteFile(path, []byte(tc.content), 0o644); err != nil {
 					t.Fatal(err)
 				}
 			}
 
-			state, err := NewViperStateStore(dir).Load()
+			state, err := NewStore(dir).Load()
 
 			if (err != nil) != tc.wantErr {
 				t.Errorf("err = %v, wantErr %v", err, tc.wantErr)
 			}
-			if state != (State{}) {
+			if state != (telemetry.State{}) {
 				t.Errorf("want the zero state, got %+v", state)
 			}
 			if _, statErr := os.Stat(path); tc.content == "" && !os.IsNotExist(statErr) {
@@ -43,9 +45,9 @@ func TestViperStateStoreLoad(t *testing.T) {
 	}
 }
 
-func TestViperStateStoreSave(t *testing.T) {
+func TestStoreSave(t *testing.T) {
 	setAt := time.Date(2026, 9, 22, 14, 30, 45, 123000000, time.UTC)
-	full := State{
+	full := telemetry.State{
 		Disabled:           true,
 		NoticeShown:        true,
 		CredentialsSetAt:   &setAt,
@@ -55,17 +57,17 @@ func TestViperStateStoreSave(t *testing.T) {
 
 	testCases := []struct {
 		name  string
-		saves []State
+		saves []telemetry.State
 	}{
-		{"round trip with every key", []State{full}},
-		{"repeated saves leave no temporary files", []State{{NoticeShown: true}, {NoticeShown: true}, {NoticeShown: true}}},
-		{"last save wins", []State{full, {NoticeShown: true}}},
+		{"round trip with every key", []telemetry.State{full}},
+		{"repeated saves leave no temporary files", []telemetry.State{{NoticeShown: true}, {NoticeShown: true}, {NoticeShown: true}}},
+		{"last save wins", []telemetry.State{full, {NoticeShown: true}}},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			dir := t.TempDir()
-			store := NewViperStateStore(dir)
+			store := NewStore(dir)
 
 			for _, s := range tc.saves {
 				if err := store.Save(s); err != nil {
@@ -85,14 +87,14 @@ func TestViperStateStoreSave(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			if len(entries) != 1 || entries[0].Name() != StateFileName {
-				t.Errorf("only %s must remain in %s, got %d entries", StateFileName, dir, len(entries))
+			if len(entries) != 1 || entries[0].Name() != telemetry.StateFileName {
+				t.Errorf("only %s must remain in %s, got %d entries", telemetry.StateFileName, dir, len(entries))
 			}
 		})
 	}
 }
 
-func TestViperStateStoreUnwritableDirectory(t *testing.T) {
+func TestStoreUnwritableDirectory(t *testing.T) {
 	if os.Geteuid() == 0 {
 		t.Skip("root ignores directory permissions")
 	}
@@ -103,14 +105,14 @@ func TestViperStateStoreUnwritableDirectory(t *testing.T) {
 	}
 	t.Cleanup(func() { _ = os.Chmod(dir, 0o700) })
 
-	if err := NewViperStateStore(dir).Save(State{Disabled: true}); err == nil {
+	if err := NewStore(dir).Save(telemetry.State{Disabled: true}); err == nil {
 		t.Error("expected an error when the directory is not writable")
 	}
 }
 
-func TestViperStateStoreConcurrentSavesNeverCorrupt(t *testing.T) {
-	store := NewViperStateStore(t.TempDir())
-	want := State{NoticeShown: true, InstallationID: "3f1c2b9e-0000-4000-8000-000000000000"}
+func TestStoreConcurrentSavesNeverCorrupt(t *testing.T) {
+	store := NewStore(t.TempDir())
+	want := telemetry.State{NoticeShown: true, InstallationID: "3f1c2b9e-0000-4000-8000-000000000000"}
 
 	var wg sync.WaitGroup
 	for i := 0; i < 20; i++ {
@@ -131,7 +133,7 @@ func TestViperStateStoreConcurrentSavesNeverCorrupt(t *testing.T) {
 	}
 }
 
-func sameState(a, b State) bool {
+func sameState(a, b telemetry.State) bool {
 	if (a.CredentialsSetAt == nil) != (b.CredentialsSetAt == nil) {
 		return false
 	}

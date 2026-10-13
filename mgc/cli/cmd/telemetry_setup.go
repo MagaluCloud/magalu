@@ -10,6 +10,7 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/debuglog"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/dispatch"
+	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/viperstate"
 	mgcLoggerPkg "github.com/MagaluCloud/magalu/mgc/core/logger"
 	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 	"github.com/spf13/cobra"
@@ -23,7 +24,7 @@ func newTelemetryService(sdk *mgcSdk.Sdk, version string, root *cobra.Command) *
 		OS:             runtime.GOOS,
 		ExecutablePath: telemetry.ResolveExecutablePath(),
 		IsTerminal:     term.IsTerminal(int(os.Stdin.Fd())) && term.IsTerminal(int(os.Stdout.Fd())),
-		Store:          telemetry.NewViperStateStore(mgcConfigDir(sdk)),
+		Store:          viperstate.NewStore(mgcConfigDir(sdk)),
 		Dispatcher:     newTelemetryDispatcher(sdk, root, debug),
 		Debug:          debug,
 	})

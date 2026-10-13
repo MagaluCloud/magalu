@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
+	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/viperstate"
 )
 
 func TestTelemetryCmd(t *testing.T) {
@@ -94,7 +95,7 @@ func TestTelemetryCmd(t *testing.T) {
 			// Cada comando usa um Service novo, como execuções separadas da CLI.
 			getService := func() *telemetry.Service {
 				return telemetry.New(telemetry.Options{
-					Store:  telemetry.NewViperStateStore(dir),
+					Store:  viperstate.NewStore(dir),
 					Getenv: func(k string) string { return tc.env[k] },
 				})
 			}

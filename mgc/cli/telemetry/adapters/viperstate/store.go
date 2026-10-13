@@ -1,4 +1,4 @@
-package telemetry
+package viperstate
 
 import (
 	"errors"
@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 	"github.com/spf13/viper"
 )
 
@@ -18,37 +19,37 @@ const (
 	keyInstallationID     = "telemetry.installation_id"
 )
 
-var _ StateStore = (*ViperStateStore)(nil)
+var _ telemetry.StateStore = (*Store)(nil)
 
-type ViperStateStore struct {
+type Store struct {
 	path string
 }
 
-func NewViperStateStore(dir string) *ViperStateStore {
-	return &ViperStateStore{path: filepath.Join(dir, StateFileName)}
+func NewStore(dir string) *Store {
+	return &Store{path: filepath.Join(dir, telemetry.StateFileName)}
 }
 
-func (s *ViperStateStore) Path() string {
+func (s *Store) Path() string {
 	return s.path
 }
 
-func (s *ViperStateStore) newViper() *viper.Viper {
+func (s *Store) newViper() *viper.Viper {
 	v := viper.New()
 	v.SetConfigFile(s.path)
 	v.SetConfigType("yaml")
 	return v
 }
 
-func (s *ViperStateStore) Load() (State, error) {
+func (s *Store) Load() (telemetry.State, error) {
 	v := s.newViper()
 	if err := v.ReadInConfig(); err != nil {
 		if errors.Is(err, fs.ErrNotExist) {
-			return State{}, nil
+			return telemetry.State{}, nil
 		}
-		return State{}, err
+		return telemetry.State{}, err
 	}
 
-	state := State{
+	state := telemetry.State{
 		Disabled:           v.GetBool(keyDisabled),
 		NoticeShown:        v.GetBool(keyNoticeShown),
 		FirstValueRecorded: v.GetBool(keyFirstValueRecorded),
@@ -65,7 +66,7 @@ func (s *ViperStateStore) Load() (State, error) {
 	return state, nil
 }
 
-func (s *ViperStateStore) Save(state State) error {
+func (s *Store) Save(state telemetry.State) error {
 	if err := os.MkdirAll(filepath.Dir(s.path), 0o755); err != nil {
 		return err
 	}
@@ -87,7 +88,7 @@ func (s *ViperStateStore) Save(state State) error {
 // writeAtomically grava num arquivo temporário do mesmo diretório e depois renomeia
 // para o destino. Assim, execuções simultâneas ou um processo interrompido no meio
 // nunca deixam o telemetry.yaml corrompido
-func (s *ViperStateStore) writeAtomically(v *viper.Viper) error {
+func (s *Store) writeAtomically(v *viper.Viper) error {
 	tmp, err := os.CreateTemp(filepath.Dir(s.path), ".telemetry-*.yaml")
 	if err != nil {
 		return err
