@@ -87,6 +87,7 @@ func TestClassifyError(t *testing.T) {
 		{"typed cli error wrapping http error", wrappingReasonedError{FailureAuthentication, apiError(500, "")}, FailureAuthentication},
 		{"typed cli error with invalid reason wrapping http error", wrappingReasonedError{"bogus", apiError(404, "")}, FailureNotFound},
 		{"usage error", core.UsageError{Err: errors.New("bad param")}, FailureValidation},
+		{"object storage api-key not set", core.AuthenticationError{Err: errors.New("api-key not set, see how to set it with \"mgc object-storage api-key -h\"")}, FailureAuthentication},
 		{"untyped", errors.New("something odd"), FailureUnknown},
 	}
 

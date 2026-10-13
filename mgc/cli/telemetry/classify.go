@@ -139,6 +139,10 @@ func ClassifyError(err error) FailureReason {
 		return FailureNetwork
 	}
 
+	if errors.As(err, new(core.AuthenticationError)) {
+		return FailureAuthentication
+	}
+
 	if errors.As(err, new(core.UsageError)) {
 		return FailureValidation
 	}
