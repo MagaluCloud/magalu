@@ -4847,7 +4847,6 @@ components:
             title: Regions
             enum:
             - br-se1
-            - br-mgl1
             - br-ne1
         SnapshotCopyRequest:
             type: object
@@ -4857,7 +4856,6 @@ components:
                     title: Regions
                     enum:
                     - br-se1
-                    - br-mgl1
                     - br-ne1
             title: SnapshotCopyRequest
             required:
@@ -5062,13 +5060,6 @@ servers:
             enum:
             - br-ne1
             - br-se1
-            - br-mgl1
-            x-mgc-transforms:
-            -   type: translate
-                allowMissing: true
-                translations:
-                -   from: br-mgl1
-                    to: br-se-1
         env:
             description: Environment to use
             default: api.magalu.cloud

@@ -355,7 +355,6 @@ components:
     Region:
       type: string
       enum:
-        - br-mgl1
         - br-ne1
         - br-se1
         - global
