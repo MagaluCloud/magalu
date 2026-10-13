@@ -208,9 +208,14 @@ func TestMarshalJSONPayloadRules(t *testing.T) {
 			notContains: []string{"timeToFirstValueMs"},
 		},
 		{
-			name:        "region and env are omitted when the command has no such parameter",
+			name:        "env is omitted when the command has no such parameter",
 			event:       Event{Outcome: OutcomeSuccess, Action: "auth.login"},
-			notContains: []string{`"region"`, `"env"`},
+			notContains: []string{`"env"`},
+		},
+		{
+			name:     "region is global when the command has no such parameter",
+			event:    Event{Outcome: OutcomeSuccess, Action: "auth.login", Region: "global"},
+			contains: []string{`"region":"global"`},
 		},
 	}
 

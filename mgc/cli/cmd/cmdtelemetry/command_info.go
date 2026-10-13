@@ -17,6 +17,8 @@ import (
 // cmdtelemetry não precisar importar o pacote cmd
 type NextUnknownFunc func(*cobra.Command, []string) (*string, []string)
 
+const GlobalRegion = "global"
+
 var untrackedCommands = map[string]struct{}{
 	"help":                          {},
 	"completion":                    {},
@@ -62,9 +64,16 @@ func BuildCommandInfo(root *cobra.Command, args []string, cmdErr error, cfg *mgc
 		Path:       path,
 		OptionsSet: changedFlagNames(cmd),
 		ResourceID: resourceID(cmd),
-		Region:     configValue(cmd, "region", cfg),
+		Region:     regionValue(cmd, cfg),
 		Env:        configValue(cmd, "env", cfg),
 	}, true
+}
+
+func regionValue(cmd *cobra.Command, cfg *mgcSdk.Config) string {
+	if cmd.Flags().Lookup("region") == nil {
+		return GlobalRegion
+	}
+	return configValue(cmd, "region", cfg)
 }
 
 func configValue(cmd *cobra.Command, name string, cfg *mgcSdk.Config) string {

@@ -163,6 +163,7 @@ func TestTelemetryCommandInfo(t *testing.T) {
 			wantPath:       []string{"virtual-machine", "instances", "get"},
 			wantOptions:    []string{"id"},
 			wantResourceID: "abc",
+			wantRegion:     cmdtelemetry.GlobalRegion,
 		},
 		{
 			// O id posicional não marca a flag como alterada, por isso não aparece em
@@ -172,6 +173,7 @@ func TestTelemetryCommandInfo(t *testing.T) {
 			wantTrack:      true,
 			wantPath:       []string{"virtual-machine", "instances", "get"},
 			wantResourceID: "abc",
+			wantRegion:     cmdtelemetry.GlobalRegion,
 		},
 		{
 			name:        "unknown command at root",
