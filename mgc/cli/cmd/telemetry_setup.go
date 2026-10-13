@@ -82,7 +82,7 @@ func recordTelemetry(
 	cmdErr error,
 	run *telemetryRun,
 ) {
-	info, track := telemetryCommandInfo(root, args, cmdErr)
+	info, track := telemetryCommandInfo(root, args, cmdErr, sdk.Config())
 	if !track {
 		return
 	}

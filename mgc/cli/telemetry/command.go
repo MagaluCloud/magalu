@@ -23,6 +23,8 @@ type CommandInfo struct {
 	UnknownCommand bool
 	OptionsSet     []string
 	ResourceID     string
+	Region         string
+	Env            string
 	Start          time.Time
 	End            time.Time
 	TenantID       string

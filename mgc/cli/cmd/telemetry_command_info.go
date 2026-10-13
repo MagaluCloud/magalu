@@ -2,10 +2,12 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/MagaluCloud/magalu/mgc/cli/cmd/schema_flags"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
+	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 	"github.com/spf13/cobra"
 	flag "github.com/spf13/pflag"
 )
@@ -24,7 +26,7 @@ var untrackedCommands = map[string]struct{}{
 // de ajuda, no --version, no root ou em um grupo chamado sem subcomando
 // (que só mostram a ajuda) e nos comandos de untrackedCommands.
 // Um comando que não existe continua sendo coletado, com UnknownCommand = true.
-func telemetryCommandInfo(root *cobra.Command, args []string, cmdErr error) (telemetry.CommandInfo, bool) {
+func telemetryCommandInfo(root *cobra.Command, args []string, cmdErr error, cfg *mgcSdk.Config) (telemetry.CommandInfo, bool) {
 	if errors.Is(cmdErr, schema_flags.ErrWantHelp) {
 		return untracked()
 	}
@@ -55,7 +57,27 @@ func telemetryCommandInfo(root *cobra.Command, args []string, cmdErr error) (tel
 		Path:       path,
 		OptionsSet: changedFlagNames(cmd),
 		ResourceID: resourceID(cmd),
+		Region:     configValue(cmd, "region", cfg),
+		Env:        configValue(cmd, "env", cfg),
 	}, true
+}
+
+func configValue(cmd *cobra.Command, name string, cfg *mgcSdk.Config) string {
+	if cfg == nil {
+		return ""
+	}
+	f := cmd.Flags().Lookup(name)
+	if f == nil {
+		return ""
+	}
+	if _, ok := f.Value.(schema_flags.SchemaFlagValue); !ok {
+		return ""
+	}
+	value, err := schema_flags.GetFlagValue(f, cfg)
+	if err != nil || value == nil {
+		return ""
+	}
+	return fmt.Sprintf("%v", value)
 }
 
 // commandPathSegments devolve o caminho do comando resolvido, sem o "mgc" na frente.

@@ -174,21 +174,43 @@ func TestMarshalJSONPayloadRules(t *testing.T) {
 				Timestamp:        time.Now(),
 				ExecutionContext: ExecutionContextInteractive,
 				Action:           "virtualmachine.instances.create",
-				OptionsSet:       []string{"region", "api-key"},
+				OptionsSet:       []string{"name", "api-key"},
 				Outcome:          OutcomeFailure,
 				FailureReason:    FailureValidation,
 				ClientVersion:    "v1.4.2",
 				OS:               "linux",
 				InstallationID:   "b3f1c2de-0000-4000-8000-000000000000",
 			},
-			contains: []string{`"optionsSet":"api-key,region"`},
-			notContains: []string{"abc123", "br-ne1", "Bearer eyJhbGci", "user@example.com", "/home/user/.config/mgc",
+			contains: []string{`"optionsSet":"api-key,name"`},
+			notContains: []string{"abc123", "minha-vm-secreta", "Bearer eyJhbGci", "user@example.com", "/home/user/.config/mgc",
 				`"ip"`, `"source"`, `"message"`, `"error"`, `"stack"`},
+		},
+		{
+			// region/env são a única exceção nomeada à proibição geral de valores de flag
+			// (ver cli-telemetry-event-model - Payload anonimizado).
+			name: "region and env are the named exception",
+			event: Event{
+				Timestamp:        time.Now(),
+				ExecutionContext: ExecutionContextInteractive,
+				Action:           "virtualmachine.instances.create",
+				OptionsSet:       []string{"region"},
+				Outcome:          OutcomeSuccess,
+				ClientVersion:    "v1.4.2",
+				OS:               "linux",
+				Region:           "br-ne1",
+				Env:              "prod",
+			},
+			contains: []string{`"region":"br-ne1"`, `"env":"prod"`},
 		},
 		{
 			name:        "negative time to first value is omitted",
 			event:       Event{Outcome: OutcomeSuccess, TimeToFirstValue: &negativeTTFV},
 			notContains: []string{"timeToFirstValueMs"},
+		},
+		{
+			name:        "region and env are omitted when the command has no such parameter",
+			event:       Event{Outcome: OutcomeSuccess, Action: "auth.login"},
+			notContains: []string{`"region"`, `"env"`},
 		},
 	}
 
@@ -273,6 +295,8 @@ func TestUnmarshalJSONRoundTrip(t *testing.T) {
 				InstallMethod:        InstallMethodHomebrew,
 				TimeToFirstValue:     &ttfv,
 				LastRequestID:        "req-1",
+				Region:               "br-se1",
+				Env:                  "prod",
 			},
 		},
 		{

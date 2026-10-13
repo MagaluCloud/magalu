@@ -7,9 +7,58 @@ import (
 
 	"github.com/MagaluCloud/magalu/mgc/cli/cmd/schema_flags"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
+	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/config"
+	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
+	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/spf13/cobra"
 	flag "github.com/spf13/pflag"
 )
+
+func fakeSchema() *core.Schema {
+	return (*core.Schema)(&openapi3.Schema{})
+}
+
+// fakeConfigFlagValue é uma implementação mínima de schema_flags.SchemaFlagValue, só
+// pra ter configValue sem montar um *core.Schema de verdade (Desc().Schema fica
+// nil, seguro desde que o cfg de teste sempre ache um valor pros nomes consultados).
+type fakeConfigFlagValue struct {
+	propName string
+	raw      string
+	changed  bool
+}
+
+var _ schema_flags.SchemaFlagValue = (*fakeConfigFlagValue)(nil)
+
+func (f *fakeConfigFlagValue) String() string { return f.raw }
+func (f *fakeConfigFlagValue) Set(v string) error {
+	f.raw = v
+	f.changed = true
+	return nil
+}
+func (f *fakeConfigFlagValue) Type() string { return "string" }
+func (f *fakeConfigFlagValue) Desc() schema_flags.SchemaFlagValueDesc {
+	return schema_flags.SchemaFlagValueDesc{PropName: f.propName, IsConfig: true, Schema: fakeSchema()}
+}
+func (f *fakeConfigFlagValue) RawDefaultValue() string { return "" }
+func (f *fakeConfigFlagValue) RawNoOptDefVal() string  { return "" }
+func (f *fakeConfigFlagValue) Usage() string           { return "" }
+func (f *fakeConfigFlagValue) Parse() (any, error)     { return f.raw, nil }
+func (f *fakeConfigFlagValue) Changed() bool           { return f.changed }
+
+func addConfigFlag(cmd *cobra.Command, name string) {
+	cmd.Flags().Var(&fakeConfigFlagValue{propName: name}, name, "")
+}
+
+// fakeConfig devolve um *config.Config com region/env pré-configurados (como se tivessem
+// vindo de cli.yaml), pra testar o fallback de configValue quando a flag não é passada.
+func fakeConfig() *config.Config {
+	pm, _ := profile_manager.NewInMemoryProfileManager()
+	cfg := config.New(pm)
+	_ = cfg.SetTempConfig("region", "br-se1-config")
+	_ = cfg.SetTempConfig("env", "prod-config")
+	return cfg
+}
 
 // newFakeCommandTree monta uma árvore do cobra que imita a da CLI (grupos que
 // mostram ajuda, id posicional e nomes de flag normalizados) sem carregar o SDK.
@@ -32,7 +81,8 @@ func newFakeCommandTree() *cobra.Command {
 	vm := &cobra.Command{Use: "virtual-machine", Aliases: []string{"vm"}, RunE: showHelp}
 	instances := &cobra.Command{Use: "instances", RunE: showHelp}
 	create := &cobra.Command{Use: "create", RunE: noop}
-	create.Flags().String("region", "", "")
+	addConfigFlag(create, "region")
+	addConfigFlag(create, "env")
 	create.Flags().String("machine-type", "", "")
 	create.Flags().String("name", "", "")
 
@@ -60,7 +110,7 @@ func runFakeCommandTree(args ...string) (telemetry.CommandInfo, bool) {
 	root := newFakeCommandTree()
 	root.SetArgs(args)
 	err := root.Execute()
-	return telemetryCommandInfo(root, args, err)
+	return telemetryCommandInfo(root, args, err, fakeConfig())
 }
 
 func TestTelemetryCommandInfo(t *testing.T) {
@@ -74,6 +124,8 @@ func TestTelemetryCommandInfo(t *testing.T) {
 		wantResourceID string
 		wantAction     string
 		wantProduct    string
+		wantRegion     string
+		wantEnv        string
 	}{
 		{
 			name:        "command with flags keeps only flag names",
@@ -81,6 +133,17 @@ func TestTelemetryCommandInfo(t *testing.T) {
 			wantTrack:   true,
 			wantPath:    []string{"virtual-machine", "instances", "create"},
 			wantOptions: []string{"debug", "machine-type", "name", "region"},
+			// region vem da flag explícita; env não foi passada, cai no cfg de teste.
+			wantRegion: "br-se1",
+			wantEnv:    "prod-config",
+		},
+		{
+			name:       "region and env fall back to config when the flags are not set",
+			args:       []string{"virtual-machine", "instances", "create"},
+			wantTrack:  true,
+			wantPath:   []string{"virtual-machine", "instances", "create"},
+			wantRegion: "br-se1-config",
+			wantEnv:    "prod-config",
 		},
 		{
 			name:        "flag names are normalized",
@@ -88,6 +151,8 @@ func TestTelemetryCommandInfo(t *testing.T) {
 			wantTrack:   true,
 			wantPath:    []string{"virtual-machine", "instances", "create"},
 			wantOptions: []string{"machine-type"},
+			wantRegion:  "br-se1-config",
+			wantEnv:     "prod-config",
 		},
 		{
 			name:           "resource id by flag",
@@ -172,6 +237,12 @@ func TestTelemetryCommandInfo(t *testing.T) {
 			}
 			if info.ResourceID != tc.wantResourceID {
 				t.Errorf("resource id = %q, want %q", info.ResourceID, tc.wantResourceID)
+			}
+			if info.Region != tc.wantRegion {
+				t.Errorf("region = %q, want %q", info.Region, tc.wantRegion)
+			}
+			if info.Env != tc.wantEnv {
+				t.Errorf("env = %q, want %q", info.Env, tc.wantEnv)
 			}
 			if tc.wantAction != "" {
 				if got := info.Action(); got != tc.wantAction {

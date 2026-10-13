@@ -100,6 +100,8 @@ type Event struct {
 	InstallMethod        string
 	TimeToFirstValue     *time.Duration
 	LastRequestID        string
+	Region               string
+	Env                  string
 	InstallationID       string
 	// Product não faz parte do JSON do modelo, ele só compõe a mensagem do log
 	Product string
@@ -161,6 +163,8 @@ type eventJSON struct {
 	InstallMethod        string           `json:"installMethod"`
 	TimeToFirstValueMs   *int64           `json:"timeToFirstValueMs,omitempty"`
 	LastRequestID        string           `json:"lastRequestId,omitempty"`
+	Region               string           `json:"region,omitempty"`
+	Env                  string           `json:"env,omitempty"`
 }
 
 func (e Event) MarshalJSON() ([]byte, error) {
@@ -177,6 +181,8 @@ func (e Event) MarshalJSON() ([]byte, error) {
 		OS:                   e.OS,
 		InstallMethod:        e.InstallMethod,
 		LastRequestID:        e.LastRequestID,
+		Region:               e.Region,
+		Env:                  e.Env,
 	}
 
 	if out.InstallMethod == "" {
@@ -226,6 +232,8 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 		OS:                   in.OS,
 		InstallMethod:        in.InstallMethod,
 		LastRequestID:        in.LastRequestID,
+		Region:               in.Region,
+		Env:                  in.Env,
 	}
 	if in.OptionsSet != "" {
 		e.OptionsSet = strings.Split(in.OptionsSet, ",")

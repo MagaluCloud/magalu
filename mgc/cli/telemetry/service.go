@@ -169,6 +169,8 @@ func (s *Service) buildEvent(info CommandInfo, cmdErr error) Event {
 		OS:                   s.opts.OS,
 		InstallMethod:        DetectInstallMethod(s.opts.ExecutablePath),
 		LastRequestID:        info.LastRequestID,
+		Region:               info.Region,
+		Env:                  info.Env,
 	}
 
 	if event.Timestamp.IsZero() {

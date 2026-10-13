@@ -43,7 +43,7 @@ func TestInvalidFlagError(t *testing.T) {
 			if got := telemetry.ClassifyError(err); got != telemetry.FailureValidation {
 				t.Errorf("ClassifyError = %q, want %q", got, telemetry.FailureValidation)
 			}
-			if _, track := telemetryCommandInfo(root, tc.args, err); !track {
+			if _, track := telemetryCommandInfo(root, tc.args, err, nil); !track {
 				t.Error("flag error must generate an event")
 			}
 		})
