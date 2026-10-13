@@ -19,8 +19,6 @@ const (
 	DisabledByUnreadableState = "unreadable telemetry.yaml"
 )
 
-type DebugLogger func(msg string, keysAndValues ...any)
-
 type Options struct {
 	ClientVersion  string
 	OS             string

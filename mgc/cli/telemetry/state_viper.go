@@ -11,8 +11,6 @@ import (
 )
 
 const (
-	StateFileName = "telemetry.yaml"
-
 	keyDisabled           = "telemetry.disabled"
 	keyNoticeShown        = "telemetry.notice_shown"
 	keyCredentialsSetAt   = "telemetry.credentials_set_at"

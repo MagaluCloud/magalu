@@ -47,14 +47,6 @@ func (p *PostHogExporter) WithDebug(debug DebugLogger) *PostHogExporter {
 	return p
 }
 
-type ExportStatusError struct {
-	StatusCode int
-}
-
-func (e ExportStatusError) Error() string {
-	return fmt.Sprintf("unexpected status %d", e.StatusCode)
-}
-
 func (p *PostHogExporter) Export(ctx context.Context, event Event) error {
 	start := time.Now()
 	body, err := newOTLPLogs(event)

@@ -2,6 +2,7 @@ package telemetry
 
 import (
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -25,4 +26,16 @@ type State struct {
 type StateStore interface {
 	Load() (State, error)
 	Save(State) error
+}
+
+const StateFileName = "telemetry.yaml"
+
+type DebugLogger func(msg string, keysAndValues ...any)
+
+type ExportStatusError struct {
+	StatusCode int
+}
+
+func (e ExportStatusError) Error() string {
+	return fmt.Sprintf("unexpected status %d", e.StatusCode)
 }
