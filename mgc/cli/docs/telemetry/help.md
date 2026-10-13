@@ -7,9 +7,11 @@ Manage the pseudonymous usage data collected by the CLI.
 After each command the CLI sends one event with the command path, the names of
 the flags that were set (never their values), the outcome and a failure category,
 the duration, the CLI version, the operating system, the install method, the
-execution context (interactive, ci or agent), the tenant ID, the last request ID
-and an anonymous installation ID. Flag values, credentials, error messages and
-command output are never sent.
+execution context (interactive, ci or agent), the tenant ID, the last request ID,
+the effective region used by the call, and an anonymous installation ID. Flag
+values, credentials, error messages and command output are never sent, except
+region: a closed infrastructure enum (datacenter region), never user-entered
+data.
 The event is sent in the background by a separate process, so the command never
 waits for the network. With --debug, the sending process writes its diagnostics
 to telemetry-debug.txt in the CLI config directory.
