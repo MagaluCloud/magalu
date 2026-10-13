@@ -29,6 +29,8 @@ $BASEDIR/add_specs_without_region.sh iam iam specs/conv.iam.jaxyendy.openapi.jso
 
 $BASEDIR/add_specs_without_region.sh tag tags specs/conv.tag.jaxyendy.openapi.json https://tag.jaxyendy.com/openapi.json
 
+$BASEDIR/add_specs_without_region.sh tag tags specs/conv.tag.jaxyendy.openapi.json https://tag.jaxyendy.com/openapi.json
+
 make oapi-index-gen
 # EXAMPLE
 # $BASEDIR/SCRIPT.sh NOME_NO_MENU URL_PATH LOCAL_DA_SPEC SPEC_UID
