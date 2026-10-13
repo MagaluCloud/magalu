@@ -13,8 +13,6 @@ mgc iam roles permissions list [role-name] [flags]
 ## Flags:
 ```
 -h, --help               help for list
-    --parent-id string   Parent Id
-    --parent-type enum   Parent Type (one of "organization" or "project") (required)
     --role-name string   Role Name (required)
 ```
 

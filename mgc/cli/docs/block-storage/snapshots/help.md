@@ -13,7 +13,6 @@ mgc block-storage snapshots [command]
 
 ## Commands:
 ```
-copy        Copy a object snapshot to another region.
 create      Create a snapshot.
 delete      Delete a snapshot.
 get         Retrieve the details of a specific snapshot.

@@ -17,7 +17,7 @@ func (c *Config) UnsetProject() error {
 func (c *Config) unsetKeys(keys ...string) error {
 	for _, key := range keys {
 		if c.getString(key) == "" {
-			continue // já limpo: nada a remover do arquivo
+			continue
 		}
 		if err := c.Delete(key); err != nil {
 			return err

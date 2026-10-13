@@ -10,15 +10,16 @@ var GetGroup = utils.NewLazyLoader(func() core.Grouper {
 		core.DescriptorSpec{
 			Name:    "project",
 			Summary: "Manage the projects of your tenant",
-			Description: `Projects group the resources of a tenant. The commands here talk to
-Magalu Cloud IAM and require a user login (see 'mgc auth login')`,
-			GroupID: "settings",
+			Description: `Projects group the resources of a tenant. The selected project scopes the
+Virtual Machine, Kubernetes and Block Storage requests. Listing and creating
+projects talk to Magalu Cloud IAM and require a user login (see 'mgc auth login')`,
 		},
 		func() []core.Descriptor {
 			return []core.Descriptor{
 				getList(),
 				getCreate(),
 				getSet(),
+				getUnset(),
 				getCurrent(),
 			}
 		},

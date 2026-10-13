@@ -1,24 +1,23 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 ---
-# Create
+# List
 
-Create a new project under the currently authenticated tenant
+List every value of a tag.
 
 ## Usage:
 ```
-mgc project create [name] [flags]
-```
-
-## Examples:
-```
-mgc project create --name="my-project"
+mgc tag values list [tag-name] [flags]
 ```
 
 ## Flags:
 ```
--h, --help          help for create
-    --name string   Name of the new project (required)
+    --control.limit integer    Maximum number of items to return per page (range: 1 - 100)
+    --control.offset integer   Number of items to skip before the first result
+    --control.sort string      Sort criteria for the result
+-h, --help                     help for list
+    --name string              Name of the value to filter by (between 1 and 255 characters and pattern: ^[\w\ \-\[\]\(\)\.\:]+$)
+    --tag-name string          Tag name that owns the value (required)
 ```
 
 ## Global Flags:

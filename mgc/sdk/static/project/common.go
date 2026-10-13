@@ -16,8 +16,6 @@ const (
 	prodHost    = "api.magalu.cloud"
 	preProdHost = "api.pre-prod.jaxyendy.com:8443"
 
-	// Mirrors the IAM spec server entry ("https://{env}/iam"): 'serverUrl' replaces the
-	// whole base and the operation path is appended to whatever base ends up in use.
 	basePath     = "/iam"
 	projectsPath = "/api/v1/projects"
 )
@@ -101,8 +99,6 @@ func newRequest(ctx context.Context, auth *mgcAuthPkg.Auth, method, url string, 
 		return nil, err
 	}
 
-	// The XaaS gateway expects the tenant header alongside the bearer token, the same
-	// way OpenAPI-backed operations handle it.
 	if auth.CurrentSecurityMethod() == mgcAuthPkg.XTenantID.String() {
 		xTenantID, err := auth.XTenantID(ctx)
 		if err != nil {

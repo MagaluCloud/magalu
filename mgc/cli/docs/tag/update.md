@@ -1,24 +1,28 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 ---
-# Set
+# Update
 
-All subsequent requests are scoped to this project, IAM included. To go back to the tenant's default, select it by name or id — 'mgc project list' shows it
+Update the name, color, kinds or description of a tag.
 
 ## Usage:
 ```
-mgc project set [id] [flags]
+mgc tag update [name] [flags]
 ```
 
 ## Examples:
 ```
-mgc project set --id="my-project"
+mgc tag update --color="ffffff" --description="tag to monitor expenses with environments" --kinds='["finops"]' --name="kubernetes-expenses" --new-name="kubernetes-expenses"
 ```
 
 ## Flags:
 ```
--h, --help        help for set
-    --id string   UUID or name of the project to use. Run 'mgc project list' to see the available ones (required)
+    --color string         Color of the tag, as a 6-digit hex RGB code without the '#' prefix (between 6 and 6 characters and pattern: ^[0-9a-fA-F]+$)
+    --description string   Description of the tag (max character count: 500)
+-h, --help                 help for update
+    --kinds array(enum)    Kinds that describe what the tag is for, such as finops
+    --name string          Name of the tag (required)
+    --new-name string      New name for the tag (between 1 and 255 characters and pattern: ^[\w\ \-\[\]\(\)\.\:]+$)
 ```
 
 ## Global Flags:

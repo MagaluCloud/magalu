@@ -30,9 +30,8 @@ mgc block-storage schedulers list [flags]
     --debug                    Display detailed log information at the debug level
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
-    --project string           Project to scope this command to. Prefer 'mgc project set', which resolves the project by id or name and checks that it exists
 -r, --raw                      Output raw data, without any formatting or coloring
-    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
+    --region enum              Region to reach the service (one of "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
 ```
 

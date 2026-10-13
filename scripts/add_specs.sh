@@ -34,13 +34,6 @@ servers:
             enum:
             - br-ne1
             - br-se1
-            - br-mgl1
-            x-mgc-transforms:
-            -   type: translate
-                allowMissing: true
-                translations:
-                -   from: br-mgl1
-                    to: br-se-1
         env:
             description: Environment to use
             default: api.magalu.cloud
@@ -59,8 +52,4 @@ fi
 
 python3 $BASEDIR/transformers/transform.py $API_NAME $API_SPEC_FILE $SPEC_UID -o $OAPI_PATH/$SPEC_FILE
 python3 $BASEDIR/yaml_merge.py --override $OAPI_PATH/$SPEC_FILE $CUSTOM_PATH/$SPEC_FILE
-
-# Depois do merge, nunca antes: a marca 'x-mgc-project-scope' mora na
-# customização, e no transform ela ainda não foi fundida no spec.
-python3 $BASEDIR/transformers/apply_project_scope.py $OAPI_PATH/$SPEC_FILE
 

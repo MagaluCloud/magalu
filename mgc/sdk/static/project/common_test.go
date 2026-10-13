@@ -116,7 +116,6 @@ func TestResolveProjectByIDAndName(t *testing.T) {
 	}
 }
 
-// Nome duplicado não pode escolher um "vencedor" arbitrário: erra pedindo o id.
 func TestResolveProjectAmbiguousName(t *testing.T) {
 	available := []projectResult{
 		{ID: "id-1", Name: "repetido"},
@@ -134,8 +133,6 @@ func TestResolveProjectAmbiguousName(t *testing.T) {
 	}
 }
 
-// Se um nome coincidir com o id de OUTRO projeto, o id vence — é o
-// identificador não-ambíguo.
 func TestResolveProjectIDWinsOverName(t *testing.T) {
 	available := []projectResult{
 		{ID: "colisao", Name: "alpha"},
@@ -151,7 +148,6 @@ func TestResolveProjectIDWinsOverName(t *testing.T) {
 	}
 }
 
-// Tenant sem projeto: a mensagem tem de dizer o que fazer.
 func TestResolveProjectEmptyList(t *testing.T) {
 	_, err := resolveProject(nil, "alpha")
 	if err == nil {
@@ -171,8 +167,6 @@ func TestCurrentReadsConfig(t *testing.T) {
 	if err != nil {
 		t.Fatalf("current sem projeto setado não é erro: %v", err)
 	}
-	// Sem nada selecionado nao ha id a reportar — so acontece antes do primeiro
-	// login, que e quem seleciona o default do tenant.
 	if got.ID != "" || got.Warning != warnNoProject {
 		t.Errorf("sem projeto deveria avisar, veio %+v", got)
 	}
@@ -189,9 +183,6 @@ func TestCurrentReadsConfig(t *testing.T) {
 	}
 }
 
-// `default` nunca foi nome especial no positional do set, e agora nao ha
-// palavra reservada em lugar nenhum: um projeto criado com esse nome e
-// selecionavel como qualquer outro.
 func TestSetResolvesAProjectNamedDefault(t *testing.T) {
 	available := []projectResult{
 		{ID: "id-do-projeto", Name: "default", Type: "managed"},
@@ -206,12 +197,6 @@ func TestSetResolvesAProjectNamedDefault(t *testing.T) {
 		t.Errorf("id = %q, quer id-do-projeto (o projeto real, não o sentinela)", got.ID)
 	}
 }
-
-// --- current enriquecido: id da config + nome vindo da lista ---
-//
-// Nao ha GET /{id} na API de projects, entao "resolver o nome" e listar e
-// procurar. A decisao de o que devolver em cada desfecho fica isolada aqui,
-// testavel sem rede; currentScope so faz a ligacao.
 
 func TestResolveCurrentFound(t *testing.T) {
 	available := []projectResult{
@@ -228,8 +213,6 @@ func TestResolveCurrentFound(t *testing.T) {
 	}
 }
 
-// Config apontando para projeto que nao existe mais (apagado, ou de outro
-// tenant) e informacao util — hoje isso so aparece como 403 em outro comando.
 func TestResolveCurrentNotInTenant(t *testing.T) {
 	got := resolveCurrent("id-fantasma", []projectResult{{ID: "id-alpha", Name: "alpha"}}, nil)
 
@@ -244,8 +227,6 @@ func TestResolveCurrentNotInTenant(t *testing.T) {
 	}
 }
 
-// Nunca falhar: sem rede ou deslogado, o comando ainda responde o essencial —
-// o id, que e local. O nome e enriquecimento.
 func TestResolveCurrentLookupFailed(t *testing.T) {
 	got := resolveCurrent("id-alpha", nil, errors.New("no network"))
 
@@ -260,11 +241,9 @@ func TestResolveCurrentLookupFailed(t *testing.T) {
 	}
 }
 
-// Sem projeto configurado nao ha o que resolver — e nao se gasta uma requisicao.
 func TestCurrentWithoutProjectDoesNotLookUp(t *testing.T) {
 	pm, _ := profile_manager.NewInMemoryProfileManager()
 	cfg := mgcConfigPkg.New(pm)
-	// Contexto SEM auth: se currentScope tentasse listar, viria erro.
 	ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
 
 	got, err := currentScope(ctx, mgcConfigPkg.ProjectKey, projectConfig{})
@@ -276,8 +255,6 @@ func TestCurrentWithoutProjectDoesNotLookUp(t *testing.T) {
 	}
 }
 
-// Com projeto setado e sem auth no contexto, a consulta falha — e mesmo assim
-// o comando responde, com aviso.
 func TestCurrentDegradesWithoutAuth(t *testing.T) {
 	pm, _ := profile_manager.NewInMemoryProfileManager()
 	cfg := mgcConfigPkg.New(pm)
@@ -295,5 +272,59 @@ func TestCurrentDegradesWithoutAuth(t *testing.T) {
 	}
 	if got.Warning == "" {
 		t.Error("deveria avisar que nao conseguiu resolver o nome")
+	}
+}
+
+func TestSetWithoutLoginAcceptsUUID(t *testing.T) {
+	t.Setenv("MGC_PROJECT", "")
+	pm, _ := profile_manager.NewInMemoryProfileManager()
+	cfg := mgcConfigPkg.New(pm)
+	ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
+
+	got, err := set(ctx, setParams{IDOrName: "3F2A9C1E-5B7D-4E8A-9C0F-1A2B3C4D5E6F"}, projectConfig{})
+	if err != nil {
+		t.Fatalf("set sem login com UUID: %v", err)
+	}
+
+	want := "3f2a9c1e-5b7d-4e8a-9c0f-1a2b3c4d5e6f"
+	if got.ID != want || cfg.Project() != want {
+		t.Errorf("id = %q, config = %q, quer %q", got.ID, cfg.Project(), want)
+	}
+	if got.Warning != warnNotVerified {
+		t.Errorf("deveria avisar que nao verificou, veio %q", got.Warning)
+	}
+}
+
+func TestSetWithoutLoginRejectsName(t *testing.T) {
+	t.Setenv("MGC_PROJECT", "")
+	pm, _ := profile_manager.NewInMemoryProfileManager()
+	cfg := mgcConfigPkg.New(pm)
+	ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
+
+	_, err := set(ctx, setParams{IDOrName: "my-project"}, projectConfig{})
+	if err == nil || !strings.Contains(err.Error(), "UUID") {
+		t.Fatalf("nome sem login deveria pedir UUID, veio: %v", err)
+	}
+	if got := cfg.Project(); got != "" {
+		t.Errorf("nada deveria ser gravado, veio %q", got)
+	}
+}
+
+func TestUnsetClearsProject(t *testing.T) {
+	t.Setenv("MGC_PROJECT", "")
+	pm, _ := profile_manager.NewInMemoryProfileManager()
+	cfg := mgcConfigPkg.New(pm)
+	if err := cfg.SetProject("id-alpha"); err != nil {
+		t.Fatal(err)
+	}
+	ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
+
+	for i := 0; i < 2; i++ {
+		if _, err := unset(ctx); err != nil {
+			t.Fatalf("unset #%d: %v", i+1, err)
+		}
+		if got := cfg.Project(); got != "" {
+			t.Errorf("unset #%d: project = %q, quer vazio", i+1, got)
+		}
 	}
 }

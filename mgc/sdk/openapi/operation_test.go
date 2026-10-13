@@ -8,6 +8,8 @@ import (
 
 	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/MagaluCloud/magalu/mgc/core/auth"
+	mgcConfigPkg "github.com/MagaluCloud/magalu/mgc/core/config"
+	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -422,6 +424,55 @@ func TestOperation_SetSecurityHeader(t *testing.T) {
 			}
 
 			mockAuth.AssertExpectations(t)
+		})
+	}
+}
+
+func TestOperation_SetProjectHeader(t *testing.T) {
+	prefix := "x-mgc"
+	scopedServers := openapi3.Servers{{
+		URL:        "https://{env}/{region}/compute",
+		Extensions: map[string]any{"x-mgc-project-scope": true},
+	}}
+	unscopedServers := openapi3.Servers{{URL: "https://{env}/{region}/compute"}}
+
+	tests := []struct {
+		name      string
+		servers   openapi3.Servers
+		project   string
+		noConfig  bool
+		expectSet bool
+	}{
+		{name: "scoped service with project", servers: scopedServers, project: "project-id", expectSet: true},
+		{name: "scoped service without project", servers: scopedServers},
+		{name: "unscoped service with project", servers: unscopedServers, project: "project-id"},
+		{name: "scoped service without config in context", servers: scopedServers, noConfig: true},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Setenv("MGC_PROJECT", "")
+
+			ctx := context.Background()
+			if !tt.noConfig {
+				pm, _ := profile_manager.NewInMemoryProfileManager()
+				cfg := mgcConfigPkg.New(pm)
+				if tt.project != "" {
+					assert.NoError(t, cfg.SetProject(tt.project))
+				}
+				ctx = mgcConfigPkg.NewContext(ctx, cfg)
+			}
+
+			op := &operation{server: newServer(tt.servers, &prefix)}
+			req := &http.Request{Header: make(http.Header)}
+
+			op.setProjectHeader(ctx, req)
+
+			if tt.expectSet {
+				assert.Equal(t, tt.project, req.Header.Get(projectHeader))
+			} else {
+				assert.Empty(t, req.Header.Values(projectHeader))
+			}
 		})
 	}
 }

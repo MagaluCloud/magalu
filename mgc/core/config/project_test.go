@@ -2,8 +2,6 @@ package config
 
 import "testing"
 
-// Ausência é o caso normal: sem projeto configurado o header não é enviado, e
-// a API decide o escopo (projeto default do tenant).
 func TestProjectAbsentIsEmpty(t *testing.T) {
 	c, _ := setupWithoutFile("")
 
@@ -12,8 +10,6 @@ func TestProjectAbsentIsEmpty(t *testing.T) {
 	}
 }
 
-// A flag global sobrescreve o arquivo: é o mesmo mecanismo do --api-key, que
-// grava um temp config consultado antes do viper.
 func TestProjectTempConfigOverridesFile(t *testing.T) {
 	c, _ := setupWithoutFile("")
 
@@ -29,8 +25,6 @@ func TestProjectTempConfigOverridesFile(t *testing.T) {
 	}
 }
 
-// O env é lido pelo viper (AutomaticEnv + prefixo MGC), então MGC_PROJECT vale
-// sem nenhum wiring próprio — e a flag ainda vence o env.
 func TestProjectEnvIsReadAndFlagStillWins(t *testing.T) {
 	t.Setenv("MGC_PROJECT", "do-env")
 	c, _ := setupWithoutFile("")
@@ -47,8 +41,6 @@ func TestProjectEnvIsReadAndFlagStillWins(t *testing.T) {
 	}
 }
 
-// Limpar o que nunca foi setado não pode ser erro — `auth tenant set` chama isso
-// sempre, tenha o usuário escolhido projeto ou não.
 func TestUnsetProjectIsIdempotent(t *testing.T) {
 	c, _ := setupWithoutFile("")
 

@@ -1,19 +1,24 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 ---
-# List
+# Delete
 
-List all projects available for the currently authenticated tenant
+Delete a tag by name.
 
 ## Usage:
 ```
-mgc project list [flags]
+mgc tag delete [name] [flags]
+```
+
+## Examples:
+```
+mgc tag delete --name="kubernetes-expenses"
 ```
 
 ## Flags:
 ```
--h, --help      help for list
-    --managed
+-h, --help          help for delete
+    --name string   Name of the tag (required)
 ```
 
 ## Global Flags:

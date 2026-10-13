@@ -16,8 +16,6 @@ mgc iam roles create [flags]
     --description string          Description
 -h, --help                        help for create
     --name string                 Name (required)
-    --parent-id string            Parent Id
-    --parent-type enum            Parent Type (one of "organization" or "project") (required)
     --permissions array(string)   Permissions
 ```
 

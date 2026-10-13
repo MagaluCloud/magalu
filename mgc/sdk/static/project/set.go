@@ -6,53 +6,49 @@ import (
 	"strings"
 
 	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcAuthPkg "github.com/MagaluCloud/magalu/mgc/core/auth"
 	mgcConfigPkg "github.com/MagaluCloud/magalu/mgc/core/config"
 	"github.com/MagaluCloud/magalu/mgc/core/utils"
+	"github.com/google/uuid"
 )
 
 type setParams struct {
-	IDOrName string `json:"id" jsonschema:"description=UUID or name of the project to use. Run 'mgc project list' to see the available ones,required,example=my-project" mgc:"positional"`
+	IDOrName string `json:"id" jsonschema:"description=UUID or name of the project to use. Run 'mgc alpha project list' to see the available ones,required,example=my-project" mgc:"positional"`
 }
 
 type setResult struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID      string `json:"id"`
+	Name    string `json:"name"`
+	Warning string `json:"warning,omitempty"`
 }
+
+const warnNotVerified = "not verified: without a user login the API checks the project on the next request"
 
 var getSet = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	executor := core.NewStaticExecute(
 		core.DescriptorSpec{
 			Name:         "set",
 			Summary:      "Set the project used by the CLI",
-			Description:  "All subsequent requests are scoped to this project, IAM included. To go back to the tenant's default, select it by name or id — 'mgc project list' shows it",
-			Observations: "Changing the tenant clears the selected project.",
+			Description:  "Subsequent Virtual Machine, Kubernetes and Block Storage requests are scoped to this project. To go back to the tenant's default, run 'mgc alpha project unset'",
+			Observations: "Changing the tenant keeps the selected project, and the API refuses a project from another tenant: run 'mgc alpha project unset' or pick another one. Without a user login, as with an API key, only a project id is accepted, and the API checks it on the next request.",
 		},
 		set,
 	)
 
 	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
-		return "template=Success! Current project changed to {{.name}} ({{.id}})\n"
+		return "template=Success! Current project changed to {{if .name}}{{.name}} ({{.id}}){{else}}{{.id}}{{end}}\n{{if .warning}}Warning: {{.warning}}\n{{end}}"
 	})
 })
 
-// set resolve SEMPRE contra a lista: o positional aceita id ou nome, e nenhum
-// valor é reservado ali.
-//
-// Houve um `mgc project default` gravando um literal sem consultar nada, e com
-// ele um projeto de verdade chamado `default` ficava inalcançável pelo nome —
-// em silêncio, selecionando outra coisa no lugar. Nome de projeto não tem
-// restrição no schema da API, então essa colisão é permitida. Sem palavra
-// reservada, ela deixou de existir: o default do tenant é um projeto como os
-// outros, com o mesmo id do tenant.
 func set(ctx context.Context, params setParams, cfg projectConfig) (*setResult, error) {
 	return setScope(ctx, mgcConfigPkg.ProjectKey, params.IDOrName, cfg)
 }
 
-// setScope recebe a chave de config por parâmetro por herança do tempo em que
-// havia duas ('project' e 'iamProject'). Hoje só uma chega aqui.
 func setScope(ctx context.Context, key, query string, cfg projectConfig) (*setResult, error) {
-	// Valida antes de gravar: um id inválido em configuração faria TODO comando
-	// seguinte apontar para um escopo inexistente, e o erro apareceria longe daqui.
+	if !hasAccessToken(ctx) {
+		return applyUnverified(ctx, key, query)
+	}
+
 	available, err := list(ctx, listParams{}, cfg)
 	if err != nil {
 		return nil, err
@@ -60,8 +56,32 @@ func setScope(ctx context.Context, key, query string, cfg projectConfig) (*setRe
 	return applyScope(ctx, key, query, available)
 }
 
-// applyScope resolve a consulta contra a lista e grava. Separado do setScope
-// para que a resolução e a escrita possam ser testadas sem rede.
+func hasAccessToken(ctx context.Context) bool {
+	auth := mgcAuthPkg.FromContext(ctx)
+	if auth == nil {
+		return false
+	}
+	_, err := auth.AccessToken(ctx)
+	return err == nil
+}
+
+func applyUnverified(ctx context.Context, key, query string) (*setResult, error) {
+	id, err := uuid.Parse(query)
+	if err != nil {
+		return nil, fmt.Errorf("without a user login only a project id (UUID) is accepted, since names are resolved by the API. Run 'mgc auth login' to select a project by name")
+	}
+
+	config := mgcConfigPkg.FromContext(ctx)
+	if config == nil {
+		return nil, fmt.Errorf("programming error: unable to retrieve config from context")
+	}
+	if err := config.Set(key, id.String()); err != nil {
+		return nil, err
+	}
+
+	return &setResult{ID: id.String(), Warning: warnNotVerified}, nil
+}
+
 func applyScope(ctx context.Context, key, query string, available []projectResult) (*setResult, error) {
 	found, err := resolveProject(available, query)
 	if err != nil {
@@ -79,13 +99,9 @@ func applyScope(ctx context.Context, key, query string, available []projectResul
 	return &setResult{ID: found.ID, Name: found.Name}, nil
 }
 
-// resolveProject aceita id ou nome. O id vence: é o identificador não-ambíguo,
-// então uma consulta que casa um id nunca é desviada por um nome igual em outro
-// projeto. O nome ignora caixa, mas nome repetido não elege um vencedor
-// arbitrário — devolve erro pedindo o id.
 func resolveProject(available []projectResult, query string) (*projectResult, error) {
 	if len(available) == 0 {
-		return nil, fmt.Errorf("no projects available for this tenant. Create one with 'mgc project create'")
+		return nil, fmt.Errorf("no projects available for this tenant. Create one with 'mgc alpha project create'")
 	}
 
 	for i := range available {

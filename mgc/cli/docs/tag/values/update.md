@@ -1,28 +1,28 @@
 ---
-sidebar_position: 0
+sidebar_position: 5
 ---
-# Project
+# Update
 
-Projects group the resources of a tenant. The commands here talk to
-Magalu Cloud IAM and require a user login (see 'mgc auth login')
+Update the name or description of a value.
 
 ## Usage:
 ```
-mgc project [flags]
-mgc project [command]
+mgc tag values update [tag-name] [value-name] [flags]
 ```
 
-## Commands:
+## Examples:
 ```
-create      Create a new project
-current     Show the project the CLI is using
-list        List the projects of your tenant
-set         Set the project used by the CLI
+mgc tag values update --description="tag value to monitor expenses with test-labs" --new-name="test-labs" --tag-name="kubernetes-expenses" --value-name="test-labs"
 ```
 
 ## Flags:
 ```
--h, --help   help for project
+    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
+    --description string            Description of the value (max character count: 500)
+-h, --help                          help for update
+    --new-name string               New name for the value, unique within the tag (between 1 and 255 characters and pattern: ^[\w\ \-\[\]\(\)\.\:]+$)
+    --tag-name string               Tag name that owns the value (required)
+    --value-name string             Value name to operate on (required)
 ```
 
 ## Global Flags:
@@ -37,5 +37,6 @@ set         Set the project used by the CLI
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
+    --server-url uri           Manually specify the server to use
 ```
 

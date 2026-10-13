@@ -14,6 +14,7 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
 	"github.com/MagaluCloud/magalu/mgc/sdk/openapi"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/alpha"
 )
 
 // Re-exports from Core
@@ -123,6 +124,9 @@ func (o *Sdk) Group() core.Grouper {
 				return []core.Grouper{
 					static.GetGroup(),
 					o.newOpenApiSource(),
+					// Last on purpose: the hidden "alpha" must give way to
+					// a visible one coming from another source.
+					alpha.GetRoot(),
 				}
 			},
 		)
@@ -196,21 +200,21 @@ func init() {
 			PublicClientsUrl:      "https://id.magalu.com/account/api/v1/external/clients",
 			ClientsV2Url:          "https://id.magalu.com/account/api/v2/clients",
 		},
-		"pre-prod": { // TODO update this links to the correct ones
+		"pre-prod": {
 			ClientId:              "dByqQVtHcs07b_O9jpUDgfV5UCskh9TbC64WUXEdVHE",
 			ObjectStoreScopeIDs:   []string{"b6afac7e-0afd-42de-b4aa-1bc82a27e307", "5ea6d1f7-20eb-4e80-9a9c-c7923636a4bd"},
 			PublicClientsScopeIDs: map[string]string{"openid": "4bdb7c8e-6006-478a-ba90-f8313f88bbb8", "profile": "8614f807-9aea-462c-bade-6c08fa52a272"},
 			RedirectUri:           "http://localhost:8095/callback",
-			LoginUrl:              "https://idmagalu-preprod.luizalabs.com/login",
-			TokenUrl:              "https://idmagalu-preprod.luizalabs.com/idp/oauth/token",
-			ValidationUrl:         "https://idmagalu-preprod.luizalabs.com/idp/oauth/introspect",
-			RefreshUrl:            "https://idmagalu-preprod.luizalabs.com/idp/oauth/token",
-			TenantsListUrl:        "https://idmagalu-preprod.luizalabs.com/account/api/v2/whoami/tenants",
-			TokenExchangeUrl:      "https://idmagalu-preprod.luizalabs.com/idp/oauth/token/exchange",
-			ApiKeysUrlV1:          "https://idmagalu-preprod.luizalabs.com/account/api/v1/api-keys",
-			ApiKeysUrlV2:          "https://idmagalu-preprod.luizalabs.com/account/api/v2/api-keys",
-			PublicClientsUrl:      "https://idmagalu-preprod.luizalabs.com/account/api/v1/external/clients",
-			ClientsV2Url:          "https://idmagalu-preprod.luizalabs.com/account/api/v2/clients",
+			LoginUrl:              "https://auth.stg.mgccloud.io/login",
+			TokenUrl:              "https://auth.stg.mgccloud.io/oauth/token",
+			ValidationUrl:         "https://auth.stg.mgccloud.io/oauth/introspect",
+			RefreshUrl:            "https://auth.stg.mgccloud.io/oauth/token",
+			TenantsListUrl:        "https://auth.stg.mgccloud.io/account/api/v2/whoami/tenants",
+			TokenExchangeUrl:      "https://auth.stg.mgccloud.io/oauth/token/exchange",
+			ApiKeysUrlV1:          "https://auth.stg.mgccloud.io/account/api/v1/api-keys",
+			ApiKeysUrlV2:          "https://auth.stg.mgccloud.io/account/api/v2/api-keys",
+			PublicClientsUrl:      "https://auth.stg.mgccloud.io/account/api/v1/external/clients",
+			ClientsV2Url:          "https://auth.stg.mgccloud.io/account/api/v2/clients",
 		},
 	}
 	authConfigMap["default"] = authConfigMap["prod"]

@@ -1,21 +1,28 @@
 ---
-sidebar_position: 3
+sidebar_position: 0
 ---
-# Copy
+# Values
 
-Copy a object snapshot cross region for the currently authenticated tenant.
+Manage the values of a tag
 
 ## Usage:
 ```
-mgc block-storage snapshots copy [id] [flags]
+mgc tag values [flags]
+mgc tag values [command]
+```
+
+## Commands:
+```
+create      Create a value for a tag
+delete      Delete a value from a tag
+get         Get details of a value
+list        List the values of a tag
+update      Update a value
 ```
 
 ## Flags:
 ```
-    --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --destination-region enum       Regions (one of "br-mgl1", "br-ne1" or "br-se1") (required)
--h, --help                          help for copy
-    --id uuid                       Id (required)
+-h, --help   help for values
 ```
 
 ## Global Flags:
@@ -29,9 +36,6 @@ mgc block-storage snapshots copy [id] [flags]
     --debug                    Display detailed log information at the debug level
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
-    --project string           Project to scope this command to. Prefer 'mgc project set', which resolves the project by id or name and checks that it exists
 -r, --raw                      Output raw data, without any formatting or coloring
-    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
-    --server-url uri           Manually specify the server to use
 ```
 

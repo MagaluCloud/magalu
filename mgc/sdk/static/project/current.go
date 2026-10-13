@@ -10,18 +10,16 @@ import (
 )
 
 type currentResult struct {
-	ID   string `json:"id"`
-	Name string `json:"name,omitempty"`
-	Type string `json:"type,omitempty"`
-	// Warning explica por que o nome está ausente, quando está. Vazio quando o
-	// projeto foi resolvido.
+	ID      string `json:"id"`
+	Name    string `json:"name,omitempty"`
+	Type    string `json:"type,omitempty"`
 	Warning string `json:"warning,omitempty"`
 }
 
 const (
 	warnNotInTenant  = "project not found in this tenant"
 	warnUnresolvable = "could not reach the API to resolve the project name"
-	warnNoProject    = "no project selected: run 'mgc auth login', or 'mgc project set' to pick one"
+	warnNoProject    = "no project selected: requests use the tenant's default project. Run 'mgc alpha project set' to pick one"
 )
 
 var getCurrent = utils.NewLazyLoader[core.Executor](func() core.Executor {
@@ -30,7 +28,7 @@ var getCurrent = utils.NewLazyLoader[core.Executor](func() core.Executor {
 			Name:         "current",
 			Summary:      "Show the project the CLI is using",
 			Description:  "Resolves the selected project against the API to show its name. The id comes from the local configuration, so it is still reported when the API cannot be reached",
-			Observations: "A tenant's default project has the same id as the tenant, and is listed by 'mgc project list' like any other.",
+			Observations: "A tenant's default project has the same id as the tenant, and is listed by 'mgc alpha project list' like any other.",
 		},
 		current,
 	)
@@ -48,19 +46,13 @@ func currentScope(ctx context.Context, key string, cfg projectConfig) (*currentR
 
 	var id string
 	if err := config.Get(key, &id); err != nil || id == "" {
-		// Sem projeto não há o que resolver, e não se gasta uma request. Só
-		// acontece antes do primeiro login, que é quem seleciona o default.
 		return &currentResult{Warning: warnNoProject}, nil
 	}
 
-	// Não há GET /{id} na API de projects: resolver o nome é listar e procurar.
 	available, err := list(ctx, listParams{}, cfg)
 	return resolveCurrent(id, available, err), nil
 }
 
-// resolveCurrent decide o que reportar em cada desfecho. Nunca falha: o id vem
-// da configuração local e está sempre disponível; o nome é enriquecimento, e
-// perdê-lo não pode derrubar o comando que existe para dizer onde você está.
 func resolveCurrent(id string, available []projectResult, lookupErr error) *currentResult {
 	if lookupErr != nil {
 		return &currentResult{ID: id, Warning: warnUnresolvable}
@@ -70,7 +62,5 @@ func resolveCurrent(id string, available []projectResult, lookupErr error) *curr
 			return &currentResult{ID: id, Name: p.Name, Type: p.Type}
 		}
 	}
-	// Configuração apontando para projeto inexistente é informação útil: hoje
-	// isso só apareceria como 403 em outro comando, longe da causa.
 	return &currentResult{ID: id, Warning: warnNotInTenant}
 }

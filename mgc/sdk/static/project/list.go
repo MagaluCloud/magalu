@@ -12,7 +12,6 @@ import (
 )
 
 type listParams struct {
-	// TODO: add a description once IAM documents what 'managed' filters
 	Managed *bool `json:"managed,omitempty"`
 }
 

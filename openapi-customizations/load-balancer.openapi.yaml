@@ -6,7 +6,6 @@
 
 servers:
 -   url: https://{env}/{region}/load-balancer
-    x-mgc-project-scope: true
     variables:
         region:
             description: Region to reach the service
@@ -14,15 +13,12 @@ servers:
             enum:
             - br-ne-1
             - br-se1
-            - br-mgl1
             x-mgc-transforms:
             -   type: translate
                 allowMissing: true
                 translations:
                 -   from: br-ne1
                     to: br-ne-1
-                -   from: br-mgl1
-                    to: br-se-1
         env:
             description: Environment to use
             default: api.magalu.cloud

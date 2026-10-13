@@ -7,7 +7,6 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/sdk/static/config"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static/object_storage"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static/profile"
-	"github.com/MagaluCloud/magalu/mgc/sdk/static/project"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static/workspace"
 )
 
@@ -21,7 +20,6 @@ var GetGroup = utils.NewLazyLoader(func() core.Grouper {
 				object_storage.GetGroup(),
 				workspace.GetGroup(),
 				profile.GetGroup(),
-				project.GetGroup(),
 			}
 		},
 	)

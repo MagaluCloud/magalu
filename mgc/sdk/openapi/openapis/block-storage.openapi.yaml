@@ -70,19 +70,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/attachments/{id}:
         delete:
             tags:
@@ -149,19 +136,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/schedulers:
         get:
             tags:
@@ -328,19 +302,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/schedulers/{id}:
         delete:
             tags:
@@ -479,19 +440,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.read
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/schedulers/{id}/attach:
         post:
             tags:
@@ -567,19 +515,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/schedulers/{id}/detach:
         post:
             tags:
@@ -655,19 +590,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/snapshots:
         get:
             tags:
@@ -807,11 +729,6 @@ paths:
                             description: Delete a snapshot.
                             parameters:
                                 id: $response.body#/id
-                        copy:
-                            operationId: copy_snapshot_cross_region_v1_snapshots__id__copy_post
-                            description: Copy a object snapshot to another region.
-                            parameters:
-                                id: $response.body#/id
                         rename:
                             operationId: rename_snapshot_v1_snapshots__id__rename_patch
                             description: Rename a snapshot.
@@ -849,19 +766,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/snapshots/{id}:
         delete:
             tags:
@@ -965,11 +869,6 @@ paths:
                             description: Delete a snapshot.
                             parameters:
                                 id: $request.path.id
-                        copy:
-                            operationId: copy_snapshot_cross_region_v1_snapshots__id__copy_post
-                            description: Copy a object snapshot to another region.
-                            parameters:
-                                id: $request.path.id
                         rename:
                             operationId: rename_snapshot_v1_snapshots__id__rename_patch
                             description: Rename a snapshot.
@@ -1013,114 +912,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.read
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
-    /v1/snapshots/{id}/copy:
-        post:
-            tags:
-            - snapshots
-            summary: Copy a object snapshot to another region.
-            description: "Copy a object snapshot cross region for the currently authenticated\
-                \ tenant.\n\n#### Rules\n- The copy only be accepted when the destiny\
-                \ region is different from origin region.\n- The copy only be accepted\
-                \ if the snapshot name in destiny region is different from input name.\n\
-                - The copy only be accepted if the user has access to destiny region.\n\
-                \n#### Notes\n- Utilize the **block-storage snapshots list** command\
-                \ to retrieve a list of\n all Snapshots and obtain the ID of the Snapshot\
-                \ you wish to copy across different region."
-            operationId: copy_snapshot_cross_region_v1_snapshots__id__copy_post
-            parameters:
-            -   name: id
-                in: path
-                required: true
-                schema:
-                    type: string
-                    title: Id
-                    format: uuid
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/CopyCrossRegionRequest'
-            responses:
-                '204':
-                    description: Successful Response
-                    links:
-                        get:
-                            operationId: get_snapshot_v1_snapshots__id__get
-                            description: Retrieve the details of a specific snapshot.
-                            parameters:
-                                id: $request.path.id
-                        delete:
-                            operationId: delete_snapshot_v1_snapshots__id__delete
-                            description: Delete a snapshot.
-                            parameters:
-                                id: $request.path.id
-                        rename:
-                            operationId: rename_snapshot_v1_snapshots__id__rename_patch
-                            description: Rename a snapshot.
-                            parameters:
-                                id: $request.path.id
-                '404':
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 404 Copy Snapshot Cross Region V1
-                                    Snapshots  Id  Copy Post
-                    description: Not Found
-                '409':
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 409 Copy Snapshot Cross Region V1
-                                    Snapshots  Id  Copy Post
-                    description: Conflict
-                '422':
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ErrorResponse'
-                                title: Response 422 Copy Snapshot Cross Region V1
-                                    Snapshots  Id  Copy Post
-                    description: Unprocessable Entity
-            x-viveiro: true
-            x-permission-name: bs_snapshot_copy
-            security:
-            -   OAuth2:
-                - block-storage.write
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/snapshots/{id}/rename:
         patch:
             tags:
@@ -1164,11 +955,6 @@ paths:
                             description: Delete a snapshot.
                             parameters:
                                 id: $request.path.id
-                        copy:
-                            operationId: copy_snapshot_cross_region_v1_snapshots__id__copy_post
-                            description: Copy a object snapshot to another region.
-                            parameters:
-                                id: $request.path.id
                 '404':
                     content:
                         application/json:
@@ -1204,19 +990,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/volume-types:
         get:
             tags:
@@ -1270,19 +1043,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.read
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/volumes:
         get:
             tags:
@@ -1477,19 +1237,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/volumes/{id}:
         delete:
             tags:
@@ -1665,19 +1412,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.read
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/volumes/{id}/attach/{virtual_machine_id}:
         post:
             tags:
@@ -1780,19 +1514,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/volumes/{id}/detach:
         post:
             tags:
@@ -1893,19 +1614,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/volumes/{id}/extend:
         post:
             tags:
@@ -1999,19 +1707,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/volumes/{id}/rename:
         patch:
             tags:
@@ -2110,19 +1805,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
     /v1/volumes/{id}/retype:
         post:
             tags:
@@ -2216,19 +1898,6 @@ paths:
             security:
             -   OAuth2:
                 - block-storage.write
-        parameters:
-        -   name: x-project-id
-            in: header
-            required: false
-            description: Project to scope this command to. Prefer 'mgc project set',
-                which resolves the project by id or name and checks that it exists
-            x-mgc-name: project
-            schema:
-                type: string
-                title: Project
-                description: Project to scope this command to. Prefer 'mgc project
-                    set', which resolves the project by id or name and checks that
-                    it exists
 components:
     schemas:
         AttachmentMachine:
@@ -2311,21 +1980,6 @@ components:
                     state: running
                     status: completed
                     updated_at: '2022-01-01T00:00:10Z'
-        CopyCrossRegionRequest:
-            type: object
-            properties:
-                destination_region:
-                    type: string
-                    title: Regions
-                    enum:
-                    - br-se1
-                    - br-mgl1
-                    - br-ne1
-            title: CopyCrossRegionRequest
-            required:
-            - destination_region
-            example:
-                destination_region: br-se1
         CreateAttachmentRequest:
             type: object
             properties:
@@ -2721,7 +2375,6 @@ components:
             title: Regions
             enum:
             - br-se1
-            - br-mgl1
             - br-ne1
         RenameVolumeRequest:
             type: object
@@ -4205,13 +3858,6 @@ servers:
             enum:
             - br-ne1
             - br-se1
-            - br-mgl1
-            x-mgc-transforms:
-            -   type: translate
-                allowMissing: true
-                translations:
-                -   from: br-mgl1
-                    to: br-se-1
         env:
             description: Environment to use
             default: api.magalu.cloud

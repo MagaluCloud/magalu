@@ -23,6 +23,7 @@ kubernetes         APIs related to the Kubernetes product.
 load-balancer      [EXPERIMENTAL] Lbaas API: create and manage Load Balancers
 network            VPC Api Product
 object-storage     Operations for Object Storage
+tag                Organize your cloud resources with tags
 virtual-machine    Virtual Machine Api Product
 ```
 
@@ -53,7 +54,6 @@ help               Help about any command
 auth               Actions with ID Magalu to log in, API Keys, refresh tokens, change tenants and others
 config             Manage CLI Configuration values
 profile            Manage account settings, including SSH keys and related configurations
-project            Manage the projects of your tenant
 workspace          Manage workspaces for isolated auth and config settings
 ```
 
