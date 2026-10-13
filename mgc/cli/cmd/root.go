@@ -7,6 +7,8 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/cmdtelemetry"
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/telemetrycmd"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 	"github.com/MagaluCloud/magalu/mgc/cli/ui/progress_bar"
 	mgcLoggerPkg "github.com/MagaluCloud/magalu/mgc/core/logger"
@@ -67,7 +69,7 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 		},
 	}
 	rootCmd.SetGlobalNormalizationFunc(normalizeFlagName)
-	rootCmd.SetFlagErrorFunc(wrapFlagError)
+	rootCmd.SetFlagErrorFunc(cmdtelemetry.WrapFlagError)
 
 	rootCmd.AddGroup(&cobra.Group{
 		ID:    catalogGroupID,
@@ -109,7 +111,7 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	telemetrySvc := newTelemetryService(sdk, version, rootCmd)
 
 	rootCmd.AddCommand(newDumpTreeCmd(sdk))
-	rootCmd.AddCommand(newTelemetryCmd(func() *telemetry.Service { return telemetrySvc }))
+	rootCmd.AddCommand(telemetrycmd.NewCommand(func() *telemetry.Service { return telemetrySvc }, catalogGroupID))
 
 	mainArgs := argParser.MainArgs()
 

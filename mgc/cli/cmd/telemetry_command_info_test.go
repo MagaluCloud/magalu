@@ -5,7 +5,9 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/cmdtelemetry"
 	"github.com/MagaluCloud/magalu/mgc/cli/cmd/schema_flags"
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/telemetrycmd"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/MagaluCloud/magalu/mgc/core/config"
@@ -92,7 +94,7 @@ func newFakeCommandTree() *cobra.Command {
 		return applyPositionalArgs([]*flag.Flag{c.Flags().Lookup("id")}, args)
 	}
 
-	telemetryCmd := &cobra.Command{Use: telemetryCmdName}
+	telemetryCmd := &cobra.Command{Use: telemetrycmd.CommandName}
 	telemetryCmd.AddCommand(&cobra.Command{Use: "disable", RunE: noop})
 
 	// Na CLI real, esse erro vem do --help de uma flag e dos links.
@@ -110,7 +112,7 @@ func runFakeCommandTree(args ...string) (telemetry.CommandInfo, bool) {
 	root := newFakeCommandTree()
 	root.SetArgs(args)
 	err := root.Execute()
-	return telemetryCommandInfo(root, args, err, fakeConfig())
+	return cmdtelemetry.BuildCommandInfo(root, args, err, fakeConfig(), getNextUnknownCommand)
 }
 
 func TestTelemetryCommandInfo(t *testing.T) {
@@ -219,7 +221,7 @@ func TestTelemetryCommandInfo(t *testing.T) {
 		{name: "shell completion request", args: []string{cobra.ShellCompRequestCmd, "virtual-machine", ""}},
 		{name: "shell completion request without descriptions", args: []string{cobra.ShellCompNoDescRequestCmd, "virtual-machine", ""}},
 		{name: "dump-tree", args: []string{"dump-tree"}},
-		{name: "telemetry command", args: []string{telemetryCmdName, "disable"}},
+		{name: "telemetry command", args: []string{telemetrycmd.CommandName, "disable"}},
 	}
 
 	for _, tc := range testCases {

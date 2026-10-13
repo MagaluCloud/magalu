@@ -1,4 +1,4 @@
-package cmd
+package cmdtelemetry
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 
 const requestIDHeader = "X-Request-Id"
 
-// requestIDRecorder fica no meio das chamadas HTTP e vai anotando o X-Request-Id
+// RequestIDRecorder fica no meio das chamadas HTTP e vai anotando o X-Request-Id
 // de cada uma. No fim do comando, sobra só o da última.
-type requestIDRecorder struct {
+type RequestIDRecorder struct {
 	next http.RoundTripper
 	// tracked diz se a requisição conta para o lastRequestId
 	tracked func(*http.Request) bool
@@ -19,16 +19,16 @@ type requestIDRecorder struct {
 	last string
 }
 
-var _ http.RoundTripper = (*requestIDRecorder)(nil)
+var _ http.RoundTripper = (*RequestIDRecorder)(nil)
 
-func newRequestIDRecorder(next http.RoundTripper) *requestIDRecorder {
+func NewRequestIDRecorder(next http.RoundTripper) *RequestIDRecorder {
 	if next == nil {
 		next = http.DefaultTransport
 	}
-	return &requestIDRecorder{next: next, tracked: isCommandRequest}
+	return &RequestIDRecorder{next: next, tracked: isCommandRequest}
 }
 
-func (r *requestIDRecorder) RoundTrip(req *http.Request) (*http.Response, error) {
+func (r *RequestIDRecorder) RoundTrip(req *http.Request) (*http.Response, error) {
 	resp, err := r.next.RoundTrip(req)
 	if !r.tracked(req) {
 		return resp, err
@@ -52,7 +52,7 @@ func (r *requestIDRecorder) RoundTrip(req *http.Request) (*http.Response, error)
 	return resp, err
 }
 
-func (r *requestIDRecorder) LastRequestID() string {
+func (r *RequestIDRecorder) LastRequestID() string {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	return r.last
@@ -60,10 +60,10 @@ func (r *requestIDRecorder) LastRequestID() string {
 
 type commandRequestKey struct{}
 
-// withCommandRequests marca o contexto da execução do comando. Só as requisições com
+// WithCommandRequests marca o contexto da execução do comando. Só as requisições com
 // essa marca contam para o lastRequestId. Chamadas que a CLI faz por conta própria,
 // como a verificação de versão, não usam esse contexto e ficam de fora
-func withCommandRequests(ctx context.Context) context.Context {
+func WithCommandRequests(ctx context.Context) context.Context {
 	return context.WithValue(ctx, commandRequestKey{}, true)
 }
 

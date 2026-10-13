@@ -1,4 +1,4 @@
-package cmd
+package telemetrycmd
 
 import (
 	"bytes"
@@ -12,7 +12,9 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/viperstate"
 )
 
-func TestTelemetryCmd(t *testing.T) {
+const testCatalogGroupID = "catalog"
+
+func TestCommand(t *testing.T) {
 	testCases := []struct {
 		name      string
 		env       map[string]string
@@ -90,7 +92,7 @@ func TestTelemetryCmd(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			dir := newTelemetryStateDir(t, tc.stateFile, tc.brokenDir)
+			dir := newStateDir(t, tc.stateFile, tc.brokenDir)
 
 			// Cada comando usa um Service novo, como execuções separadas da CLI.
 			getService := func() *telemetry.Service {
@@ -100,7 +102,7 @@ func TestTelemetryCmd(t *testing.T) {
 				})
 			}
 
-			out, err := runTelemetryCommands(t, getService, tc.commands)
+			out, err := runCommands(t, getService, tc.commands)
 
 			if tc.wantErr == "" && err != nil {
 				t.Fatalf("unexpected error %v", err)
@@ -115,7 +117,7 @@ func TestTelemetryCmd(t *testing.T) {
 	}
 }
 
-func newTelemetryStateDir(t *testing.T, stateFile string, broken bool) string {
+func newStateDir(t *testing.T, stateFile string, broken bool) string {
 	t.Helper()
 	dir := t.TempDir()
 
@@ -135,16 +137,16 @@ func newTelemetryStateDir(t *testing.T, stateFile string, broken bool) string {
 	return dir
 }
 
-// runTelemetryCommands roda os comandos em sequência e devolve a saída e o erro do
-// último. Um erro num comando intermediário falha o teste.
-func runTelemetryCommands(t *testing.T, getService func() *telemetry.Service, commands [][]string) (string, error) {
+// runCommands roda os comandos em sequência e devolve a saída e o erro do último.
+// Um erro num comando intermediário falha o teste.
+func runCommands(t *testing.T, getService func() *telemetry.Service, commands [][]string) (string, error) {
 	t.Helper()
 
 	var out bytes.Buffer
 	var err error
 	for i, args := range commands {
 		out.Reset()
-		cmd := newTelemetryCmd(getService)
+		cmd := NewCommand(getService, testCatalogGroupID)
 		cmd.SetArgs(args)
 		cmd.SetOut(&out)
 		cmd.SetErr(io.Discard)

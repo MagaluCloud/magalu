@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/telemetrycmd"
 	"github.com/MagaluCloud/magalu/mgc/core"
 	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 	"github.com/spf13/cobra"
@@ -81,7 +82,7 @@ func collectAllChildren(child core.Descriptor) (map[string]any, error) {
 }
 
 func telemetryTreeNode(root *cobra.Command) (map[string]any, bool) {
-	telemetryCmd, _, err := root.Find([]string{telemetryCmdName})
+	telemetryCmd, _, err := root.Find([]string{telemetrycmd.CommandName})
 	if err != nil || telemetryCmd == root {
 		return nil, false
 	}

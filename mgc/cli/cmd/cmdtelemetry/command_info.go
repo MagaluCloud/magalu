@@ -1,4 +1,4 @@
-package cmd
+package cmdtelemetry
 
 import (
 	"errors"
@@ -6,11 +6,16 @@ import (
 	"strings"
 
 	"github.com/MagaluCloud/magalu/mgc/cli/cmd/schema_flags"
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/telemetrycmd"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 	"github.com/spf13/cobra"
 	flag "github.com/spf13/pflag"
 )
+
+// NextUnknownFunc espelha getNextUnknownCommand, privada do cmd, injetada aqui para o
+// cmdtelemetry não precisar importar o pacote cmd
+type NextUnknownFunc func(*cobra.Command, []string) (*string, []string)
 
 var untrackedCommands = map[string]struct{}{
 	"help":                          {},
@@ -18,15 +23,15 @@ var untrackedCommands = map[string]struct{}{
 	cobra.ShellCompRequestCmd:       {},
 	cobra.ShellCompNoDescRequestCmd: {},
 	"dump-tree":                     {},
-	telemetryCmdName:                {},
+	telemetrycmd.CommandName:        {},
 }
 
-// telemetryCommandInfo descobre qual comando foi executado e monta o CommandInfo.
+// BuildCommandInfo descobre qual comando foi executado e monta o CommandInfo.
 // O segundo retorno é false quando a execução não deve gerar evento, como em um pedido
 // de ajuda, no --version, no root ou em um grupo chamado sem subcomando
 // (que só mostram a ajuda) e nos comandos de untrackedCommands.
 // Um comando que não existe continua sendo coletado, com UnknownCommand = true.
-func telemetryCommandInfo(root *cobra.Command, args []string, cmdErr error, cfg *mgcSdk.Config) (telemetry.CommandInfo, bool) {
+func BuildCommandInfo(root *cobra.Command, args []string, cmdErr error, cfg *mgcSdk.Config, nextUnknown NextUnknownFunc) (telemetry.CommandInfo, bool) {
 	if errors.Is(cmdErr, schema_flags.ErrWantHelp) {
 		return untracked()
 	}
@@ -41,7 +46,7 @@ func telemetryCommandInfo(root *cobra.Command, args []string, cmdErr error, cfg 
 	}
 
 	if cmd == root || cmd.HasSubCommands() {
-		if next, _ := getNextUnknownCommand(cmd, rest); next != nil {
+		if next, _ := nextUnknown(cmd, rest); next != nil {
 			path := append(commandPathSegments(cmd), *next)
 			return telemetry.CommandInfo{UnknownCommand: true, Path: path, OptionsSet: changedFlagNames(cmd)}, true
 		}

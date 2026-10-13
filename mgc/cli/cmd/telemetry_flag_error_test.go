@@ -1,13 +1,15 @@
 package cmd
 
 import (
-	"errors"
 	"testing"
 
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/cmdtelemetry"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
-	flag "github.com/spf13/pflag"
 )
 
+// TestInvalidFlagError fica em cmd, e não em cmdtelemetry, porque depende de
+// newFakeCommandTree e cmdtelemetry.BuildCommandInfo(..., getNextUnknownCommand), que por
+// sua vez depende de normalizeFlagName e applyPositionalArgs, privadas do cmd.
 func TestInvalidFlagError(t *testing.T) {
 	testCases := []struct {
 		name string
@@ -33,7 +35,7 @@ func TestInvalidFlagError(t *testing.T) {
 			}
 
 			root = newFakeCommandTree()
-			root.SetFlagErrorFunc(wrapFlagError)
+			root.SetFlagErrorFunc(cmdtelemetry.WrapFlagError)
 			root.SetArgs(tc.args)
 			err := root.Execute()
 
@@ -43,34 +45,8 @@ func TestInvalidFlagError(t *testing.T) {
 			if got := telemetry.ClassifyError(err); got != telemetry.FailureValidation {
 				t.Errorf("ClassifyError = %q, want %q", got, telemetry.FailureValidation)
 			}
-			if _, track := telemetryCommandInfo(root, tc.args, err, nil); !track {
+			if _, track := cmdtelemetry.BuildCommandInfo(root, tc.args, err, nil, getNextUnknownCommand); !track {
 				t.Error("flag error must generate an event")
-			}
-		})
-	}
-}
-
-func TestWrapFlagErrorKeepsCause(t *testing.T) {
-	testCases := []struct {
-		name string
-		err  error
-		want error
-	}{
-		{name: "nil stays nil", err: nil, want: nil},
-		{name: "help request still detected", err: flag.ErrHelp, want: flag.ErrHelp},
-	}
-
-	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
-			got := wrapFlagError(nil, tc.err)
-			if tc.want == nil {
-				if got != nil {
-					t.Errorf("got %v, want nil", got)
-				}
-				return
-			}
-			if !errors.Is(got, tc.want) {
-				t.Errorf("errors.Is(%v, %v) = false", got, tc.want)
 			}
 		})
 	}

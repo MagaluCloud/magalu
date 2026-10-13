@@ -1,4 +1,4 @@
-package cmd
+package cmdtelemetry
 
 import (
 	"context"
@@ -46,7 +46,7 @@ func TestRequestIDRecorder(t *testing.T) {
 			if tc.transportErr != nil {
 				next = failingTransport{tc.transportErr}
 			}
-			recorder := newRequestIDRecorder(next)
+			recorder := NewRequestIDRecorder(next)
 
 			recorder.tracked = func(*http.Request) bool { return true }
 			client := &http.Client{Transport: recorder}
@@ -86,7 +86,7 @@ func (hostIDTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 }
 
 func TestRequestIDRecorderOnlyTracksCommandRequests(t *testing.T) {
-	commandCtx := withCommandRequests(context.Background())
+	commandCtx := WithCommandRequests(context.Background())
 	versionCheck := request{"https://github.com/MagaluCloud/mgccli/releases/latest", context.Background()}
 
 	testCases := []struct {
@@ -103,7 +103,7 @@ func TestRequestIDRecorderOnlyTracksCommandRequests(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			recorder := newRequestIDRecorder(hostIDTransport{})
+			recorder := NewRequestIDRecorder(hostIDTransport{})
 			client := &http.Client{Transport: recorder}
 
 			for _, r := range tc.requests {

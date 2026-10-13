@@ -1,4 +1,4 @@
-package cmd
+package telemetrycmd
 
 import (
 	"fmt"
@@ -7,11 +7,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const telemetryCmdName = "telemetry"
+const CommandName = "telemetry"
 
-func newTelemetryCmd(getService func() *telemetry.Service) *cobra.Command {
+func NewCommand(getService func() *telemetry.Service, catalogGroupID string) *cobra.Command {
 	telemetryCmd := &cobra.Command{
-		Use:   telemetryCmdName,
+		Use:   CommandName,
 		Short: "Manage usage data collection",
 		Long: fmt.Sprintf(`Manage the pseudonymous usage data collected by the CLI.
 After each command the CLI sends one event with the command path, the names of
@@ -30,14 +30,14 @@ Privacy policy: %s`, telemetry.EnvOptOut, telemetry.EnvDoNotTrack, telemetry.Pri
 		GroupID: "settings",
 	}
 
-	// catalogGroupID é o mesmo grupo "Commands:" dos subcomandos de cada produto
-	// (load_cmd_tree.go), para o Cobra mostrar "Commands:" em vez de "Available
-	// Commands:" e o gerador de docs reconhecer a seção
+	// catalogGroupID é o mesmo grupo "Commands:" dos subcomandos de cada produto, para
+	// o Cobra mostrar "Commands:" em vez de "Available Commands:" e o gerador de docs
+	// reconhecer a seção
 	telemetryCmd.AddGroup(&cobra.Group{ID: catalogGroupID, Title: "Commands:"})
 	for _, subcommand := range []*cobra.Command{
-		newTelemetryEnableCmd(getService),
-		newTelemetryDisableCmd(getService),
-		newTelemetryStatusCmd(getService),
+		newEnableCmd(getService),
+		newDisableCmd(getService),
+		newStatusCmd(getService),
 	} {
 		subcommand.GroupID = catalogGroupID
 		telemetryCmd.AddCommand(subcommand)
@@ -45,14 +45,14 @@ Privacy policy: %s`, telemetry.EnvOptOut, telemetry.EnvDoNotTrack, telemetry.Pri
 	return telemetryCmd
 }
 
-func newTelemetryEnableCmd(getService func() *telemetry.Service) *cobra.Command {
+func newEnableCmd(getService func() *telemetry.Service) *cobra.Command {
 	return &cobra.Command{
 		Use:   "enable",
 		Short: "Enable usage data collection",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			svc := getService()
-			if err := setTelemetryDisabled(svc, false); err != nil {
+			if err := setDisabled(svc, false); err != nil {
 				return err
 			}
 			if by := svc.DisabledBy(); by != "" {
@@ -65,13 +65,13 @@ func newTelemetryEnableCmd(getService func() *telemetry.Service) *cobra.Command 
 	}
 }
 
-func newTelemetryDisableCmd(getService func() *telemetry.Service) *cobra.Command {
+func newDisableCmd(getService func() *telemetry.Service) *cobra.Command {
 	return &cobra.Command{
 		Use:   "disable",
 		Short: "Disable usage data collection",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			if err := setTelemetryDisabled(getService(), true); err != nil {
+			if err := setDisabled(getService(), true); err != nil {
 				return err
 			}
 			fmt.Fprintln(cmd.OutOrStdout(), "Telemetry disabled.")
@@ -80,7 +80,7 @@ func newTelemetryDisableCmd(getService func() *telemetry.Service) *cobra.Command
 	}
 }
 
-func newTelemetryStatusCmd(getService func() *telemetry.Service) *cobra.Command {
+func newStatusCmd(getService func() *telemetry.Service) *cobra.Command {
 	return &cobra.Command{
 		Use:   "status",
 		Short: "Show whether usage data collection is enabled",
@@ -96,7 +96,7 @@ func newTelemetryStatusCmd(getService func() *telemetry.Service) *cobra.Command 
 	}
 }
 
-func setTelemetryDisabled(svc *telemetry.Service, disabled bool) error {
+func setDisabled(svc *telemetry.Service, disabled bool) error {
 	if err := svc.SetDisabled(disabled); err != nil {
 		return fmt.Errorf("unable to save telemetry settings: %w", err)
 	}

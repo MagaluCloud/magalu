@@ -1,4 +1,4 @@
-package cmd
+package cmdtelemetry
 
 import (
 	"fmt"
@@ -17,13 +17,13 @@ func TestCheckScopesErrors(t *testing.T) {
 	}{
 		{
 			name:    "not logged in",
-			err:     notLoggedInError{},
+			err:     NotLoggedInError{},
 			message: "you are not logged in. To authenticate, please run 'mgc auth login'",
 			reason:  telemetry.FailureAuthentication,
 		},
 		{
 			name:    "missing scopes",
-			err:     missingScopesError{Missing: core.Scopes{"virtual-machine.read", "network.read"}},
+			err:     MissingScopesError{Missing: core.Scopes{"virtual-machine.read", "network.read"}},
 			message: "you are missing the following scopes for this operation: [virtual-machine.read network.read]",
 			reason:  telemetry.FailureAuthorization,
 		},

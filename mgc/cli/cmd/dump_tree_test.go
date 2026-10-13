@@ -4,13 +4,14 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/telemetrycmd"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 	"github.com/spf13/cobra"
 )
 
 func TestTelemetryTreeNode(t *testing.T) {
 	wantTelemetry := map[string]any{
-		"name": telemetryCmdName,
+		"name": telemetrycmd.CommandName,
 		"children": []map[string]any{
 			{"name": "disable"},
 			{"name": "enable"},
@@ -32,7 +33,7 @@ func TestTelemetryTreeNode(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			root := &cobra.Command{Use: "mgc"}
 			if tc.withTelemetry {
-				root.AddCommand(newTelemetryCmd(func() *telemetry.Service { return nil }))
+				root.AddCommand(telemetrycmd.NewCommand(func() *telemetry.Service { return nil }, catalogGroupID))
 			}
 
 			node, found := telemetryTreeNode(root)
