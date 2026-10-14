@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Beta
 
-Preview commands released, loaded from . Commands may change or stop working.
+Commands in public preview. They may change or stop working.
 
 ## Usage:
 ```

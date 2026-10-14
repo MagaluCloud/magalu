@@ -35,14 +35,10 @@ func newLevelGroup(level Level, store Store, validator Validator, extensionPrefi
 	source := openapi.NewSource(loader, extensionPrefix)
 	return core.NewSimpleGrouper(
 		core.DescriptorSpec{
-			Name:    level.Name,
-			GroupID: GroupID,
-			Summary: level.Summary,
-			Description: fmt.Sprintf(
-				"%s, loaded from %s. Commands may change or stop working. ",
-				level.Summary,
-				store,
-			),
+			Name:        level.Name,
+			GroupID:     GroupID,
+			Summary:     level.Summary,
+			Description: levelDescription(level, store),
 		},
 		func() (children []core.Descriptor, err error) {
 			_, err = source.VisitChildren(func(child core.Descriptor) (bool, error) {
@@ -55,6 +51,16 @@ func newLevelGroup(level Level, store Store, validator Validator, extensionPrefi
 			return children, err
 		},
 	)
+}
+
+// Embedded stores have no location worth showing, so only the others say where
+// their specs come from.
+func levelDescription(level Level, store Store) string {
+	description := level.Summary
+	if where := store.String(); where != "" {
+		description += ", loaded from " + where
+	}
+	return description + ". They may change or stop working."
 }
 
 func checkedModule(module *moduleGroup) core.Descriptor {
