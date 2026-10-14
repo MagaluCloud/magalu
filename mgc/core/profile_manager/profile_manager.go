@@ -48,6 +48,10 @@ func NewInMemoryProfileManager() (*ProfileManager, afero.Fs) {
 	return pf, fs
 }
 
+func (m *ProfileManager) Dir() string {
+	return m.dir
+}
+
 func (m *ProfileManager) buildPath(name string) string {
 	s := sanitizePath(name)
 	return path.Join(m.dir, s)

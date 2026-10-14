@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 	"runtime"
 
 	"github.com/MagaluCloud/magalu/mgc/core"
@@ -13,7 +15,13 @@ import (
 	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
 	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
 	"github.com/MagaluCloud/magalu/mgc/sdk/openapi"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview/alphasync"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview/fsstore"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview/serverpin"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview/specvalidator"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/alpha"
 )
 
 // Re-exports from Core
@@ -104,6 +112,53 @@ func (o *Sdk) newOpenApiSource() core.Grouper {
 	return openapi.NewSource(loader, &extensionPrefix)
 }
 
+func (o *Sdk) newPreviewSources() []core.Grouper {
+	extensionPrefix := "x-mgc"
+	validator := specvalidator.New()
+
+	beta := fsstore.New(openapi.BetaSpecs(), "")
+	alphaDir := o.alphaDir()
+	alpha := serverpin.Wrap(alphasync.VerifiedStore(fsstore.NewDir(alphaDir), alphaDir, alphasync.TrustedKeys()))
+
+	return []core.Grouper{
+		preview.NewGroup(preview.Beta, beta, validator, &extensionPrefix),
+		preview.NewGroup(preview.Alpha, alpha, validator, &extensionPrefix),
+	}
+}
+
+func (o *Sdk) alphaDir() string {
+	return filepath.Join(o.ProfileManager().Dir(), ".preview", preview.Alpha.Name)
+}
+
+func (o *Sdk) newAlphaRoot() core.Grouper {
+	extensionPrefix := "x-mgc"
+	validator := specvalidator.New()
+
+	sync := alphasync.NewCommand(alphasync.Config{
+		BaseURL:    alphaBaseURL(),
+		Dir:        o.alphaDir(),
+		CLIVersion: o.version,
+		Keys:       alphasync.TrustedKeys(),
+		HTTPClient: &http.Client{Transport: newHttpTransport(o.version)},
+		Check: func(pkg preview.Package) error {
+			pinned, err := serverpin.Pin(pkg.Spec)
+			if err != nil {
+				return err
+			}
+			pkg.Spec = pinned
+			return preview.Check(preview.Alpha, pkg, validator, &extensionPrefix)
+		},
+	})
+	return alpha.NewRoot(sync)
+}
+
+func alphaBaseURL() string {
+	if url := os.Getenv("MGC_ALPHA_URL"); url != "" {
+		return url
+	}
+	return alphasync.DefaultBaseURL
+}
+
 func (o *Sdk) RefResolver() core.RefPathResolver {
 	if o.refResolver == nil {
 		o.refResolver = core.NewDocumentRefPathResolver(func() (any, error) { return o.Group(), nil })
@@ -120,10 +175,14 @@ func (o *Sdk) Group() core.Grouper {
 				Description: "All MagaLu Groups & Executors",
 			},
 			func() []core.Grouper {
-				return []core.Grouper{
+				official := []core.Grouper{
 					static.GetGroup(),
 					o.newOpenApiSource(),
 				}
+				roots := append(official, o.newPreviewSources()...)
+				// Last on purpose: the hidden "alpha" must give way to the
+				// visible one that installed alpha specs bring.
+				return append(roots, o.newAlphaRoot())
 			},
 		)
 	}
