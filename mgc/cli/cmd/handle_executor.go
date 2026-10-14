@@ -120,12 +120,24 @@ func handleExecutorPre(
 	}
 
 	waitTermination := getWaitTerminationFlag(cmd)
+	paginate := getPaginateFlag(cmd)
 	var cb core.RetryUntilCb
-	if tExec, ok := core.ExecutorAs[core.TerminatorExecutor](exec); ok && waitTermination {
+	switch {
+	case paginate:
 		cb = func() (result core.Result, err error) {
-			return tExec.ExecuteUntilTermination(ctx, parameters, configs)
+			return runPaginated(ctx, exec, parameters, configs)
 		}
-	} else {
+	case waitTermination:
+		if tExec, ok := core.ExecutorAs[core.TerminatorExecutor](exec); ok {
+			cb = func() (result core.Result, err error) {
+				return tExec.ExecuteUntilTermination(ctx, parameters, configs)
+			}
+		} else {
+			cb = func() (result core.Result, err error) {
+				return exec.Execute(ctx, parameters, configs)
+			}
+		}
+	default:
 		cb = func() (result core.Result, err error) {
 			return exec.Execute(ctx, parameters, configs)
 		}
