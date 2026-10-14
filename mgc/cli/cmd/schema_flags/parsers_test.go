@@ -363,6 +363,27 @@ func Test_parseArrayFlagValue(t *testing.T) {
 	checkArray(t, expected, got)
 }
 
+func Test_parseArrayFlagValueEmpty(t *testing.T) {
+	for _, tc := range []struct {
+		name      string
+		rawValues []string
+		wantNil   bool
+	}{
+		{name: "empty JSON list is an empty list", rawValues: []string{"[]"}},
+		{name: "empty JSON list with spaces is an empty list", rawValues: []string{" [ ] "}},
+		{name: "explicit null stays null", rawValues: []string{"null"}, wantNil: true},
+		{name: "empty value stays null", rawValues: []string{""}, wantNil: true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			got, err := parseArrayFlagValue(mgcSchemaPkg.NewObjectSchema(nil, nil), tc.rawValues)
+			checkError(t, nil, err)
+			if (got == nil) != tc.wantNil || len(got) != 0 {
+				t.Errorf("got %#v (nil: %v), want empty with nil=%v", got, got == nil, tc.wantNil)
+			}
+		})
+	}
+}
+
 func checkObject(t *testing.T, message string, expected, got map[string]any) {
 	if len(expected) != len(got) {
 		t.Errorf("%s expected object length %d, got %d.\nexpected: %#v\ngot.....: %#v", message, len(expected), len(got), expected, got)
