@@ -25,9 +25,7 @@ $BASEDIR/add_specs_without_region.sh profile profile specs/globaldb.openapi.yaml
 
 $BASEDIR/add_specs.sh load-balancer load-balancer specs/lbaas.openapi.yaml https://lbaas.jaxyendy.com/openapi-cli.json
 
-$BASEDIR/add_specs_without_region.sh iam iam specs/conv.iam.jaxyendy.openapi.json https://iam.jaxyendy.com/openapi.json
-
-$BASEDIR/add_specs_without_region.sh tag tags specs/conv.tag.jaxyendy.openapi.json https://tag.jaxyendy.com/openapi.json
+$BASEDIR/add_specs_without_region.sh iam iam specs/iam.jaxyendy.openapi.json https://iam.jaxyendy.com/openapi.json
 
 $BASEDIR/add_specs_without_region.sh tag tags specs/conv.tag.jaxyendy.openapi.json https://tag.jaxyendy.com/openapi.json
 
