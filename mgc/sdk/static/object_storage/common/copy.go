@@ -53,7 +53,9 @@ func newCopyRequest(ctx context.Context, cfg Config, src mgcSchemaPkg.URI, dst m
 		return nil, err
 	}
 
-	copySource, err := url.JoinPath(src.Hostname(), src.Path())
+	// Convert visible control chars back to original control chars before creating copy source
+	srcPath := ConvertVisibleToControlChars(src.Path())
+	copySource, err := url.JoinPath(src.Hostname(), srcPath)
 	if err != nil {
 		return nil, core.UsageError{Err: fmt.Errorf("badly specified source URI: %w", err)}
 	}
