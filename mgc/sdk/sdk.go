@@ -14,6 +14,7 @@ import (
 	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
 	"github.com/MagaluCloud/magalu/mgc/sdk/openapi"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/alpha"
 )
 
 // Re-exports from Core
@@ -123,6 +124,9 @@ func (o *Sdk) Group() core.Grouper {
 				return []core.Grouper{
 					static.GetGroup(),
 					o.newOpenApiSource(),
+					// Last on purpose: the hidden "alpha" must give way to
+					// a visible one coming from another source.
+					alpha.GetRoot(),
 				}
 			},
 		)
