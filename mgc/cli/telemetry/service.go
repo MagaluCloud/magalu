@@ -11,11 +11,11 @@ import (
 
 const (
 	EnvDoNotTrack = "DO_NOT_TRACK"
-	EnvOptOut     = "MGC_CLI_TELEMETRY_OPTOUT"
+	EnvTelemetry  = "MGC_TELEMETRY"
 
 	DisabledByConfig          = "telemetry.disabled"
 	DisabledByDoNotTrack      = EnvDoNotTrack
-	DisabledByOptOut          = EnvOptOut
+	DisabledByTelemetryVar    = EnvTelemetry
 	DisabledByUnreadableState = "unreadable telemetry.yaml"
 )
 
@@ -75,11 +75,15 @@ func New(opts Options) *Service {
 }
 
 func (s *Service) DisabledBy() string {
+	// EnvDoNotTrack é opt-out (truthy desativa); EnvTelemetry é opt-in
+	// (só falsy desativa, ausente/qualquer outro valor não tem efeito). As
+	// duas polaridades convivem de propósito: DO_NOT_TRACK é o padrão da
+	// indústria e não muda; MGC_TELEMETRY nasceu com polaridade invertida.
 	switch {
 	case isTruthy(s.opts.Getenv(EnvDoNotTrack)):
 		return DisabledByDoNotTrack
-	case isTruthy(s.opts.Getenv(EnvOptOut)):
-		return DisabledByOptOut
+	case isFalsy(s.opts.Getenv(EnvTelemetry)):
+		return DisabledByTelemetryVar
 	case s.stateUnavailable:
 		return DisabledByUnreadableState
 	case s.state.Disabled:
@@ -236,4 +240,9 @@ func (s *Service) save() error {
 func isTruthy(v string) bool {
 	v = strings.TrimSpace(v)
 	return v != "" && v != "0" && !strings.EqualFold(v, "false")
+}
+
+func isFalsy(v string) bool {
+	v = strings.TrimSpace(v)
+	return v == "0" || strings.EqualFold(v, "false")
 }

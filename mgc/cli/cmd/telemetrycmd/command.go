@@ -25,8 +25,8 @@ data.
 The event is sent in the background by a separate process, so the command never
 waits for the network. With --debug, the sending process writes its diagnostics
 to telemetry-debug.txt in the CLI config directory.
-To opt out, run 'mgc telemetry disable' or set %s=1 or %s=1.
-Privacy policy: %s`, telemetry.EnvOptOut, telemetry.EnvDoNotTrack, telemetry.PrivacyPolicyURL),
+To opt out, run 'mgc telemetry disable' or set %s=false or %s=1.
+Privacy policy: %s`, telemetry.EnvTelemetry, telemetry.EnvDoNotTrack, telemetry.PrivacyPolicyURL),
 		GroupID: "settings",
 	}
 
@@ -107,10 +107,8 @@ func describeDisabledBy(by string) string {
 	switch by {
 	case telemetry.DisabledByConfig:
 		return "the CLI settings (mgc telemetry disable)"
-	case telemetry.DisabledByDoNotTrack:
-		return "the DO_NOT_TRACK environment variable"
-	case telemetry.DisabledByOptOut:
-		return "the MGC_CLI_TELEMETRY_OPTOUT environment variable"
+	case telemetry.DisabledByDoNotTrack, telemetry.DisabledByTelemetryVar:
+		return fmt.Sprintf("the %s environment variable", by)
 	case telemetry.DisabledByUnreadableState:
 		return "an unreadable " + telemetry.StateFileName + " file (run mgc telemetry enable or disable to rewrite it)"
 	}

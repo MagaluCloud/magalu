@@ -15,7 +15,7 @@ data.
 The event is sent in the background by a separate process, so the command never
 waits for the network. With --debug, the sending process writes its diagnostics
 to telemetry-debug.txt in the CLI config directory.
-To opt out, run 'mgc telemetry disable' or set MGC_CLI_TELEMETRY_OPTOUT=1 or DO_NOT_TRACK=1.
+To opt out, run 'mgc telemetry disable' or set MGC_TELEMETRY=false or DO_NOT_TRACK=1.
 Privacy policy: https://magalu.cloud/termos-legais/politica-de-privacidade/
 
 ## Usage:

@@ -7,7 +7,7 @@ import (
 
 const expectedNotice = "\nA MGC CLI coleta dados de uso anônimos/pseudônimos para nos ajudar a\n" +
 	"priorizar melhorias. Para desativar: `mgc telemetry disable` ou\n" +
-	"defina MGC_CLI_TELEMETRY_OPTOUT=1. Saiba mais: https://magalu.cloud/termos-legais/politica-de-privacidade/\n"
+	"defina MGC_TELEMETRY=false. Saiba mais: https://magalu.cloud/termos-legais/politica-de-privacidade/\n"
 
 const expectedNoticeNotCollected = expectedNotice +
 	"Nenhum dado desta execução foi coletado. A coleta começa somente a partir da próxima execução.\n"

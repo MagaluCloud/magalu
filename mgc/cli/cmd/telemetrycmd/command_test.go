@@ -2,6 +2,7 @@ package telemetrycmd
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -48,21 +49,21 @@ func TestCommand(t *testing.T) {
 		},
 		{
 			name:     "status with DO_NOT_TRACK",
-			env:      map[string]string{"DO_NOT_TRACK": "1"},
+			env:      map[string]string{telemetry.EnvDoNotTrack: "1"},
 			commands: [][]string{{"status"}},
-			want:     "Telemetry is disabled by the DO_NOT_TRACK environment variable.\n",
+			want:     fmt.Sprintf("Telemetry is disabled by the %s environment variable.\n", telemetry.EnvDoNotTrack),
 		},
 		{
-			name:     "status with MGC_CLI_TELEMETRY_OPTOUT",
-			env:      map[string]string{"MGC_CLI_TELEMETRY_OPTOUT": "1"},
+			name:     "status with MGC_TELEMETRY",
+			env:      map[string]string{telemetry.EnvTelemetry: "false"},
 			commands: [][]string{{"status"}},
-			want:     "Telemetry is disabled by the MGC_CLI_TELEMETRY_OPTOUT environment variable.\n",
+			want:     fmt.Sprintf("Telemetry is disabled by the %s environment variable.\n", telemetry.EnvTelemetry),
 		},
 		{
 			name:     "enable while DO_NOT_TRACK is set",
-			env:      map[string]string{"DO_NOT_TRACK": "1"},
+			env:      map[string]string{telemetry.EnvDoNotTrack: "1"},
 			commands: [][]string{{"enable"}},
-			want:     "Telemetry enabled in settings, but still disabled by the DO_NOT_TRACK environment variable.\n",
+			want:     fmt.Sprintf("Telemetry enabled in settings, but still disabled by the %s environment variable.\n", telemetry.EnvDoNotTrack),
 		},
 		{
 			name:      "status with an unreadable state file",

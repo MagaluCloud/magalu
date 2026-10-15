@@ -9,7 +9,7 @@ const PrivacyPolicyURL = "https://magalu.cloud/termos-legais/politica-de-privaci
 
 const Notice = "A MGC CLI coleta dados de uso anônimos/pseudônimos para nos ajudar a\n" +
 	"priorizar melhorias. Para desativar: `mgc telemetry disable` ou\n" +
-	"defina " + EnvOptOut + "=1. Saiba mais: " + PrivacyPolicyURL
+	"defina " + EnvTelemetry + "=false. Saiba mais: " + PrivacyPolicyURL
 
 const NoticeNotCollectedYet = "Nenhum dado desta execução foi coletado. " +
 	"A coleta começa somente a partir da próxima execução."

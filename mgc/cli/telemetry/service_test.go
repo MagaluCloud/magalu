@@ -184,9 +184,6 @@ func TestServiceTimeToFirstValue(t *testing.T) {
 
 func TestServiceOptOut(t *testing.T) {
 	seen := State{NoticeShown: true}
-	withEnv := func(v string) map[string]string {
-		return map[string]string{"MGC_CLI_TELEMETRY_OPTOUT": v, "DO_NOT_TRACK": v}
-	}
 
 	testCases := []struct {
 		name           string
@@ -194,14 +191,17 @@ func TestServiceOptOut(t *testing.T) {
 		wantDisabledBy string
 	}{
 		{"config key", testSetup{state: State{NoticeShown: true, Disabled: true}, terminal: true}, DisabledByConfig},
-		{"DO_NOT_TRACK", testSetup{state: seen, env: map[string]string{"DO_NOT_TRACK": "1"}, terminal: true}, DisabledByDoNotTrack},
-		{"MGC_CLI_TELEMETRY_OPTOUT=1", testSetup{state: seen, env: map[string]string{"MGC_CLI_TELEMETRY_OPTOUT": "1"}, terminal: true}, DisabledByOptOut},
-		{"MGC_CLI_TELEMETRY_OPTOUT=true", testSetup{state: seen, env: map[string]string{"MGC_CLI_TELEMETRY_OPTOUT": "true"}, terminal: true}, DisabledByOptOut},
+		{"DO_NOT_TRACK=1", testSetup{state: seen, env: map[string]string{EnvDoNotTrack: "1"}, terminal: true}, DisabledByDoNotTrack},
+		{"DO_NOT_TRACK empty keeps it enabled", testSetup{state: seen, env: map[string]string{EnvDoNotTrack: ""}, terminal: true}, ""},
+		{"DO_NOT_TRACK=0 keeps it enabled", testSetup{state: seen, env: map[string]string{EnvDoNotTrack: "0"}, terminal: true}, ""},
+		{"DO_NOT_TRACK=false keeps it enabled", testSetup{state: seen, env: map[string]string{EnvDoNotTrack: "false"}, terminal: true}, ""},
+		{"MGC_TELEMETRY=0", testSetup{state: seen, env: map[string]string{EnvTelemetry: "0"}, terminal: true}, DisabledByTelemetryVar},
+		{"MGC_TELEMETRY=false", testSetup{state: seen, env: map[string]string{EnvTelemetry: "false"}, terminal: true}, DisabledByTelemetryVar},
+		{"MGC_TELEMETRY=FALSE", testSetup{state: seen, env: map[string]string{EnvTelemetry: "FALSE"}, terminal: true}, DisabledByTelemetryVar},
+		{"MGC_TELEMETRY empty keeps it enabled", testSetup{state: seen, env: map[string]string{EnvTelemetry: ""}, terminal: true}, ""},
+		{"MGC_TELEMETRY=true keeps it enabled", testSetup{state: seen, env: map[string]string{EnvTelemetry: "true"}, terminal: true}, ""},
+		{"MGC_TELEMETRY absent keeps it enabled", testSetup{state: seen, terminal: true}, ""},
 		{"unreadable state", testSetup{state: seen, loadErr: errors.New("yaml: invalid"), terminal: true}, DisabledByUnreadableState},
-		{"empty value keeps it enabled", testSetup{state: seen, env: withEnv(""), terminal: true}, ""},
-		{"0 keeps it enabled", testSetup{state: seen, env: withEnv("0"), terminal: true}, ""},
-		{"false keeps it enabled", testSetup{state: seen, env: withEnv("false"), terminal: true}, ""},
-		{"FALSE keeps it enabled", testSetup{state: seen, env: withEnv("FALSE"), terminal: true}, ""},
 	}
 
 	for _, tc := range testCases {

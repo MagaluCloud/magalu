@@ -29,7 +29,7 @@ To opt out, use any of:
 
 - `mgc telemetry disable` (saved in `telemetry.yaml` in the CLI config directory,
   valid for every profile; `mgc telemetry enable` turns it back on)
-- `MGC_CLI_TELEMETRY_OPTOUT=1`
+- `MGC_TELEMETRY=false`
 - `DO_NOT_TRACK=1`
 
 `mgc telemetry status` shows whether collection is enabled and what disabled it.
