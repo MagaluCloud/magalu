@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"slices"
 
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/cmdtelemetry"
 	"github.com/MagaluCloud/magalu/mgc/cli/ui"
 	"github.com/MagaluCloud/magalu/mgc/cli/ui/progress_bar"
 	"github.com/MagaluCloud/magalu/mgc/core"
@@ -52,11 +53,11 @@ func checkScopes(sdk *mgcSdk.Sdk, exec core.Executor) error {
 	}
 
 	if k, s := a.AccessKeyPair(); (k == "" || s == "") && len(missing) > 0 {
-		return fmt.Errorf("you are not logged in. To authenticate, please run 'mgc auth login'")
+		return cmdtelemetry.NotLoggedInError{}
 	}
 
 	if len(missing) > 0 {
-		return fmt.Errorf("you are missing the following scopes for this operation: %v", missing)
+		return cmdtelemetry.MissingScopesError{Missing: missing}
 	}
 
 	return nil
@@ -183,6 +184,7 @@ func handleExecutor(
 	setApiKey(cmd, sdk)
 	setKeyPair(sdk)
 
+	ctx = cmdtelemetry.WithCommandRequests(ctx)
 	result, err := handleExecutorPre(ctx, sdk, cmd, exec, parameters, configs)
 	err = handleExecutorResult(ctx, sdk, cmd, result, err)
 	if err != nil {

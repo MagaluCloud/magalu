@@ -13,8 +13,10 @@ require (
 	github.com/erikgeiser/promptkit v0.9.0
 	github.com/fatih/color v1.18.0
 	github.com/getkin/kin-openapi v0.131.0
+	github.com/google/uuid v1.6.0
 	github.com/invopop/yaml v0.3.1
 	github.com/jedib0t/go-pretty/v6 v6.6.7
+	github.com/spf13/viper v1.19.0
 	github.com/stoewer/go-strcase v1.3.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394
@@ -65,7 +67,6 @@ require (
 	github.com/go-openapi/swag v0.23.1 // indirect
 	github.com/goccy/go-yaml v1.15.23
 	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/iancoleman/orderedmap v0.3.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
@@ -94,7 +95,6 @@ require (
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e // indirect
 	github.com/spf13/afero v1.12.0 // indirect
 	github.com/spf13/cast v1.7.1 // indirect
-	github.com/spf13/viper v1.19.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/sync v0.12.0 // indirect
