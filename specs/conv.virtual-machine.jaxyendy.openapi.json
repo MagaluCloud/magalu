@@ -5954,7 +5954,6 @@
         "title": "Regions",
         "enum": [
           "br-se1",
-          "br-mgl1",
           "br-ne1"
         ]
       },
@@ -5966,7 +5965,6 @@
             "title": "Regions",
             "enum": [
               "br-se1",
-              "br-mgl1",
               "br-ne1"
             ]
           }

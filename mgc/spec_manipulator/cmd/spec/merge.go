@@ -82,7 +82,7 @@ func mergeSpecs(specA, specB libopenapi.Document, options MergeSpecs) libopenapi
 	}
 
 	regionVar := &v3.ServerVariable{
-		Enum:       []string{"br-ne-1", "br-se1", "br-mgl1"},
+		Enum:       []string{"br-ne-1", "br-se1"},
 		Extensions: orderedmap.New[string, *yaml.Node](),
 	}
 
@@ -95,7 +95,6 @@ func mergeSpecs(specA, specB libopenapi.Document, options MergeSpecs) libopenapi
 			"allowMissing": true,
 			"translations": []map[string]string{
 				{"from": "br-ne1", "to": "br-ne-1"},
-				{"from": "br-mgl1", "to": "br-se-1"},
 			},
 		},
 	}

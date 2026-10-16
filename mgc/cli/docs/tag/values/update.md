@@ -1,21 +1,28 @@
 ---
-sidebar_position: 3
+sidebar_position: 5
 ---
-# Copy
+# Update
 
-Copy a object snapshot cross region for the currently authenticated tenant.
+Update the name or description of a value.
 
 ## Usage:
 ```
-mgc block-storage snapshots copy [id] [flags]
+mgc tag values update [tag-name] [value-name] [flags]
+```
+
+## Examples:
+```
+mgc tag values update --description="tag value to monitor expenses with test-labs" --new-name="test-labs" --tag-name="kubernetes-expenses" --value-name="test-labs"
 ```
 
 ## Flags:
 ```
     --cli.list-links enum[=table]   List all available links for this command (one of "json", "table" or "yaml")
-    --destination-region enum       Regions (one of "br-mgl1", "br-ne1" or "br-se1") (required)
--h, --help                          help for copy
-    --id uuid                       Id (required)
+    --description string            Description of the value (max character count: 500)
+-h, --help                          help for update
+    --new-name string               New name for the value, unique within the tag (between 1 and 255 characters and pattern: ^[\w\ \-\[\]\(\)\.\:]+$)
+    --tag-name string               Tag name that owns the value (required)
+    --value-name string             Value name to operate on (required)
 ```
 
 ## Global Flags:
@@ -30,7 +37,6 @@ mgc block-storage snapshots copy [id] [flags]
     --no-confirm               Bypasses confirmation step for commands that ask a confirmation from the user
 -o, --output string            Change the output format. You can use 'yaml', 'json' or 'table'.
 -r, --raw                      Output raw data, without any formatting or coloring
-    --region enum              Region to reach the service (one of "br-mgl1", "br-ne1" or "br-se1") (default "br-se1")
     --server-url uri           Manually specify the server to use
 ```
 
