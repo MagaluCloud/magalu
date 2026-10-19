@@ -1,10 +1,11 @@
 package serverpin
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 	"testing/fstest"
 
-	"github.com/MagaluCloud/magalu/mgc/sdk/openapi"
 	"github.com/MagaluCloud/magalu/mgc/sdk/preview/fsstore"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -124,20 +125,23 @@ func TestPinRefusesWhatDoesNotParse(t *testing.T) {
 	assert.ErrorContains(t, err, "spec does not parse")
 }
 
+// The pin writes the env variable the pipeline compiles into every spec.
 func TestEnvVariableMatchesTheCompiledSpecs(t *testing.T) {
-	store := fsstore.New(openapi.BetaSpecs(), "embedded")
-	names, err := store.Names()
+	files, err := filepath.Glob("../../openapi/openapis/*.openapi.yaml")
 	require.NoError(t, err)
-	require.NotEmpty(t, names)
+	require.NotEmpty(t, files)
 
-	for _, name := range names {
-		pkg, err := store.Read(name)
+	for _, file := range files {
+		if filepath.Base(file) == "index.openapi.yaml" {
+			continue
+		}
+		data, err := os.ReadFile(file)
 		require.NoError(t, err)
 
 		var got spec
-		require.NoError(t, yaml.Unmarshal(pkg.Spec, &got))
-		require.NotEmpty(t, got.Servers, name)
-		assert.Equal(t, canonicalEnv(t), got.Servers[0].Variables["env"], name)
+		require.NoError(t, yaml.Unmarshal(data, &got))
+		require.NotEmpty(t, got.Servers, file)
+		assert.Equal(t, canonicalEnv(t), got.Servers[0].Variables["env"], file)
 	}
 }
 

@@ -1,29 +1,28 @@
 package alphasync
 
 import (
-	"context"
 	"crypto/ed25519"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
-	"errors"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
+	"sync/atomic"
 	"testing"
+	"time"
 
 	"github.com/MagaluCloud/magalu/mgc/sdk/preview"
-	"github.com/MagaluCloud/magalu/mgc/sdk/preview/fsstore"
-	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 const (
-	inviteA = "3f2a9c1e-5b7d-4e8a-9c0f-1a2b3c4d5e6f"
-	inviteB = "9d8c7b6a-5f4e-4d3c-8b2a-1f0e9d8c7b6a"
+	tenantA = "3f2a9c1e-5b7d-4e8a-9c0f-1a2b3c4d5e6f"
+	tenantB = "9d8c7b6a-5f4e-4d3c-8b2a-1f0e9d8c7b6a"
 )
 
 var testPublic, testPrivate, _ = ed25519.GenerateKey(nil)
@@ -33,6 +32,21 @@ const testKeyID = "test"
 func checksum(data string) string {
 	sum := sha256.Sum256([]byte(data))
 	return hex.EncodeToString(sum[:])
+}
+
+// argon2id takes ~50 ms per key: tests compute each path once.
+var paths sync.Map
+
+func manifestPath(t *testing.T, env, tenant string) string {
+	t.Helper()
+	key := env + " " + tenant
+	if path, ok := paths.Load(key); ok {
+		return path.(string)
+	}
+	path, err := ManifestPath(env, tenant)
+	require.NoError(t, err)
+	paths.Store(key, path)
+	return path
 }
 
 type bucket struct {
@@ -60,17 +74,27 @@ func (b *bucket) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write([]byte(body))
 }
 
-func (b *bucket) publish(t *testing.T, invite string, specs ...ManifestSpec) {
+func (b *bucket) publish(t *testing.T, env, tenant string, specs ...ManifestSpec) {
 	t.Helper()
 	data, err := json.Marshal(Manifest{Specs: specs})
 	require.NoError(t, err)
-	b.files[ManifestPath(invite)] = string(data)
+	b.files[manifestPath(t, env, tenant)] = string(data)
 }
+
+// Each spec is published a second after the one before.
+var publications atomic.Int64
 
 func (b *bucket) spec(module, version, body string, opts ...func(*ManifestSpec)) ManifestSpec {
 	path := "alpha/specs/" + module + "/" + version + ".openapi.yaml"
 	b.files[path] = body
-	spec := ManifestSpec{Module: module, Path: path, SHA256: checksum(body)}
+	spec := ManifestSpec{
+		Module:      module,
+		Version:     version,
+		PublishedAt: time.Unix(1_790_000_000+publications.Add(1), 0).UTC().Format(time.RFC3339),
+		Env:         EnvProd,
+		Path:        path,
+		SHA256:      checksum(body),
+	}
 	for _, opt := range opts {
 		opt(&spec)
 	}
@@ -79,6 +103,10 @@ func (b *bucket) spec(module, version, body string, opts ...func(*ManifestSpec))
 
 func minVersion(v string) func(*ManifestSpec) {
 	return func(s *ManifestSpec) { s.MinCLIVersion = v }
+}
+
+func forEnv(env string) func(*ManifestSpec) {
+	return func(s *ManifestSpec) { s.Env = env }
 }
 
 func newBucket(t *testing.T) (*bucket, Config) {
@@ -111,224 +139,104 @@ func installed(t *testing.T, dir string) map[string]string {
 	return files
 }
 
-func TestNewInvite(t *testing.T) {
-	invite := NewInvite()
-	id, err := uuid.Parse(invite)
+func TestTenantKey(t *testing.T) {
+	// Pinned: the publishing tool and every released CLI must agree on it.
+	key, err := TenantKey(EnvProd, tenantA)
 	require.NoError(t, err)
-	assert.Equal(t, uuid.Version(4), id.Version(), "122 random bits")
-	assert.NotEqual(t, invite, NewInvite())
+	assert.Equal(t, "702cf6d1b0d68ed0bec9d98b921f802e2d069688369e780837bd7bb211a161d7", key)
 
-	normalized, err := NormalizeInvite(invite)
+	preProd, err := TenantKey(EnvPreProd, tenantA)
 	require.NoError(t, err)
-	assert.Equal(t, invite, normalized)
+	assert.Equal(t, "5df62f3544a5a3c6f6a091164141144d6fb0d46da73476a22ea0fc87fc9aa119", preProd)
+
+	same, err := TenantKey(EnvProd, " "+strings.ToUpper(tenantA)+" ")
+	require.NoError(t, err)
+	assert.Equal(t, key, same, "case and spaces do not matter")
+
+	otherVariant, err := TenantKey(EnvProd, strings.Replace(tenantA, "-9c0f-", "-ac0f-", 1))
+	require.NoError(t, err)
+	assert.Equal(t, key, otherVariant, "the variant digit is left out")
+
+	other, err := TenantKey(EnvProd, tenantB)
+	require.NoError(t, err)
+	assert.NotEqual(t, key, other)
 }
 
-func TestNormalizeInvite(t *testing.T) {
-	got, err := NormalizeInvite(" " + strings.ToUpper(inviteA) + " ")
-	require.NoError(t, err)
-	assert.Equal(t, inviteA, got)
-
-	_, err = NormalizeInvite("my-invite")
-	assert.ErrorContains(t, err, "not an alpha invite")
-}
-
-func TestManifestPathHidesTheInvite(t *testing.T) {
-	path := ManifestPath(inviteA)
-	assert.Regexp(t, `^alpha/invites/[0-9a-f]{64}\.json$`, path)
-	assert.NotContains(t, path, inviteA)
-	assert.NotEqual(t, path, ManifestPath(inviteB))
-}
-
-func TestSyncInstallsWhatTheInviteGives(t *testing.T) {
-	b, cfg := newBucket(t)
-	b.publish(t, inviteA, b.spec("iam", "1", "iam spec"), b.spec("dns", "1", "dns spec"))
-
-	result, err := Sync(context.Background(), cfg, strings.ToUpper(inviteA))
-	require.NoError(t, err)
-	assert.Equal(t, []string{"dns", "iam"}, result.Installed)
-
-	files := installed(t, cfg.Dir)
-	assert.Equal(t, "iam spec", files["iam.openapi.yaml"])
-	assert.Equal(t, "dns spec", files["dns.openapi.yaml"])
-	assert.Contains(t, files, "index.json")
-
-	saved, err := SavedInvite(cfg.Dir)
-	require.NoError(t, err)
-	assert.Equal(t, inviteA, saved)
-
-	info, err := os.Stat(filepath.Join(cfg.Dir, "invite.json"))
-	require.NoError(t, err)
-	assert.Equal(t, os.FileMode(0o600), info.Mode().Perm())
-}
-
-func TestSyncWithoutManifestRemovesEverything(t *testing.T) {
-	for _, status := range []int{http.StatusNotFound, http.StatusForbidden} {
-		b, cfg := newBucket(t)
-		b.publish(t, inviteA, b.spec("iam", "1", "iam spec"))
-		_, err := Sync(context.Background(), cfg, inviteA)
-		require.NoError(t, err)
-
-		delete(b.files, ManifestPath(inviteA))
-		b.status[ManifestPath(inviteA)] = status
-
-		result, err := Sync(context.Background(), cfg, inviteA)
-		require.NoError(t, err)
-		assert.Empty(t, result.Installed)
-		assert.NotContains(t, installed(t, cfg.Dir), "iam.openapi.yaml")
-	}
-}
-
-func TestSyncRemovesWhatIsNoLongerGiven(t *testing.T) {
-	b, cfg := newBucket(t)
-	b.publish(t, inviteA, b.spec("iam", "1", "iam spec"), b.spec("dns", "1", "dns spec"))
-	_, err := Sync(context.Background(), cfg, inviteA)
-	require.NoError(t, err)
-
-	b.publish(t, inviteA, b.spec("iam", "2", "iam spec v2"))
-	result, err := Sync(context.Background(), cfg, inviteA)
-	require.NoError(t, err)
-
-	assert.Equal(t, []string{"iam"}, result.Installed)
-	files := installed(t, cfg.Dir)
-	assert.Equal(t, "iam spec v2", files["iam.openapi.yaml"])
-	assert.NotContains(t, files, "dns.openapi.yaml")
-}
-
-func TestSyncKeepsTheInstalledSpecsOnFailure(t *testing.T) {
-	cases := map[string]func(t *testing.T, b *bucket, cfg *Config){
-		"checksum mismatch": func(t *testing.T, b *bucket, cfg *Config) {
-			b.publish(t, inviteA, b.spec("iam", "2", "iam spec v2", func(s *ManifestSpec) { s.SHA256 = checksum("something else") }))
-		},
-		"not signed": func(t *testing.T, b *bucket, cfg *Config) {
-			spec := b.spec("iam", "2", "iam spec v2")
-			spec.KeyID, spec.Signature = "", ""
-			b.publish(t, inviteA, spec)
-		},
-		"signed fields changed": func(t *testing.T, b *bucket, cfg *Config) {
-			spec := b.spec("iam", "2", "iam spec v2", minVersion("0.70.0"))
-			spec.MinCLIVersion = ""
-			b.publish(t, inviteA, spec)
-		},
-		"module renamed": func(t *testing.T, b *bucket, cfg *Config) {
-			spec := b.spec("dns", "2", "dns spec")
-			spec.Module = "iam"
-			b.publish(t, inviteA, spec)
-		},
-		"signed with an unknown key": func(t *testing.T, b *bucket, cfg *Config) {
-			_, other, _ := ed25519.GenerateKey(nil)
-			spec := b.spec("iam", "2", "iam spec v2")
-			b.publish(t, inviteA, Sign(other, "other", spec))
-		},
-		"signed with another key under a trusted id": func(t *testing.T, b *bucket, cfg *Config) {
-			_, other, _ := ed25519.GenerateKey(nil)
-			spec := b.spec("iam", "2", "iam spec v2")
-			b.publish(t, inviteA, Sign(other, testKeyID, spec))
-		},
-		"spec does not load": func(t *testing.T, b *bucket, cfg *Config) {
-			b.publish(t, inviteA, b.spec("iam", "2", "iam spec v2"))
-			cfg.Check = func(preview.Package) error { return errors.New("spec has no operations") }
-		},
-		"spec missing in the bucket": func(t *testing.T, b *bucket, cfg *Config) {
-			spec := b.spec("iam", "2", "iam spec v2")
-			delete(b.files, spec.Path)
-			b.publish(t, inviteA, spec)
-		},
-		"module listed twice": func(t *testing.T, b *bucket, cfg *Config) {
-			b.publish(t, inviteA, b.spec("iam", "2", "iam spec v2"), b.spec("iam", "3", "iam spec v3"))
-		},
-		"invalid module name": func(t *testing.T, b *bucket, cfg *Config) {
-			b.publish(t, inviteA, b.spec("../iam", "2", "iam spec v2"))
-		},
-		"source fails": func(t *testing.T, b *bucket, cfg *Config) {
-			b.status[ManifestPath(inviteA)] = http.StatusInternalServerError
-		},
+func TestTenantKeyRefuses(t *testing.T) {
+	for name, tenant := range map[string]string{
+		"not a UUID":          "acme",
+		"UUID v1":             "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+		"not the RFC variant": "3f2a9c1e-5b7d-4e8a-cc0f-1a2b3c4d5e6f",
+	} {
+		_, err := TenantKey(EnvProd, tenant)
+		assert.ErrorContains(t, err, "not a UUID v4", name)
 	}
 
-	for name, breakIt := range cases {
-		t.Run(name, func(t *testing.T) {
-			b, cfg := newBucket(t)
-			b.publish(t, inviteA, b.spec("iam", "1", "iam spec"))
-			_, err := Sync(context.Background(), cfg, inviteA)
-			require.NoError(t, err)
-			before := installed(t, cfg.Dir)
+	_, err := TenantKey("dev", tenantA)
+	assert.ErrorContains(t, err, "unknown environment")
+}
 
-			breakIt(t, b, &cfg)
-			_, err = Sync(context.Background(), cfg, inviteA)
-			assert.Error(t, err)
-			assert.Equal(t, before, installed(t, cfg.Dir))
-		})
+func TestManifestPathHidesTheTenant(t *testing.T) {
+	path := manifestPath(t, EnvProd, tenantA)
+	assert.Regexp(t, `^alpha/tenants/[0-9a-f]{64}\.json$`, path)
+	assert.NotContains(t, path, tenantA)
+	assert.NotContains(t, path, strings.ReplaceAll(tenantA, "-", ""))
+	assert.NotEqual(t, path, manifestPath(t, EnvProd, tenantB))
+	assert.NotEqual(t, path, manifestPath(t, EnvPreProd, tenantA))
+}
+
+func TestCurrentEnv(t *testing.T) {
+	assert.Equal(t, EnvPreProd, CurrentEnv("pre-prod"))
+	assert.Equal(t, EnvProd, CurrentEnv("prod"))
+	assert.Equal(t, EnvProd, CurrentEnv(""), "as the login does")
+	assert.Equal(t, EnvProd, CurrentEnv("api.magalu.cloud"))
+}
+
+func TestManifestFindsVersions(t *testing.T) {
+	b, _ := newBucket(t)
+	older := b.spec("iam", "2026-10-01", "iam spec v1")
+	newer := b.spec("iam", "2026-10-08", "iam spec v2")
+	dns := b.spec("dns", "1", "dns spec")
+	manifest := Manifest{Specs: []ManifestSpec{newer, dns, older}}
+	require.NoError(t, manifest.Validate())
+
+	found, ok := manifest.Find("iam", "")
+	assert.True(t, ok)
+	assert.Equal(t, newer, found, "no version means the newest")
+
+	found, ok = manifest.Find("iam", "2026-10-01")
+	assert.True(t, ok)
+	assert.Equal(t, older, found)
+
+	_, ok = manifest.Find("iam", "2026-10-02")
+	assert.False(t, ok)
+	_, ok = manifest.Find("connect", "")
+	assert.False(t, ok)
+
+	assert.Equal(t, []ManifestSpec{dns, newer}, manifest.Latest())
+}
+
+func TestManifestValidateRefuses(t *testing.T) {
+	b, _ := newBucket(t)
+	for name, change := range map[string]func(*ManifestSpec){
+		"invalid module":       func(s *ManifestSpec) { s.Module = "../iam" },
+		"no version":           func(s *ManifestSpec) { s.Version = "" },
+		"version with a slash": func(s *ManifestSpec) { s.Version = "1/2" },
+		"no publication date":  func(s *ManifestSpec) { s.PublishedAt = "" },
+		"date outside UTC":     func(s *ManifestSpec) { s.PublishedAt = "2026-10-18T09:00:00-03:00" },
+		"date with fractions":  func(s *ManifestSpec) { s.PublishedAt = "2026-10-18T12:00:00.5Z" },
+	} {
+		spec := b.spec("iam", "1", "iam spec")
+		change(&spec)
+		assert.Error(t, Manifest{Specs: []ManifestSpec{spec}}.Validate(), name)
 	}
-}
 
-func TestSyncSkipsSpecsForNewerCLIs(t *testing.T) {
-	b, cfg := newBucket(t)
-	newer := b.spec("dns", "1", "dns spec", minVersion("0.70.0"))
-	same := b.spec("iam", "1", "iam spec", minVersion("0.66.0"))
-	b.publish(t, inviteA, newer, same)
-
-	result, err := Sync(context.Background(), cfg, inviteA)
-	require.NoError(t, err)
-	assert.Equal(t, []string{"iam"}, result.Installed)
-	require.Len(t, result.Skipped, 1)
-	assert.Equal(t, "dns", result.Skipped[0].Module)
-	assert.Contains(t, result.Skipped[0].Reason, "0.70.0")
-
-	printed, err := json.Marshal(result)
-	require.NoError(t, err)
-	assert.JSONEq(t, `{"installed": ["iam"]}`, string(printed))
-
-	cfg.CLIVersion = "dev"
-	result, err = Sync(context.Background(), cfg, inviteA)
-	require.NoError(t, err)
-	assert.Equal(t, []string{"dns", "iam"}, result.Installed)
-}
-
-func TestSyncRefusesBadInput(t *testing.T) {
-	_, cfg := newBucket(t)
-
-	_, err := Sync(context.Background(), cfg, "my-invite")
-	assert.ErrorContains(t, err, "not an alpha invite")
-
-	cfg.BaseURL = ""
-	_, err = Sync(context.Background(), cfg, inviteA)
-	assert.ErrorContains(t, err, "no alpha source")
-}
-
-func TestResolveInvite(t *testing.T) {
-	b, cfg := newBucket(t)
-	b.publish(t, inviteA, b.spec("iam", "1", "iam spec"))
-
-	_, err := resolveInvite(cfg.Dir, "")
-	assert.ErrorContains(t, err, "include your invite")
-
-	_, err = Sync(context.Background(), cfg, inviteA)
-	require.NoError(t, err)
-
-	invite, err := resolveInvite(cfg.Dir, "")
-	require.NoError(t, err)
-	assert.Equal(t, inviteA, invite, "the invite of the last sync")
-
-	invite, err = resolveInvite(cfg.Dir, inviteB)
-	require.NoError(t, err)
-	assert.Equal(t, inviteB, invite, "the given one wins")
-}
-
-func TestSyncErrorsLeaveTheInviteOut(t *testing.T) {
-	b, cfg := newBucket(t)
-	b.status[ManifestPath(inviteA)] = http.StatusInternalServerError
-	_, err := Sync(context.Background(), cfg, inviteA)
-	require.Error(t, err)
-	assert.NotContains(t, err.Error(), inviteA)
-
-	b.status = map[string]int{}
-	b.files[ManifestPath(inviteA)] = "not json"
-	_, err = Sync(context.Background(), cfg, inviteA)
-	require.Error(t, err)
-	assert.NotContains(t, err.Error(), inviteA)
+	spec := b.spec("iam", "1", "iam spec")
+	assert.ErrorContains(t, Manifest{Specs: []ManifestSpec{spec, spec}}.Validate(), "iam@1 is listed twice")
 }
 
 func TestSignedPayloadCoversWhatMatters(t *testing.T) {
-	base := ManifestSpec{Module: "iam", Path: "a", SHA256: "ABC", MinCLIVersion: "0.66.0", KeyID: "k"}
+	base := ManifestSpec{Module: "iam", Version: "1", PublishedAt: "2026-10-18T12:00:00Z", Env: EnvProd, Path: "a", SHA256: "ABC", MinCLIVersion: "0.66.0", KeyID: "k"}
 
 	moved := base
 	moved.Path = "b"
@@ -336,6 +244,9 @@ func TestSignedPayloadCoversWhatMatters(t *testing.T) {
 
 	for name, change := range map[string]func(*ManifestSpec){
 		"module":          func(s *ManifestSpec) { s.Module = "dns" },
+		"version":         func(s *ManifestSpec) { s.Version = "2" },
+		"published_at":    func(s *ManifestSpec) { s.PublishedAt = "2026-10-19T12:00:00Z" },
+		"env":             func(s *ManifestSpec) { s.Env = EnvPreProd },
 		"sha256":          func(s *ManifestSpec) { s.SHA256 = "abd" },
 		"min_cli_version": func(s *ManifestSpec) { s.MinCLIVersion = "" },
 		"key_id":          func(s *ManifestSpec) { s.KeyID = "other" },
@@ -361,28 +272,4 @@ func TestTrustedKeysParse(t *testing.T) {
 
 	_, err = ParseKeys([]byte(`{"bad": "abcd"}`))
 	assert.ErrorContains(t, err, "not an Ed25519 public key")
-}
-
-func TestVerifiedStoreChecksEveryRead(t *testing.T) {
-	b, cfg := newBucket(t)
-	b.publish(t, inviteA, b.spec("iam", "1", "iam spec"))
-	_, err := Sync(context.Background(), cfg, inviteA)
-	require.NoError(t, err)
-
-	store := VerifiedStore(fsstore.NewDir(cfg.Dir), cfg.Dir, cfg.Keys)
-
-	pkg, err := store.Read("iam")
-	require.NoError(t, err)
-	assert.Equal(t, "iam spec", string(pkg.Spec))
-
-	require.NoError(t, os.WriteFile(filepath.Join(cfg.Dir, "iam.openapi.yaml"), []byte("changed"), 0o644))
-	_, err = store.Read("iam")
-	assert.ErrorContains(t, err, "changed since it was synced")
-
-	require.NoError(t, os.WriteFile(filepath.Join(cfg.Dir, "dns.openapi.yaml"), []byte("dns spec"), 0o644))
-	_, err = store.Read("dns")
-	assert.ErrorContains(t, err, "was not installed by 'mgc alpha sync'")
-
-	_, err = VerifiedStore(fsstore.NewDir(cfg.Dir), cfg.Dir, Keys{}).Read("iam")
-	assert.ErrorContains(t, err, "does not know")
 }

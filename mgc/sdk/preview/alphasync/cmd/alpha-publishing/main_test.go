@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
+	"time"
 
 	"github.com/MagaluCloud/magalu/mgc/sdk/preview/alphasync"
 	"github.com/stretchr/testify/assert"
@@ -67,8 +67,8 @@ func TestKeygenThenSign(t *testing.T) {
 
 	signFoo := func() alphasync.ManifestSpec {
 		out.Reset()
-		require.NoError(t, run([]string{"sign", "--keys", keys, "--key", private, "--module", "foo",
-			"--spec", spec, "--min-cli-version", "0.67.0"}, &out))
+		require.NoError(t, run([]string{"sign", "--keys", keys, "--key", private, "--module", "foo", "--version", "2026-10-18",
+			"--env", "prod", "--spec", spec, "--min-cli-version", "0.67.0"}, &out))
 		var item alphasync.ManifestSpec
 		require.NoError(t, json.Unmarshal(out.Bytes(), &item))
 		return item
@@ -76,6 +76,9 @@ func TestKeygenThenSign(t *testing.T) {
 
 	item := signFoo()
 	assert.Equal(t, "foo", item.Module)
+	assert.Equal(t, "2026-10-18", item.Version)
+	assert.WithinDuration(t, time.Now(), mustParse(t, item.PublishedAt), time.Minute)
+	assert.Equal(t, "prod", item.Env)
 	assert.Regexp(t, `^alpha/specs/foo/[0-9a-f-]{36}\.openapi\.yaml$`, item.Path, "a path that cannot be guessed")
 	assert.NotEqual(t, item.Path, signFoo().Path, "a new path for every signature")
 	assert.Equal(t, "2026-10", item.KeyID)
@@ -117,25 +120,27 @@ func TestSignRefuses(t *testing.T) {
 	badKey := write("bad.key", "not hex\n")
 
 	sign := func(key, module, specFile string) error {
-		return run([]string{"sign", "--keys", keys, "--key", key, "--module", module, "--spec", specFile}, &bytes.Buffer{})
+		return run([]string{"sign", "--keys", keys, "--key", key, "--module", module, "--version", "1", "--env", "prod", "--spec", specFile}, &bytes.Buffer{})
 	}
 	assert.ErrorContains(t, sign(otherKey, "foo", spec), "does not pair", "a mistyped key is caught")
 	assert.ErrorContains(t, sign(badKey, "foo", spec), "does not hold a private key")
 	assert.ErrorContains(t, sign(private, "foo", internal), "the CLI would refuse this spec")
 	assert.ErrorContains(t, sign(private, "../foo", spec), "not a valid name")
 	assert.NoError(t, sign(private, "foo", spec))
+
+	err := run([]string{"sign", "--keys", keys, "--key", private, "--module", "foo", "--version", "1", "--spec", spec}, &bytes.Buffer{})
+	assert.ErrorContains(t, err, "--env", "the environment is never guessed")
+	err = run([]string{"sign", "--keys", keys, "--key", private, "--module", "foo", "--version", "1", "--env", "dev", "--spec", spec}, &bytes.Buffer{})
+	assert.ErrorContains(t, err, "unknown environment")
+	err = run([]string{"sign", "--keys", keys, "--key", private, "--module", "foo", "--env", "prod", "--spec", spec}, &bytes.Buffer{})
+	assert.ErrorContains(t, err, "--version", "customers pin by version, so it is never left out")
+	err = run([]string{"sign", "--keys", keys, "--key", private, "--module", "foo", "--version", "1@2", "--env", "prod", "--spec", spec}, &bytes.Buffer{})
+	assert.ErrorContains(t, err, "not valid")
 }
 
-func TestInvite(t *testing.T) {
-	var out bytes.Buffer
-	require.NoError(t, run([]string{"invite"}, &out))
-	invite := strings.TrimSpace(out.String())
-	_, err := alphasync.NormalizeInvite(invite)
-	assert.NoError(t, err)
-
-	out.Reset()
-	require.NoError(t, run([]string{"invite"}, &out))
-	assert.NotEqual(t, invite, strings.TrimSpace(out.String()))
-
-	assert.Error(t, run([]string{"invite", "acme"}, &bytes.Buffer{}))
+func mustParse(t *testing.T, at string) time.Time {
+	t.Helper()
+	parsed, err := time.Parse(time.RFC3339, at)
+	require.NoError(t, err)
+	return parsed
 }

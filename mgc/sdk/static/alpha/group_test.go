@@ -41,9 +41,9 @@ type acceptAll struct{}
 
 func (acceptAll) Validate(preview.Level, preview.Package) error { return nil }
 
-func newSync() core.Executor {
+func newCommand() core.Executor {
 	return core.NewStaticExecuteSimple(
-		core.DescriptorSpec{Name: "sync", Description: "Fake sync"},
+		core.DescriptorSpec{Name: "status", Description: "A command that ships with the CLI"},
 		func(context.Context) (core.Value, error) { return nil, nil },
 	)
 }
@@ -70,7 +70,7 @@ func TestAlphaIsHiddenUntilSpecsAreInstalled(t *testing.T) {
 			func() []core.Grouper {
 				return []core.Grouper{
 					preview.NewGroup(preview.Alpha, installed, acceptAll{}, &prefix),
-					NewRoot(newSync()),
+					NewRoot(newCommand()),
 				}
 			},
 		)
@@ -80,15 +80,15 @@ func TestAlphaIsHiddenUntilSpecsAreInstalled(t *testing.T) {
 	if !alpha.IsInternal() {
 		t.Error("without installed specs alpha should be hidden")
 	}
-	if _, err := alpha.GetChildByName("sync"); err != nil {
-		t.Errorf("hidden alpha should still run sync: %v", err)
+	if _, err := alpha.GetChildByName("status"); err != nil {
+		t.Errorf("hidden alpha should still run its own commands: %v", err)
 	}
 
 	alpha = alphaOf(t, newRoot(memStore{"foo": fooSpec}))
 	if alpha.IsInternal() {
 		t.Error("with installed specs alpha should be visible")
 	}
-	for _, name := range []string{"foo", "sync"} {
+	for _, name := range []string{"foo", "status"} {
 		if _, err := alpha.GetChildByName(name); err != nil {
 			t.Errorf("alpha should have %q: %v", name, err)
 		}

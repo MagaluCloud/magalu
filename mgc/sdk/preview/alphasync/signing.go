@@ -2,22 +2,16 @@ package alphasync
 
 import (
 	"crypto/ed25519"
-	"crypto/sha256"
 	_ "embed"
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/fs"
-	"os"
-	"path/filepath"
 	"strings"
-
-	"github.com/MagaluCloud/magalu/mgc/sdk/preview"
 )
 
-const signedPrefix = "mgc-alpha-spec-v1\n"
+const signedPrefix = "mgc-alpha-spec-v3\n"
 
 //go:embed trusted_keys.json
 var trustedKeysJSON []byte
@@ -49,9 +43,13 @@ func ParseKeys(data []byte) (Keys, error) {
 	return keys, nil
 }
 
+// The path is left out: the sha256 already pins what is downloaded.
 type signedFields struct {
 	KeyID         string `json:"key_id"`
 	Module        string `json:"module"`
+	Version       string `json:"version"`
+	PublishedAt   string `json:"published_at"`
+	Env           string `json:"env"`
 	SHA256        string `json:"sha256"`
 	MinCLIVersion string `json:"min_cli_version"`
 }
@@ -60,6 +58,9 @@ func SignedPayload(spec ManifestSpec) []byte {
 	fields, err := json.Marshal(signedFields{
 		KeyID:         spec.KeyID,
 		Module:        spec.Module,
+		Version:       spec.Version,
+		PublishedAt:   spec.PublishedAt,
+		Env:           spec.Env,
 		SHA256:        strings.ToLower(spec.SHA256),
 		MinCLIVersion: spec.MinCLIVersion,
 	})
@@ -102,56 +103,4 @@ func (k Keys) KeyIDOf(private ed25519.PrivateKey) (string, error) {
 		}
 	}
 	return "", errors.New("this private key does not pair with any trusted key")
-}
-
-func VerifiedStore(store preview.Store, dir string, keys Keys) preview.Store {
-	return &verifiedStore{Store: store, dir: dir, keys: keys}
-}
-
-type verifiedStore struct {
-	preview.Store
-	dir  string
-	keys Keys
-}
-
-func (s *verifiedStore) Read(name string) (preview.Package, error) {
-	pkg, err := s.Store.Read(name)
-	if err != nil {
-		return pkg, err
-	}
-
-	index, err := readIndex(s.dir)
-	if err != nil {
-		return preview.Package{}, err
-	}
-	spec, ok := index[name]
-	if !ok || spec.Module != name {
-		return preview.Package{}, errors.New("it was not installed by 'mgc alpha sync': run it again")
-	}
-	if err := s.keys.Verify(spec); err != nil {
-		return preview.Package{}, err
-	}
-
-	sum := sha256.Sum256(pkg.Spec)
-	if hex.EncodeToString(sum[:]) != strings.ToLower(spec.SHA256) {
-		return preview.Package{}, errors.New("it changed since it was synced: run 'mgc alpha sync'")
-	}
-	return pkg, nil
-}
-
-func readIndex(dir string) (map[string]ManifestSpec, error) {
-	file := filepath.Join(dir, indexFile)
-	data, err := os.ReadFile(file)
-	if errors.Is(err, fs.ErrNotExist) {
-		return nil, nil
-	}
-	if err != nil {
-		return nil, err
-	}
-
-	var index map[string]ManifestSpec
-	if err := json.Unmarshal(data, &index); err != nil {
-		return nil, fmt.Errorf("%s is damaged: run 'mgc alpha sync': %w", file, err)
-	}
-	return index, nil
 }

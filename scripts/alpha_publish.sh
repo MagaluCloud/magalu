@@ -6,11 +6,11 @@ BASEDIR=$(dirname $0)
 ROOTDIR=$(builtin cd $BASEDIR/..; pwd)
 KEYS=$ROOTDIR/mgc/sdk/preview/alphasync/trusted_keys.json
 MGC=${MGC:-mgc}
-BUCKET=${BUCKET:-mgc-cli-preview-public}
-BASE_URL=${BASE_URL:-https://$BUCKET.br-ne1.magaluobjects.com}
+BUCKET=${BUCKET:-mgc-cli-preview}
+BASE_URL=${BASE_URL:-https://$BUCKET.br-se1.magaluobjects.com}
 
-if [ $# -eq 0 ] || { [ "$1" != invite ] && [ "$1" != grant ] && [ "$1" != revoke ]; }; then
-    echo "usage: $0 invite|grant|revoke [flags]" >&2
+if [ $# -eq 0 ] || { [ "$1" != grant ] && [ "$1" != revoke ]; }; then
+    echo "usage: $0 grant|revoke [flags]" >&2
     exit 2
 fi
 COMMAND=$1
@@ -19,11 +19,6 @@ shift
 WORK=$(mktemp -d)
 trap 'rm -rf "$WORK"' EXIT
 (builtin cd $ROOTDIR/mgc/sdk && go build -o "$WORK/alpha-publishing" ./preview/alphasync/cmd/alpha-publishing)
-
-if [ "$COMMAND" = invite ]; then
-    "$WORK/alpha-publishing" invite "$@"
-    exit 0
-fi
 
 DRY_RUN=false
 YES=false

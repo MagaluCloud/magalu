@@ -112,29 +112,52 @@ func (o *Sdk) newOpenApiSource() core.Grouper {
 	return openapi.NewSource(loader, &extensionPrefix)
 }
 
+// The hidden "alpha" goes last: it must give way to the visible one that
+// installed alpha modules bring.
 func (o *Sdk) newPreviewSources() []core.Grouper {
 	extensionPrefix := "x-mgc"
-	validator := specvalidator.New()
-
-	beta := fsstore.New(openapi.BetaSpecs(), "")
-	alphaDir := o.alphaDir()
-	alpha := serverpin.Wrap(alphasync.VerifiedStore(fsstore.NewDir(alphaDir), alphaDir, alphasync.TrustedKeys()))
-
 	return []core.Grouper{
-		preview.NewGroup(preview.Beta, beta, validator, &extensionPrefix),
-		preview.NewGroup(preview.Alpha, alpha, validator, &extensionPrefix),
+		preview.NewGroup(preview.Beta, betaStore(), specvalidator.New(), &extensionPrefix),
+		newAlphaGroup(o.alphaStore()),
+		alphasync.NewPreviewRoot(o.alphaConfig()),
+		alpha.NewRoot(),
 	}
 }
 
-func (o *Sdk) alphaDir() string {
-	return filepath.Join(o.ProfileManager().Dir(), ".preview", preview.Alpha.Name)
+func betaStore() preview.Store {
+	return fsstore.New(openapi.BetaSpecs(), "")
 }
 
-func (o *Sdk) newAlphaRoot() core.Grouper {
+func (o *Sdk) alphaStore() preview.Store {
+	return alphasync.InstalledStore(o.alphaDir(), alphasync.TrustedKeys())
+}
+
+func newAlphaGroup(store preview.Store) core.Grouper {
+	extensionPrefix := "x-mgc"
+	return preview.NewGroup(preview.Alpha, serverpin.Wrap(store), specvalidator.New(), &extensionPrefix)
+}
+
+// Each environment has its own alpha modules: one never shows the other's.
+func (o *Sdk) alphaDir() string {
+	var env string
+	_ = o.Config().Get("env", &env)
+	return filepath.Join(o.ProfileManager().Dir(), ".preview", preview.Alpha.Name, alphasync.CurrentEnv(env))
+}
+
+// CheckAlphaUpdates tells, at most once a day, when the installed alpha modules
+// have a newer version or were taken away. It tries once: the retries would
+// sleep past the deadline of the check.
+func (o *Sdk) CheckAlphaUpdates(ctx context.Context) {
+	cfg := o.alphaConfig()
+	cfg.HTTPClient = &http.Client{Transport: newSingleTryTransport(o.version)}
+	alphasync.CheckUpdates(ctx, cfg)
+}
+
+func (o *Sdk) alphaConfig() alphasync.Config {
 	extensionPrefix := "x-mgc"
 	validator := specvalidator.New()
 
-	sync := alphasync.NewCommand(alphasync.Config{
+	return alphasync.Config{
 		BaseURL:    alphaBaseURL(),
 		Dir:        o.alphaDir(),
 		CLIVersion: o.version,
@@ -148,8 +171,8 @@ func (o *Sdk) newAlphaRoot() core.Grouper {
 			pkg.Spec = pinned
 			return preview.Check(preview.Alpha, pkg, validator, &extensionPrefix)
 		},
-	})
-	return alpha.NewRoot(sync)
+		Group: newAlphaGroup,
+	}
 }
 
 func alphaBaseURL() string {
@@ -175,14 +198,7 @@ func (o *Sdk) Group() core.Grouper {
 				Description: "All MagaLu Groups & Executors",
 			},
 			func() []core.Grouper {
-				official := []core.Grouper{
-					static.GetGroup(),
-					o.newOpenApiSource(),
-				}
-				roots := append(official, o.newPreviewSources()...)
-				// Last on purpose: the hidden "alpha" must give way to the
-				// visible one that installed alpha specs bring.
-				return append(roots, o.newAlphaRoot())
+				return append([]core.Grouper{static.GetGroup(), o.newOpenApiSource()}, o.newPreviewSources()...)
 			},
 		)
 	}
@@ -190,13 +206,16 @@ func (o *Sdk) Group() core.Grouper {
 }
 
 func newHttpTransport(version string) http.RoundTripper {
+	return mgcHttpPkg.NewDefaultClientRetryer(newSingleTryTransport(version))
+}
+
+func newSingleTryTransport(version string) http.RoundTripper {
 	userAgent := fmt.Sprintf("MgcCLI/%s (%s; %s)", version, runtime.GOOS, runtime.GOARCH)
 	// To avoid creating a transport with zero values, we leverage
 	// DefaultTransport (exemple: `Proxy: ProxyFromEnvironment`)
 	transport := mgcHttpPkg.DefaultTransport()
 	transport = mgcHttpPkg.NewDefaultClientLogger(transport)
 	transport = newDefaultSdkTransport(transport, userAgent)
-	transport = mgcHttpPkg.NewDefaultClientRetryer(transport)
 	return transport
 }
 

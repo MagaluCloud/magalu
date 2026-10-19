@@ -12,6 +12,7 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/MagaluCloud/magalu/mgc/sdk/preview"
 	"github.com/MagaluCloud/magalu/mgc/sdk/preview/alphasync"
@@ -32,7 +33,7 @@ func main() {
 
 func run(args []string, stdout io.Writer) error {
 	if len(args) == 0 {
-		return errors.New("usage: alpha-publishing keygen|sign|invite|grant|revoke [flags]")
+		return errors.New("usage: alpha-publishing keygen|sign|grant|revoke [flags]")
 	}
 
 	switch args[0] {
@@ -40,14 +41,12 @@ func run(args []string, stdout io.Writer) error {
 		return keygen(args[1:], stdout)
 	case "sign":
 		return sign(args[1:], stdout)
-	case "invite":
-		return invite(args[1:], stdout)
 	case "grant":
 		return grant(args[1:], stdout)
 	case "revoke":
 		return revoke(args[1:], stdout)
 	default:
-		return fmt.Errorf("unknown command %q: use keygen, sign, invite, grant or revoke", args[0])
+		return fmt.Errorf("unknown command %q: use keygen, sign, grant or revoke", args[0])
 	}
 }
 
@@ -104,15 +103,23 @@ func sign(args []string, stdout io.Writer) error {
 	keysFile := flags.String("keys", "", "trusted keys file the CLI embeds")
 	keyFile := flags.String("key", "", "private key file")
 	module := flags.String("module", "", "command under 'mgc alpha', such as iam")
+	version := flags.String("version", "", "version customers pin with 'mgc preview install <module>@<version>', such as 2026-10-18")
+	env := flags.String("env", "", "environment the spec is for: prod or pre-prod")
 	specFile := flags.String("spec", "", "compiled spec")
 	minCLIVersion := flags.String("min-cli-version", "", "oldest mgc that runs the spec, when it needs one")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	if *keysFile == "" || *keyFile == "" || *module == "" || *specFile == "" {
-		return errors.New("sign needs --keys, --key, --module and --spec")
+	if *keysFile == "" || *keyFile == "" || *module == "" || *version == "" || *env == "" || *specFile == "" {
+		return errors.New("sign needs --keys, --key, --module, --version, --env and --spec")
 	}
 	if err := alphasync.CheckModule(*module); err != nil {
+		return err
+	}
+	if err := alphasync.CheckVersion(*version); err != nil {
+		return err
+	}
+	if err := alphasync.CheckEnv(*env); err != nil {
 		return err
 	}
 	if *minCLIVersion != "" {
@@ -149,6 +156,9 @@ func sign(args []string, stdout io.Writer) error {
 	sum := sha256.Sum256(spec)
 	item := alphasync.Sign(private, keyID, alphasync.ManifestSpec{
 		Module:        *module,
+		Version:       *version,
+		PublishedAt:   time.Now().UTC().Format(time.RFC3339),
+		Env:           *env,
 		Path:          "alpha/specs/" + *module + "/" + uuid.NewString() + ".openapi.yaml",
 		SHA256:        hex.EncodeToString(sum[:]),
 		MinCLIVersion: *minCLIVersion,
@@ -160,18 +170,6 @@ func sign(args []string, stdout io.Writer) error {
 	encoder := json.NewEncoder(stdout)
 	encoder.SetIndent("", "  ")
 	return encoder.Encode(item)
-}
-
-func invite(args []string, stdout io.Writer) error {
-	flags := flag.NewFlagSet("invite", flag.ContinueOnError)
-	if err := flags.Parse(args); err != nil {
-		return err
-	}
-	if flags.NArg() > 0 {
-		return errors.New("invite takes no arguments")
-	}
-	_, err := fmt.Fprintln(stdout, alphasync.NewInvite())
-	return err
 }
 
 func checkSpec(module string, spec []byte) error {

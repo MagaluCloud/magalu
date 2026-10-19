@@ -171,6 +171,9 @@ func handleExecutor(
 			sdk.Config().Set,
 		).
 			CheckVersion(sdk.GetVersion(), argParser.MainArgs()...)
+		if isAlphaCommand(cmd) {
+			sdk.CheckAlphaUpdates(ctx)
+		}
 	}
 
 	if !getRawOutputFlag(cmd) {

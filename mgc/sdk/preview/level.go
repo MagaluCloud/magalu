@@ -8,7 +8,7 @@ type Level struct {
 var (
 	Beta = Level{
 		Name:    "beta",
-		Summary: "Preview commands released",
+		Summary: "Commands in public preview",
 	}
 	Alpha = Level{
 		Name:    "alpha",

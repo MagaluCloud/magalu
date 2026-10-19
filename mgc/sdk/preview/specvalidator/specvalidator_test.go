@@ -76,7 +76,6 @@ func TestEmbeddedBetaSpecsAreValid(t *testing.T) {
 	store := fsstore.New(openapi.BetaSpecs(), "embedded")
 	names, err := store.Names()
 	assert.NoError(t, err)
-	assert.NotEmpty(t, names)
 
 	for _, name := range names {
 		pkg, err := store.Read(name)

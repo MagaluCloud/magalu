@@ -12,9 +12,8 @@ func NewRoot(children ...core.Descriptor) core.Grouper {
 	group := core.NewStaticGroup(
 		core.DescriptorSpec{
 			Name:        Name,
-			GroupID:     preview.GroupID,
 			Summary:     preview.Alpha.Summary,
-			Description: "Early preview commands, for customers invited by Magalu. Run 'mgc alpha sync <invite>' to download the ones your invite gives access to",
+			Description: "Early preview commands, for tenants invited. 'mgc preview list' shows the ones your tenant was given, and 'mgc preview install' adds them",
 			IsInternal:  utils.BoolPtr(true),
 		},
 		func() []core.Descriptor { return children },
