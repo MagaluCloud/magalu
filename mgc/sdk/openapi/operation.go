@@ -14,6 +14,7 @@ import (
 
 	"github.com/MagaluCloud/magalu/mgc/core"
 	mgcAuthPkg "github.com/MagaluCloud/magalu/mgc/core/auth"
+	mgcConfigPkg "github.com/MagaluCloud/magalu/mgc/core/config"
 	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
 	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 	"github.com/MagaluCloud/magalu/mgc/core/utils"
@@ -591,7 +592,6 @@ func isSupportedScheme(schema string) bool {
 	}
 
 	return false
-
 }
 
 const apiKeyAuthMethod = "apikeyauth"
@@ -654,7 +654,26 @@ func (o *operation) createHttpRequest(
 		return
 	}
 
+	o.setProjectHeader(ctx, req)
+
 	return
+}
+
+const projectHeader = "x-project-id"
+
+func (o *operation) setProjectHeader(ctx context.Context, req *http.Request) {
+	if o.server == nil || !o.server.isProjectScoped() {
+		return
+	}
+
+	config := mgcConfigPkg.FromContext(ctx)
+	if config == nil {
+		return
+	}
+
+	if id := config.Project(); id != "" {
+		req.Header.Set(projectHeader, id)
+	}
 }
 
 func (o *operation) getResponseSchema(resp *http.Response) *core.Schema {

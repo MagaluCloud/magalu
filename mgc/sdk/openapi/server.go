@@ -22,6 +22,14 @@ func newServer(servers openapi3.Servers, extensionPrefix *string) *server {
 	return &server{servers, extensionPrefix}
 }
 
+func (o *server) isProjectScoped() bool {
+	if len(o.servers) == 0 || o.servers[0] == nil {
+		return false
+	}
+	scoped, _ := getExtensionBool(o.extensionPrefix, "project-scope", o.servers[0].Extensions, false)
+	return scoped
+}
+
 func (o *server) addToSchema(schema *mgcSchemaPkg.Schema) error {
 	s := config.NetworkConfigSchema()
 	for k, v := range s.Properties {

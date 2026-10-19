@@ -120,7 +120,7 @@ func (o *Sdk) newPreviewSources() []core.Grouper {
 		preview.NewGroup(preview.Beta, betaStore(), specvalidator.New(), &extensionPrefix),
 		newAlphaGroup(o.alphaStore()),
 		alphasync.NewPreviewRoot(o.alphaConfig()),
-		alpha.NewRoot(),
+		alpha.GetRoot(),
 	}
 }
 

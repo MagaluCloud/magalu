@@ -13,6 +13,7 @@ info:
 servers:
 -   url: https://{env}/{region}/kubernetes
     description: NE-1 pre-prod
+    x-mgc-project-scope: true
     variables:
         region:
             description: Region to reach the service
