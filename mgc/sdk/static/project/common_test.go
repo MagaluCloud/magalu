@@ -2,11 +2,19 @@ package project
 
 import (
 	"context"
+	"encoding/base64"
+	"encoding/json"
 	"errors"
+	"net/http"
+	"net/http/httptest"
+	"os"
 	"strings"
 	"testing"
+	"time"
 
+	mgcAuthPkg "github.com/MagaluCloud/magalu/mgc/core/auth"
 	mgcConfigPkg "github.com/MagaluCloud/magalu/mgc/core/config"
+	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
 	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
 )
 
@@ -241,7 +249,7 @@ func TestResolveCurrentLookupFailed(t *testing.T) {
 	}
 }
 
-func TestCurrentWithoutProjectDoesNotLookUp(t *testing.T) {
+func TestCurrentWithoutProjectNorLoginWarns(t *testing.T) {
 	pm, _ := profile_manager.NewInMemoryProfileManager()
 	cfg := mgcConfigPkg.New(pm)
 	ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
@@ -251,8 +259,92 @@ func TestCurrentWithoutProjectDoesNotLookUp(t *testing.T) {
 		t.Fatalf("sem projeto nao e erro: %v", err)
 	}
 	if got.ID != "" || got.Warning != warnNoProject {
-		t.Errorf("deveria avisar que nao ha projeto, veio %+v", got)
+		t.Errorf("sem login nao da para achar o default, deveria avisar, veio %+v", got)
 	}
+}
+
+// Como a API responde: todo projeto tem type "project", e o default tem o id
+// do tenant.
+func TestDefaultProject(t *testing.T) {
+	available := []projectResult{
+		{ID: "9d8c7b6a-5f4e-4d3c-8b2a-1f0e9d8c7b6a", Name: "web", Type: "project"},
+		{ID: "3f2a9c1e-5b7d-4e8a-9c0f-1a2b3c4d5e6f", Name: "default", Type: "project"},
+	}
+	tenant := "3F2A9C1E-5B7D-4E8A-9C0F-1A2B3C4D5E6F"
+
+	got := defaultProject(available, tenant, nil)
+	if got.ID != available[1].ID || got.Name != "default" || got.Warning != "" {
+		t.Errorf("defaultProject = %+v, quer o projeto com o id do tenant, sem aviso", got)
+	}
+	if got := defaultProject(available[:1], tenant, nil); got.ID != "" || got.Warning != warnNoProject {
+		t.Errorf("sem o projeto do tenant na lista deveria avisar, veio %+v", got)
+	}
+	if got := defaultProject(available, "", nil); got.ID != "" || got.Warning != warnNoProject {
+		t.Errorf("sem tenant nao ha como achar o default, veio %+v", got)
+	}
+	if got := defaultProject(nil, tenant, errors.New("no network")); got.ID != "" || got.Warning != warnNoProject {
+		t.Errorf("falha na consulta deveria avisar, veio %+v", got)
+	}
+}
+
+func TestCurrentShowsTheDefaultWithoutSelectingIt(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != projectsPath {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+		_, _ = w.Write([]byte(`[{"id": "9d8c7b6a-5f4e-4d3c-8b2a-1f0e9d8c7b6a", "name": "web", "type": "project"},` +
+			`{"id": "3f2a9c1e-5b7d-4e8a-9c0f-1a2b3c4d5e6f", "name": "default", "type": "project"}]`))
+	}))
+	defer server.Close()
+
+	var notice strings.Builder
+	stderr = &notice
+	defer func() { stderr = os.Stderr }()
+
+	ctx, cfg := loggedIn(t)
+	network := projectConfig{NetworkConfig: mgcConfigPkg.NetworkConfig{ServerUrl: server.URL}}
+	got, err := current(ctx, struct{}{}, network)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if notice.String() != noticeDefault+"\n" {
+		t.Errorf("deveria avisar no stderr que nada foi selecionado, veio %q", notice.String())
+	}
+	if got.ID != "3f2a9c1e-5b7d-4e8a-9c0f-1a2b3c4d5e6f" || got.Name != "default" || got.Warning != "" {
+		t.Errorf("current = %+v, quer o projeto com o id do tenant", got)
+	}
+	if p := cfg.Project(); p != "" {
+		t.Errorf("mostrar o default nao seleciona nada, mas a config ficou com %q", p)
+	}
+
+	notice.Reset()
+	if err := cfg.SetProject("9d8c7b6a-5f4e-4d3c-8b2a-1f0e9d8c7b6a"); err != nil {
+		t.Fatal(err)
+	}
+	if got, err = current(ctx, struct{}{}, network); err != nil || got.Name != "web" {
+		t.Fatalf("current = %+v, %v, quer o projeto selecionado", got, err)
+	}
+	if notice.Len() != 0 {
+		t.Errorf("com projeto selecionado nao ha aviso, veio %q", notice.String())
+	}
+}
+
+// loggedIn gives a context with a login, whose token is never verified.
+func loggedIn(t *testing.T) (context.Context, *mgcConfigPkg.Config) {
+	t.Helper()
+	t.Setenv("MGC_PROJECT", "")
+	claims, _ := json.Marshal(map[string]any{"tenant": "GENPUB.3f2a9c1e-5b7d-4e8a-9c0f-1a2b3c4d5e6f", "exp": time.Now().Add(time.Hour).Unix()})
+	encode := base64.RawURLEncoding.EncodeToString
+	t.Setenv("MGC_ACCESS_TOKEN", encode([]byte(`{"alg":"none"}`))+"."+encode(claims)+".sig")
+
+	pm, _ := profile_manager.NewInMemoryProfileManager()
+	cfg := mgcConfigPkg.New(pm)
+	auth := mgcAuthPkg.New(nil, http.DefaultClient, pm, cfg)
+	ctx := mgcConfigPkg.NewContext(context.Background(), cfg)
+	ctx = mgcAuthPkg.NewContext(ctx, auth)
+	ctx = mgcHttpPkg.NewClientContext(ctx, mgcHttpPkg.NewClient(http.DefaultTransport))
+	return ctx, cfg
 }
 
 func TestCurrentDegradesWithoutAuth(t *testing.T) {
