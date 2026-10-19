@@ -28,6 +28,12 @@ func addChildDesc(sdk *mgcSdk.Sdk, parentCmd *cobra.Command, child core.Descript
 	}
 }
 
+type unknownCommandError struct{ name string }
+
+func (e unknownCommandError) Error() string {
+	return fmt.Sprintf("no command with name %q", e.name)
+}
+
 func findChildByNameOrAliases(cmdGrouper core.Grouper, childName string) (child core.Descriptor, err error) {
 	notFound, _ := cmdGrouper.VisitChildren(func(desc core.Descriptor) (run bool, err error) {
 		name, aliases := getCommandNameAndAliases(desc.Name())
@@ -46,7 +52,7 @@ func findChildByNameOrAliases(cmdGrouper core.Grouper, childName string) (child 
 	})
 
 	if notFound {
-		err = fmt.Errorf("no command with name %q", childName)
+		err = unknownCommandError{childName}
 		return
 	}
 

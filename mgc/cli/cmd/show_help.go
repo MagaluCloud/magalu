@@ -58,6 +58,9 @@ func showHelpForError(cmd *cobra.Command, args []string, err error) error {
 		// we can't call UsageString() on the root, we need to find the actual leaf command that failed:
 		subCmd, _, _ := cmd.Find(args)
 		cmd.PrintErrln(subCmd.UsageString())
+	case errors.As(err, new(unknownCommandError)) && isAlphaModule(cmd, args):
+		// Said for any name: an unreleased module is never confirmed.
+		return fmt.Errorf("%w: if your tenant was invited to this preview, see 'mgc preview list'", err)
 	default:
 		break
 	}

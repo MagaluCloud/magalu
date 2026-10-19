@@ -6,6 +6,7 @@
 
 servers:
 -   url: https://{env}/iam
+    x-mgc-project-scope: true
     variables:
         env:
             description: Environment to use

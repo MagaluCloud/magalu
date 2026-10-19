@@ -5,10 +5,12 @@ import (
 	"os"
 	"regexp"
 	"runtime"
+	"slices"
 
 	"github.com/MagaluCloud/magalu/mgc/cli/ui/progress_bar"
 	mgcLoggerPkg "github.com/MagaluCloud/magalu/mgc/core/logger"
 	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -62,18 +64,6 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	}
 	rootCmd.SetGlobalNormalizationFunc(normalizeFlagName)
 
-	rootCmd.AddGroup(&cobra.Group{
-		ID:    "catalog",
-		Title: "Products:",
-	})
-	rootCmd.AddGroup(&cobra.Group{
-		ID:    "settings",
-		Title: "Settings:",
-	})
-	rootCmd.AddGroup(&cobra.Group{
-		ID:    "other",
-		Title: "Other commands:",
-	})
 	rootCmd.SetHelpCommandGroupID("other")
 	rootCmd.SetCompletionCommandGroupID("other")
 	configureOutputColor(rootCmd)
@@ -107,6 +97,7 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	if loadErr != nil {
 		logger().Debugw("failed to load command tree", "error", loadErr)
 	}
+	addGroups(rootCmd, sdk)
 
 	defer func() {
 		_ = mgcLoggerPkg.Root().Sync()
@@ -120,6 +111,39 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 	// looking for flags like raw, debug, api-key, etc... ? see: mgc/cli/cmd/handle_executor.go - tip: there is a nice point to put an breakpoint
 	err = showHelpForError(rootCmd, mainArgs, err) // since we SilenceUsage and SilenceErrors
 	return err
+}
+
+// addGroups registers the sections of the help, which cobra checks only when it
+// runs. Preview is told by the commands loaded, not by a look of its own at the
+// installed modules: the two could disagree, and cobra panics on a command in
+// a group never registered, and prints the title of a group with nothing in it.
+func addGroups(rootCmd *cobra.Command, sdk *mgcSdk.Sdk) {
+	hasPreview := slices.ContainsFunc(rootCmd.Commands(), func(cmd *cobra.Command) bool {
+		return cmd.GroupID == preview.GroupID
+	})
+
+	rootCmd.AddGroup(&cobra.Group{
+		ID:    "catalog",
+		Title: "Products:",
+	})
+	if hasPreview {
+		rootCmd.AddGroup(&cobra.Group{
+			ID:    preview.GroupID,
+			Title: "Preview:",
+		})
+	}
+	rootCmd.AddGroup(&cobra.Group{
+		ID:    "settings",
+		Title: "Settings:",
+	})
+	rootCmd.AddGroup(&cobra.Group{
+		ID:    "other",
+		Title: "Other commands:",
+	})
+	// After the colors, which rewrite the same template.
+	if hasPreview {
+		installPreviewMarks(rootCmd, sdk.Group)
+	}
 }
 
 func setKeyPair(sdk *mgcSdk.Sdk) {

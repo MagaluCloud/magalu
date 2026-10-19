@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 	"runtime"
 
 	"github.com/MagaluCloud/magalu/mgc/core"
@@ -13,6 +15,11 @@ import (
 	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
 	"github.com/MagaluCloud/magalu/mgc/core/profile_manager"
 	"github.com/MagaluCloud/magalu/mgc/sdk/openapi"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview/alphasync"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview/fsstore"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview/serverpin"
+	"github.com/MagaluCloud/magalu/mgc/sdk/preview/specvalidator"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static"
 	"github.com/MagaluCloud/magalu/mgc/sdk/static/alpha"
 )
@@ -105,6 +112,76 @@ func (o *Sdk) newOpenApiSource() core.Grouper {
 	return openapi.NewSource(loader, &extensionPrefix)
 }
 
+// The hidden "alpha" goes last: it must give way to the visible one that
+// installed alpha modules bring.
+func (o *Sdk) newPreviewSources() []core.Grouper {
+	extensionPrefix := "x-mgc"
+	return []core.Grouper{
+		preview.NewGroup(preview.Beta, betaStore(), specvalidator.New(), &extensionPrefix),
+		newAlphaGroup(o.alphaStore()),
+		alphasync.NewPreviewRoot(o.alphaConfig()),
+		alpha.GetRoot(),
+	}
+}
+
+func betaStore() preview.Store {
+	return fsstore.New(openapi.BetaSpecs(), "")
+}
+
+func (o *Sdk) alphaStore() preview.Store {
+	return alphasync.InstalledStore(o.alphaDir(), alphasync.TrustedKeys())
+}
+
+func newAlphaGroup(store preview.Store) core.Grouper {
+	extensionPrefix := "x-mgc"
+	return preview.NewGroup(preview.Alpha, serverpin.Wrap(store), specvalidator.New(), &extensionPrefix)
+}
+
+// Each environment has its own alpha modules: one never shows the other's.
+func (o *Sdk) alphaDir() string {
+	var env string
+	_ = o.Config().Get("env", &env)
+	return filepath.Join(o.ProfileManager().Dir(), ".preview", preview.Alpha.Name, alphasync.CurrentEnv(env))
+}
+
+// CheckAlphaUpdates tells, at most once a day, when the installed alpha modules
+// have a newer version or were taken away. It tries once: the retries would
+// sleep past the deadline of the check.
+func (o *Sdk) CheckAlphaUpdates(ctx context.Context) {
+	cfg := o.alphaConfig()
+	cfg.HTTPClient = &http.Client{Transport: newSingleTryTransport(o.version)}
+	alphasync.CheckUpdates(ctx, cfg)
+}
+
+func (o *Sdk) alphaConfig() alphasync.Config {
+	extensionPrefix := "x-mgc"
+	validator := specvalidator.New()
+
+	return alphasync.Config{
+		BaseURL:    alphaBaseURL(),
+		Dir:        o.alphaDir(),
+		CLIVersion: o.version,
+		Keys:       alphasync.TrustedKeys(),
+		HTTPClient: &http.Client{Transport: newHttpTransport(o.version)},
+		Check: func(pkg preview.Package) error {
+			pinned, err := serverpin.Pin(pkg.Spec)
+			if err != nil {
+				return err
+			}
+			pkg.Spec = pinned
+			return preview.Check(preview.Alpha, pkg, validator, &extensionPrefix)
+		},
+		Group: newAlphaGroup,
+	}
+}
+
+func alphaBaseURL() string {
+	if url := os.Getenv("MGC_ALPHA_URL"); url != "" {
+		return url
+	}
+	return alphasync.DefaultBaseURL
+}
+
 func (o *Sdk) RefResolver() core.RefPathResolver {
 	if o.refResolver == nil {
 		o.refResolver = core.NewDocumentRefPathResolver(func() (any, error) { return o.Group(), nil })
@@ -121,13 +198,7 @@ func (o *Sdk) Group() core.Grouper {
 				Description: "All MagaLu Groups & Executors",
 			},
 			func() []core.Grouper {
-				return []core.Grouper{
-					static.GetGroup(),
-					o.newOpenApiSource(),
-					// Last on purpose: the hidden "alpha" must give way to
-					// a visible one coming from another source.
-					alpha.GetRoot(),
-				}
+				return append([]core.Grouper{static.GetGroup(), o.newOpenApiSource()}, o.newPreviewSources()...)
 			},
 		)
 	}
@@ -135,13 +206,16 @@ func (o *Sdk) Group() core.Grouper {
 }
 
 func newHttpTransport(version string) http.RoundTripper {
+	return mgcHttpPkg.NewDefaultClientRetryer(newSingleTryTransport(version))
+}
+
+func newSingleTryTransport(version string) http.RoundTripper {
 	userAgent := fmt.Sprintf("MgcCLI/%s (%s; %s)", version, runtime.GOOS, runtime.GOARCH)
 	// To avoid creating a transport with zero values, we leverage
 	// DefaultTransport (exemple: `Proxy: ProxyFromEnvironment`)
 	transport := mgcHttpPkg.DefaultTransport()
 	transport = mgcHttpPkg.NewDefaultClientLogger(transport)
 	transport = newDefaultSdkTransport(transport, userAgent)
-	transport = mgcHttpPkg.NewDefaultClientRetryer(transport)
 	return transport
 }
 
