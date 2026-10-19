@@ -1,0 +1,123 @@
+package telemetry
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"net"
+	"net/http"
+	"net/url"
+	"testing"
+
+	"github.com/MagaluCloud/magalu/mgc/core"
+	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
+	"github.com/erikgeiser/promptkit"
+)
+
+type reasonedError struct{ reason FailureReason }
+
+func (e reasonedError) Error() string                         { return "reasoned" }
+func (e reasonedError) TelemetryFailureReason() FailureReason { return e.reason }
+
+type wrappingReasonedError struct {
+	reason FailureReason
+	err    error
+}
+
+func (e wrappingReasonedError) Error() string                         { return "wrapping" }
+func (e wrappingReasonedError) Unwrap() error                         { return e.err }
+func (e wrappingReasonedError) TelemetryFailureReason() FailureReason { return e.reason }
+
+func apiError(code int, slug string) error {
+	return &mgcHttpPkg.IdentifiableHttpError{
+		HttpError: &mgcHttpPkg.HttpError{Code: code, Slug: slug, Message: "details with user data"},
+		RequestID: "req-1",
+	}
+}
+
+// credentialError imita a resposta da renovação do token com a sessão expirada
+func credentialError(code int, slug string, headers http.Header, payload string) *mgcHttpPkg.HttpError {
+	return &mgcHttpPkg.HttpError{Code: code, Slug: slug, Headers: headers, Payload: []byte(payload), Message: "details with user data"}
+}
+
+var bearerChallenge = http.Header{"Www-Authenticate": {`Bearer realm="Doorkeeper", error="invalid_grant"`}}
+
+type timeoutNetError struct{}
+
+func (timeoutNetError) Error() string   { return "i/o timeout" }
+func (timeoutNetError) Timeout() bool   { return true }
+func (timeoutNetError) Temporary() bool { return true }
+
+func TestClassifyError(t *testing.T) {
+	testCases := []struct {
+		name string
+		err  error
+		want FailureReason
+	}{
+		{"nil", nil, ""},
+		{"confirmation denied", core.UserDeniedConfirmationError{Prompt: "delete?"}, FailureUserCancelled},
+		{"prompt aborted", fmt.Errorf("wrap: %w", promptkit.ErrAborted), FailureUserCancelled},
+		{"context deadline", fmt.Errorf("op: %w", context.DeadlineExceeded), FailureTimeout},
+		{"net timeout", &url.Error{Op: "Get", URL: "https://api", Err: timeoutNetError{}}, FailureTimeout},
+		{"401", apiError(401, "unauthorized"), FailureAuthentication},
+		{"403", apiError(403, ""), FailureAuthorization},
+		{"404", apiError(404, ""), FailureNotFound},
+		{"409", apiError(409, ""), FailureConflict},
+		{"429", apiError(429, ""), FailureQuota},
+		{"400 with quota slug", apiError(400, "quota_exceeded"), FailureQuota},
+		{"422 with limit slug", apiError(422, "InstanceLimitReached"), FailureQuota},
+		{"400 with limit_exceeded slug", apiError(400, "limit_exceeded"), FailureQuota},
+		{"400 with pagination limit slug", apiError(400, "invalid_limit"), FailureValidation},
+		{"401 with limit slug", apiError(401, "token_limit_reached"), FailureAuthentication},
+		{"503 with quota slug", apiError(503, "quota_service_down"), FailureAPIServer},
+		{"400", apiError(400, "invalid_parameter"), FailureValidation},
+		{"400 invalid_grant in the body", credentialError(400, "", nil, `{"error":"invalid_grant","error_description":"expired"}`), FailureAuthentication},
+		{"400 with only WWW-Authenticate", credentialError(400, "", bearerChallenge, ""), FailureAuthentication},
+		{"expired session as identifiable error", &mgcHttpPkg.IdentifiableHttpError{HttpError: credentialError(400, "", bearerChallenge, `{"error":"invalid_grant"}`), RequestID: "2646270c"}, FailureAuthentication},
+		{"invalid_token wrapped", fmt.Errorf("refresh: %w", credentialError(400, "", nil, `{"error":"invalid_token"}`)), FailureAuthentication},
+		{"400 with other oauth error", credentialError(400, "", nil, `{"error":"invalid_request"}`), FailureValidation},
+		{"400 quota slug without credential signal", credentialError(400, "quota_exceeded", nil, `{"slug":"quota_exceeded"}`), FailureQuota},
+		{"400 with non json body", credentialError(400, "", nil, "<html>bad request</html>"), FailureValidation},
+		{"500", apiError(500, "unknown"), FailureAPIServer},
+		{"503 wrapped", fmt.Errorf("while waiting: %w", apiError(503, "")), FailureAPIServer},
+		{"dns", &url.Error{Op: "Get", URL: "https://api", Err: &net.DNSError{Err: "no such host", Name: "api"}}, FailureNetwork},
+		{"connection refused", &net.OpError{Op: "dial", Err: errors.New("connection refused")}, FailureNetwork},
+		{"typed cli error", reasonedError{FailureAuthentication}, FailureAuthentication},
+		{"typed cli error with invalid reason", reasonedError{"bogus"}, FailureUnknown},
+		{"typed cli error wrapping http error", wrappingReasonedError{FailureAuthentication, apiError(500, "")}, FailureAuthentication},
+		{"typed cli error with invalid reason wrapping http error", wrappingReasonedError{"bogus", apiError(404, "")}, FailureNotFound},
+		{"usage error", core.UsageError{Err: errors.New("bad param")}, FailureValidation},
+		{"object storage api-key not set", core.AuthenticationError{Err: errors.New("api-key not set, see how to set it with \"mgc object-storage api-key -h\"")}, FailureAuthentication},
+		{"untyped", errors.New("something odd"), FailureUnknown},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := ClassifyError(tc.err); got != tc.want {
+				t.Errorf("got %q, want %q", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestFailedRequestID(t *testing.T) {
+	testCases := []struct {
+		name string
+		err  error
+		want string
+	}{
+		{"identifiable http error", apiError(400, ""), "req-1"},
+		{"wrapped identifiable error", fmt.Errorf("refresh: %w", &mgcHttpPkg.IdentifiableHttpError{HttpError: credentialError(400, "", nil, ""), RequestID: "2646270c"}), "2646270c"},
+		{"http error without id", credentialError(500, "", nil, ""), ""},
+		{"not an http error", errors.New("bad flag"), ""},
+		{"nil", nil, ""},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := FailedRequestID(tc.err); got != tc.want {
+				t.Errorf("got %q, want %q", got, tc.want)
+			}
+		})
+	}
+}

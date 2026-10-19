@@ -354,7 +354,7 @@ func addGroup(
 	}
 
 	moduleCmd.AddGroup(&cobra.Group{
-		ID:    "catalog",
+		ID:    catalogGroupID,
 		Title: "Commands:",
 	})
 

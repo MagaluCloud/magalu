@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/MagaluCloud/magalu/mgc/core/auth"
 	mgcHttpPkg "github.com/MagaluCloud/magalu/mgc/core/http"
 )
@@ -112,7 +113,7 @@ func SendRequestWithIgnoredHeaders(ctx context.Context, req *http.Request, cfg C
 
 	accesskeyId, accessSecretKey := auth.FromContext(ctx).AccessKeyPair()
 	if accesskeyId == "" || accessSecretKey == "" {
-		err = fmt.Errorf("api-key not set, see how to set it with \"mgc object-storage api-key -h\"")
+		err = core.AuthenticationError{Err: fmt.Errorf("api-key not set, see how to set it with \"mgc object-storage api-key -h\"")}
 		return
 	}
 
