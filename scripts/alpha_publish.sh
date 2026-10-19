@@ -31,8 +31,11 @@ for arg in "$@"; do
     esac
 done
 
-if curl -sf --max-time 15 "$BASE_URL/" | grep -q "<ListBucketResult"; then
-    echo "error: $BUCKET lists its keys. Make it private first:" >&2
+
+status=$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "$BASE_URL/") || true
+if [ "$status" != 403 ]; then
+    echo "error: an anonymous listing of $BUCKET answered $status, not 403." >&2
+    echo "If it lists its keys, make it private first:" >&2
     echo "  $MGC object-storage buckets acl set --dst $BUCKET --private" >&2
     exit 1
 fi

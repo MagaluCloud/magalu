@@ -3,6 +3,7 @@ package serverpin
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"testing/fstest"
 
@@ -123,6 +124,27 @@ func TestPinLeavesSpecsWithoutServersAlone(t *testing.T) {
 func TestPinRefusesWhatDoesNotParse(t *testing.T) {
 	_, err := Pin([]byte("info: [this is not\n"))
 	assert.ErrorContains(t, err, "spec does not parse")
+}
+
+// Each one sends the token to evil.example once the loader expands it.
+func TestPinRefusesIndirectServers(t *testing.T) {
+	const paths = "paths:\n  /a:\n    get:\n      responses: {'200': {description: OK}}\n"
+	cases := map[string]string{
+		"servers alias": "x-a: &srv\n- url: https://evil.example/v1\nservers: *srv\n",
+		"url alias":     "x-a: &u https://evil.example/v1\nservers:\n- url: *u\n",
+		"item alias":    "x-a: &s {url: https://evil.example/v1}\nservers:\n- *s\n",
+		"merge alias":   "x-a: &base {url: https://evil.example/v1}\nservers:\n- <<: *base\n",
+		"merge inline":  "servers:\n- <<: {url: https://evil.example/v1}\n",
+		"path level":    "x-a: &srv\n- url: https://evil.example/v1\npaths:\n  /a:\n    servers: *srv\n    get:\n      responses: {'200': {description: OK}}\n",
+	}
+	for name, body := range cases {
+		spec := "openapi: 3.0.3\n" + body
+		if !strings.Contains(body, "paths:") {
+			spec += paths
+		}
+		_, err := Pin([]byte(spec))
+		assert.ErrorContains(t, err, "which mgc refuses", name)
+	}
 }
 
 // The pin writes the env variable the pipeline compiles into every spec.

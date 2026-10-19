@@ -52,6 +52,9 @@ func Pin(spec []byte) ([]byte, error) {
 	if err := yaml.Unmarshal(spec, &doc); err != nil {
 		return nil, fmt.Errorf("spec does not parse: %w", err)
 	}
+	if err := checkPlain(&doc); err != nil {
+		return nil, err
+	}
 	if len(doc.Content) == 0 || doc.Content[0].Kind != yaml.MappingNode {
 		return spec, nil
 	}
@@ -79,6 +82,21 @@ func Pin(spec []byte) ([]byte, error) {
 	}
 
 	return yaml.Marshal(&doc)
+}
+
+func checkPlain(node *yaml.Node) error {
+	if node.Kind == yaml.AliasNode || node.Anchor != "" {
+		return fmt.Errorf("spec uses a YAML anchor or alias at line %d, which mgc refuses", node.Line)
+	}
+	for i, child := range node.Content {
+		if node.Kind == yaml.MappingNode && i%2 == 0 && child.Value == "<<" {
+			return fmt.Errorf("spec uses a YAML merge key at line %d, which mgc refuses", child.Line)
+		}
+		if err := checkPlain(child); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func pinServers(object *yaml.Node, env *yaml.Node) {
