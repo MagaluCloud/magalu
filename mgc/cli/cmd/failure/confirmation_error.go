@@ -1,4 +1,4 @@
-package cmdtelemetry
+package failure
 
 import (
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"

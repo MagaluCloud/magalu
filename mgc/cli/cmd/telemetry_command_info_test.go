@@ -5,9 +5,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/MagaluCloud/magalu/mgc/cli/cmd/cmdtelemetry"
 	"github.com/MagaluCloud/magalu/mgc/cli/cmd/schema_flags"
 	"github.com/MagaluCloud/magalu/mgc/cli/cmd/telemetrycmd"
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/telemetryinstrument"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 	"github.com/MagaluCloud/magalu/mgc/core"
 	"github.com/MagaluCloud/magalu/mgc/core/config"
@@ -112,7 +112,7 @@ func runFakeCommandTree(args ...string) (telemetry.CommandInfo, bool) {
 	root := newFakeCommandTree()
 	root.SetArgs(args)
 	err := root.Execute()
-	return cmdtelemetry.BuildCommandInfo(root, args, err, fakeConfig(), getNextUnknownCommand)
+	return telemetryinstrument.BuildCommandInfo(root, args, err, fakeConfig(), getNextUnknownCommand)
 }
 
 func TestTelemetryCommandInfo(t *testing.T) {
@@ -163,7 +163,7 @@ func TestTelemetryCommandInfo(t *testing.T) {
 			wantPath:       []string{"virtual-machine", "instances", "get"},
 			wantOptions:    []string{"id"},
 			wantResourceID: "abc",
-			wantRegion:     cmdtelemetry.GlobalRegion,
+			wantRegion:     telemetryinstrument.GlobalRegion,
 		},
 		{
 			// O id posicional não marca a flag como alterada, por isso não aparece em
@@ -173,7 +173,7 @@ func TestTelemetryCommandInfo(t *testing.T) {
 			wantTrack:      true,
 			wantPath:       []string{"virtual-machine", "instances", "get"},
 			wantResourceID: "abc",
-			wantRegion:     cmdtelemetry.GlobalRegion,
+			wantRegion:     telemetryinstrument.GlobalRegion,
 		},
 		{
 			name:        "unknown command at root",

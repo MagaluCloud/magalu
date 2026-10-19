@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/MagaluCloud/magalu/mgc/cli/cmd/cmdtelemetry"
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/failure"
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/telemetryinstrument"
 	"github.com/MagaluCloud/magalu/mgc/cli/ui"
 	"github.com/MagaluCloud/magalu/mgc/cli/ui/progress_bar"
 	"github.com/MagaluCloud/magalu/mgc/core"
@@ -53,11 +54,11 @@ func checkScopes(sdk *mgcSdk.Sdk, exec core.Executor) error {
 	}
 
 	if k, s := a.AccessKeyPair(); (k == "" || s == "") && len(missing) > 0 {
-		return cmdtelemetry.NotLoggedInError{}
+		return failure.NotLoggedInError{}
 	}
 
 	if len(missing) > 0 {
-		return cmdtelemetry.MissingScopesError{Missing: missing}
+		return failure.MissingScopesError{Missing: missing}
 	}
 
 	return nil
@@ -110,7 +111,7 @@ func handleExecutorPre(
 
 		err = validate(input)
 		if err != nil {
-			return nil, cmdtelemetry.ConfirmationMismatchError{Err: err}
+			return nil, failure.ConfirmationMismatchError{Err: err}
 		}
 	}
 
@@ -184,7 +185,7 @@ func handleExecutor(
 	setApiKey(cmd, sdk)
 	setKeyPair(sdk)
 
-	ctx = cmdtelemetry.WithCommandRequests(ctx)
+	ctx = telemetryinstrument.WithCommandRequests(ctx)
 	result, err := handleExecutorPre(ctx, sdk, cmd, exec, parameters, configs)
 	err = handleExecutorResult(ctx, sdk, cmd, result, err)
 	if err != nil {

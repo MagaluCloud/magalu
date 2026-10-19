@@ -3,12 +3,13 @@ package cmd
 import (
 	"testing"
 
-	"github.com/MagaluCloud/magalu/mgc/cli/cmd/cmdtelemetry"
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/failure"
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/telemetryinstrument"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 )
 
-// TestInvalidFlagError fica em cmd, e não em cmdtelemetry, porque depende de
-// newFakeCommandTree e cmdtelemetry.BuildCommandInfo(..., getNextUnknownCommand), que por
+// TestInvalidFlagError fica em cmd, e não em telemetryinstrument, porque depende de
+// newFakeCommandTree e telemetryinstrument.BuildCommandInfo(..., getNextUnknownCommand), que por
 // sua vez depende de normalizeFlagName e applyPositionalArgs, privadas do cmd.
 func TestInvalidFlagError(t *testing.T) {
 	testCases := []struct {
@@ -35,7 +36,7 @@ func TestInvalidFlagError(t *testing.T) {
 			}
 
 			root = newFakeCommandTree()
-			root.SetFlagErrorFunc(cmdtelemetry.WrapFlagError)
+			root.SetFlagErrorFunc(failure.WrapFlagError)
 			root.SetArgs(tc.args)
 			err := root.Execute()
 
@@ -45,7 +46,7 @@ func TestInvalidFlagError(t *testing.T) {
 			if got := telemetry.ClassifyError(err); got != telemetry.FailureValidation {
 				t.Errorf("ClassifyError = %q, want %q", got, telemetry.FailureValidation)
 			}
-			if _, track := cmdtelemetry.BuildCommandInfo(root, tc.args, err, nil, getNextUnknownCommand); !track {
+			if _, track := telemetryinstrument.BuildCommandInfo(root, tc.args, err, nil, getNextUnknownCommand); !track {
 				t.Error("flag error must generate an event")
 			}
 		})

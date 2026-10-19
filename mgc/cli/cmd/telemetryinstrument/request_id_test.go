@@ -1,4 +1,4 @@
-package cmdtelemetry
+package telemetryinstrument
 
 import (
 	"context"

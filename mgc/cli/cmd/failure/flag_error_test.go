@@ -1,4 +1,4 @@
-package cmdtelemetry
+package failure
 
 import (
 	"errors"

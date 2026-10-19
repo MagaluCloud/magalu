@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/MagaluCloud/magalu/mgc/cli/cmd/cmdtelemetry"
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/failure"
 	"github.com/MagaluCloud/magalu/mgc/cli/cmd/telemetrycmd"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 	"github.com/MagaluCloud/magalu/mgc/cli/ui/progress_bar"
@@ -69,7 +69,7 @@ It allows you to interact with the Magalu Cloud to manage your resources.
 		},
 	}
 	rootCmd.SetGlobalNormalizationFunc(normalizeFlagName)
-	rootCmd.SetFlagErrorFunc(cmdtelemetry.WrapFlagError)
+	rootCmd.SetFlagErrorFunc(failure.WrapFlagError)
 
 	rootCmd.AddGroup(&cobra.Group{
 		ID:    catalogGroupID,

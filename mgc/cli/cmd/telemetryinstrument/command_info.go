@@ -1,4 +1,4 @@
-package cmdtelemetry
+package telemetryinstrument
 
 import (
 	"errors"
@@ -14,7 +14,7 @@ import (
 )
 
 // NextUnknownFunc espelha getNextUnknownCommand, privada do cmd, injetada aqui para o
-// cmdtelemetry não precisar importar o pacote cmd
+// telemetryinstrument não precisar importar o pacote cmd
 type NextUnknownFunc func(*cobra.Command, []string) (*string, []string)
 
 const GlobalRegion = "global"

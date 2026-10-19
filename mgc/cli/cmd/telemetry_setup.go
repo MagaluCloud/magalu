@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/MagaluCloud/magalu/mgc/cli/cmd/cmdtelemetry"
+	"github.com/MagaluCloud/magalu/mgc/cli/cmd/telemetryinstrument"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/debuglog"
 	"github.com/MagaluCloud/magalu/mgc/cli/telemetry/adapters/dispatch"
@@ -55,7 +55,7 @@ func mgcConfigDir(sdk *mgcSdk.Sdk) string {
 
 type telemetryRun struct {
 	start, end     time.Time
-	requestIDs     *cmdtelemetry.RequestIDRecorder
+	requestIDs     *telemetryinstrument.RequestIDRecorder
 	loggedInBefore bool
 }
 
@@ -68,9 +68,9 @@ func newTelemetryRun(sdk *mgcSdk.Sdk) *telemetryRun {
 
 // trackRequestIDs coloca o RequestIDRecorder na frente do transport usado pelos
 // comandos, para saber o X-Request-Id da última chamada feita na API.
-func trackRequestIDs(sdk *mgcSdk.Sdk) *cmdtelemetry.RequestIDRecorder {
+func trackRequestIDs(sdk *mgcSdk.Sdk) *telemetryinstrument.RequestIDRecorder {
 	client := sdk.HttpClient()
-	recorder := cmdtelemetry.NewRequestIDRecorder(client.Transport)
+	recorder := telemetryinstrument.NewRequestIDRecorder(client.Transport)
 	client.Transport = recorder
 	return recorder
 }
@@ -85,7 +85,7 @@ func recordTelemetry(
 	cmdErr error,
 	run *telemetryRun,
 ) {
-	info, track := cmdtelemetry.BuildCommandInfo(root, args, cmdErr, sdk.Config(), getNextUnknownCommand)
+	info, track := telemetryinstrument.BuildCommandInfo(root, args, cmdErr, sdk.Config(), getNextUnknownCommand)
 	if !track {
 		return
 	}
