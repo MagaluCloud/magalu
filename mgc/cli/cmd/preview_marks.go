@@ -8,7 +8,6 @@ import (
 
 	"github.com/MagaluCloud/magalu/mgc/cli/cmd/schema_flags"
 	"github.com/MagaluCloud/magalu/mgc/core"
-	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
 	"github.com/MagaluCloud/magalu/mgc/sdk/preview"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
@@ -19,7 +18,7 @@ import (
 var flagUsageRe = regexp.MustCompile(`^\s+(?:-\S, )?--([^\s=\[]+)\S*(?: \S+)?\s{2,}`)
 
 type previewMarks struct {
-	sdk   *mgcSdk.Sdk
+	root  func() core.Grouper
 	marks *preview.Marks
 	// Descriptors from the root's child down to each command, resolved once.
 	chains map[*cobra.Command][]core.Descriptor
@@ -29,21 +28,34 @@ type previewMarks struct {
 // the official products have not. Outside the preview levels the help stays
 // the same, byte for byte. It goes after the colors, which rewrite the same
 // template.
-func installPreviewMarks(rootCmd *cobra.Command, sdk *mgcSdk.Sdk) {
+func installPreviewMarks(rootCmd *cobra.Command, root func() core.Grouper) {
 	m := &previewMarks{
-		sdk:    sdk,
-		marks:  preview.NewMarks(sdk.Group, newPreviewFlagDiff(rootCmd)),
+		root:   root,
+		marks:  preview.NewMarks(root, newPreviewFlagDiff(rootCmd)),
 		chains: map[*cobra.Command][]core.Descriptor{},
 	}
+	cobra.AddTemplateFunc("previewIndent", m.indent)
 	cobra.AddTemplateFunc("previewShort", m.short)
 	cobra.AddTemplateFunc("previewFlags", m.flags)
 	cobra.AddTemplateFunc("previewNote", m.note)
 
 	rootCmd.SetUsageTemplate(strings.NewReplacer(
+		"  {{rpad .Name .NamePadding", "{{previewIndent .}}{{rpad .Name .NamePadding",
 		".Short", "(previewShort .)",
 		".LocalFlags.FlagUsages", "(previewFlags . .LocalFlags.FlagUsages)",
 		".InheritedFlags.FlagUsages", "(previewFlags . .InheritedFlags.FlagUsages)",
 	).Replace(rootCmd.UsageTemplate()) + "{{previewNote .}}")
+}
+
+// The commands with something new start with '*', in the indentation of the
+// line, so the names stay aligned and are never written with it.
+func (m *previewMarks) indent(cmd *cobra.Command) string {
+	if underPreviewLevel(cmd) {
+		if isNew, trail := m.marks.Mark(m.chain(cmd)); isNew || trail != "" {
+			return " *"
+		}
+	}
+	return "  "
 }
 
 func (m *previewMarks) short(cmd *cobra.Command) string {
@@ -122,7 +134,7 @@ func (m *previewMarks) chain(cmd *cobra.Command) []core.Descriptor {
 				group, _ = prefix[len(prefix)-1].(core.Grouper)
 			}
 		} else {
-			group = m.sdk.Group()
+			group = m.root()
 		}
 
 		if group != nil {

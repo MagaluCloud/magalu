@@ -142,7 +142,7 @@ func addGroups(rootCmd *cobra.Command, sdk *mgcSdk.Sdk) {
 	})
 	// After the colors, which rewrite the same template.
 	if hasPreview {
-		installPreviewMarks(rootCmd, sdk)
+		installPreviewMarks(rootCmd, sdk.Group)
 	}
 }
 
