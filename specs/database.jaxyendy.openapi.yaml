@@ -4178,10 +4178,12 @@ components:
           title: Source Id
           type: string
           format: uuid
+          example: 9959ee7a-0710-4faa-9f10-6845819e8ac0
         name:
           title: Name
           maxLength: 255
           type: string
+          example: "my-db-replica"
         instance_type_id:
           title: Instance Type Id
           type: string
@@ -4194,6 +4196,8 @@ components:
             type: string
           type: array
           uniqueItems: true
+        availability_zone:
+          $ref: "#/components/schemas/AvailabilityZone"
     ReplicaResizeRequest:
       title: Replica Resize Request
       type: object
