@@ -88,7 +88,7 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		return nil, fmt.Errorf("local path must be a folder")
 	}
 
-	files, err := walkDir(ctx, basePath.String(), false)
+	files, err := walkDir(ctx, basePath.String(), false, nil)
 	if err != nil {
 		return nil, err
 	}

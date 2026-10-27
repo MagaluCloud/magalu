@@ -9,6 +9,7 @@ import (
 	syncer "sync"
 
 	"github.com/MagaluCloud/magalu/mgc/core"
+	"github.com/MagaluCloud/magalu/mgc/core/pipeline"
 	mgcSchemaPkg "github.com/MagaluCloud/magalu/mgc/core/schema"
 	"github.com/MagaluCloud/magalu/mgc/core/utils"
 	"github.com/MagaluCloud/magalu/mgc/sdk/openapi"
@@ -56,7 +57,9 @@ func uploadDir(ctx context.Context, params uploadDirParams, cfg common.Config) (
 		return nil, err
 	}
 
-	files, err := walkDir(ctx, basePath.String(), params.Shallow)
+	filterRule := common.NewFilterRule(params.FilterParams, cancel)
+
+	files, err := walkDir(ctx, basePath.String(), params.Shallow, filterRule)
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +181,7 @@ func processCurrentAndSubfolders(ctx context.Context, cfg common.Config, destina
 	return nil
 }
 
-func walkDir(ctx context.Context, root string, shallow bool) ([]string, error) {
+func walkDir(ctx context.Context, root string, shallow bool, filterRule pipeline.FilterRule[pipeline.WalkDirEntry]) ([]string, error) {
 	var files []string
 
 	var walkFn func(string) error
@@ -203,6 +206,9 @@ func walkDir(ctx context.Context, root string, shallow bool) ([]string, error) {
 					}
 				}
 			} else {
+				if filterRule != nil && filterRule.Filter(ctx, pipeline.NewSimpleWalkDirEntry(path, entry, nil)) == pipeline.FilterExclude {
+					continue
+				}
 				files = append(files, path)
 			}
 		}
