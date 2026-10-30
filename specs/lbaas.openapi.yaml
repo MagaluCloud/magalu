@@ -5982,7 +5982,7 @@
         "flows": {
           "authorizationCode": {
             "authorizationUrl": "https://autoseg-idp.luizalabs.com/oauth/authorize",
-            "tokenUrl": "https://id.magalu.com",
+            "tokenUrl": "https://auth.magalu.cloud",
             "scopes": {
               "lbaas.read": "Read Load Balancer API resources",
               "lbaas.write": "Write Load Balancer API resources"
