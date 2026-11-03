@@ -68,6 +68,10 @@ func BuildBucketHost(cfg Config, bucketName BucketName) (BucketHostString, error
 }
 
 func BuildBucketHostWithPath(cfg Config, bucketName BucketName, path string) (BucketHostString, error) {
+	// Convert visible Unicode control symbols back to actual control characters
+	// This allows users to use the visible symbols from list output in copy/download commands
+	path = ConvertVisibleToControlChars(path)
+	
 	bucketHost, err := BuildBucketHost(cfg, bucketName)
 	if err != nil {
 		return bucketHost, err
