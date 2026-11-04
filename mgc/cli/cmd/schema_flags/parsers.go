@@ -330,6 +330,9 @@ func parseArrayFlagValue(itemsSchema *core.Schema, rawValues []string) (items []
 			}
 			return items, err
 		}
+		if value != nil && items == nil {
+			items = []any{}
+		}
 		items = append(items, value...)
 	}
 
