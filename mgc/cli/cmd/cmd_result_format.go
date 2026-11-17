@@ -7,6 +7,7 @@ import (
 
 	"github.com/MagaluCloud/magalu/mgc/core"
 	mgcSdk "github.com/MagaluCloud/magalu/mgc/sdk"
+	"github.com/MagaluCloud/magalu/mgc/sdk/static/auth"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
 )
@@ -64,6 +65,12 @@ func handleResultWithValue(result core.ResultWithValue, output string, cmd *cobr
 	err = result.ValidateSchema()
 	if err != nil {
 		logValidationErr(err)
+	}
+
+	// kubectl reads only JSON from an exec credential plugin: print plain JSON, whatever -o,
+	// defaultOutput or the terminal say.
+	if auth.RunByKubectl() {
+		return outputFormatters["json"].Format(value, "compact", true)
 	}
 
 	name, options := parseOutputFormatter(output)

@@ -261,6 +261,16 @@ func (o *Auth) AccessToken(ctx context.Context) (string, error) {
 	return o.accessToken, nil
 }
 
+// AccessTokenExpiresAt returns the expiry (the "exp" claim) of the current access token.
+// It reads the token without verifying it. Like AccessToken, it expects the "exp" claim.
+func (o *Auth) AccessTokenExpiresAt() (time.Time, error) {
+	claims, err := o.currentAccessTokenClaims()
+	if err != nil {
+		return time.Time{}, err
+	}
+	return claims.ExpiresAt.Time, nil
+}
+
 func (o *Auth) ApiKey(ctx context.Context) (string, error) {
 	if o.apiKey == "" {
 		return "", fmt.Errorf("API Key not set")

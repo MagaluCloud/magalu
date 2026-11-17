@@ -12,9 +12,9 @@ import (
 )
 
 func TestCheckVersionWithOutdatedVersion(t *testing.T) {
-	old := os.Stdout
+	old := os.Stderr
 	r, w, _ := os.Pipe()
-	os.Stdout = w
+	os.Stderr = w
 
 	getHttp := func(url string) (*http.Response, error) {
 		return &http.Response{
@@ -38,7 +38,7 @@ func TestCheckVersionWithOutdatedVersion(t *testing.T) {
 	}()
 
 	_ = w.Close()
-	os.Stdout = old
+	os.Stderr = old
 	out := <-outC
 
 	assert.Equal(
@@ -48,9 +48,9 @@ func TestCheckVersionWithOutdatedVersion(t *testing.T) {
 }
 
 func TestCheckVersionWithLatestVersion(t *testing.T) {
-	old := os.Stdout
+	old := os.Stderr
 	r, w, _ := os.Pipe()
-	os.Stdout = w
+	os.Stderr = w
 
 	getHttp := func(url string) (*http.Response, error) {
 		return &http.Response{
@@ -74,16 +74,16 @@ func TestCheckVersionWithLatestVersion(t *testing.T) {
 	}()
 
 	_ = w.Close()
-	os.Stdout = old
+	os.Stderr = old
 	out := <-outC
 
 	assert.Equal(t, out, "")
 }
 
 func TestCheckVersionWithInvalidCurrentVersion(t *testing.T) {
-	old := os.Stdout
+	old := os.Stderr
 	r, w, _ := os.Pipe()
-	os.Stdout = w
+	os.Stderr = w
 
 	getHttp := func(url string) (*http.Response, error) {
 		return &http.Response{
@@ -106,16 +106,16 @@ func TestCheckVersionWithInvalidCurrentVersion(t *testing.T) {
 	}()
 
 	_ = w.Close()
-	os.Stdout = old
+	os.Stderr = old
 	out := <-outC
 
 	assert.Equal(t, out, "Invalid current version: Invalid Semantic Version\n")
 }
 
 func TestCheckVersionWithUpdateIntervalNotExceeded(t *testing.T) {
-	old := os.Stdout
+	old := os.Stderr
 	r, w, _ := os.Pipe()
-	os.Stdout = w
+	os.Stderr = w
 
 	getHttp := func(url string) (*http.Response, error) {
 		return &http.Response{
@@ -143,16 +143,16 @@ func TestCheckVersionWithUpdateIntervalNotExceeded(t *testing.T) {
 	}()
 
 	_ = w.Close()
-	os.Stdout = old
+	os.Stderr = old
 	out := <-outC
 
 	assert.Equal(t, out, "")
 }
 
 func TestCheckVersionWithUpdateIntervalExceeded(t *testing.T) {
-	old := os.Stdout
+	old := os.Stderr
 	r, w, _ := os.Pipe()
-	os.Stdout = w
+	os.Stderr = w
 
 	getHttp := func(url string) (*http.Response, error) {
 		return &http.Response{
@@ -183,7 +183,7 @@ func TestCheckVersionWithUpdateIntervalExceeded(t *testing.T) {
 	}()
 
 	_ = w.Close()
-	os.Stdout = old
+	os.Stderr = old
 	out := <-outC
 
 	assert.Equal(
