@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"path"
 	"slices"
 	"strings"
@@ -61,7 +62,7 @@ func (v *VersionChecker) CheckVersion(currentVersion string, args ...string) {
 
 	cv, err := semver.NewVersion(strings.SplitN(currentVersion, " ", 2)[0])
 	if err != nil {
-		fmt.Println("Invalid current version:", err)
+		fmt.Fprintln(os.Stderr, "Invalid current version:", err)
 		return
 	}
 
@@ -73,7 +74,8 @@ func (v *VersionChecker) CheckVersion(currentVersion string, args ...string) {
 
 	if cv.LessThan(latestSemVersion) {
 		v.setCurrentTime()
-		fmt.Printf(
+		fmt.Fprintf(
+			os.Stderr,
 			"⚠️ You are using an outdated version of mgc cli. "+
 				"Please update to the latest version: %s \n\n\n", latestVersion,
 		)
