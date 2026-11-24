@@ -308,9 +308,7 @@ func processSyncFile(ctx context.Context, cfg common.Config, source, destination
 		return err
 	}
 
-	if allBucketFiles[pathWithFolder] {
-		delete(allBucketFiles, pathWithFolder)
-	}
+	delete(allBucketFiles, "/"+normalizedDestination.Path())
 
 	fileStats, err := getFileStats(ctx, normalizedDestination, cfg)
 	if err != nil {
