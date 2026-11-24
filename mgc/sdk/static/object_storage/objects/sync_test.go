@@ -2,6 +2,7 @@ package objects
 
 import (
 	"context"
+	"encoding/xml"
 	"fmt"
 	"io"
 	"net/http"
@@ -31,10 +32,13 @@ type syncTestTransport func(*http.Request) (*http.Response, error)
 func (f syncTestTransport) RoundTrip(r *http.Request) (*http.Response, error) { return f(r) }
 
 type syncTestStore struct {
-	mu          sy.Mutex
-	objects     map[string]string
-	lists, puts int
-	listError   bool
+	mu           sy.Mutex
+	objects      map[string]string
+	lists, puts  int
+	deleted      []string
+	listError    bool
+	deleteError  bool
+	deleteStatus int
 }
 
 func (s *syncTestStore) serve(w http.ResponseWriter, r *http.Request) {
@@ -77,6 +81,36 @@ func (s *syncTestStore) serve(w http.ResponseWriter, r *http.Request) {
 		body, _ := io.ReadAll(r.Body)
 		s.objects[key] = string(body)
 		s.puts++
+	case http.MethodPost:
+		if s.deleteStatus != 0 {
+			w.WriteHeader(s.deleteStatus)
+			fmt.Fprint(w, `<Error><Code>AccessDenied</Code><Message>denied</Message></Error>`)
+			return
+		}
+		if !r.URL.Query().Has("delete") {
+			http.Error(w, "missing delete query", 400)
+			return
+		}
+		var request struct {
+			Objects []struct {
+				Key string `xml:"Key"`
+			} `xml:"Object"`
+		}
+		if err := xml.NewDecoder(r.Body).Decode(&request); err != nil {
+			http.Error(w, err.Error(), 400)
+			return
+		}
+		fmt.Fprint(w, "<DeleteResult>")
+		for _, object := range request.Objects {
+			s.deleted = append(s.deleted, object.Key)
+			if s.deleteError {
+				fmt.Fprintf(w, "<Error><Key>%s</Key><Code>AccessDenied</Code><Message>denied</Message></Error>", object.Key)
+			} else {
+				delete(s.objects, object.Key)
+				fmt.Fprintf(w, "<Deleted><Key>%s</Key></Deleted>", object.Key)
+			}
+		}
+		fmt.Fprint(w, "</DeleteResult>")
 	default:
 		http.Error(w, "unexpected request", http.StatusBadRequest)
 	}
@@ -230,5 +264,118 @@ func TestSyncRejectsInvalidBatchBeforeRequests(t *testing.T) {
 		if err == nil || store.lists != 0 {
 			t.Fatalf("batch=%d error=%v list requests=%d", batch, err, store.lists)
 		}
+	}
+}
+
+func TestSyncDeletionResults(t *testing.T) {
+	for _, tc := range []struct {
+		name                string
+		delete, deleteError bool
+		deleteStatus        int
+		workers, batch      int
+	}{
+		{name: "without delete", workers: 1, batch: 1000},
+		{name: "delete worker 1", delete: true, workers: 1, batch: 1000},
+		{name: "delete workers 2", delete: true, workers: 2, batch: 1},
+		{name: "HTTP error", delete: true, deleteStatus: 403, workers: 2, batch: 1000},
+		{name: "HTTP 200 with object error", delete: true, deleteError: true, workers: 2, batch: 1000},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			dir := t.TempDir()
+			if err := os.WriteFile(filepath.Join(dir, "a.txt"), []byte("text"), 0600); err != nil {
+				t.Fatal(err)
+			}
+			store := &syncTestStore{objects: map[string]string{"prefix/a.txt": "text", "prefix/b.txt": "text", "prefix/c.txt": "text"}, deleteError: tc.deleteError, deleteStatus: tc.deleteStatus}
+			ctx, cfg := syncTestContext(t, store)
+			cfg.Workers = tc.workers
+			value, err := sync(ctx, syncParams{Local: schema.URI(dir), Bucket: "bucket/prefix/", BatchSize: tc.batch, Delete: tc.delete}, cfg)
+			if tc.deleteError || tc.deleteStatus != 0 {
+				if err == nil || value != nil || !strings.Contains(err.Error(), "AccessDenied") {
+					t.Fatalf("value=%v error=%v", value, err)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			result := value.(syncResult)
+			wantDeleted := 0
+			if tc.delete {
+				wantDeleted = 2
+			}
+			if result.FilesDeleted != wantDeleted || result.FilesUploaded != 0 || result.Deleted != tc.delete {
+				t.Fatalf("unexpected result: %+v", result)
+			}
+			if !tc.delete && (result.DeletedFiles != "" || len(store.deleted) != 0) {
+				t.Fatalf("reported or attempted deletions without --delete: %+v", result)
+			}
+			if tc.delete {
+				deletedFiles := strings.Split(result.DeletedFiles, ", ")
+				sort.Strings(deletedFiles)
+				if strings.Join(deletedFiles, ", ") != "/prefix/b.txt, /prefix/c.txt" {
+					t.Fatalf("unexpected deleted files: %q", result.DeletedFiles)
+				}
+			}
+			if _, ok := store.objects["prefix/a.txt"]; !ok {
+				t.Fatal("deleted local file a.txt")
+			}
+			// The next run must neither upload nor delete unchanged objects.
+			if tc.delete {
+				value, err = sync(ctx, syncParams{Local: schema.URI(dir), Bucket: "bucket/prefix/", BatchSize: tc.batch, Delete: true}, cfg)
+				if err != nil {
+					t.Fatal(err)
+				}
+				next := value.(syncResult)
+				if next.FilesDeleted != 0 || next.FilesUploaded != 0 {
+					t.Fatalf("nonempty repeated sync: %+v", next)
+				}
+			}
+		})
+	}
+}
+
+func TestSyncConcurrentInvocations(t *testing.T) {
+	for _, name := range []string{"first", "second"} {
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+			dir := t.TempDir()
+			store := &syncTestStore{objects: map[string]string{}}
+			for i := 0; i < 40; i++ {
+				file := fmt.Sprintf("%02d.txt", i)
+				if err := os.WriteFile(filepath.Join(dir, file), []byte("text"), 0600); err != nil {
+					t.Fatal(err)
+				}
+				store.objects["prefix/"+file] = "text"
+			}
+			ctx, cfg := syncTestContext(t, store)
+			cfg.Workers = 5
+			value, err := sync(ctx, syncParams{Local: schema.URI(dir), Bucket: "bucket/prefix/", BatchSize: 1000, Delete: true}, cfg)
+			if err != nil {
+				t.Fatal(err)
+			}
+			result := value.(syncResult)
+			if result.FilesDeleted != 0 || result.FilesUploaded != 0 || len(store.objects) != 40 {
+				t.Fatalf("unexpected result: %+v, objects=%d", result, len(store.objects))
+			}
+		})
+	}
+}
+
+func TestSyncDeletesAcrossPages(t *testing.T) {
+	store := &syncTestStore{objects: map[string]string{"outside.txt": "keep"}}
+	for i := 0; i < 1001; i++ {
+		store.objects[fmt.Sprintf("prefix/%04d.txt", i)] = "text"
+	}
+	ctx, cfg := syncTestContext(t, store)
+	value, err := sync(ctx, syncParams{Local: schema.URI(t.TempDir()), Bucket: "bucket/prefix/", BatchSize: 1000, Delete: true}, cfg)
+	if err != nil {
+		t.Fatal(err)
+	}
+	result := value.(syncResult)
+	if result.FilesDeleted != 1001 || store.lists != 2 || len(store.deleted) != 1001 {
+		t.Fatalf("result=%+v lists=%d sent=%d", result, store.lists, len(store.deleted))
+	}
+	if len(store.objects) != 1 || store.objects["outside.txt"] != "keep" {
+		t.Fatalf("unexpected remaining objects: %v", store.objects)
 	}
 }

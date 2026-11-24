@@ -75,6 +75,46 @@ type deleteBatchRequestBody struct {
 	Objects []objectIdentifier `xml:"Object"`
 }
 
+type deleteBatchResponseBody struct {
+	XMLName xml.Name           `xml:"DeleteResult"`
+	Deleted []objectIdentifier `xml:"Deleted"`
+	Errors  []struct {
+		Key     string `xml:"Key"`
+		Code    string `xml:"Code"`
+		Message string `xml:"Message"`
+	} `xml:"Error"`
+}
+
+func checkDeleteBatchResponse(result deleteBatchResponseBody, requested []objectIdentifier) error {
+	pending := make(map[string]int, len(requested))
+	for _, object := range requested {
+		pending[object.Key]++
+	}
+	var errs utils.MultiError
+	for _, object := range result.Deleted {
+		if pending[object.Key] == 0 {
+			errs = append(errs, fmt.Errorf("unexpected deletion confirmation for %q", object.Key))
+			continue
+		}
+		pending[object.Key]--
+	}
+	for _, object := range result.Errors {
+		errs = append(errs, fmt.Errorf("failed to delete %q: %s: %s", object.Key, object.Code, object.Message))
+		if pending[object.Key] > 0 {
+			pending[object.Key]--
+		}
+	}
+	for key, count := range pending {
+		if count > 0 {
+			errs = append(errs, fmt.Errorf("missing deletion confirmation for %q", key))
+		}
+	}
+	if len(errs) > 0 {
+		return errs
+	}
+	return nil
+}
+
 func DeleteSingle(ctx context.Context, params DeleteObjectParams, cfg Config) error {
 	objectKey := params.Destination.AsFilePath().String()
 	versionID := params.Version
@@ -143,7 +183,7 @@ func newDeleteBatchRequest(ctx context.Context, cfg Config, bucketName BucketNam
 }
 
 // Deleting an object does not yield result except there is an error. So this processor will *Skip*
-// success results and *Output* errors
+// success results and *Output* errors. ProcessAbort would discard the returned error.
 func createObjectDeletionProcessor(cfg Config, bucketName BucketName, progressReporter *progress_report.UnitsReporter) pipeline.Processor[[]pipeline.WalkDirEntry, error] {
 	return func(ctx context.Context, dirEntries []pipeline.WalkDirEntry) (error, pipeline.ProcessStatus) {
 		progressReporter.Report(0, uint64(len(dirEntries)), nil)
@@ -154,34 +194,45 @@ func createObjectDeletionProcessor(cfg Config, bucketName BucketName, progressRe
 		for _, dirEntry := range dirEntries {
 			if err = dirEntry.Err(); err != nil {
 				progressReporter.Report(0, 0, err)
-				return &ObjectError{Err: err}, pipeline.ProcessAbort
+				return &ObjectError{Err: err}, pipeline.ProcessOutput
 			}
 
 			obj, ok := dirEntry.DirEntry().(*BucketContent)
 			if !ok {
 				err = fmt.Errorf("expected object, got directory")
 				progressReporter.Report(0, 0, err)
-				return &ObjectError{Err: err}, pipeline.ProcessAbort
+				return &ObjectError{Err: err}, pipeline.ProcessOutput
 			}
 
 			objIdentifiers = append(objIdentifiers, objectIdentifier{Key: obj.Key})
 		}
 
-		defer func() { progressReporter.Report(uint64(len(dirEntries)), 0, err) }()
+		defer func() {
+			var completed uint64
+			if err == nil {
+				completed = uint64(len(dirEntries))
+			}
+			progressReporter.Report(completed, 0, err)
+		}()
 
 		req, err := newDeleteBatchRequest(ctx, cfg, bucketName, objIdentifiers)
 		if err != nil {
-			return &ObjectError{Err: err}, pipeline.ProcessAbort
+			return &ObjectError{Err: err}, pipeline.ProcessOutput
 		}
 
 		resp, err := SendRequest(ctx, req, cfg)
 		if err != nil {
 			return &ObjectError{Url: mgcSchemaPkg.URI(bucketName), Err: err}, pipeline.ProcessOutput
 		}
+		defer resp.Body.Close()
 
-		err = ExtractErr(resp, req)
+		result, err := UnwrapResponse[deleteBatchResponseBody](resp, req)
 		if err != nil {
-			return &ObjectError{Err: err}, pipeline.ProcessAbort
+			return &ObjectError{Err: err}, pipeline.ProcessOutput
+		}
+		err = checkDeleteBatchResponse(result, objIdentifiers)
+		if err != nil {
+			return &ObjectError{Err: err}, pipeline.ProcessOutput
 		}
 
 		deleteLogger().Infow("Deleted objects", "uri", URIPrefix+bucketName)
@@ -296,7 +347,10 @@ func DeleteObjects(ctx context.Context, params DeleteObjectsParams, cfg Config) 
 	deleteObjectsErrorChan := pipeline.ParallelProcess(ctx, cfg.Workers, objsBatch, createObjectDeletionProcessor(cfg, bucketName, progressReporter), nil)
 	deleteObjectsErrorChan = pipeline.Filter(ctx, deleteObjectsErrorChan, pipeline.FilterNonNil[error]{})
 
-	objErr, _ := pipeline.SliceItemConsumer[utils.MultiError](ctx, deleteObjectsErrorChan)
+	objErr, err := pipeline.SliceItemConsumer[utils.MultiError](ctx, deleteObjectsErrorChan)
+	if err != nil {
+		return err
+	}
 	if len(objErr) > 0 {
 		return objErr
 	}

@@ -57,8 +57,8 @@ var getSync = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	)
 
 	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
-		return "template={{if and (eq .deleted 0) (eq .uploaded 0)}}Already Synced{{- else}}" +
-			"Synced files from {{.src}} to {{.dst}}\n- {{.uploaded}} files uploaded\n- {{if .hasDeleted}}{{.deleted}} files deleted\n\nDeleted files:\n-{{.deletedFiles}}{{- else}}{{.deleted}} files to be deleted with the --delete parameter{{- end}}{{- end}}\n"
+		return "template={{if and (eq .deleted 0) (eq .uploaded 0)}}No files uploaded or deleted{{- else}}" +
+			"Synced files from {{.src}} to {{.dst}}\n- {{.uploaded}} files uploaded\n- {{.deleted}} files deleted{{if .hasDeleted}}\n\nDeleted files:\n-{{.deletedFiles}}{{end}}{{- end}}\n"
 	})
 })
 
@@ -129,11 +129,8 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 
 	deletedFiles := make([]string, 0, len(state.bucketFiles))
 
-	if params.Delete {
+	if params.Delete && len(state.bucketFiles) > 0 {
 		for file := range state.bucketFiles {
-			if err != nil {
-				logger().Debugw("error deleting file", "error", err)
-			}
 			deletedFiles = append(deletedFiles, file)
 		}
 		delOb := common.DeleteObjectsParams{
@@ -143,14 +140,14 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		}
 		err = common.DeleteObjects(ctx, delOb, cfg)
 		if err != nil {
-			logger().Debugw("error deleting objects", "error", err)
+			return nil, fmt.Errorf("failed to delete objects (some objects may already have been deleted): %w", err)
 		}
 	}
 
 	return syncResult{
 		Source:        params.Local,
 		Destination:   params.Bucket,
-		FilesDeleted:  len(state.bucketFiles),
+		FilesDeleted:  len(deletedFiles),
 		FilesUploaded: int(state.uploadFiles.Value()),
 		Deleted:       len(deletedFiles) > 0,
 		DeletedFiles:  strings.Join(deletedFiles, ", "),
@@ -169,7 +166,11 @@ func bucketObjectsToWalkDirEntry(ctx context.Context, bucketObjects []string) <-
 			entry := pipeline.NewSimpleWalkDirEntry(obj, &common.BucketContent{
 				Key: strings.TrimPrefix(obj, "/"),
 			}, err)
-			out <- entry
+			select {
+			case out <- entry:
+			case <-ctx.Done():
+				return
+			}
 		}
 	}()
 	return out
