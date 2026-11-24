@@ -34,7 +34,7 @@ type syncParams struct {
 	Local     mgcSchemaPkg.URI `json:"local" jsonschema:"description=Local path,example=./" mgc:"positional"`
 	Bucket    mgcSchemaPkg.URI `json:"bucket" jsonschema:"description=Bucket path,example=my-bucket/dir/" mgc:"positional"`
 	Delete    bool             `json:"delete,omitempty" jsonschema:"description=Deletes any item at the bucket not present on the local,default=false"`
-	BatchSize int              `json:"batch_size,omitempty" jsonschema:"description=Limit of items per batch to delete,default=1000,minimum=1,maximum=1000" example:"1000"`
+	BatchSize int              `json:"batch_size,omitempty" jsonschema:"description=Limit of items per batch to delete,default=1000,minimum=1,maximum=1000,required" example:"1000"`
 }
 
 type syncResult struct {
@@ -69,6 +69,9 @@ type syncState struct {
 }
 
 func sync(ctx context.Context, params syncParams, cfg common.Config) (result core.Value, err error) {
+	if params.BatchSize < common.MinBatchSize || params.BatchSize > common.MaxBatchSize {
+		return nil, core.UsageError{Err: fmt.Errorf("invalid item limit per request BatchSize, must not be lower than %d and must not be higher than %d: %d", common.MinBatchSize, common.MaxBatchSize, params.BatchSize)}
+	}
 	if !strings.HasPrefix(string(params.Bucket), common.URIPrefix) {
 		logger().Debugw("Bucket path missing prefix, adding prefix")
 		params.Bucket = common.URIPrefix + params.Bucket

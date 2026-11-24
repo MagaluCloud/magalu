@@ -221,3 +221,14 @@ func TestSyncAbortsOnInventoryFailure(t *testing.T) {
 		})
 	}
 }
+
+func TestSyncRejectsInvalidBatchBeforeRequests(t *testing.T) {
+	for _, batch := range []int{-1, 0, 1001} {
+		store := &syncTestStore{objects: map[string]string{}}
+		ctx, cfg := syncTestContext(t, store)
+		_, err := sync(ctx, syncParams{Local: schema.URI(t.TempDir()), Bucket: "bucket/", BatchSize: batch, Delete: true}, cfg)
+		if err == nil || store.lists != 0 {
+			t.Fatalf("batch=%d error=%v list requests=%d", batch, err, store.lists)
+		}
+	}
+}
