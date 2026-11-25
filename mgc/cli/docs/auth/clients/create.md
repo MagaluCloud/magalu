@@ -18,7 +18,7 @@ mgc auth clients create --access-token-expiration=7200 --audiences="public" --de
 ## Flags:
 ```
     --access-token-expiration integer        Access token expiration (in seconds)
-    --always-require-login                   Must ignore active Magalu ID session and always require login
+    --always-require-login                   Must ignore active MGC Auth session and always require login
     --audiences string                       Client audiences (separated by space)
     --backchannel-logout-session             Client requires backchannel logout session
     --backchannel-logout-uri string          Backchannel logout URI

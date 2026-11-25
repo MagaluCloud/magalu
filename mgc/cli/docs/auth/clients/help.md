@@ -3,7 +3,7 @@ sidebar_position: 0
 ---
 # Clients
 
-Manage Clients (Oauth Applications) to use ID Magalu
+Manage Clients (Oauth Applications) to use MGC Auth
 
 ## Usage:
 ```

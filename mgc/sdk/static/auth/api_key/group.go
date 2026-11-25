@@ -9,8 +9,8 @@ var GetGroup = utils.NewLazyLoader(func() core.Grouper {
 	return core.NewStaticGroup(
 		core.DescriptorSpec{
 			Name:    "api-key",
-			Summary: "Manage your ID Magalu API keys",
-			Description: `ID Magalu API Keys are used for authentication across various platforms (CLI, SDK, Terraform, API requests). An API key has three components:
+			Summary: "Manage your MGC Auth API keys",
+			Description: `MGC Auth API Keys are used for authentication across various platforms (CLI, SDK, Terraform, API requests). An API key has three components:
 
 API Key: Used for Magalu API, CLI, SDK, and Terraform authentication.
 Key Pair ID: Used for Object Storage authentication.

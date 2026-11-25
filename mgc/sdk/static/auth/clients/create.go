@@ -31,7 +31,7 @@ type createParams struct {
 	Reason                           *string `json:"request_reason,omitempty" jsonschema:"description=Note to inform the reason for creating the client. Will help with the application approval process" mgc:"positional"`
 	Icon                             *string `json:"icon,omitempty" jsonschema:"description=URL for client icon" mgc:"positional"`
 	AccessTokenExp                   *int    `json:"access_token_expiration,omitempty" jsonschema:"description=Access token expiration (in seconds),example=7200" mgc:"positional"`
-	AlwaysRequireLogin               *bool   `json:"always_require_login,omitempty" jsonschema:"description=Must ignore active Magalu ID session and always require login,example=false" mgc:"positional"`
+	AlwaysRequireLogin               *bool   `json:"always_require_login,omitempty" jsonschema:"description=Must ignore active MGC Auth session and always require login,example=false" mgc:"positional"`
 	BackchannelLogoutUri             *string `json:"backchannel_logout_uri,omitempty" jsonschema:"description=Backchannel logout URI" mgc:"positional"`
 	OidcAudience                     *string `json:"oidc_audience,omitempty" jsonschema:"description=OIDC audience (separated by space),example=public" mgc:"positional"`
 	RefreshTokenCustomExpiresEnabled *bool   `json:"refresh_token_custom_expires_enabled,omitempty" jsonschema:"description=Use custom value for refresh token expiration,example=false" mgc:"positional"`

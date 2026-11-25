@@ -16,8 +16,8 @@ mgc auth [command]
 ## Commands:
 ```
 access-token Retrieve the access token used in the APIs
-api-key      Manage your ID Magalu API keys
-clients      Manage Clients (Oauth Applications) to use ID Magalu
+api-key      Manage your MGC Auth API keys
+clients      Manage Clients (Oauth Applications) to use MGC Auth
 login        Authenticate with Magalu Cloud
 logout       Run logout
 tenant       Manage Tenants
