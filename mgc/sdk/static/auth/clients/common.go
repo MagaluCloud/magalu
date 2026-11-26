@@ -24,7 +24,7 @@ type createClient struct {
 	RedirectURIs                     []string             `json:"redirect_uris" jsonschema:"description=Redirect URIs (separated by space)" mgc:"positional"`
 	Icon                             *string              `json:"icon,omitempty" jsonschema:"description=URL for client icon" mgc:"positional"`
 	AccessTokenExp                   *int                 `json:"access_token_exp,omitempty" jsonschema:"description=Access token expiration (in seconds),example=7200" mgc:"positional"`
-	AlwaysRequireLogin               *bool                `json:"always_require_login,omitempty" jsonschema:"description=Must ignore active Magalu ID session and always require login,example=false" mgc:"positional"`
+	AlwaysRequireLogin               *bool                `json:"always_require_login,omitempty" jsonschema:"description=Must ignore active MGC Auth session and always require login,example=false" mgc:"positional"`
 	ClientPrivacyTermUrl             string               `json:"client_privacy_term_url" jsonschema:"description=URL to privacy term" mgc:"positional"`
 	ClientTermUrl                    string               `json:"client_term_url" jsonschema:"description=URL to terms of use" mgc:"positional"`
 	Audience                         []string             `json:"audience,omitempty" jsonschema:"description=Client audiences (separated by space),example=public" mgc:"positional"`
@@ -45,7 +45,7 @@ type updateClient struct {
 	RedirectURIs                     []string `json:"redirect_uris" jsonschema:"description=Redirect URIs (separated by space)" mgc:"positional"`
 	Icon                             *string  `json:"icon,omitempty" jsonschema:"description=URL for client icon" mgc:"positional"`
 	AccessTokenExp                   *int     `json:"access_token_exp,omitempty" jsonschema:"description=Access token expiration (in seconds),example=7200" mgc:"positional"`
-	AlwaysRequireLogin               *bool    `json:"always_require_login,omitempty" jsonschema:"description=Must ignore active Magalu ID session and always require login,example=false" mgc:"positional"`
+	AlwaysRequireLogin               *bool    `json:"always_require_login,omitempty" jsonschema:"description=Must ignore active MGC Auth session and always require login,example=false" mgc:"positional"`
 	ClientPrivacyTermUrl             *string  `json:"client_privacy_term_url" jsonschema:"description=URL to privacy term" mgc:"positional"`
 	ClientTermUrl                    *string  `json:"client_term_url" jsonschema:"description=URL to terms of use" mgc:"positional"`
 	Audience                         []string `json:"audience,omitempty" jsonschema:"description=Client audiences (separated by space),example=public" mgc:"positional"`

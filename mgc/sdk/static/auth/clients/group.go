@@ -9,7 +9,7 @@ var GetGroup = utils.NewLazyLoader(func() core.Grouper {
 	return core.NewStaticGroup(
 		core.DescriptorSpec{
 			Name:    "clients",
-			Summary: "Manage Clients (Oauth Applications) to use ID Magalu",
+			Summary: "Manage Clients (Oauth Applications) to use MGC Auth",
 		},
 		func() []core.Descriptor {
 			return []core.Descriptor{

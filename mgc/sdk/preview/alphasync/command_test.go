@@ -34,8 +34,8 @@ components:
       type: oauth2
       flows:
         authorizationCode:
-          authorizationUrl: https://id.magalu.com/login
-          tokenUrl: https://id.magalu.com/oauth/token
+          authorizationUrl: https://auth.magalu.cloud/login
+          tokenUrl: https://auth.magalu.cloud/oauth/token
           scopes:
             foo.read: Read foo
 tags:
