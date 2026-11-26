@@ -227,6 +227,12 @@ func ListGenerator(ctx context.Context, params ListObjectsParams, cfg Config, on
 
 		dst := params.Destination
 		page := params.PaginationParams
+		reportError := func(err error) {
+			select {
+			case <-ctx.Done():
+			case ch <- pipeline.NewSimpleWalkDirEntry[*BucketContent](dst.Path(), nil, err):
+			}
+		}
 		var requestedItems int
 	MainLoop:
 		for {
@@ -235,17 +241,20 @@ func ListGenerator(ctx context.Context, params ListObjectsParams, cfg Config, on
 			req, err := newListRequest(ctx, cfg, dst, page, params.Recursive)
 			if err != nil {
 				logger.Warnw("failed to create request", "err", err)
+				reportError(err)
 				return
 			}
 
 			resp, err := SendRequest(ctx, req, cfg)
 			if err != nil {
 				logger.Warnw("failed to send request", "err", err)
+				reportError(err)
 				return
 			}
 
 			var result listObjectsRequestResponse
 			result, err = UnwrapResponse[listObjectsRequestResponse](resp, req)
+			resp.Body.Close()
 			if err != nil {
 				logger.Warnw("list request failed", "err", err, "req", (*mgcHttpPkg.LogRequest)(req))
 				select {

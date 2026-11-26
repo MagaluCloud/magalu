@@ -17,7 +17,7 @@ mgc object-storage objects sync --bucket="my-bucket/dir/" --local="./"
 
 ## Flags:
 ```
-    --batch-size integer   Limit of items per batch to delete (range: 1 - 1000)
+    --batch-size integer   Limit of items per batch to delete (range: 1 - 1000) (required) (default 1000)
     --bucket uri           Bucket path (required)
     --delete               Deletes any item at the bucket not present on the local
 -h, --help                 help for sync

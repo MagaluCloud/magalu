@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math"
 	"os"
 	"strings"
 	sy "sync"
@@ -33,7 +34,7 @@ type syncParams struct {
 	Local     mgcSchemaPkg.URI `json:"local" jsonschema:"description=Local path,example=./" mgc:"positional"`
 	Bucket    mgcSchemaPkg.URI `json:"bucket" jsonschema:"description=Bucket path,example=my-bucket/dir/" mgc:"positional"`
 	Delete    bool             `json:"delete,omitempty" jsonschema:"description=Deletes any item at the bucket not present on the local,default=false"`
-	BatchSize int              `json:"batch_size,omitempty" jsonschema:"description=Limit of items per batch to delete,default=1000,minimum=1,maximum=1000" example:"1000"`
+	BatchSize int              `json:"batch_size,omitempty" jsonschema:"description=Limit of items per batch to delete,default=1000,minimum=1,maximum=1000,required" example:"1000"`
 }
 
 type syncResult struct {
@@ -56,17 +57,21 @@ var getSync = utils.NewLazyLoader[core.Executor](func() core.Executor {
 	)
 
 	return core.NewExecuteResultOutputOptions(executor, func(exec core.Executor, result core.Result) string {
-		return "template={{if and (eq .deleted 0) (eq .uploaded 0)}}Already Synced{{- else}}" +
-			"Synced files from {{.src}} to {{.dst}}\n- {{.uploaded}} files uploaded\n- {{if .hasDeleted}}{{.deleted}} files deleted\n\nDeleted files:\n-{{.deletedFiles}}{{- else}}{{.deleted}} files to be deleted with the --delete parameter{{- end}}{{- end}}\n"
+		return "template={{if and (eq .deleted 0) (eq .uploaded 0)}}No files uploaded or deleted{{- else}}" +
+			"Synced files from {{.src}} to {{.dst}}\n- {{.uploaded}} files uploaded\n- {{.deleted}} files deleted{{if .hasDeleted}}\n\nDeleted files:\n-{{.deletedFiles}}{{end}}{{- end}}\n"
 	})
 })
 
-var (
-	allBucketFiles = make(map[string]bool)
-	uploadFiles    = &UploadCounter{}
-)
+type syncState struct {
+	mu          sy.Mutex
+	bucketFiles map[string]bool
+	uploadFiles UploadCounter
+}
 
 func sync(ctx context.Context, params syncParams, cfg common.Config) (result core.Value, err error) {
+	if params.BatchSize < common.MinBatchSize || params.BatchSize > common.MaxBatchSize {
+		return nil, core.UsageError{Err: fmt.Errorf("invalid item limit per request BatchSize, must not be lower than %d and must not be higher than %d: %d", common.MinBatchSize, common.MaxBatchSize, params.BatchSize)}
+	}
 	if !strings.HasPrefix(string(params.Bucket), common.URIPrefix) {
 		logger().Debugw("Bucket path missing prefix, adding prefix")
 		params.Bucket = common.URIPrefix + params.Bucket
@@ -84,7 +89,11 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		return nil, err
 	}
 
-	if f, _ := os.Stat(basePath.String()); !f.IsDir() {
+	info, err := os.Stat(basePath.String())
+	if err != nil {
+		return nil, err
+	}
+	if !info.IsDir() {
 		return nil, fmt.Errorf("local path must be a folder")
 	}
 
@@ -101,11 +110,16 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 
 	if !openapi.GetRawOutputFlag(ctx) {
 		progressBar, _ = progressBar.Start()
+		defer func() { _, _ = progressBar.Stop() }()
 	}
 
-	fillBucketFiles(ctx, params, cfg)
+	bucketFiles, err := fillBucketFiles(ctx, params, cfg)
+	if err != nil {
+		return nil, err
+	}
+	state := &syncState{bucketFiles: bucketFiles}
 
-	err = processSyncFiles(ctx, cfg, params.Local, params.Bucket, basePath.String(), files, progressBar)
+	err = processSyncFiles(ctx, cfg, params.Bucket, basePath.String(), files, progressBar, state)
 
 	if err != nil {
 		return nil, err
@@ -113,13 +127,10 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 
 	_, _ = progressBar.Stop()
 
-	deletedFiles := make([]string, 0, len(allBucketFiles))
+	deletedFiles := make([]string, 0, len(state.bucketFiles))
 
-	if params.Delete {
-		for file := range allBucketFiles {
-			if err != nil {
-				logger().Debugw("error deleting file", "error", err)
-			}
+	if params.Delete && len(state.bucketFiles) > 0 {
+		for file := range state.bucketFiles {
 			deletedFiles = append(deletedFiles, file)
 		}
 		delOb := common.DeleteObjectsParams{
@@ -129,15 +140,15 @@ func sync(ctx context.Context, params syncParams, cfg common.Config) (result cor
 		}
 		err = common.DeleteObjects(ctx, delOb, cfg)
 		if err != nil {
-			logger().Debugw("error deleting objects", "error", err)
+			return nil, fmt.Errorf("failed to delete objects (some objects may already have been deleted): %w", err)
 		}
 	}
 
 	return syncResult{
 		Source:        params.Local,
 		Destination:   params.Bucket,
-		FilesDeleted:  len(allBucketFiles),
-		FilesUploaded: int(uploadFiles.Value()),
+		FilesDeleted:  len(deletedFiles),
+		FilesUploaded: int(state.uploadFiles.Value()),
 		Deleted:       len(deletedFiles) > 0,
 		DeletedFiles:  strings.Join(deletedFiles, ", "),
 	}, nil
@@ -155,26 +166,38 @@ func bucketObjectsToWalkDirEntry(ctx context.Context, bucketObjects []string) <-
 			entry := pipeline.NewSimpleWalkDirEntry(obj, &common.BucketContent{
 				Key: strings.TrimPrefix(obj, "/"),
 			}, err)
-			out <- entry
+			select {
+			case out <- entry:
+			case <-ctx.Done():
+				return
+			}
 		}
 	}()
 	return out
 }
 
-func fillBucketFiles(ctx context.Context, params syncParams, cfg common.Config) {
+func fillBucketFiles(ctx context.Context, params syncParams, cfg common.Config) (map[string]bool, error) {
+	bucketFiles := make(map[string]bool)
 	logger().Debug("Getting bucket files")
 
 	dirBucketFiles := common.ListGenerator(ctx, common.ListObjectsParams{
 		Destination: params.Bucket,
 		Recursive:   true,
 		PaginationParams: common.PaginationParams{
-			MaxItems: common.MaxBatchSize,
+			MaxItems: math.MaxInt,
 		},
 	}, cfg, nil)
 
 	for file := range dirBucketFiles {
-		allBucketFiles["/"+file.Path()] = true
+		if err := file.Err(); err != nil {
+			return nil, err
+		}
+		bucketFiles["/"+file.Path()] = true
 	}
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	return bucketFiles, nil
 }
 
 func getFileStats(ctx context.Context, destination mgcSchemaPkg.URI, cfg common.Config) (fileSyncStats, error) {
@@ -216,10 +239,12 @@ func (c *UploadCounter) Increment() {
 }
 
 func (c *UploadCounter) Value() uint64 {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	return c.v
 }
 
-func processSyncFiles(ctx context.Context, cfg common.Config, source, destination mgcSchemaPkg.URI, basePath string, files []string, progressBar *pterm.ProgressbarPrinter) error {
+func processSyncFiles(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, basePath string, files []string, progressBar *pterm.ProgressbarPrinter, state *syncState) error {
 	results := make(chan error, cfg.Workers)
 	filesChan := make(chan string, cfg.Workers)
 
@@ -228,7 +253,7 @@ func processSyncFiles(ctx context.Context, cfg common.Config, source, destinatio
 	for i := 0; i < cfg.Workers; i++ {
 		go func() {
 			defer wg.Done()
-			syncWorker(ctx, cfg, source, destination, basePath, filesChan, results, progressBar)
+			syncWorker(ctx, cfg, destination, basePath, filesChan, results, progressBar, state)
 		}()
 	}
 
@@ -259,17 +284,17 @@ func processSyncFiles(ctx context.Context, cfg common.Config, source, destinatio
 		return fmt.Errorf("%d of %d file(s) failed to sync:\n%w", len(errs), len(files), errors.Join(errs...))
 	}
 
-	return nil
+	return ctx.Err()
 }
 
-func syncWorker(ctx context.Context, cfg common.Config, source, destination mgcSchemaPkg.URI, basePath string, files <-chan string, results chan<- error, progressBar *pterm.ProgressbarPrinter) {
+func syncWorker(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, basePath string, files <-chan string, results chan<- error, progressBar *pterm.ProgressbarPrinter, state *syncState) {
 	for {
 		select {
 		case file, ok := <-files:
 			if !ok {
 				return
 			}
-			err := processSyncFile(ctx, cfg, source, destination, basePath, file, progressBar)
+			err := processSyncFile(ctx, cfg, destination, basePath, file, progressBar, state)
 			if err != nil {
 				select {
 				case results <- err:
@@ -283,11 +308,11 @@ func syncWorker(ctx context.Context, cfg common.Config, source, destination mgcS
 	}
 }
 
-func processSyncFile(ctx context.Context, cfg common.Config, source, destination mgcSchemaPkg.URI, basePath, file string, progressBar *pterm.ProgressbarPrinter) error {
+func processSyncFile(ctx context.Context, cfg common.Config, destination mgcSchemaPkg.URI, basePath, file string, progressBar *pterm.ProgressbarPrinter, state *syncState) error {
 	normalizedSource, err := common.GetAbsSystemURI(mgcSchemaPkg.URI(file))
 	if err != nil {
 		logger().Debugw("error with path", "error", err)
-		return nil
+		return err
 	}
 
 	pathWithFolder := strings.TrimPrefix(file, basePath)
@@ -308,9 +333,9 @@ func processSyncFile(ctx context.Context, cfg common.Config, source, destination
 		return err
 	}
 
-	if allBucketFiles[pathWithFolder] {
-		delete(allBucketFiles, pathWithFolder)
-	}
+	state.mu.Lock()
+	delete(state.bucketFiles, "/"+normalizedDestination.Path())
+	state.mu.Unlock()
 
 	fileStats, err := getFileStats(ctx, normalizedDestination, cfg)
 	if err != nil {
@@ -320,8 +345,10 @@ func processSyncFile(ctx context.Context, cfg common.Config, source, destination
 	isSameSize := info.Size() == fileStats.SourceLength
 	isLocalOlderThenBucket := info.ModTime().Unix() < fileStats.SourceModTime
 	if err == nil && isSameSize && isLocalOlderThenBucket {
-		logger().Debug("Skipping file [%s] - no change", normalizedSource)
+		logger().Debugf("Skipping file [%s] - no change", normalizedSource)
+		state.mu.Lock()
 		progressBar.Increment()
+		state.mu.Unlock()
 		return nil
 	}
 
@@ -330,7 +357,9 @@ func processSyncFile(ctx context.Context, cfg common.Config, source, destination
 		return &common.ObjectError{Url: mgcSchemaPkg.URI(normalizedSource.Path()), Err: err}
 	}
 
-	uploadFiles.Increment()
+	state.uploadFiles.Increment()
+	state.mu.Lock()
 	progressBar.Increment()
+	state.mu.Unlock()
 	return nil
 }
